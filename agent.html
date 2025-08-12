@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>corAe Studio – Agent Panel</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .agent-log {background:#0d1218;color:#a6bedf;padding:.5rem;border-radius:8px;max-height:300px;overflow-y:auto;font-size:.85rem;line-height:1.4}
+    .agent-row {display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
+    .agent-row b {flex:0 0 110px;color:#c0d8f9}
+    .agent-controls {display:flex;gap:.5rem;margin-top:.8rem}
+  </style>
+</head>
+<body>
+
+  <div id="app-header" class="header">
+    <a href="index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center">
+      <img src="https://dummyimage.com/28x28/7c5cff/ffffff&text=Æ" alt="corAe" width="28" height="28" style="border-radius:8px;"/>
+      <div style="font-weight:700;margin-left:.5rem">corAe Studio</div>
+    </a>
+    <span class="badge" style="margin-left:.5rem">Agent Panel</span>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h1>Agent Control Panel</h1>
+      <p>Manage, test, and monitor corAe agents. All events here are driven by the same core logic as <code>index.html</code>.</p>
+    </div>
+
+    <!-- Agent Config -->
+    <div class="card">
+      <h3>Agent Config</h3>
+      <div class="agent-row">
+        <b>Agent Name</b>
+        <input type="text" id="agent-name" class="form-input" placeholder="e.g., CAIA.Research" />
+      </div>
+      <div class="agent-row">
+        <b>Mode</b>
+        <select id="agent-mode" class="form-input">
+          <option value="passive">Passive</option>
+          <option value="active">Active</option>
+          <option value="diagnostic">Diagnostic</option>
+        </select>
+      </div>
+      <div class="agent-controls">
+        <button id="btn-save-agent" class="btn">Save</button>
+        <button id="btn-run-agent" class="btn">Run</button>
+      </div>
+    </div>
+
+    <!-- Agent Log -->
+    <div class="card">
+      <h3>Agent Log</h3>
+      <div id="agent-log" class="agent-log">No activity yet…</div>
+    </div>
+  </div>
+
+  <div class="footer">© corAe Studio</div>
+
+  <!-- Scripts -->
+  <script defer src="js/core.js"></script>
+  <script defer>
+    const logEl = document.getElementById('agent-log');
+    const log = msg => {
+      const t = new Date().toLocaleTimeString();
+      logEl.innerHTML = `<div>[${t}] ${msg}</div>` + logEl.innerHTML;
+    };
+
+    document.getElementById('btn-save-agent').addEventListener('click', ()=>{
+      const name = document.getElementById('agent-name').value || 'Unnamed Agent';
+      const mode = document.getElementById('agent-mode').value;
+      window.localStorage.setItem('corAe.agent.name', name);
+      window.localStorage.setItem('corAe.agent.mode', mode);
+      log(`💾 Saved agent "${name}" in mode "${mode}".`);
+    });
+
+    document.getElementById('btn-run-agent').addEventListener('click', ()=>{
+      const name = window.localStorage.getItem('corAe.agent.name') || 'Unnamed Agent';
+      const mode = window.localStorage.getItem('corAe.agent.mode') || 'passive';
+      log
