@@ -52,3 +52,58 @@
   <script defer src="js/core.js"></script>
   <script defer>
     const taskList = document.getElementById('task-list');
+    const taskInput = document.getElementById('task-input');
+
+    // Load saved tasks
+    const loadTasks = () => {
+      const tasks = JSON.parse(localStorage.getItem('corAe.tasks') || '[]');
+      taskList.innerHTML = '';
+      tasks.forEach((task, idx) => {
+        const li = document.createElement('li');
+        li.className = 'task-item';
+        li.innerHTML = `
+          <input type="checkbox" ${task.done ? 'checked' : ''} data-index="${idx}">
+          <span style="flex:1;${task.done ? 'text-decoration:line-through;color:#6a7b91;' : ''}">${task.text}</span>
+          <button data-delete="${idx}" class="btn btn-danger" style="padding:.2rem .6rem;font-size:.8rem">X</button>
+        `;
+        taskList.appendChild(li);
+      });
+    };
+
+    // Save tasks
+    const saveTasks = tasks => localStorage.setItem('corAe.tasks', JSON.stringify(tasks));
+
+    // Add task
+    document.getElementById('btn-add-task').addEventListener('click', () => {
+      const text = taskInput.value.trim();
+      if (!text) return;
+      const tasks = JSON.parse(localStorage.getItem('corAe.tasks') || '[]');
+      tasks.push({ text, done: false });
+      saveTasks(tasks);
+      taskInput.value = '';
+      loadTasks();
+    });
+
+    // Handle clicks
+    taskList.addEventListener('click', e => {
+      if (e.target.matches('input[type="checkbox"]')) {
+        const idx = e.target.dataset.index;
+        const tasks = JSON.parse(localStorage.getItem('corAe.tasks') || '[]');
+        tasks[idx].done = e.target.checked;
+        saveTasks(tasks);
+        loadTasks();
+      }
+      if (e.target.dataset.delete) {
+        const idx = e.target.dataset.delete;
+        const tasks = JSON.parse(localStorage.getItem('corAe.tasks') || '[]');
+        tasks.splice(idx, 1);
+        saveTasks(tasks);
+        loadTasks();
+      }
+    });
+
+    // Init
+    loadTasks();
+  </script>
+</body>
+</html>
