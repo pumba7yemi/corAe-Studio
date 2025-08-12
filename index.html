@@ -2,50 +2,88 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>corAe Studio – Always‑Wins Runner</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>corAe Studio</title>
+
+  <!-- App styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- Tiny inline fallback so the page isn’t blank if CSS isn’t there yet -->
+  <style>
+    body{margin:0;background:#0b0f14;color:#e6f0ff;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    .container{max-width:1100px;margin:1.25rem auto;padding:0 1rem}
+  </style>
 </head>
 <body>
-  <header class="shell">
-    <h1>corAe Studio</h1>
-    <p class="subtitle">Guided, no‑fail workflows for every role.</p>
-  </header>
 
-  <main class="shell">
-    <section id="intro" class="panel">
-      <h2 id="wf-title">Loading workflow…</h2>
-      <p id="wf-why" class="why"></p>
+  <!-- Header (optional: if you created components/header.html this will load it) -->
+  <div id="app-header" class="header">
+    <img src="https://dummyimage.com/28x28/7c5cff/ffffff&text=Æ" alt="corAe" width="28" height="28" style="border-radius:8px;"/>
+    <div style="font-weight:700;margin-left:.5rem">corAe Studio</div>
+    <span class="badge" style="margin-left:.5rem">Starter</span>
+  </div>
 
-      <div class="meta">
-        <div><strong>Step</strong> <span id="step-idx">0</span>/<span id="step-total">0</span></div>
-        <div><strong>Elapsed</strong> <span id="elapsed">00:00</span></div>
+  <div class="container">
+    <!-- Hero -->
+    <div class="card" style="margin-bottom:1rem">
+      <h1 style="margin:.2rem 0 0">Welcome to corAe Studio</h1>
+      <p style="color:#9bb0c9;margin:.4rem 0 0">
+        Your AI‑powered launchpad. Use the controls below to kickstart, diagnose, or preview.
+      </p>
+    </div>
+
+    <!-- Controls -->
+    <div class="row" style="margin-bottom:1rem">
+      <div class="card">
+        <h3>Kickstart</h3>
+        <p class="kv"><b>Action</b><span>Initializes a new run and stores a <code>runId</code>.</span></p>
+        <button id="btn-start" class="btn">Start</button>
       </div>
 
-      <div id="step-card" class="step"></div>
-
-      <div class="controls">
-        <button id="btn-help" class="ghost">Need help?</button>
-        <button id="btn-back" class="ghost" disabled>Back</button>
-        <button id="btn-next" class="primary" disabled>Next</button>
+      <div class="card">
+        <h3>Diagnostics</h3>
+        <p class="kv"><b>Action</b><span>Confirms core is loaded and healthy.</span></p>
+        <button id="btn-diagnose" class="btn">Run</button>
       </div>
 
-      <div id="assist" class="assist hidden" role="status" aria-live="polite"></div>
-      <div id="toast" class="toast hidden" role="status" aria-live="assertive"></div>
-    </section>
+      <div class="card">
+        <h3>Preview</h3>
+        <p class="kv"><b>Action</b><span>Opens a stub preview (routes coming next).</span></p>
+        <button id="btn-preview" class="btn">Open</button>
+      </div>
+    </div>
 
-    <section id="summary" class="panel hidden">
-      <h2>All done ✅</h2>
-      <p id="summary-text"></p>
-      <button id="btn-restart" class="primary">Run again</button>
-      <button id="btn-clear" class="ghost">Clear saved progress</button>
-    </section>
-  </main>
+    <!-- Status output -->
+    <div class="card">
+      <div class="kv">
+        <b>Status</b>
+        <pre id="out" style="margin:.3rem 0 0;color:#9bb0c9">Waiting…</pre>
+      </div>
+    </div>
 
-  <footer class="shell foot">
-    <small>© corAe OS • Always‑Wins Engine</small>
-  </footer>
+    <!-- System facts -->
+    <div class="card" style="margin-top:1rem">
+      <div class="kv">
+        <b>Core Version</b><span id="core-version">—</span>
+        <b>Booted</b><span id="core-boot">—</span>
+      </div>
+    </div>
 
-  <script src="app.js" defer></script>
+    <div class="footer">© corAe Studio</div>
+  </div>
+
+  <!-- App scripts (must exist in /js) -->
+  <script defer src="js/core.js"></script>
+  <script defer src="js/ui.js"></script>
+
+  <!-- Small helper to mirror version/boot in the facts panel -->
+  <script>
+    document.addEventListener("corAe:core:ready", (e)=>{
+      const v = e.detail?.version || "0.0.0";
+      const boot = new Date(window.corAe?.booted||Date.now()).toLocaleTimeString();
+      document.getElementById("core-version").textContent = v;
+      document.getElementById("core-boot").textContent = boot;
+    });
+  </script>
 </body>
 </html>
