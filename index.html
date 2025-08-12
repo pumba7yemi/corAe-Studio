@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>corAe Studio – Always‑Wins Runner</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="shell">
+    <h1>corAe Studio</h1>
+    <p class="subtitle">Guided, no‑fail workflows for every role.</p>
+  </header>
+
+  <main class="shell">
+    <section id="intro" class="panel">
+      <h2 id="wf-title">Loading workflow…</h2>
+      <p id="wf-why" class="why"></p>
+
+      <div class="meta">
+        <div><strong>Step</strong> <span id="step-idx">0</span>/<span id="step-total">0</span></div>
+        <div><strong>Elapsed</strong> <span id="elapsed">00:00</span></div>
+      </div>
+
+      <div id="step-card" class="step"></div>
+
+      <div class="controls">
+        <button id="btn-help" class="ghost">Need help?</button>
+        <button id="btn-back" class="ghost" disabled>Back</button>
+        <button id="btn-next" class="primary" disabled>Next</button>
+      </div>
+
+      <div id="assist" class="assist hidden" role="status" aria-live="polite"></div>
+      <div id="toast" class="toast hidden" role="status" aria-live="assertive"></div>
+    </section>
+
+    <section id="summary" class="panel hidden">
+      <h2>All done ✅</h2>
+      <p id="summary-text"></p>
+      <button id="btn-restart" class="primary">Run again</button>
+      <button id="btn-clear" class="ghost">Clear saved progress</button>
+    </section>
+  </main>
+
+  <footer class="shell foot">
+    <small>© corAe OS • Always‑Wins Engine</small>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
