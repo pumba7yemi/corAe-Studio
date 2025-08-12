@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>corAe Studio – Tasks</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .task-list {list-style:none;padding:0;margin:0}
+    .task-item {display:flex;align-items:center;gap:.5rem;padding:.6rem;background:#0d1218;color:#a6bedf;border-radius:8px;margin-bottom:.5rem}
+    .task-item input[type="checkbox"] {width:18px;height:18px}
+    .task-controls {display:flex;gap:.5rem;margin-top:.8rem}
+  </style>
+</head>
+<body>
+
+  <div id="app-header" class="header">
+    <a href="index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center">
+      <img src="https://dummyimage.com/28x28/7c5cff/ffffff&text=Æ" alt="corAe" width="28" height="28" style="border-radius:8px;"/>
+      <div style="font-weight:700;margin-left:.5rem">corAe Studio</div>
+    </a>
+    <span class="badge" style="margin-left:.5rem">Tasks</span>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h1>Task Dashboard</h1>
+      <p>Track and manage all workflow tasks in one place. This is powered by the same core logic as other pages.</p>
+    </div>
+
+    <!-- Add Task -->
+    <div class="card">
+      <h3>Add Task</h3>
+      <div class="task-controls">
+        <input type="text" id="task-input" class="form-input" placeholder="Enter task description" />
+        <button id="btn-add-task" class="btn">Add</button>
+      </div>
+    </div>
+
+    <!-- Task List -->
+    <div class="card">
+      <h3>Tasks</h3>
+      <ul id="task-list" class="task-list"></ul>
+    </div>
+  </div>
+
+  <div class="footer">© corAe Studio</div>
+
+  <!-- Scripts -->
+  <script defer src="js/core.js"></script>
+  <script defer>
+    const taskList = document.getElementById('task-list');
