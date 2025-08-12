@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>corAe Studio – Settings</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .form-section {margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid #222}
+    label {display:block;margin-bottom:.3rem;font-weight:500}
+    .form-input, select {width:100%;padding:.5rem;border:1px solid #333;border-radius:6px;background:#0d1218;color:#a6bedf}
+  </style>
+</head>
+<body>
+
+  <div id="app-header" class="header">
+    <a href="index.html" style="color:inherit;text-decoration:none;display:flex;align-items:center">
+      <img src="https://dummyimage.com/28x28/7c5cff/ffffff&text=Æ" alt="corAe" width="28" height="28" style="border-radius:8px;"/>
+      <div style="font-weight:700;margin-left:.5rem">corAe Studio</div>
+    </a>
+    <span class="badge" style="margin-left:.5rem">Settings</span>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h1>System Settings</h1>
+      <p>Configure your corAe Studio preferences. All settings are saved in local storage for now — future versions will sync via CIMS.</p>
+    </div>
+
+    <div class="card">
+      <form id="settings-form">
+        <!-- General -->
+        <div class="form-section">
+          <h3>General</h3>
+          <label for="username">Display Name</label>
+          <input type="text" id="username" name="username" class="form-input" placeholder="Your name" />
+
+          <label for="theme" style="margin-top:.6rem">Theme</label>
+          <select id="theme" name="theme">
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+          </select>
+        </div>
+
+        <!-- Notifications -->
+        <div class="form-section">
+          <h3>Notifications</h3>
+          <label><input type="checkbox" id="notif-tasks" /> Enable task reminders</label>
+          <label><input type="checkbox" id="notif-email" /> Enable email alerts</label>
+          <label><input type="checkbox" id="notif-cims" /> Enable CIMS messages</label>
+        </div>
+
+        <!-- Save -->
+        <button type="submit" class="btn">Save Settings</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer">© corAe Studio</div>
+
+  <!-- Scripts -->
+  <script defer src="js/core.js"></script>
+  <script defer>
+    const settingsKey = 'corAe.settings';
+
+    const form = document.getElementById('settings-form');
+    const loadSettings = () => {
+      const s = JSON.parse(localStorage.getItem(settingsKey) || '{}');
+      if (s.username) document.getElementById('username').value = s.username;
+      if (s.theme) document.getElementById('theme').value = s.theme;
+      document.getElementById('notif-tasks').checked = !!s.notifTasks;
+      document.getElementById('notif-email').checked = !!s.notifEmail;
+      document.getElementById('notif-cims').checked = !!s.notifCims;
+    };
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const s = {
+        username: document.getElementById('username').value.trim(),
+        theme: document.getElementById('theme').value,
+        notifTasks: document.getElementById('notif-tasks').checked,
+        notifEmail: document.getElementById('notif-email').checked,
+        notifCims: document.getElementById('notif-cims').checked,
+      };
+      localStorage.setItem(settingsKey, JSON.stringify(s));
+      alert('Settings saved successfully.');
+    });
+
+    loadSettings();
+  </script>
+</body>
+</html>
