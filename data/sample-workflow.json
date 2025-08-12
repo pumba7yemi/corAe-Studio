@@ -1,0 +1,32 @@
+{
+  "id": "stock-check-pepsico-v1",
+  "title": "PepsiCo Fridge Stock Check",
+  "why": "We’re doing this to ensure customers always get cold drinks and to decide if we need to order more.",
+  "steps": [
+    {
+      "title": "Go to the drinks fridge",
+      "instruction": "Walk to the fridge location shown in the image.",
+      "image": "https://images.unsplash.com/photo-1588681249898-7a9b9a2a1c68?q=80&w=1200&auto=format&fit=crop",
+      "hint": "If there are multiple fridges, choose the one labelled ‘PepsiCo’.",
+      "help": { "text": "Ask a teammate where the PepsiCo fridge is if unsure." }
+    },
+    {
+      "title": "Open the fridge and count Pepsi cans",
+      "instruction": "Count all Pepsi (blue) cans on all shelves. Enter count mentally; confirmation comes next.",
+      "hint": "Move cans slightly if stacked; don’t forget the door racks.",
+      "help": { "text": "Count shelf by shelf; say the number out loud to remember." }
+    },
+    {
+      "title": "Check coldness",
+      "instruction": "Touch a can. If it’s not cold, note that stock may have been recently loaded or the unit needs service.",
+      "hint": "Cold to the touch = OK; warm = flag for follow‑up.",
+      "help": { "text": "If warm, notify manager; we’ll auto‑create a task later." }
+    },
+    {
+      "title": "Finalise",
+      "instruction": "Confirm the count and temperature check are complete.",
+      "hint": "This locks the step and updates today’s log.",
+      "help": { "text": "If you made a mistake, use Back to correct before finishing." }
+    }
+  ]
+}
