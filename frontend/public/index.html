@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>corAe Continuum — Studio</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .task {background:#0f1420;border:1px solid #1c2430;border-radius:12px;padding:.7rem;margin:.4rem 0}
+    .muted { color:#9bb0c9 }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="https://dummyimage.com/28x28/7c5cff/ffffff&text=Æ" alt="Æ" width="28" height="28" style="border-radius:8px"/>
+    <div style="font-weight:700;margin-left:.5rem">corAe Continuum</div>
+    <span class="badge" style="margin-left:.5rem">Just Ride</span>
+  </div>
+
+  <div class="container">
+    <div class="card" style="margin-bottom:12px">
+      <h1>Continuum Feed</h1>
+      <p class="muted">One flow. Work + Home. Press a button, move forward — no stalls.</p>
+      <div class="row" style="margin-top:.6rem">
+        <button id="btn-focus" class="btn">Today’s Focus</button>
+        <button id="btn-diagnose" class="btn">Diagnostics</button>
+        <a class="btn" href="../cims.html" style="display:inline-block;text-align:center">Open CIMS</a>
+      </div>
+    </div>
+
+    <div class="card" id="tasks-card">
+      <h3>Tasks (API)</h3>
+      <div id="tasks"></div>
+      <div id="tasks-status" class="muted
