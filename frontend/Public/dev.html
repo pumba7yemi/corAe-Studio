@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Dev Agent • corAe</title>
+  <link rel="stylesheet" href="./styles.css"/>
+  <style>
+    .grid{display:grid;gap:12px}
+    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    textarea{width:100%;min-height:120px;border:1px solid #e5e7eb;border-radius:10px;padding:10px}
+    pre{background:#0b1220;color:#e2e8f0;padding:12px;border-radius:10px;overflow:auto}
+    .file{border:1px solid #e5e7eb;border-radius:10px;padding:10px;background:#fff}
+    .muted{color:#6b7280}
+    .ok{color:#16a34a}
+    .err{color:#dc2626}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav">
+      <a href="./index.html" class="btn">← Back</a>
+      <div class="brand">Dev Agent</div>
+      <button id="btnRefresh" class="btn">Reload Results</button>
+    </div>
+
+    <div class="card grid">
+      <div class="row">
+        <label>Module</label>
+        <select id="module" class="btn">
+          <option>Frontend</option>
+          <option>Agents</option>
+          <option>Tasks</option>
+          <option>CIMS</option>
+          <option>Notifications</option>
+          <option>Analytics</option>
+          <option>Core Engine</option>
+          <option>Other</option>
+        </select>
+        <span class="pill">Tip: ask for files with exact paths (e.g. <code>frontend/js/xyz.js</code>)</span>
+      </div>
+
+      <textarea id="prompt" placeholder="Describe the change you want. Example:
+- Add a settings panel at frontend/public/settings.html
+- Create frontend/js/settings.js with save/load
+- Update frontend/public/index.html to link to settings"></textarea>
+
+      <div class="row">
+        <button id="btnGenerate" class="btn btn-primary">Generate files</button>
+        <button id="btnCommit" class="btn">Commit selected to GitHub</button>
+        <span class="muted">Commits require env vars (see page bottom).</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="hstack">
+        <strong>Generated Files</strong>
+        <span id="status" class="muted"></span>
+      </div>
+      <div id="results"></div>
+    </div>
+
+    <footer class="mono muted">
+      API: /api/dev/generate • /api/dev/commit<br/>
+      Env (set on Vercel → Project → Settings → Environment Variables):<br/>
+      <strong>OPENAI_API_KEY</strong> (or change model endpoint in generate.js)<br/>
+      <strong>GITHUB_TOKEN</strong> (repo access), <strong>GITHUB_OWNER</strong>, <strong>GITHUB_REPO</strong>, optional <strong>GITHUB_BRANCH</strong> (default main)
+    </footer>
+  </div>
+
+  <script type="module" src="../js/dev.js"></script>
+</body>
+</html>
