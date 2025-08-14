@@ -1,12 +1,9 @@
-// Returns a small mixed set of Work + Home tasks
-export default async function handler(req, res) {
-  res.setHeader('Content-Type', 'application/json');
-  res.status(200).json({
-    tasks: [
-      { title: "Review supplier PO (Choice Plus)", scope: "Work", when: "Today AM" },
-      { title: "Walk dog — 15 min loop", scope: "Home", when: "Today PM" },
-      { title: "CIMS: reply to Accounts", scope: "Work", when: "Today" },
-      { title: "Plan meals (3 days)", scope: "Home", when: "Tonight" }
-    ]
-  });
+// Vercel Serverless Function
+export default function handler(req, res) {
+  // In a later step we’ll read real tasks from storage.
+  res.status(200).json([
+    { id: 1, title: "Walk Grogu 🐶", status: "pending" },
+    { id: 2, title: "Check vendor deliveries", status: "in-progress" },
+    { id: 3, title: "Send PO confirmations", status: "done" }
+  ]);
 }
