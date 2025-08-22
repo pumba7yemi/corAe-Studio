@@ -1,0 +1,7 @@
+﻿# apps/studio/.dockerignore
+node_modules
+.next
+.git
+.gitignore
+Dockerfile
+.dockerignore

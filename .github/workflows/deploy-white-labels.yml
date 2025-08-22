@@ -1,0 +1,70 @@
+﻿name: build-and-artifact
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20 (LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: apps/studio/package-lock.json
+
+      - name: Clean install deps
+        working-directory: apps/studio
+        run: npm ci || npm i
+
+      - name: Build (Next.js standalone)
+        working-directory: apps/studio
+        run: |
+          # Ensure consistent output location
+          node -e "try{const fs=require('fs');let c=fs.readFileSync('next.config.mjs','utf8');if(!/output:\s*['\"]standalone['\"]/.test(c)){c=c.replace(/export default\s+(\{)/,'const _cfg=$1');c+='\nif(!_cfg.output){_cfg.output=\"standalone\"}\nexport default _cfg\n';fs.writeFileSync('next.config.mjs',c)} }catch(e){console.log('next.config.mjs not found or already ok')}"
+          npm run build
+
+      - name: Verify build outputs (150% logic)
+        working-directory: apps/studio
+        run: |
+          set -eux
+          echo "PWD=$(pwd)"
+          test -d .next
+          if [ ! -d ".next/standalone" ]; then
+            echo "Note: .next/standalone not found; using .next"
+          fi
+          # List samples to logs
+          find .next -maxdepth 2 -type f | head -n 50 || true
+          [ -d public ] && ls -la public || echo "public missing (ok)"
+
+      - name: Gather build outputs safely (single known folder)
+        working-directory: apps/studio
+        run: |
+          set -eux
+          rm -rf ../artifact
+          mkdir -p ../artifact
+          if [ -d ".next/standalone" ]; then
+            cp -a .next/standalone ../artifact/standalone
+          else
+            cp -a .next ../artifact/.next
+          fi
+          [ -d public ] && cp -a public ../artifact/public || true
+          [ -f package.json ] && cp package.json ../artifact/ || true
+          [ -f next.config.mjs ] && cp next.config.mjs ../artifact/ || true
+          echo "=== artifact tree ==="
+          (cd ../artifact && find . -maxdepth 3 -type f | head -n 100 || true)
+
+      - name: Upload artifact (only one path)
+        uses: actions/upload-artifact@v4
+        with:
+          name: studio-next-build
+          path: apps/artifact
+          if-no-files-found: error
+          retention-days: 7
