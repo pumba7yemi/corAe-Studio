@@ -1,8 +1,8 @@
-﻿export default function Page() {
+export default function HomePage() {
   return (
-    <main style={{padding:24,fontFamily:"system-ui, Arial"}}>
-      <h1>corAe Studio</h1>
-      <p>Baseline build OK. Docker runtime will serve this page.</p>
-    </main>
+    <section>
+      <h1 style={{ fontSize: 32, margin: "8px 0" }}>Welcome</h1>
+      <p>Choose a module from the nav to get started.</p>
+    </section>
   );
 }
