@@ -1,27 +1,21 @@
-﻿export const metadata = {
-  title: "corAe Studio",
-  description: "Baseline Next.js app is running.",
-};
+import './globals.css';
+import Link from 'next/link';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body style={{ margin: 0, fontFamily: "system-ui, Arial, sans-serif" }}>
-        <header style={{ borderBottom: "1px solid #eee", padding: "16px 24px" }}>
-          <a href="/" style={{ fontWeight: 700, fontSize: 20, textDecoration: "none", color: "black" }}>
-            corAe Studio
-          </a>
-          <nav style={{ marginTop: 8 }}>
-            <a href="/dashboard" style={{ marginRight: 16 }}>Dashboard</a>
-            <a href="/projects" style={{ marginRight: 16 }}>Projects</a>
-            <a href="/clients" style={{ marginRight: 16 }}>Clients</a>
-            <a href="/settings">Settings</a>
+    <html lang='en'>
+      <body>
+        <header className='border-b'>
+          <nav className='max-w-5xl mx-auto flex gap-4 p-4 text-sm'>
+            <Link href='/'>Home</Link>
+            <Link href='/dashboard'>Dashboard</Link>
+            <Link href='/clients'>Clients</Link>
+            <Link href='/projects'>Projects</Link>
+            <Link href='/settings'>Settings</Link>
+            <Link href='/agent' className='font-semibold'>Agent</Link>
           </nav>
         </header>
-        <main style={{ padding: 24 }}>{children}</main>
-        <footer style={{ borderTop: "1px solid #eee", padding: 16, textAlign: "center", color: "#666" }}>
-          © {new Date().getFullYear()} corAe
-        </footer>
+        {children}
       </body>
     </html>
   );
