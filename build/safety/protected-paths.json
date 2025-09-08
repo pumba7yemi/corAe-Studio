@@ -1,0 +1,22 @@
+{
+  "version": "1",
+  "notes": "Paths that workers must NOT overwrite. Only allow APPEND or explicit ERROR_IF_EXISTS unless a backup is taken and a restore point recorded in the Build Log.",
+  "paths": [
+    "apps/studio/app/dockyard/**",
+    "apps/studio/app/api/build/log/**",
+    "apps/studio/lib/build/**",
+    "apps/studio/app/dockyard/build/**",
+    "apps/studio/app/api/caia/**",
+    "apps/studio/lib/caia/**",
+    "apps/studio/app/api/ship/**",
+    "apps/studio/lib/bbb/**",
+    "apps/studio/tailwind.config.*",
+    "apps/studio/postcss.config.*",
+    "build/brain/**",
+    "build/safety/**",
+    ".github/workflows/one-build.yml"
+  ],
+  "allowWriteIf": {
+    "mode": ["APPEND", "SKIP_IF_EXISTS", "ERROR_IF_EXISTS"]
+  }
+}

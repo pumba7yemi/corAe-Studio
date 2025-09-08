@@ -1,0 +1,9 @@
+{
+  "id": "JOB-HELLO",
+  "type": "ONEBUILD_DRY_RUN",
+  "status": "ERROR",
+  "createdAt": "2025-09-07T00:00:00Z",
+  "tsStarted": "2025-09-07T11:51:49.398Z",
+  "tsFinished": "2025-09-07T11:51:49.497Z",
+  "error": "node scripts/onebuild/validate.js -> 1"
+}

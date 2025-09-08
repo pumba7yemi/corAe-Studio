@@ -1,0 +1,11 @@
+[
+  {
+    "id": "dedf37ab-ff53-4af0-abbb-64f910480a3f",
+    "orderId": "cdd4b7f1-6bb9-4443-bacd-648635d9a33c",
+    "week": 1,
+    "day": 1,
+    "slot": "AM",
+    "status": "booked",
+    "createdAt": "2025-08-28T17:10:56.010Z"
+  }
+]

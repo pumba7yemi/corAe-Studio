@@ -1,0 +1,8 @@
+{"ts":"2025-09-07T10:34:35.478Z","level":"INFO","scope":"agent","action":"ONLINE"}
+{"ts":"2025-09-07T11:51:49.388Z","level":"INFO","scope":"agent","action":"ONLINE"}
+{"ts":"2025-09-07T11:51:49.398Z","level":"INFO","scope":"agent","action":"JOB_START","meta":{"jobId":"JOB-HELLO","type":"ONEBUILD_DRY_RUN"}}
+{"ts":"2025-09-07T11:51:49.497Z","level":"ERROR","scope":"agent","action":"JOB_ERROR","notes":"node scripts/onebuild/validate.js -> 1","meta":{"jobId":"JOB-HELLO"}}
+{"ts":"2025-09-07T13:23:42.589Z","level":"INFO","scope":"onebuild","action":"START","notes":"version=v1.0.0; dryRun=true"}
+{"ts":"2025-09-07T13:23:42.594Z","level":"INFO","scope":"bootstrap.noop","action":"DRY_RUN","file":"build/README.md","notes":"mode=SKIP_IF_EXISTS"}
+{"ts":"2025-09-07T13:23:42.595Z","level":"INFO","scope":"onebuild","action":"COMPLETE","notes":"wrote=0; skipped=1; dryRun=true"}
+{"ts":"2025-09-07T13:24:31.461Z","level":"INFO","scope":"agent","action":"ONLINE"}

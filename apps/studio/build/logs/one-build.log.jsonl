@@ -1,0 +1,4 @@
+{"ts":"2025-09-04T11:17:47.905Z","level":"INFO","scope":"manual","action":"PING","notes":"hello from UI"}
+{"ts":"2025-09-04T11:21:44.650Z","level":"INFO","scope":"test","action":"PING","notes":"button@2025-09-04T11:21:44.544Z","meta":{"via":"ui","at":"2025-09-04T11:21:44.544Z"}}
+{"ts":"2025-09-07T04:53:16.701Z","level":"INFO","scope":"caia.ship.ask","action":"PROMPT","notes":"where is dev agent page","meta":{"wl":"demo","user":"guest","replyPreview":"🤖 CAIA (Ship) — base brain reply to: \"where is dev agent page\""}}
+{"ts":"2025-09-07T04:54:53.906Z","level":"INFO","scope":"test","action":"PING","notes":"button@2025-09-07T04:54:53.861Z","meta":{"via":"ui","at":"2025-09-07T04:54:53.861Z"}}

@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "corAe One-Build Manifest",
+  "type": "object",
+  "required": ["version", "build", "modules"],
+  "properties": {
+    "version": { "type": "string", "pattern": "^v\\d+\\.\\d+\\.\\d+$" },
+    "whiteLabels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "brand": {
+            "type": "object",
+            "properties": {
+              "primary": { "type": "string" },
+              "secondary": { "type": "string" },
+              "fontFamily": { "type": "string" },
+              "radius": { "type": "number" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "build": {
+      "type": "object",
+      "required": ["id", "timestamp"],
+      "properties": {
+        "id": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "modules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["key", "actions"],
+        "properties": {
+          "key": { "type": "string" },
+          "tmFlags": { "type": "array", "items": { "type": "string" } },
+          "actions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["type", "files"],
+              "properties": {
+                "type": { "type": "string", "enum": ["CODE", "EMBED", "TM", "CONFIG", "ASSET"] },
+                "description": { "type": "string" },
+                "pricelockRef": { "type": "string" },
+                "files": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["path", "content"],
+                    "properties": {
+                      "path": { "type": "string" },
+                      "content": { "type": "string" },
+                      "mode": { "type": "string", "enum": ["WRITE", "APPEND", "SKIP_IF_EXISTS"] },
+                      "hash": { "type": "string" }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "postChecks": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

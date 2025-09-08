@@ -1,0 +1,48 @@
+{
+  "version": "1.0",
+  "templates": [
+    {
+      "id": "price-lock-confirm",
+      "channel": [
+        "email",
+        "whatsapp"
+      ],
+      "subject": "corAe Confirmed: Pricelock for {{item}} at {{price}}",
+      "body": "Dear {{vendor_name}},\nWe confirm Pricelock for {{item}} @ {{price}} (valid through {{valid_to}}).\nDeal ID: {{deal_id}} | Week: {{week_id}}.\nRegards, corAe / OBARI.",
+      "tags": [
+        "pricing",
+        "contract",
+        "obari"
+      ],
+      "risk": 70
+    },
+    {
+      "id": "po-ack",
+      "channel": [
+        "email"
+      ],
+      "subject": "PO {{po_number}} acknowledged",
+      "body": "Hi {{vendor_name}},\nYour PO {{po_number}} is acknowledged. Delivery {{delivery_date}}.\nOBARI link: {{obari_link}}",
+      "tags": [
+        "ops",
+        "po",
+        "delivery"
+      ],
+      "risk": 25
+    },
+    {
+      "id": "invoice-reminder",
+      "channel": [
+        "email",
+        "whatsapp"
+      ],
+      "subject": "Invoice {{inv_number}} — status update",
+      "body": "Finance update for {{inv_number}}: {{status}}.\nPricelock ref: {{deal_id}} | OBARI: {{obari_link}}",
+      "tags": [
+        "finance",
+        "invoice"
+      ],
+      "risk": 40
+    }
+  ]
+}

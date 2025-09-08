@@ -1,0 +1,82 @@
+[
+  {
+    "href": "/3cudtd",
+    "label": "3cuDTD"
+  },
+  {
+    "href": "/active",
+    "label": "Active"
+  },
+  {
+    "href": "/bookings",
+    "label": "Bookings"
+  },
+  {
+    "href": "/business",
+    "label": "Business"
+  },
+  {
+    "href": "/caia",
+    "label": "CAIA"
+  },
+  {
+    "href": "/home",
+    "label": "Home"
+  },
+  {
+    "href": "/hr",
+    "label": "HR"
+  },
+  {
+    "href": "/hr/payroll",
+    "label": "HR • Payroll"
+  },
+  {
+    "href": "/hr/people",
+    "label": "HR • People"
+  },
+  {
+    "href": "/hr/roles",
+    "label": "HR • Roles"
+  },
+  {
+    "href": "/invoices",
+    "label": "Invoices"
+  },
+  {
+    "href": "/obari/active",
+    "label": "Active"
+  },
+  {
+    "href": "/obari/bookings",
+    "label": "Bookings"
+  },
+  {
+    "href": "/obari/invoices",
+    "label": "Invoices"
+  },
+  {
+    "href": "/obari/orders",
+    "label": "Orders"
+  },
+  {
+    "href": "/obari/report",
+    "label": "Reports"
+  },
+  {
+    "href": "/orders",
+    "label": "Orders"
+  },
+  {
+    "href": "/report",
+    "label": "Reports"
+  },
+  {
+    "href": "/studio",
+    "label": "Studio"
+  },
+  {
+    "href": "/work",
+    "label": "Work"
+  }
+]

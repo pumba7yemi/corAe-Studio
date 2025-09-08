@@ -1,0 +1,92 @@
+/* app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================
+   corAe Design Tokens
+   (editable by theme engine)
+   ========================= */
+
+/* @tokens:start */
+:root{
+  --bg:#0b0f14;          /* page background */
+  --panel:#121821;       /* card/nav background */
+  --panel-2:#0f151d;     /* subtle hover panel */
+  --text:#e6eef7;
+  --muted:#9fb3c8;
+  --border:#213042;
+  --accent:#7cc4ff;
+  --secondary:#22c55e;
+  --radius:16px;
+  --gap-1:8px; --gap-2:12px; --gap-3:16px; --gap-4:24px; --gap-6:32px;
+  --shadow: 0 8px 24px rgba(0,0,0,.25);
+  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "SF Pro", Arial, sans-serif;
+}
+/* @tokens:end */
+
+/* =========================
+   Base
+   ========================= */
+*{ box-sizing:border-box }
+html,body{ height:100% }
+body{
+  @apply bg-background text-text;
+  margin:0;
+  font-family: var(--font);
+}
+
+/* =========================
+   Utilities (CSS-side)
+   ========================= */
+.container{
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--gap-6) var(--gap-4);
+}
+.stack > * + *{ margin-top: var(--gap-4); }
+.row{ display:flex; gap: var(--gap-3); flex-wrap:wrap; align-items:center; }
+.grid{ display:grid; gap: var(--gap-4); }
+.grid-auto{ grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+
+/* =========================
+   Typography
+   ========================= */
+h1{ font-size: clamp(28px, 4vw, 44px); margin:0 0 var(--gap-2); letter-spacing:.2px }
+h2{ font-size: clamp(20px, 3vw, 28px); margin:0 0 var(--gap-2) }
+.muted{ color: var(--muted); }
+.small{ font-size: .9rem; color:var(--muted); }
+.badge{
+  display:inline-block; padding:6px 10px; border-radius:999px;
+  background:var(--panel-2); border:1px solid var(--border); color:var(--text);
+}
+
+/* =========================
+   Component patterns (Tailwind)
+   ========================= */
+@layer components {
+  /* Site nav */
+  .site-nav{
+    @apply flex gap-4 flex-wrap pb-4 mb-6 border-b border-ring;
+  }
+  .site-nav a{ @apply text-text no-underline opacity-90 hover:opacity-100; }
+
+  /* Card */
+  .c-card{
+    /* uses shadow-card from tailwind.config.ts (extend.boxShadow.card) */
+    @apply rounded-2xl border border-ring bg-card shadow-card p-6 transition hover:-translate-y-0.5 hover:shadow-lg;
+  }
+
+  /* Buttons */
+  .btn{ @apply px-3 py-2 rounded-lg border border-ring bg-surface text-text cursor-pointer; }
+  .btn:hover{ @apply bg-card; }
+  .btn-primary{
+    background: linear-gradient(180deg, #4aa8ff, #328ef0);
+    border-color: #2d7ed3; color:#fff;
+  }
+  .btn-ghost{ @apply bg-transparent; }
+}
+
+/* Optional scroll polish */
+::-webkit-scrollbar{ width:10px; height:10px }
+::-webkit-scrollbar-thumb{ background:#1c2633; border-radius:8px; border:2px solid #0b0f14 }

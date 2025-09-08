@@ -1,0 +1,181 @@
+version: v1.0.1
+whiteLabels:
+  - id: choice-plus
+    name: Choice Plus Supermarket
+    brand:
+      primary: "#0EA5E9"
+      secondary: "#111827"
+      fontFamily: "Inter, ui-sans-serif, system-ui"
+      radius: 16
+  - id: al-amba
+    name: Al Amba Restaurant
+    brand:
+      primary: "#16A34A"
+      secondary: "#0B1020"
+      fontFamily: "Rubik, ui-sans-serif, system-ui"
+      radius: 14
+
+build:
+  id: corae-onebuild-studio-log
+  timestamp: "2025-09-02T00:00:00Z"
+  notes: "Generate Studio Build Log API + UI + logger util. Do NOT touch runner or package.json."
+
+modules:
+  - key: studio.themeEngine
+    tmFlags: ["corAe One-Build Log™", "Pricelock Chain™", "corAe Checked™"]
+    actions:
+      - type: CODE
+        description: Next.js API route to apply brand tokens (persisted)
+        files:
+          - path: apps/studio/app/api/theme/apply/route.ts
+            mode: WRITE
+            content: |
+              import { NextRequest, NextResponse } from 'next/server';
+              import fs from 'node:fs/promises';
+              import path from 'node:path';
+
+              export const runtime = 'nodejs';
+              export const dynamic = 'force-dynamic';
+
+              type BrandPreset = {
+                name: string; primary: string; secondary: string; background: string;
+                surface: string; text: string; muted: string; border: string;
+                radius: number; fontFamily: string;
+              };
+
+              const DATA_DIR = path.join(process.cwd(), 'apps', 'studio', '.data', 'brand');
+              const ACTIVE_FILE = path.join(DATA_DIR, 'active.json');
+
+              async function ensureDir() { await fs.mkdir(DATA_DIR, { recursive: true }); }
+
+              export async function POST(req: NextRequest) {
+                try {
+                  await ensureDir();
+                  const preset = (await req.json()) as BrandPreset;
+                  await fs.writeFile(ACTIVE_FILE, JSON.stringify(preset, null, 2), 'utf8');
+                  return NextResponse.json({ ok: true, preset });
+                } catch (e: any) {
+                  return NextResponse.json({ ok: false, error: e?.message || 'Unknown error' }, { status: 500 });
+                }
+              }
+
+              export async function GET() {
+                try {
+                  await ensureDir();
+                  const raw = await fs.readFile(ACTIVE_FILE, 'utf8').catch(() => '{}');
+                  const preset = raw ? JSON.parse(raw) : {};
+                  return NextResponse.json({ ok: true, preset });
+                } catch (e: any) {
+                  return NextResponse.json({ ok: false, error: e?.message || 'Unknown error' }, { status: 500 });
+                }
+              }
+
+  - key: studio.buildlog
+    actions:
+      - type: CODE
+        description: Build Log logger utility (append-only JSONL)
+        files:
+          - path: apps/studio/lib/build/log.ts
+            mode: WRITE
+            content: |
+              import fs from 'node:fs/promises';
+              import path from 'node:path';
+
+              const LOG_DIR = path.join(process.cwd(), 'build', 'logs');
+              const LOG_FILE = path.join(LOG_DIR, 'one-build.log.jsonl');
+
+              export type BuildEvent = {
+                ts: string;                 // ISO timestamp
+                level: 'INFO' | 'WARN' | 'ERROR';
+                scope: string;              // e.g., module key
+                action: string;             // e.g., WRITE_FILE
+                file?: string;
+                notes?: string;
+                meta?: Record<string, any>;
+              };
+
+              async function ensure() { await fs.mkdir(LOG_DIR, { recursive: true }); }
+
+              export async function logEvent(ev: BuildEvent) {
+                await ensure();
+                const line = JSON.stringify(ev) + '\n';
+                await fs.appendFile(LOG_FILE, line, 'utf8');
+              }
+
+              export async function readEvents(limit = 500) {
+                await ensure();
+                const raw = await fs.readFile(LOG_FILE, 'utf8').catch(() => '');
+                const lines = raw.split('\n').filter(Boolean).slice(-limit);
+                return lines.map(l => JSON.parse(l));
+              }
+
+      - type: CODE
+        description: API for build log (GET/POST)
+        files:
+          - path: apps/studio/app/api/build/log/route.ts
+            mode: WRITE
+            content: |
+              import { NextRequest, NextResponse } from 'next/server';
+              import { logEvent, readEvents } from '@/lib/build/log';
+
+              export const runtime = 'nodejs';
+              export const dynamic = 'force-dynamic';
+
+              export async function GET() {
+                const events = await readEvents(500);
+                return NextResponse.json({ ok: true, events });
+              }
+
+              export async function POST(req: NextRequest) {
+                const body = await req.json();
+                await logEvent({
+                  ts: new Date().toISOString(),
+                  level: body.level || 'INFO',
+                  scope: body.scope || 'manual',
+                  action: body.action || 'NOTE',
+                  file: body.file,
+                  notes: body.notes,
+                  meta: body.meta,
+                });
+                return NextResponse.json({ ok: true });
+              }
+
+      - type: CODE
+        description: UI page for Build Log timeline (Tailwind)
+        files:
+          - path: apps/studio/app/build/log/page.tsx
+            mode: WRITE
+            content: |
+              'use client';
+              import { useEffect, useState } from 'react';
+
+              type BuildEvent = {
+                ts: string; level: 'INFO' | 'WARN' | 'ERROR'; scope: string; action: string; file?: string; notes?: string;
+              };
+
+              export default function BuildLogPage() {
+                const [events, setEvents] = useState<BuildEvent[]>([]);
+                useEffect(() => { fetch('/api/build/log').then(r => r.json()).then(d => setEvents(d.events || [])); }, []);
+                return (
+                  <div className="max-w-5xl mx-auto p-6">
+                    <h1 className="text-3xl font-semibold mb-4">corAe One-Build Log</h1>
+                    <p className="text-sm opacity-70 mb-6">Append-only audit of one-build actions across modules and white-labels.</p>
+                    <div className="space-y-3">
+                      {events.map((e, i) => (
+                        <div key={i} className="rounded-2xl shadow p-4 border">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-mono opacity-70">{new Date(e.ts).toLocaleString()}</span>
+                            <span className={`text-xs px-2 py-1 rounded-full border ${e.level === 'ERROR' ? 'bg-red-50' : e.level === 'WARN' ? 'bg-yellow-50' : 'bg-green-50'}`}>{e.level}</span>
+                          </div>
+                          <div className="mt-2 font-medium">{e.scope} → {e.action}</div>
+                          {e.file && <div className="text-xs opacity-70">{e.file}</div>}
+                          {e.notes && <div className="mt-2 text-sm whitespace-pre-wrap">{e.notes}</div>}
+                        </div>
+                      ))}
+                      {events.length === 0 && (
+                        <div className="text-sm opacity-70">No events yet. POST to <code>/api/build/log</code> to begin.</div>
+                      )}
+                    </div>
+                  </div>
+                );
+              }

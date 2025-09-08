@@ -1,0 +1,12 @@
+{
+  "version": "1",
+  "description": "One-way BBB: allow white-label -> dockyard ingest; restrict dockyard -> white-label to updates and base-brain seed.",
+  "allow": {
+    "inbound": ["TELEMETRY", "LOG", "CAIA_PROMPT", "SHIP_APPLY"],
+    "outbound": ["SHIP_UPDATE", "BRAIN_SEED"]
+  },
+  "redact": {
+    "outbound_block_keys": ["secrets", "tokens", "privateNotes", "internalDocs", "userPII"],
+    "inbound_block_keys": []
+  }
+}

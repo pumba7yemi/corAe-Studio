@@ -1,0 +1,18 @@
+{
+  "queue": [
+    {
+      "id": "c25485fe-0479-46d4-8f18-f8c7b6967465",
+      "task": "scaffold-obari-ui",
+      "payload": {},
+      "status": "queued",
+      "createdAt": "2025-09-02T08:18:30.942Z"
+    },
+    {
+      "id": "164aa802-c527-4e3b-bdf3-6a29bc51e8e9",
+      "task": "scaffold-obari-ui",
+      "payload": {},
+      "status": "queued",
+      "createdAt": "2025-09-02T08:18:36.388Z"
+    }
+  ]
+}

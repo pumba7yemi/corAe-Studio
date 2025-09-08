@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "auto_send_threshold": 49,
+  "always_overseer_tags": ["legal","termination","hr-sensitive","discount>20","bank-details-change"],
+  "channel_allow": ["email","whatsapp","note"],
+  "redact_rules": [
+    {"match":"bank account","action":"mask"},
+    {"match":"password","action":"drop-line"}
+  ],
+  "overseer_contacts": [{"name":"Owner","route":"note"}]
+}

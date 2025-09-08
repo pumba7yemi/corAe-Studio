@@ -1,0 +1,48 @@
+{
+  "name": "corae-studio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "clean": "node -e \"import('node:fs').then(fs=>fs.rmSync('.next',{recursive:true,force:true}))\"",
+
+    "cims:seed": "node ../../tools/seed_cims.mjs",
+    "cims:daemon": "node ../../services/cims/daemon.mjs",
+    "onebuild:validate": "node scripts/onebuild/validate.js",
+    "onebuild:run": "node scripts/onebuild/run.js",
+    "agent": "node scripts/agent/worker.js",
+
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:ci": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+
+    "squiggles:scan": "node scripts/squiggles.mjs scan",
+    "squiggles:fix": "node scripts/squiggles.mjs fix",
+    "squiggles:doctor": "node scripts/squiggles.mjs doctor"
+  },
+  "dependencies": {
+    "minimatch": "^9.0.3",
+    "next": "15.5.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "yaml": "^2.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "@types/react": "^18.2.66",
+    "@typescript-eslint/eslint-plugin": "7.15.0",
+    "@typescript-eslint/parser": "7.15.0",
+    "autoprefixer": "^10.4.21",
+    "eslint": "9.6.0",
+    "eslint-config-next": "14.2.5",
+    "eslint-config-prettier": "9.1.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.42.0"
+  }
+}

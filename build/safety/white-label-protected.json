@@ -1,0 +1,15 @@
+{
+  "version": "1",
+  "notes": "Per-tenant white-label safety policy. Prevents one Ship (Supermarket, Hotel, Salon, Fitness, Cleaning, Golf Club, etc.) from overwriting another. Only allow APPEND/SKIP/ERROR_IF_EXISTS modes inside each tenant folder.",
+  "paths": [
+    "apps/studio/app/ship/supermarket/**",
+    "apps/studio/app/ship/hotel/**",
+    "apps/studio/app/ship/salon/**",
+    "apps/studio/app/ship/fitness/**",
+    "apps/studio/app/ship/cleaning/**",
+    "apps/studio/app/ship/golfclub/**"
+  ],
+  "allowWriteIf": {
+    "mode": ["APPEND", "SKIP_IF_EXISTS", "ERROR_IF_EXISTS"]
+  }
+}

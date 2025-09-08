@@ -1,0 +1,16 @@
+version: v1.0.0
+build:
+  id: bootstrap
+  timestamp: "2025-09-07T00:00:00Z"
+  notes: "Bootstrap manifest so One-Build has something to do safely."
+modules:
+  - key: bootstrap.noop
+    actions:
+      - type: CODE
+        description: Seed file to prove One-Build end-to-end
+        files:
+          - path: build/README.md
+            mode: SKIP_IF_EXISTS
+            content: |
+              # corAe build
+              Seed file created by One-Build (safe mode).

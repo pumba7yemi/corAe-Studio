@@ -1,0 +1,1 @@
+export default function Page(){return(<div className='p-6 space-y-2'><h1 className='h1'>Business</h1><p className='muted'>OMS • OBARI • Finance • HR</p></div>);}

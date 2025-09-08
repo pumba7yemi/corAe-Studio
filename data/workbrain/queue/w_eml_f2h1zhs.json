@@ -1,0 +1,9 @@
+{
+  "id": "w_eml_f2h1zhs",
+  "source": "email",
+  "kind": "invoice_followup",
+  "action": "create_comm_draft",
+  "evidence": {
+    "email_id": "eml_f2h1zhs"
+  }
+}
