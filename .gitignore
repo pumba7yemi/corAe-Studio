@@ -22,4 +22,5 @@ build/.data/
 .next/
 node_modules/
 *.log
-.logs/
+.logs/# Ignore local ignored node_modules
+.ignored_node_modules/
