@@ -1,0 +1,164 @@
+// apps/studio/seeds/message-packs/gs-legacy-v1.json
+{
+  "name": "GS Legacy v1.0",
+  "namespace": "gs-legacy-2021",
+  "description": "Ported from Green Solutions OMS email templates into corAe Message Module format (OBARI → Orders, Bookings, Active, Reporting, Invoicing).",
+  "templates": [
+    {
+      "module": "onboarding",
+      "stage": "initial_contact",
+      "audience": "client",
+      "channel": "email",
+      "tone": "friendly",
+      "subject": "Welcome to [businessName] — Getting You Set Up",
+      "body": "Hello [client.name],\n\nWelcome! We operate a structured order & reporting flow (OBARI). You’ll receive pre-formatted bookings, reports, and invoice guidance so everything runs smoothly and on time.\n\nWe’re here for any questions.\n\n[brand.signature]",
+      "requiresHumanApproval": false,
+      "tags": ["welcome","obari"],
+      "legacyCode": "10.10.1.2.1"
+    },
+    {
+      "module": "procurement",
+      "stage": "pre_order_availability",
+      "audience": "vendor",
+      "channel": "email",
+      "tone": "professional",
+      "subject": "Availability & Price Confirmation for Delivery on [deliveryDate]",
+      "body": "Dear [vendor.name],\n\nKindly confirm product availability and prices for delivery on [deliveryDate].\n\nWe refer to our standard price increase policy — any changes must be agreed prior to delivery and cannot be adjusted after the PO is issued.\n\nThank you,\n[brand.signature]",
+      "requiresHumanApproval": true,
+      "tags": ["price-lock","pre-order"],
+      "legacyCode": "10.10.1.0.3.0"
+    },
+    {
+      "module": "procurement",
+      "stage": "booking_po_issue",
+      "audience": "vendor",
+      "channel": "email",
+      "tone": "professional",
+      "subject": "Purchase Order [po.number] – Delivery [deliveryDate]",
+      "body": "Dear [vendor.name],\n\nPlease find attached our Purchase Order [po.number] for delivery on [deliveryDate]. Kindly confirm receipt and delivery timing.\n\nThank you,\n[brand.signature]",
+      "requiresHumanApproval": true,
+      "tags": ["po","booking"],
+      "legacyCode": "10.11(a)(iii)"
+    },
+    {
+      "module": "procurement",
+      "stage": "doc_request",
+      "audience": "vendor",
+      "channel": "email",
+      "tone": "professional",
+      "subject": "Documentation Request (RAMS / WTN / Delivery Note)",
+      "body": "Dear [vendor.name],\n\nKindly provide RAMS numbers, Waste Transfer Note reference (if applicable), and Delivery Note for [site.name] / [po.number].\n\nRegards,\n[brand.signature]",
+      "requiresHumanApproval": true,
+      "tags": ["rams","wtn","delivery-note"],
+      "legacyCode": "10.11.2.7.0.0"
+    },
+    {
+      "module": "operations",
+      "stage": "active_job_precheck",
+      "audience": "staff",
+      "channel": "cims",
+      "tone": "neutral",
+      "subject": null,
+      "body": "Active job scheduled for [site.name] on [deliveryDate]. Ensure site instructions are followed and RAMS are available on arrival. Reply DONE ✅ when pre-checks complete.",
+      "requiresHumanApproval": false,
+      "tags": ["rams","prechecks"],
+      "legacyCode": "10.12(b)"
+    },
+    {
+      "module": "reporting",
+      "stage": "weekly_client_report",
+      "audience": "client",
+      "channel": "email",
+      "tone": "professional",
+      "subject": "[businessName] Weekly Report – [reportDate]",
+      "body": "Good [timeOfDay],\n\nPlease find the attached weekly report for [reportDate]. [notes]\n\nIf any purchase or sales orders are pending approval, kindly issue them at your earliest convenience.\n\nKind regards,\n[brand.signature]",
+      "requiresHumanApproval": true,
+      "tags": ["weekly-report"],
+      "legacyCode": "10.13(c)(i)6.0"
+    },
+    {
+      "module": "reporting",
+      "stage": "late_submission_notice",
+      "audience": "vendor",
+      "channel": "email",
+      "tone": "professional",
+      "subject": "Late Submission – Reporting for [weekLabel]",
+      "body": "Good [timeOfDay],\n\nThe figures/reports for [weekLabel] are late as per our terms. Please submit by close of play Friday (Monday if the job occurred Friday). Late submissions may incur an admin fee.\n\nThank you,\n[brand.signature]",
+      "requiresHumanApproval": true,
+      "tags": ["late","escalation"],
+      "legacyCode": "10.11.4.4.1.1"
+    },
+    {
+      "module": "reporting",
+      "stage": "engineer_report_po_request",
+      "audience": "client",
+      "channel": "email",
+      "tone": "professional",
+      "subject": "Engineer Visit Report & PO Request – [site.name] ([weekLabel])",
+      "body": "Good [timeOfDay],\n\nPlease find attached the Engineer’s Report from the visit to [site.name]. This repair is not covered under warranty. If agreeable, please issue a PO (POWAS) for the above as soon as possible.\n\nThank you,\n[brand.signature]",
+      "requiresHumanApproval": true,
+      "tags": ["engineer-report","po-request"],
+      "legacyCode": "10.11.4.6.1.0"
+    },
+    {
+      "module": "finance",
+      "stage": "invoice_validation",
+      "audience": "vendor",
+      "channel": "email",
+      "tone": "professional",
+      "subject": "Invoice Validation – Reference [po.number] / [site.name]",
+      "body": "Dear [vendor.name],\n\nPlease ensure your invoice uses the date of attendance, relevant PO/SO numbers, site, CDJRS performed, and approved costs. If any reference is missing or mismatched, return the invoice for correction before processing.\n\nFinance Desk\n[brand.signature]",
+      "requiresHumanApproval": false,
+      "tags": ["invoice","validation"],
+      "legacyCode": "10.13(d)"
+    },
+    {
+      "module": "finance",
+      "stage": "po_mismatch",
+      "audience": "vendor",
+      "channel": "email",
+      "tone": "professional",
+      "subject": "PO Mismatch Detected – Action Needed",
+      "body": "Dear [vendor.name],\n\nThe PO number on your invoice does not match our records. Kindly reissue with the correct PO ([po.number]) so we can proceed.\n\nRegards,\nFinance Desk",
+      "requiresHumanApproval": false,
+      "tags": ["po-mismatch","credit-control"],
+      "legacyCode": "10.11.5.5.4.4"
+    },
+    {
+      "module": "reporting",
+      "stage": "client_weekly_variance",
+      "audience": "client",
+      "channel": "email",
+      "tone": "professional",
+      "subject": "[businessName] Report – Issues/Variance for [reportDate]",
+      "body": "Good [timeOfDay],\n\nPlease find the attached weekly report for [reportDate]. The following items require action or clarification:\n- [notes]\n\nKind regards,\n[brand.signature]",
+      "requiresHumanApproval": true,
+      "tags": ["variance","client-report"],
+      "legacyCode": "Agnail/Amber weekly variants"
+    },
+    {
+      "module": "procurement",
+      "stage": "vendor_quote_ack",
+      "audience": "vendor",
+      "channel": "email",
+      "tone": "professional",
+      "subject": "Quote Received — Thank You",
+      "body": "Hello [vendor.name],\n\nThank you for your quote for the above order. Could you please provide any additional product information (specifications/diagrams/pictures) for our records?\n\nWe will confirm next steps once successful.\n\n[brand.signature]",
+      "requiresHumanApproval": false,
+      "tags": ["quote","ack"],
+      "legacyCode": "10.10.7.3.1.0"
+    },
+    {
+      "module": "operations",
+      "stage": "machine_decommission_request",
+      "audience": "vendor",
+      "channel": "email",
+      "tone": "professional",
+      "subject": "Proposed Decommission/Removal Dates — [site.name]",
+      "body": "Good [timeOfDay],\n\nA machine has been requested for removal before/end of rental cycle. Please advise available engineer dates for decommission & removal at:\n\nSite: [site.name]\nAddress: [site.address]\nSite Contact: [site.contact] / [site.phone]\n\nSuggested Dates: [notes]\n\nPlease confirm the scheduled date/time and any RA/MS references.\n\n[brand.signature]",
+      "requiresHumanApproval": true,
+      "tags": ["decommission","scheduling","rams"],
+      "legacyCode": "10.10.9.2.3.1"
+    }
+  ]
+}

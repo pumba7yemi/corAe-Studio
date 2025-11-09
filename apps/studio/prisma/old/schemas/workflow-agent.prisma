@@ -1,0 +1,75 @@
+// ────────────────────────────────────────────────
+// corAe Automate™ — Workflow Agent Registry
+// File: apps/studio/prisma/schema/workflow-agent.prisma
+// ────────────────────────────────────────────────
+// Depends on: core-company.prisma, hr-role.prisma
+// Purpose: define AI agents, their roles, states, and task handoffs
+// ────────────────────────────────────────────────
+
+enum AgentType {
+  CORE_SYSTEM
+  FINANCE_AUTOMATION
+  HR_AUTOMATION
+  OPERATIONS_AUTOMATION
+  SALES_AUTOMATION
+  MARKETING_AUTOMATION
+  INTELLIGENCE_ANALYST
+  WORKFLOW_ASSISTANT
+}
+
+enum AgentStatus {
+  ACTIVE
+  STANDBY
+  DISABLED
+  ARCHIVED
+}
+
+enum AgentTrigger {
+  MANUAL
+  SCHEDULED
+  EVENT
+  MONITOR
+  ESCALATION
+}
+
+model WorkflowAgent {
+  id              String         @id @default(cuid())
+  companyId       String
+  assignedRoleId  String?
+  name            String
+  type            AgentType
+  description     String?
+  status          AgentStatus    @default(ACTIVE)
+  version         String?        // internal build version
+  aiModel         String?        // e.g. GPT-5, corAe.OS²/CAIA
+  triggerMode     AgentTrigger   @default(EVENT)
+  logicLevel      Int            @default(150) // corAe 150.Logic index
+  autoLearn       Boolean        @default(true)
+  exceptionCount  Int            @default(0)
+  lastRun         DateTime?
+  nextRun         DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  // Relationships
+  company         CompanyIdentity @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  assignedRole    HrRole?         @relation(fields: [assignedRoleId], references: [id])
+  executions      AgentExecution[]
+
+  @@index([status])
+  @@index([type])
+}
+
+model AgentExecution {
+  id            String          @id @default(cuid())
+  agentId       String
+  startedAt     DateTime        @default(now())
+  finishedAt    DateTime?
+  outcome       String?         // success, fail, escalated
+  message       String?         // summary
+  batonToRoleId String?         // HR role escalation (human overseer)
+  relatedFlow   String?         // OBARI or FirstTrade reference
+  payload       Json?
+
+  agent         WorkflowAgent   @relation(fields: [agentId], references: [id], onDelete: Cascade)
+}

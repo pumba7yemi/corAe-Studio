@@ -1,0 +1,33 @@
+// ─────────────────────────────────────────────
+// corAe — Chronological Log (shared)
+// If you already have Chrono, just add MARKETING to the enum and the optional FK.
+// ─────────────────────────────────────────────
+
+enum ChronoScope {
+  HR
+  FINANCE
+  OPERATIONS
+  SALES
+  GENERAL
+  MARKETING
+}
+
+model Chrono {
+  id        String       @id @default(cuid())
+  scope     ChronoScope  @default(GENERAL)
+  message   String
+  refType   String?      // e.g., "MarketingAppraisal", "Campaign", "Company"
+  refId     String?
+  createdAt DateTime     @default(now())
+
+  // Optional links (keep loose to avoid cross-file circular refs)
+  companyId String?
+  company   CompanyIdentity? @relation(fields: [companyId], references: [id])
+
+  marketingAppraisalId String?
+  marketingAppraisal   MarketingAppraisal? @relation("MarketingChrono", fields: [marketingAppraisalId], references: [id])
+
+  @@index([scope, createdAt])
+  @@index([companyId])
+  @@index([marketingAppraisalId])
+}

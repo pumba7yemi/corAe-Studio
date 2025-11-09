@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/.next/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/.turbo/**",
+    "**/.pnpm-store/**"
+  ],
+  "policy": {
+    "languages": {
+      "typescript": "preferred",
+      "tsx": "preferred",
+      "javascript": "allowed",
+      "jsx": "allowed",
+      "sql": "allowed",
+      "bash": "allowed",
+      "powershell": "allowed"
+    },
+    "style": {
+      "framework": "nextjs-app-router",
+      "ui": ["react", "tailwind"],
+      "testing": "vitest",
+      "orm": "prisma",
+      "logs": ["warn", "error"],
+      "imports": {
+        "preferAliases": true,
+        "aliases": {
+          "@": "./",
+          "@prisma": "@prisma/client",
+          "@/app": "apps/studio/app",
+          "@/lib": "apps/studio/app/lib",
+          "@/components": "apps/studio/src/components"
+        }
+      },
+      "typescript": {
+        "strict": true,
+        "moduleResolution": "bundler",
+        "noImplicitAny": true,
+        "noUncheckedIndexAccess": true
+      },
+      "eslint": {
+        "semi": false,
+        "quotes": "double",
+        "trailingComma": "all"
+      }
+    },
+    "security": {
+      "forbid": [
+        "eval(",
+        "Function(",
+        "child_process.exec(",
+        "child_process.execSync(",
+        "spawn(\"sh\"",
+        "shell: true"
+      ],
+      "prefer": [
+        "parameterized SQL",
+        "zod validation for API inputs",
+        "fetch with explicit method & headers"
+      ]
+    }
+  },
+  "prompts": {
+    "general": [
+      "Follow corAe naming: corAe Reserve™, CIMS™, OBARI™, BTDO/BDO.",
+      "Use file-by-file, production-safe code. No placeholders.",
+      "Assume Next.js App Router with server components by default; use \"use client\" only when needed.",
+      "Prefer TypeScript, strict mode, and typed responses.",
+      "Use Prisma via singleton import: import prisma from \"@/app/prisma/client\".",
+      "Respect BTDO/BDO law: Book → (Trade) → Deal → Order. Reserve is BDO Hub + BTDO staging.",
+      "All price/terms communications must route through CIMS hooks.",
+      "Write tests with Vitest; minimal happy-path and guard tests.",
+      "UI uses Tailwind; keep clean, minimal, accessible."
+    ],
+    "files": {
+      "apps/studio/app/marketplace/reserve/**": [
+        "This is the core Reserve Hub. Keep API stable: /api/reserve/*.",
+        "Expose helpers for BookQueue, DealDesk, OrderBoard, and BTDO Rail.",
+        "Never finalize Deal without corAe Confirmed™ semantics.",
+        "Emit events: reserve.booked, reserve.trade.opened, reserve.pricelocked, reserve.deal.confirmed, reserve.order.dispatched."
+      ],
+      "app/prisma/**": [
+        "Single unified schema at app/prisma/schema.prisma.",
+        "Use cautious relation names: reservation → deal → order.",
+        "Migrations must be reversible and additive."
+      ]
+    }
+  },
+  "blocks": [
+    {
+      "pattern": "**/*.ts",
+      "deny": [
+        "new PrismaClient() in hot paths; use the shared prisma client import",
+        "any direct SQL without parameterization",
+        "fetch without try/catch"
+      ],
+      "suggest": [
+        "import prisma from \"@/app/prisma/client\"",
+        "wrap API handlers in try/catch and return NextResponse.json({ ok: false, error }, { status: 500 }) on error"
+      ]
+    },
+    {
+      "pattern": "**/*.tsx",
+      "suggest": [
+        "prefer server components; mark client components with \"use client\" only when required",
+        "Tailwind classes: rounded-xl, shadow, p-6, text-gray-800, bg-neutral-50"
+      ]
+    },
+    {
+      "pattern": "apps/studio/app/marketplace/reserve/api/*.ts",
+      "suggest": [
+        "validate input with zod",
+        "emit CIMS events via sendCims() after state changes",
+        "respect btdo.law canTransition() before mutating state"
+      ]
+    },
+    {
+      "pattern": "**/*.test.ts",
+      "suggest": [
+        "use vitest describe/it/expect",
+        "cover both happy path and guard rails from btdo.law"
+      ]
+    }
+  ],
+  "context": {
+    "terms": [
+      "corAe Reserve™ — BDO Hub & BTDO staging post",
+      "BTDO Law — Book, Trade, Deal, Order (The Deal remains sovereign)",
+      "BDO — Book, Deal, Order (simple flow)",
+      "CIMS™ — messaging & confirmations",
+      "OBARI™ — order → invoicing chain",
+      "Pricelock Chain™ — Trade lock before Deal"
+    ]
+  }
+}

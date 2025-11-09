@@ -1,0 +1,79 @@
+// ────────────────────────────────────────────────
+// corAe Audit Ledger™ — Integrity & Compliance Register
+// File: apps/studio/prisma/schema/audit-ledger.prisma
+// ────────────────────────────────────────────────
+// Depends on: chrono-workflow.prisma, finance-ledger.prisma, obari-flow.prisma
+// Purpose: Immutable audit of financial, operational, and legal transactions.
+// ────────────────────────────────────────────────
+
+enum AuditSource {
+  CHRONO_EVENT
+  LEDGER_ENTRY
+  OBARI_FLOW
+  HR_ROLE
+  WORKFLOW_AGENT
+}
+
+enum AuditSeverity {
+  INFO
+  WARNING
+  ALERT
+  CRITICAL
+}
+
+enum AuditStatus {
+  OPEN
+  UNDER_REVIEW
+  RESOLVED
+  CLOSED
+}
+
+model AuditRecord {
+  id             String          @id @default(cuid())
+  companyId      String
+  source         AuditSource
+  sourceId       String?
+  chronoEventId  String?
+  ledgerEntryId  String?
+  flowId         String?
+  hrRoleId       String?
+  agentId        String?
+
+  action         String?
+  description    String?
+  severity       AuditSeverity   @default(INFO)
+  status         AuditStatus     @default(OPEN)
+  assignedToId   String?         // WorkflowExecutive or Compliance Officer
+  raisedBy       String?         // actor reference (AI or human)
+  raisedAt       DateTime        @default(now())
+  reviewedAt     DateTime?
+  resolvedAt     DateTime?
+  resolutionNote String?
+
+  checksum       String?         // cryptographic hash for payload integrity
+  attachments    AuditAttachment[]
+
+  // Relations
+  company        CompanyIdentity  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  chronoEvent    ChronoEvent?     @relation(fields: [chronoEventId], references: [id])
+  ledgerEntry    LedgerEntry?     @relation(fields: [ledgerEntryId], references: [id])
+  flow           ObariFlow?       @relation(fields: [flowId], references: [id])
+  hrRole         HrRole?          @relation(fields: [hrRoleId], references: [id])
+  agent          WorkflowAgent?   @relation(fields: [agentId], references: [id])
+
+  @@index([companyId, severity])
+  @@index([status])
+  @@index([source, sourceId])
+  @@index([raisedAt])
+}
+
+model AuditAttachment {
+  id            String        @id @default(cuid())
+  auditId       String
+  url           String
+  label         String?
+  mimeType      String?
+  uploadedAt    DateTime      @default(now())
+
+  audit         AuditRecord   @relation(fields: [auditId], references: [id], onDelete: Cascade)
+}

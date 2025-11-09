@@ -1,0 +1,138 @@
+/// corAe — OBARI Core (One-Spine)
+/// Schema Fragment: Deal (BTDO→BDO) + Booking + PricelockChain™
+/// Merge with other fragments via apps/studio/prisma/schema.prisma
+
+//// ───────── Enums ─────────
+enum DealStage {
+  BTDO        // Brokering the Deal Order (formation)
+  BDO         // Brokered Deal Order (staging/handoff)
+}
+
+enum DealStatus {
+  draft
+  proposed
+  approved
+  confirmed
+  active
+  closed
+  cancelled
+}
+
+enum BookingStatus {
+  tentative
+  scheduled
+  rescheduled
+  no_show
+  completed
+  cancelled
+}
+
+enum PricelockStatus {
+  pending
+  active
+  expired
+  cancelled
+}
+
+//// ───────── Models ─────────
+
+model Deal {
+  id          String      @id @default(cuid())
+  number      String      @unique                // Human-friendly BDO code
+  stage       DealStage   @default(BTDO)         // BTDO → BDO
+  status      DealStatus  @default(draft)
+
+  // Parties / scope
+  orgId       String?
+  locationId  String?
+  customerId  String?
+  vendorId    String?
+
+  // Commercial snapshot (cached for performance)
+  currency    String       @default("AED")
+  subtotal    Decimal      @db.Decimal(18, 4) @default(0)
+  taxTotal    Decimal      @db.Decimal(18, 4) @default(0)
+  total       Decimal      @db.Decimal(18, 4) @default(0)
+
+  // Timestamps
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  // Relations (One-Spine)
+  lines       DealLine[]
+  bookings    Booking[]
+  pricelocks  PricelockChain[]
+
+  // Active price snapshot link
+  activePricelockId String?
+  activePricelock   PricelockChain? @relation(fields: [activePricelockId], references: [id])
+
+  @@index([stage, status, createdAt])
+}
+
+model DealLine {
+  id          String   @id @default(cuid())
+  dealId      String
+  sku         String?
+  itemName    String
+
+  qty         Decimal  @db.Decimal(18, 3) @default(0)
+  unitPrice   Decimal  @db.Decimal(18, 4) @default(0)
+  taxRate     Decimal  @db.Decimal(5, 2)  @default(0) // 5.00 = 5%
+  taxAmount   Decimal  @db.Decimal(18, 4) @default(0)
+  lineTotal   Decimal  @db.Decimal(18, 4) @default(0)
+
+  createdAt   DateTime @default(now())
+  deal        Deal     @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  @@index([dealId])
+}
+
+model Booking {
+  id          String        @id @default(cuid())
+  number      String        @unique
+  status      BookingStatus @default(tentative)
+
+  // One-Spine linkage
+  dealId      String
+  orgId       String?
+  locationId  String?
+
+  // Time window
+  startAt     DateTime
+  endAt       DateTime
+
+  // Operational
+  resourceId  String?
+  capacity    Int?
+  notes       String?
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deal        Deal          @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  @@index([dealId, status, startAt])
+}
+
+model PricelockChain {
+  id            String          @id @default(cuid())
+  dealId        String
+  deal          Deal            @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  price         Decimal         @db.Decimal(18, 4)
+  currency      String          @default("AED")
+  validFrom     DateTime
+  validUntil    DateTime
+  confirmedBy   String?
+  confirmedById String?
+  status        PricelockStatus @default(pending)
+  approvedAt    DateTime?
+  note          String?
+
+  previousId    String?
+  previous      PricelockChain? @relation("PricelockHistory", fields: [previousId], references: [id])
+  next          PricelockChain? @relation("PricelockHistory")
+
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+}

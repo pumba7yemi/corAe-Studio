@@ -1,0 +1,299 @@
+// apps/studio/prisma/schemas/obari.prisma
+/* ============================================================
+   corAe OBARI — Flow Engine
+   Order → Booking → Active → Reporting → Invoice
+   - Supports 28-day (W1..W4), monthly, or hybrid scheduling
+   - Documentation phase on Booking (POD, WTN, Invoice, Other)
+   - Damage & variance recorded in Reporting
+   - Invoice model consumed by Finance (payments, credits)
+   ============================================================ */
+
+enum InvoiceDirection {
+  SALES
+  PURCHASE
+}
+
+enum ObariStage {
+  ORDER
+  BOOKING
+  ACTIVE
+  REPORTING
+  INVOICE
+}
+
+enum ScheduleMode {
+  CYCLE_28   // 4-week cadence (W1..W4)
+  MONTHLY    // calendar month
+  HYBRID     // weekly ops with month-end finance
+}
+
+enum WeekRef {
+  W1
+  W2
+  W3
+  W4
+}
+
+enum BookingDocType {
+  POD  // Proof of Delivery
+  WTN  // Waste Transfer Note
+  INV  // Vendor/Customer Invoice
+  OTHER
+}
+
+enum DocStatus {
+  REQUIRED
+  PENDING
+  RECEIVED
+  VERIFIED
+  REJECTED
+}
+
+enum ReportStatus {
+  DRAFT
+  SUBMITTED
+  CONFIRMED       // client/vendor confirmed
+  APPROVED        // approved by ops/finance
+  REJECTED
+}
+
+enum InvoiceStatus {
+  DRAFT
+  ISSUED
+  QUERY
+  PART_PAID
+  PAID
+  CANCELLED
+}
+
+/* ------------ Scheduling overlays ------------ */
+model ObariSchedule {
+  id           String       @id @default(cuid())
+  mode         ScheduleMode @default(CYCLE_28)
+  label        String?                  // e.g., "2025-Wk37 Hub" or "2025-09"
+  startDate    DateTime                  // Sunday for 28-day hub or 1st of month
+  endDate      DateTime
+  weekRef      WeekRef?                  // when CYCLE_28
+  month        Int?                      // when MONTHLY (1..12)
+  year         Int
+
+  notes        String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  orders       ObariOrder[]
+  bookings     ObariBooking[]
+  actives      ActiveEvent[]
+  reports      ObariReport[]
+  invoices     Invoice[]
+
+  @@index([mode, year, weekRef])
+  @@index([mode, year, month])
+}
+
+/* ------------ Order ------------ */
+model ObariOrder {
+  id            String          @id @default(cuid())
+  code          String          @unique            // e.g., PO00001 or SO00001
+  direction     InvoiceDirection                   // PURCHASE = PO, SALES = SO
+  stage         ObariStage       @default(ORDER)
+  scheduleId    String?
+  schedule      ObariSchedule?   @relation(fields: [scheduleId], references: [id], onDelete: SetNull)
+
+  // Soft party refs until Partners schema lands
+  vendorCode    String?
+  customerCode  String?
+
+  // Ops
+  expectedWeek  WeekRef?
+  scheduleMode  ScheduleMode      @default(CYCLE_28)
+  itemCode      String?           // Product0001 etc
+  description   String?
+  qty           Decimal           @db.Decimal(14,3) @default(1)
+  unit          String?           // EA, KG, L
+  unitPrice     Decimal           @db.Decimal(12,4) @default(0)
+  currency      String            @default("AED")
+  taxCode       String?           // simple code until Tax model
+  notes         String?
+
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  bookings      ObariBooking[]
+  events        OrderEvent[]
+
+  @@index([direction, expectedWeek])
+  @@index([vendorCode, customerCode])
+}
+
+/* Events on orders (audit trail) */
+model OrderEvent {
+  id        String      @id @default(cuid())
+  orderId   String
+  order     ObariOrder  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  stage     ObariStage
+  message   String?
+  createdAt DateTime    @default(now())
+
+  @@index([orderId, stage, createdAt])
+}
+
+/* ------------ Booking (+ DocumentationPhase) ------------ */
+model ObariBooking {
+  id           String        @id @default(cuid())
+  bookingRef   String        @unique            // BK-00001
+  orderId      String
+  order        ObariOrder    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  scheduleId   String?
+  schedule     ObariSchedule? @relation(fields: [scheduleId], references: [id], onDelete: SetNull)
+
+  datePlanned  DateTime?
+  location     String?
+  specialInst  String?
+
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  docs         DocumentationPhase[]
+  actives      ActiveEvent[]
+}
+
+model DocumentationPhase {
+  id          String          @id @default(cuid())
+  bookingId   String
+  booking     ObariBooking    @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  kind        BookingDocType
+  status      DocStatus       @default(REQUIRED)
+  fileNodeId  String?         // FileLogic node id
+  notes       String?
+  receivedAt  DateTime?
+  verifiedBy  String?         // user id or "caia"
+
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([bookingId, kind, status])
+}
+
+/* ------------ Active (delivery/collection/job) ------------ */
+model ActiveEvent {
+  id           String        @id @default(cuid())
+  bookingId    String
+  booking      ObariBooking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  scheduleId   String?
+  schedule     ObariSchedule? @relation(fields: [scheduleId], references: [id], onDelete: SetNull)
+
+  happenedAt   DateTime
+  actor        String?         // driver/team/vendor name
+  qtyDone      Decimal?        @db.Decimal(14,3)
+  unit         String?
+  notes        String?
+
+  createdAt    DateTime @default(now())
+
+  @@index([bookingId, happenedAt])
+}
+
+/* ------------ Reporting (with damage/variance) ------------ */
+model ObariReport {
+  id             String      @id @default(cuid())
+  bookingId      String
+  booking        ObariBooking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  scheduleId     String?
+  schedule       ObariSchedule? @relation(fields: [scheduleId], references: [id], onDelete: SetNull)
+
+  status         ReportStatus @default(DRAFT)
+  derivedFromDocs Boolean     @default(true)  // POD/INV/WTN augmented in
+  varianceNote   String?
+  approvedBy     String?      // user id
+  approvedAt     DateTime?
+
+  // totals (denormalized)
+  subtotal       Decimal      @db.Decimal(14,2) @default(0)
+  taxTotal       Decimal      @db.Decimal(14,2) @default(0)
+  grandTotal     Decimal      @db.Decimal(14,2) @default(0)
+
+  damages        DamageLine[]
+  variances      VarianceLine[]
+
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  invoice        Invoice?
+}
+
+model DamageLine {
+  id          String       @id @default(cuid())
+  reportId    String
+  report      ObariReport  @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  kind        String       // breakage, short, spoilage
+  qty         Decimal?     @db.Decimal(14,3)
+  unit        String?
+  value       Decimal?     @db.Decimal(14,2)
+  note        String?
+
+  createdAt   DateTime     @default(now())
+}
+
+model VarianceLine {
+  id          String       @id @default(cuid())
+  reportId    String
+  report      ObariReport  @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  field       String       // price, qty, tax, etc.
+  expected    String?
+  actual      String?
+  note        String?
+
+  createdAt   DateTime     @default(now())
+}
+
+/* ------------ Invoice (consumed by Finance) ------------ */
+model Invoice {
+  id            String           @id @default(cuid())
+  invoiceNo     String           @unique      // auto or external
+  direction     InvoiceDirection
+  scheduleId    String?
+  schedule      ObariSchedule?   @relation(fields: [scheduleId], references: [id], onDelete: SetNull)
+
+  orderId       String?
+  bookingId     String?
+  reportId      String?
+  order         ObariOrder?      @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  booking       ObariBooking?    @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  report        ObariReport?     @relation(fields: [reportId], references: [id], onDelete: SetNull)
+
+  // Parties (soft codes until Partners module)
+  vendorCode    String?
+  customerCode  String?
+
+  // Commercials
+  currency      String           @default("AED")
+  subtotal      Decimal          @db.Decimal(14,2) @default(0)
+  taxTotal      Decimal          @db.Decimal(14,2) @default(0)
+  grandTotal    Decimal          @db.Decimal(14,2) @default(0)
+  vatRate       Decimal?         @db.Decimal(5,2)
+
+  status        InvoiceStatus    @default(DRAFT)
+  issuedAt      DateTime?
+  dueAt         DateTime?
+  paymentPlan   PaymentPlan?     // from finance.prisma enum
+  notes         String?
+
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  // back-relations (Finance)
+  allocations   PaymentAllocation[]
+  sourceCredit  BillToBillCredit?   @relation("SourceCredit")
+  nextOffset    BillToBillCredit[]  @relation("NextOffset")
+  appliedCredit CreditApplication[] @relation("AppliedCredit")
+
+  @@index([direction, status, issuedAt])
+  @@index([vendorCode, customerCode])
+}

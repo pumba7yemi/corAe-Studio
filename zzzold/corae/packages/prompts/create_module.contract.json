@@ -1,0 +1,15 @@
+{
+  "intent": "create_module",
+  "inputs": {
+    "name": "string",
+    "layer": "string",
+    "entities": ["string"],
+    "views": ["string"],
+    "whatsapp": "boolean"
+  },
+  "acceptance": [
+    "All routes build without errors",
+    "Schema validated",
+    "Checklist passes (lint/type/route-health)"
+  ]
+}

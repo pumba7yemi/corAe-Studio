@@ -1,0 +1,61 @@
+# Compile and Dependency Issues Report (v1.0)
+
+## Summary
+This report outlines the compile and dependency issues identified across the `/apps/studio`, `/packages`, and `/core` directories. The issues are grouped by package, with suggested fixes provided where applicable.
+
+---
+
+## Issues by Package
+
+### `/apps/studio`
+
+#### File: `app/api/ship/business/oms/obari/booking/route.ts`
+- **Line 75**: `Type '"inbound" | "outbound" | undefined' is not assignable to type '"inbound" | "outbound"'.`
+  - **Suggested Fix**: Ensure `snap.direction` is always defined before assignment.
+
+#### File: `app/ship/page.tsx`
+- **Line 6**: `Cannot find module 'framer-motion' or its corresponding type declarations.`
+  - **Suggested Fix**: Install the missing dependency: `npm install framer-motion`.
+- **Line 73**: `Parameter 'e' implicitly has an 'any' type.`
+  - **Suggested Fix**: Add a type definition for `e`.
+- **CSS Warnings**:
+  - Optimize Tailwind CSS classes (e.g., `!bg-slate-900/60` → `bg-slate-900/60!`).
+
+#### File: `app/api/ship/business/oms/obari/invoice/issue/route.ts`
+- **Line 9**: `Cannot find module 'pdf-lib' or its corresponding type declarations.`
+  - **Suggested Fix**: Install the missing dependency: `npm install pdf-lib`.
+
+---
+
+### `/packages`
+
+#### File: `workflows-core/wizard/caia-bridge.ts`
+- **Line 12**: `Cannot find module 'zod' or its corresponding type declarations.`
+  - **Suggested Fix**: Install the missing dependency: `npm install zod`.
+
+---
+
+### `/core`
+
+#### File: `lib/db.ts`
+- **Line 12**: `Cannot find module '@prisma/client' or its corresponding type declarations.`
+  - **Suggested Fix**: Install the missing dependency: `npm install @prisma/client`.
+
+---
+
+## Proposed Build Scripts
+- **Missing Scripts**: Consider adding build scripts for the following:
+  - `/apps/studio`: Add a `build` script in `package.json` to compile TypeScript files.
+  - `/packages`: Add a `build` script to handle package-specific builds.
+
+---
+
+## Next Steps
+1. Address the unresolved imports by installing the missing dependencies.
+2. Fix type errors by adding appropriate type definitions.
+3. Optimize Tailwind CSS classes as suggested.
+4. Review and implement the proposed build scripts.
+
+---
+
+Report generated on: November 2, 2025

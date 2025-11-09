@@ -1,1 +1,9 @@
-export default function Page(){return(<div className='p-6 space-y-2'><h1 className='h1'>3cuDTD</h1><p className='muted'>3-cut Deploy → Test → Deliver</p></div>);}
+// apps/studio/app/3cudtd/page.tsx
+export default function ThreeCuDTDPage() {
+  return (
+    <div className="p-6 space-y-3">
+      <h1 className="text-3xl font-bold">3cuDTD</h1>
+      <p className="opacity-70">Three-cube Digital Twin Device integration.</p>
+    </div>
+  );
+}

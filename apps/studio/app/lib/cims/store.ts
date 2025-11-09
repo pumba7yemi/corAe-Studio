@@ -43,12 +43,13 @@ export type SignalItem = {
 const hhmm = () => new Date().toISOString().slice(11, 16);
 const uid = () => {
   try {
-    // @ts-expect-error randomUUID available at runtime
-    if (typeof crypto !== "undefined" && crypto.randomUUID) {
-      // @ts-ignore
-      return crypto.randomUUID();
+    const g: any = globalThis as any;
+    if (g?.crypto?.randomUUID) {
+      return g.crypto.randomUUID();
     }
-  } catch {}
+  } catch {
+    // ignore
+  }
   return `id_${Date.now().toString(36)}`;
 };
 
@@ -198,3 +199,11 @@ export const pushSignal = (text: string, opts?: Partial<SignalItem>) =>
     time: hhmm(),
     domain: opts?.domain ?? "operations",
   });
+
+// Minimal seed helper used by /api/cims/seed — keep it safe and idempotent.
+export async function seedCIMS(): Promise<void> {
+  // For build-time and CI environments we keep this a no-op so the endpoint
+  // compiles and routes can be exercised without touching external systems.
+  // Consumers that require actual seeding can replace with a fuller impl.
+  return;
+}

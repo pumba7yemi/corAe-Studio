@@ -1,0 +1,11 @@
+{
+  "steps": [
+    "ui:create-routes",
+    "schema:write",
+    "api:generate",
+    "storage:adapter-sheets",
+    "whatsapp:templates(optional)",
+    "tests:write",
+    "checks:run"
+  ]
+}

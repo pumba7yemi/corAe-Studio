@@ -1,0 +1,77 @@
+// apps/studio/prisma/schemas/ledger.prisma
+// General Ledger (double-entry), subledger links, monthly balances
+
+enum JournalSource {
+  SALES
+  PURCHASE
+  INVENTORY
+  CASH
+  MANUAL
+  PAYROLL
+  ADJUSTMENT
+}
+
+model JournalEntry {
+  id          String        @id @default(cuid())
+  date        DateTime
+  memo        String?
+  source      JournalSource @default(MANUAL)
+  reference   String?       // external doc no.
+  posted      Boolean       @default(false)
+  postedAt    DateTime?
+  createdById String?
+  createdBy   User?         @relation(fields: [createdById], references: [id])
+
+  lines       JournalLine[]
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([date, posted])
+}
+
+model JournalLine {
+  id          String   @id @default(cuid())
+  entryId     String
+  entry       JournalEntry @relation(fields: [entryId], references: [id])
+
+  accountId   String
+  account     Account  @relation(fields: [accountId], references: [id])
+
+  debit       Decimal  @db.Decimal(16,2) @default(0)
+  credit      Decimal  @db.Decimal(16,2) @default(0)
+
+  // Dimensional analytics (optional)
+  companyId   String?
+  company     Company? @relation(fields: [companyId], references: [id])
+  locationId  String?
+  location    Location? @relation(fields: [locationId], references: [id])
+  itemId      String?
+  item        Item?    @relation(fields: [itemId], references: [id])
+  taxId       String?
+  tax         Tax?     @relation(fields: [taxId], references: [id])
+
+  // Subledger linkage (AR/AP/Invoice/Payment/etc.)
+  entityType  String?   // "SalesInvoice" | "PurchaseInvoice" | "Payment" | "SalesOrder"
+  entityId    String?
+
+  createdAt   DateTime  @default(now())
+
+  @@index([accountId])
+  @@index([companyId])
+  @@index([entityType, entityId])
+}
+
+model AccountBalance {
+  // Period key format: YYYY-MM (store as text for simplicity)
+  accountId String
+  period    String
+  debit     Decimal @db.Decimal(16,2) @default(0)
+  credit    Decimal @db.Decimal(16,2) @default(0)
+  balance   Decimal @db.Decimal(16,2) @default(0)
+
+  account   Account @relation(fields: [accountId], references: [id])
+
+  @@id([accountId, period])
+  @@index([period])
+}

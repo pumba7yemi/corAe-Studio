@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(uuid())
+  email       String   @unique
+  displayName String?
+  role        String   @default("workflow_partner")
+  createdAt   DateTime @default(now())
+  messages    CimsMessage[]
+  tasks       WorkfocusTask[] @relation("TaskOwner")
+}
+
+model CimsMessage {
+  id           String   @id @default(uuid())
+  threadId     String?
+  channel      String
+  direction    String
+  body         String?
+  mediaUrl     String?
+  meta         Json     @default("{}")
+  createdAt    DateTime @default(now())
+  sender       User?    @relation(fields: [senderUserId], references: [id])
+  senderUserId String?
+
+  @@index([threadId])
+  @@index([createdAt])
+}
+
+model WorkfocusTask {
+  id          String   @id @default(uuid())
+  owner       User?    @relation("TaskOwner", fields: [ownerUserId], references: [id])
+  ownerUserId String?
+  bucket      String
+  title       String
+  status      String   @default("open")
+  dueAt       DateTime?
+  meta        Json     @default("{}")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  @@index([ownerUserId])
+  @@index([bucket])
+}

@@ -1,0 +1,78 @@
+// ────────────────────────────────────────────────
+// corAe Compliance Register™ — Governance & Legal Matrix
+// File: apps/studio/prisma/schema/compliance-register.prisma
+// ────────────────────────────────────────────────
+// Depends on: core-company.prisma, chrono-workflow.prisma, hr-role.prisma
+// Purpose: Track all regulatory obligations, certifications, and inspections.
+// ────────────────────────────────────────────────
+
+enum ComplianceType {
+  LICENCE
+  CERTIFICATION
+  PERMIT
+  POLICY
+  INSPECTION
+  TRAINING
+  CONTRACTUAL
+  INTERNAL_AUDIT
+}
+
+enum ComplianceStatus {
+  ACTIVE
+  PENDING
+  RENEWAL_DUE
+  EXPIRED
+  SUSPENDED
+  CLOSED
+}
+
+enum ComplianceRiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model ComplianceRecord {
+  id              String             @id @default(cuid())
+  companyId       String
+  category        ComplianceType
+  title           String
+  authority       String?            // issuing body (e.g., Sharjah Municipality, MOH, ISO)
+  referenceNo     String?
+  issueDate       DateTime?
+  expiryDate      DateTime?
+  renewalDate     DateTime?
+  status          ComplianceStatus   @default(PENDING)
+  riskLevel       ComplianceRiskLevel @default(LOW)
+  assignedToId    String?            // HR Role responsible
+  reviewedById    String?
+  renewalAgentId  String?            // AI or WorkflowAgent assigned
+  notes           String?
+  attachments     ComplianceAttachment[]
+  chronoEventId   String?            // latest update event
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  // Relations
+  company         CompanyIdentity    @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  assignedTo      HrRole?            @relation("ComplianceAssigned", fields: [assignedToId], references: [id])
+  reviewedBy      HrRole?            @relation("ComplianceReviewed", fields: [reviewedById], references: [id])
+  renewalAgent    WorkflowAgent?     @relation(fields: [renewalAgentId], references: [id])
+  chronoEvent     ChronoEvent?       @relation(fields: [chronoEventId], references: [id])
+
+  @@index([companyId, category])
+  @@index([status, expiryDate])
+  @@index([riskLevel])
+}
+
+model ComplianceAttachment {
+  id              String          @id @default(cuid())
+  complianceId    String
+  url             String
+  label           String?
+  mimeType        String?
+  uploadedAt      DateTime        @default(now())
+
+  compliance      ComplianceRecord @relation(fields: [complianceId], references: [id], onDelete: Cascade)
+}

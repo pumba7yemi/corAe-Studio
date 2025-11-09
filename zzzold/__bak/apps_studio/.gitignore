@@ -1,0 +1,7 @@
+﻿/* Pass-through to shared root styles */
+@import "../../../src/styles/globals.css";
+
+/* Optional: super-minimal safety defaults (won't clash) */
+:root { --bg: #fff; --fg: #111; }
+html, body { padding: 0; margin: 0; background: var(--bg); color: var(--fg); }
+* { box-sizing: border-box; }

@@ -1,0 +1,25 @@
+/* Ship reuses Studio’s design system */
+@import "../../studio/app/globals.css";
+
+/* Ship local tweaks can be added below */
+/* Ship reuses Studio’s design system */
+@import "../../studio/app/globals.css";
+/* apps/ship/app/globals.css — minimal safe global sheet (no Tailwind)
+   This file intentionally avoids Tailwind directives so the Ship app
+   can build in environments where Tailwind/postcss isn't configured.
+*/
+
+:root { color-scheme: dark; }
+html, body { margin: 0; padding: 0; height: 100%; }
+body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background:#0b0c10; color:#e1e1ea; }
+a { color: inherit; text-decoration: none; }
+* { box-sizing: border-box; }
+
+/* Minimal helpers used by layout — keep small and safe */
+.container { max-width: 72rem; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; }
+.page { padding: 2rem 0; }
+.hidden { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+/* Keep focus visible for accessibility */
+:focus { outline: 2px solid rgba(56,189,248,0.7); outline-offset: 2px; }

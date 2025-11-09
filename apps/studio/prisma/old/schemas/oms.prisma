@@ -1,0 +1,172 @@
+// apps/studio/prisma/schemas/oms.prisma
+/* ============================================================
+   corAe OMS — Office Management System
+   OBARI Execution Chain: Order → Booking → Active → Reporting → Invoice
+   - Anchored to Weekly Hubs (BDOHub) from hub.prisma
+   - Soft links to Business funnel (BDO) & Docs (FileLogic) where useful
+   - POS & Finance attach later via proper relations
+   ============================================================ */
+
+/* -------------------------
+   Enums
+-------------------------- */
+
+enum WeekRef {
+  W1
+  W2
+  W3
+  W4
+}
+
+enum InvoiceDirection {
+  SALES
+  PURCHASE
+}
+
+/* -------------------------
+   OBARI Core Models
+-------------------------- */
+
+model OrderPhase {
+  id             String   @id @default(cuid())
+  bdoHubId       String
+  bdoHub         BDOHub   @relation(fields: [bdoHubId], references: [id])
+
+  // Optional link back to business funnel (if this order originated from BDO)
+  bdoId          String?
+  // NOTE: explicit relation to BDO is deferred to keep schemas loosely coupled.
+  // Implement as FK when both modules are finalized, or resolve via application layer.
+
+  // Commercial context (soft linked to POS until POS lands)
+  poRef          String   @unique                     // e.g., "PO00001"
+  vendorCode     String?                              // BusinessPartner.code (supplier) — hard FK later
+  customerCode   String?                              // BusinessPartner.code (customer) — hard FK later
+  productSku     String?                              // Item.sku — hard FK later
+  productName    String?
+  quantity       Int
+  unit           String?                              // EA, KG, L
+  unitCost       Decimal  @db.Decimal(12,2)
+  expectedAmount Decimal  @db.Decimal(14,2)
+
+  // Rhythm
+  weekRef        WeekRef
+  scheduleDate   DateTime
+
+  notes          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  booking        BookingPhase?
+
+  @@index([bdoHubId, weekRef, scheduleDate])
+  @@index([vendorCode, customerCode])
+  @@index([productSku])
+}
+
+model BookingPhase {
+  id           String   @id @default(cuid())
+  bdoHubId     String
+  bdoHub       BDOHub   @relation(fields: [bdoHubId], references: [id])
+
+  orderId      String   @unique
+  order        OrderPhase @relation(fields: [orderId], references: [id])
+
+  bookingRef   String   @unique                      // e.g., "BK00001"
+  bookedAt     DateTime
+  deliveryETA  DateTime
+  location     String?                               // optional delivery/collection location
+  notes        String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  active       ActivePhase?
+
+  @@index([bdoHubId, deliveryETA])
+}
+
+model ActivePhase {
+  id             String   @id @default(cuid())
+  bdoHubId       String
+  bdoHub         BDOHub   @relation(fields: [bdoHubId], references: [id])
+
+  bookingId      String   @unique
+  booking        BookingPhase @relation(fields: [bookingId], references: [id])
+
+  deliveredAt    DateTime
+  deliveryNote   String?
+  // Optional proof slots (docs are actually stored in FileLogic; these are soft pointers)
+  podRef         String?                              // Proof of Delivery doc ref
+  wtnRef         String?                              // Waste Transfer Note ref
+  photoRef       String?                              // Any image bundle ref
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  report         ReportingPhase?
+
+  @@index([bdoHubId, deliveredAt])
+}
+
+model ReportingPhase {
+  id              String   @id @default(cuid())
+  bdoHubId        String
+  bdoHub          BDOHub   @relation(fields: [bdoHubId], references: [id])
+
+  activeId        String   @unique
+  active          ActivePhase @relation(fields: [activeId], references: [id])
+
+  // Verified results (post-docs ingestion)
+  qtyDelivered    Int
+  qtyDamaged      Int      @default(0)
+  qtyShort        Int      @default(0)
+  varianceNote    String?
+  approvedByAI    Boolean  @default(false)
+  approvedByHuman Boolean  @default(false)
+  approvedAt      DateTime?
+
+  // Optional links to documentation bundle (FileLogic soft refs)
+  docsBundleRef   String?                            // points to a folder/node in FileLogic
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  invoice         Invoice?
+
+  @@index([bdoHubId, approvedByAI, approvedByHuman])
+}
+
+model Invoice {
+  id            String           @id @default(cuid())
+  bdoHubId      String
+  bdoHub        BDOHub           @relation(fields: [bdoHubId], references: [id])
+
+  reportId      String?          @unique
+  report        ReportingPhase?  @relation(fields: [reportId], references: [id])
+
+  invoiceRef    String           @unique          // e.g., "INV-2025-000123"
+  direction     InvoiceDirection                   // SALES or PURCHASE
+
+  // Parties (soft until Finance/Partners land)
+  vendorCode    String?
+  customerCode  String?
+
+  netAmount     Decimal          @db.Decimal(14,2)
+  vatAmount     Decimal          @db.Decimal(14,2)
+  totalAmount   Decimal          @db.Decimal(14,2)
+
+  issuedAt      DateTime
+  dueAt         DateTime?
+  notes         String?
+
+  // Reconciliation hooks (filled by Finance later)
+  paymentMode   String?                             // "PRO_FORMA" | "ON_DELIVERY" | "BILL_TO_BILL" | "MONTH_END"
+  settlementRef String?                             // payment batch / bank txn id
+  settledAt     DateTime?
+
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@index([bdoHubId, direction, issuedAt])
+  @@index([vendorCode, customerCode])
+}

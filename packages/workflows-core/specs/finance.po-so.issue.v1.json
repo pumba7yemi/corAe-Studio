@@ -1,0 +1,12 @@
+{
+  "id": "finance.po-so.issue.v1",
+  "version": "1.0.0",
+  "module": "finance",
+  "roleHint": ["FinanceManager"],
+  "checkpoints": [
+    { "id": "capture-order-terms", "desc": "Vendor, customer, product, price, cadence", "gate": "auto" },
+    { "id": "issue-po", "desc": "Issue Purchase Order to vendor (Pricelock)", "gate": "human-approve", "onSuccess": ["finance.po.issued"] },
+    { "id": "issue-so", "desc": "Issue Sales Order to customer (Pricelock)",  "gate": "human-approve", "onSuccess": ["finance.so.issued"] },
+    { "id": "handoff-to-ops", "desc": "Open OBARI record and handoff to Operations (Booking)", "gate": "auto", "onSuccess": ["finance.po_so.issued"] }
+  ]
+}

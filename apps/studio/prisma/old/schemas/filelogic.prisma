@@ -1,0 +1,320 @@
+// apps/studio/prisma/schemas/filelogic.prisma
+// corAe FileLogic™ — hierarchy, versions, access control, shares, links
+
+// ──────────────────────────
+// Enums
+// ──────────────────────────
+enum FLNodeType {
+  FOLDER
+  FILE
+}
+
+enum FLPermissionLevel {
+  NONE
+  VIEW
+  COMMENT
+  EDIT
+  OWNER
+}
+
+enum FLSubjectType {
+  USER
+  ROLE        // e.g. "owner", "finance_manager"
+  GROUP       // custom group id
+  COMPANY     // whole company
+}
+
+enum FLStorageProvider {
+  INTERNAL    // e.g., object store / local path
+  S3
+  GCS
+  AZURE
+  EXTERNAL    // generic URL
+}
+
+enum FLClassify {
+  PUBLIC
+  INTERNAL
+  CONFIDENTIAL
+  RESTRICTED
+}
+
+enum FLShareScope {
+  PUBLIC
+  COMPANY
+  SELECT
+}
+
+enum FLRelType {
+  REFERENCES
+  RELATED
+  DUPLICATE_OF
+  PARENT_OF
+  CHILD_OF
+}
+
+// ──────────────────────────
+// Core nodes (folders/files) and versions
+// ──────────────────────────
+
+/**
+ * FileLogic Node
+ * - Represents both folders and files.
+ * - code: canonical FileLogic number e.g. "01.0.0.0.0"
+ * - parentId: tree structure
+ */
+model FLNode {
+  id            String      @id @default(cuid())
+  nodeType      FLNodeType
+  code          String?     // "01.0.0.0.0" style (nullable for ad-hoc)
+  name          String
+  slug          String?
+  parentId      String?
+  parent        FLNode?     @relation("FLTree", fields: [parentId], references: [id])
+  children      FLNode[]    @relation("FLTree")
+
+  // tenancy / ownership
+  companyId     String?     // → Company.id (biz)
+  company       Company?    @relation(fields: [companyId], references: [id])
+  ownerId       String?     // → User.id (hub)
+  owner         User?       @relation(fields: [ownerId], references: [id])
+  createdById   String?     // → User.id
+  createdBy     User?       @relation("FLCreatedBy", fields: [createdById], references: [id])
+
+  // policy
+  policyId      String?
+  policy        FLPolicy?   @relation(fields: [policyId], references: [id])
+
+  // cache/ordering
+  pathCache     String?     // e.g., "Root/02.0/02.1.0"
+  depth         Int         @default(0)
+  ordinal       Int         @default(0)
+
+  // lifecycle
+  isArchived    Boolean     @default(false)
+  deletedAt     DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  // relations
+  file          FLFile?
+  permissions   FLPermission[]
+  tags          FLTagOnNode[]
+  linksFrom     FLNodeLink[] @relation("FLLinksFrom")
+  linksTo       FLNodeLink[] @relation("FLLinksTo")
+  shares        FLShareLink[]
+  refs          FLEntityRef[]
+
+  // search
+  index         FLSearchIndex?
+
+  @@index([nodeType, code])
+  @@index([parentId, ordinal])
+  @@index([companyId])
+  @@index([ownerId])
+}
+
+/**
+ * File-only details (exists only when nodeType=FILE)
+ */
+model FLFile {
+  id            String   @id @default(cuid())
+  nodeId        String   @unique
+  node          FLNode   @relation(fields: [nodeId], references: [id])
+
+  // live pointer (optional convenience)
+  currentVersionId String?
+  currentVersion   FLFileVersion? @relation("FLCurrentVersion", fields: [currentVersionId], references: [id])
+
+  versions      FLFileVersion[]
+}
+
+/**
+ * Immutable file versions
+ */
+model FLFileVersion {
+  id            String   @id @default(cuid())
+  fileId        String
+  file          FLFile   @relation(fields: [fileId], references: [id])
+
+  versionNo     Int
+  mimeType      String?
+  sizeBytes     BigInt?
+  checksum      String?     // sha256
+  storage       FLStorageProvider @default(INTERNAL)
+  storageUrl    String?     // path or URL
+  storageKey    String?     // object key if applicable
+  notes         String?
+
+  uploadedById  String?
+  uploadedBy    User?     @relation(fields: [uploadedById], references: [id])
+
+  createdAt     DateTime  @default(now())
+
+  // backref for convenience to mark current
+  currentOf     FLFile?   @relation("FLCurrentVersion")
+
+  @@unique([fileId, versionNo])
+  @@index([fileId])
+}
+
+// ──────────────────────────
+// Policy, permissions, tags, search
+// ──────────────────────────
+
+/**
+ * Node-level policy / classification / retention
+ */
+model FLPolicy {
+  id            String    @id @default(cuid())
+  name          String
+  classification FLClassify @default(INTERNAL)
+  retainDays    Int?      // rolling retention (days)
+  legalHold     Boolean   @default(false)
+  watermark     Boolean   @default(false)
+  allowPublic   Boolean   @default(false)
+  allowDownload Boolean   @default(true)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+/**
+ * RBAC-like ACE with inheritance
+ * No polymorphic relation in Prisma: store subjectId + subjectType
+ */
+model FLPermission {
+  id            String            @id @default(cuid())
+  nodeId        String
+  node          FLNode            @relation(fields: [nodeId], references: [id])
+
+  subjectType   FLSubjectType
+  subjectId     String            // User.id, role name, group id, or company id
+  level         FLPermissionLevel
+  inherited     Boolean           @default(true)  // true: follows from parent unless explicitly set
+
+  createdAt     DateTime          @default(now())
+
+  @@unique([nodeId, subjectType, subjectId])
+  @@index([nodeId])
+  @@index([subjectType, subjectId])
+}
+
+/**
+ * Simple tag system for nodes
+ */
+model FLTag {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  color     String?
+
+  nodes     FLTagOnNode[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model FLTagOnNode {
+  nodeId String
+  tagId  String
+  node   FLNode @relation(fields: [nodeId], references: [id])
+  tag    FLTag  @relation(fields: [tagId], references: [id])
+
+  createdAt DateTime @default(now())
+  @@id([nodeId, tagId])
+  @@index([tagId])
+}
+
+/**
+ * Full-text index (basic)
+ * Store extracted text + keywords for search.
+ */
+model FLSearchIndex {
+  nodeId      String  @id
+  node        FLNode  @relation(fields: [nodeId], references: [id])
+  contentText String?
+  keywords    String?   // comma/space-separated
+
+  updatedAt   DateTime  @updatedAt
+}
+
+// ──────────────────────────
+// Links, shares, external refs, bookmarks
+// ──────────────────────────
+
+/**
+ * Graph of relations between nodes (bi-directional via two relations)
+ */
+model FLNodeLink {
+  id          String    @id @default(cuid())
+  fromNodeId  String
+  toNodeId    String
+  relType     FLRelType @default(RELATED)
+  createdAt   DateTime  @default(now())
+
+  from        FLNode    @relation("FLLinksFrom", fields: [fromNodeId], references: [id])
+  to          FLNode    @relation("FLLinksTo", fields: [toNodeId], references: [id])
+
+  @@index([fromNodeId])
+  @@index([toNodeId])
+  @@unique([fromNodeId, toNodeId, relType])
+}
+
+/**
+ * Public/controlled share links
+ */
+model FLShareLink {
+  id          String       @id @default(cuid())
+  nodeId      String
+  node        FLNode       @relation(fields: [nodeId], references: [id])
+
+  scope       FLShareScope @default(SELECT)
+  token       String?      @unique
+  expiresAt   DateTime?
+  maxViews    Int?
+  viewCount   Int          @default(0)
+  passwordHash String?
+
+  createdById String?
+  createdBy   User?        @relation(fields: [createdById], references: [id])
+
+  createdAt   DateTime     @default(now())
+
+  @@index([nodeId])
+}
+
+/**
+ * Bookmark for quick access (per user, optional version pin)
+ */
+model FLBookmark {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+
+  nodeId      String
+  node        FLNode   @relation(fields: [nodeId], references: [id])
+
+  versionId   String?
+  version     FLFileVersion? @relation(fields: [versionId], references: [id])
+
+  note        String?
+  createdAt   DateTime @default(now())
+  @@index([userId, nodeId])
+}
+
+/**
+ * External entity references (Order, Vendor, Contact, Invoice, Task, Thread, etc.)
+ * entityType is a free enum/string; entityId is the foreign id.
+ */
+model FLEntityRef {
+  id          String   @id @default(cuid())
+  nodeId      String
+  node        FLNode   @relation(fields: [nodeId], references: [id])
+
+  entityType  String   // "ORDER" | "VENDOR" | "CONTACT" | "INVOICE" | "TASK" | "THREAD" | ...
+  entityId    String
+
+  createdAt   DateTime @default(now())
+  @@index([nodeId])
+  @@index([entityType, entityId])
+}

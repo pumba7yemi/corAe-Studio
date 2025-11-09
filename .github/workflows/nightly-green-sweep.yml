@@ -1,0 +1,26 @@
+name: Nightly Green-Sweep
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # 02:00 UTC daily
+  workflow_dispatch: {}
+
+jobs:
+  nightly-green-sweep:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install
+        run: pnpm install
+
+      - name: Run Nightly Green-Sweep
+        run: pnpm run nightly:studio
+        env:
+          CI: true

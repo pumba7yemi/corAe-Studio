@@ -1,0 +1,11 @@
+{
+  "id": "operations.obari.booking.v1",
+  "version": "1.0.0",
+  "module": "obari",
+  "roleHint": ["OperationsManager", "WorkflowExecutive"],
+  "checkpoints": [
+    { "id": "slot-assign", "desc": "Assign slots/dates vs PO/SO", "gate": "auto" },
+    { "id": "logistics", "desc": "Transport/crew/site access confirmed", "gate": "auto" },
+    { "id": "booking-commit", "desc": "Freeze plan vs PO/SO", "gate": "human-approve", "onSuccess": ["obari.stage.active"] }
+  ]
+}

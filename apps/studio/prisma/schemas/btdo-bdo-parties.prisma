@@ -1,0 +1,85 @@
+/// ─────────────────────────────────────────────
+///  corAe BTDO → BDO Party Relationship Models
+///  (Vendors, Clients, Suppliers, Subcontractors)
+/// ─────────────────────────────────────────────
+
+enum PartyRole {
+  CLIENT
+  CUSTOMER
+  VENDOR
+  SUPPLIER
+  SUBCONTRACTOR
+  PARTNER
+  SITE
+  FINANCE
+  OPERATIONS
+  QA
+  BILL_TO
+  SHIP_TO
+}
+
+model AccountTenantRole {
+  tenantId   String
+  accountId  String
+  role       PartyRole
+  notes      String?
+  createdAt  DateTime @default(now())
+
+  tenant   Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  account  Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@id([tenantId, accountId, role])
+}
+
+///  Deal Party (organisation-level role within a deal)
+model DealParty {
+  id         String     @id @default(cuid())
+  dealId     String
+  accountId  String
+  role       PartyRole
+  primary    Boolean    @default(false)
+  meta       Json?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  deal       Deal       @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  account    Account    @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  contacts   DealPartyContact[]
+
+  @@unique([dealId, accountId, role])
+}
+
+///  Contact link within a Deal Party
+model DealPartyContact {
+  id          String     @id @default(cuid())
+  dealId      String
+  accountId   String
+  contactId   String
+  role        PartyRole
+  primary     Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+
+  deal        Deal       @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  account     Account    @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  contact     Contact    @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@unique([dealId, accountId, contactId, role])
+}
+
+/// Optional: for subscription-style clients or recurring contracts
+model ServiceAgreement {
+  id          String     @id @default(cuid())
+  tenantId    String
+  accountId   String
+  role        PartyRole  @default(CLIENT)
+  plan        String?
+  terms       Json?
+  active      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  tenant      Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  account     Account    @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+}

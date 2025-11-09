@@ -1,0 +1,52 @@
+{
+  "id": "plan_mh1xu9qo",
+  "createdAt": "2025-10-22T11:56:55.632Z",
+  "status": "DRAFT",
+  "steps": [
+    {
+      "kind": "ADD_MODEL",
+      "risk": "LOW",
+      "target": "Profile",
+      "payload": {
+        "model": {
+          "name": "Profile",
+          "fields": [
+            {
+              "name": "id",
+              "type": "int",
+              "nullable": false
+            },
+            {
+              "name": "bio",
+              "type": "text",
+              "nullable": true
+            }
+          ],
+          "indexes": [],
+          "uniques": []
+        }
+      },
+      "order": 10000
+    },
+    {
+      "kind": "ADD_FIELD",
+      "risk": "LOW",
+      "target": "User.profileId",
+      "payload": {
+        "field": {
+          "name": "profileId",
+          "type": "int",
+          "nullable": true
+        }
+      },
+      "order": 20001
+    }
+  ],
+  "riskSummary": {
+    "NONE": 0,
+    "LOW": 2,
+    "MEDIUM": 0,
+    "HIGH": 0,
+    "DESTRUCTIVE": 0
+  }
+}

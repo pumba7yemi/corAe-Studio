@@ -1,0 +1,156 @@
+// apps/studio/prisma/schemas/finance.prisma
+/* ============================================================
+   corAe Finance — Payments & Reconciliation
+   - Payment batches (by plan/schedule)
+   - Payments (cash/card/transfer)
+   - Allocations (payment → invoice)
+   - Bill-to-bill credits (surplus carry forward)
+   ============================================================ */
+
+enum PaymentPlan {
+  PRO_FORMA
+  ON_DELIVERY
+  BILL_TO_BILL
+  MONTH_END
+}
+
+enum PaymentMethod {
+  CASH
+  CARD
+  BANK_TRANSFER
+  CHEQUE
+  MIXED
+}
+
+enum PaymentStatus {
+  PENDING
+  SCHEDULED
+  PARTIAL
+  PAID
+  FAILED
+  CANCELLED
+}
+
+/* -------------------------
+   Schedules / Policies (per party)
+-------------------------- */
+model PaymentPolicy {
+  id           String     @id @default(cuid())
+  partyCode    String     // vendor or customer code
+  direction    InvoiceDirection // from OMS: SALES or PURCHASE
+  plan         PaymentPlan
+  // Rhythm helpers (optional)
+  weekRef      WeekRef?   // W1..W4 when using 28-day cycle
+  monthDay     Int?       // for month-end (e.g., 1 = pay on 1st)
+  notes        String?
+
+  isActive     Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([partyCode, direction, plan])
+}
+
+/* -------------------------
+   Batches (group payments by run)
+-------------------------- */
+model PaymentBatch {
+  id            String       @id @default(cuid())
+  batchRef      String       @unique       // e.g., "PB-2025-10-W3"
+  plan          PaymentPlan
+  scheduledFor  DateTime
+  createdById   String?
+  createdBy     User?        @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  notes         String?
+
+  status        PaymentStatus @default(SCHEDULED)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  payments      Payment[]
+
+  @@index([plan, scheduledFor])
+}
+
+/* -------------------------
+   Payments & Allocations
+-------------------------- */
+model Payment {
+  id            String        @id @default(cuid())
+  batchId       String?
+  batch         PaymentBatch? @relation(fields: [batchId], references: [id], onDelete: SetNull)
+
+  method        PaymentMethod
+  status        PaymentStatus  @default(PENDING)
+
+  currency      String         @default("AED")
+  amount        Decimal        @db.Decimal(14,2) // gross amount of this payment
+  reference     String?        // bank txn id / slip / POS ref
+  paidAt        DateTime?
+  notes         String?
+
+  // Party context (soft until Partners land)
+  vendorCode    String?
+  customerCode  String?
+
+  // Plan context (useful for audits)
+  plan          PaymentPlan?
+
+  allocations   PaymentAllocation[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([status, paidAt])
+  @@index([vendorCode, customerCode])
+}
+
+model PaymentAllocation {
+  id          String   @id @default(cuid())
+  paymentId   String
+  payment     Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  invoiceId   String
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Restrict)
+
+  amount      Decimal  @db.Decimal(14,2)
+  createdAt   DateTime @default(now())
+
+  @@index([paymentId])
+  @@index([invoiceId])
+}
+
+/* -------------------------
+   Bill-to-Bill credits (carry forward)
+-------------------------- */
+model BillToBillCredit {
+  id               String   @id @default(cuid())
+  // Source invoice created a surplus (overpayment or credit note)
+  sourceInvoiceId  String   @unique
+  sourceInvoice    Invoice  @relation("SourceCredit", fields: [sourceInvoiceId], references: [id], onDelete: Cascade)
+
+  // Remaining balance available to offset future invoices
+  balance          Decimal  @db.Decimal(14,2) @default(0)
+
+  // Optional pointer to the next invoice we intend to offset
+  nextInvoiceId    String?
+  nextInvoice      Invoice? @relation("NextOffset", fields: [nextInvoiceId], references: [id], onDelete: SetNull)
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+/* When a credit is applied to an invoice, record the application here. */
+model CreditApplication {
+  id              String   @id @default(cuid())
+  creditId        String
+  credit          BillToBillCredit @relation(fields: [creditId], references: [id], onDelete: Cascade)
+
+  appliedInvoiceId String
+  appliedInvoice   Invoice @relation("AppliedCredit", fields: [appliedInvoiceId], references: [id], onDelete: Restrict)
+
+  amountApplied   Decimal  @db.Decimal(14,2)
+  appliedAt       DateTime @default(now())
+  
+  @@index([creditId])
+  @@index([appliedInvoiceId])
+}

@@ -1,0 +1,47 @@
+{
+  "blueprintKey": "waste.v1",
+  "name": "Waste Brokerage – Dual Order",
+  "channel": "waste",
+  "cadenceDays": 28,
+  "orderPattern": "dual",
+  "defaultTerms": "NET15",
+  "defaultMarginPct": 18,
+  "linkedBlueprint": "transport.v1",
+  "workflow": {
+    "stages": [
+      "CollectionBooking",
+      "TransportBooking",
+      "Documentation",
+      "Active",
+      "Reporting",
+      "Invoicing"
+    ]
+  },
+  "documentation": {
+    "required": [
+      "Waste Transfer Note",
+      "Carrier Licence",
+      "Site Permit"
+    ],
+    "generateAuto": true,
+    "retainYears": 3
+  },
+  "vendorPolicy": {
+    "priceLock": true,
+    "renewalCycleDays": 28
+  },
+  "lines": [
+    {
+      "sku": "MATERIAL-PLASTIC",
+      "desc": "Mixed Plastics (tonne)",
+      "uom": "tonne",
+      "plannedQty": 20
+    },
+    {
+      "sku": "MATERIAL-CARDBOARD",
+      "desc": "Baled Cardboard (tonne)",
+      "uom": "tonne",
+      "plannedQty": 15
+    }
+  ]
+}

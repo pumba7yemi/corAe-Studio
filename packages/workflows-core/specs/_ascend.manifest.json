@@ -1,0 +1,20 @@
+{
+  "$schema": "https://corae.os2/schemas/ascend.manifest.v1.json",
+  "modules": {
+    "first-trade": {
+      "enabled": true,
+      "roles": ["WorkflowExecutive", "SalesExecutive"]
+    },
+    "supermarket": {
+      "enabled": true,
+      "roles": ["WorkflowExecutive"]
+    },
+    "restaurant": {
+      "enabled": true,
+      "roles": ["WorkflowExecutive", "SalesExecutive"]
+    },
+    "hr": { "enabled": true, "roles": ["WorkflowExecutive"] },
+    "waste": { "enabled": true, "roles": ["WorkflowExecutive"] }
+  },
+  "culturalLine": "corAe does the mechanics. You do the creating. This is the new age of prosperity."
+}

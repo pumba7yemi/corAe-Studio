@@ -1,0 +1,111 @@
+// apps/studio/prisma/schemas/filelogic_ai.prisma
+// corAe FileLogic™ Intelligence — patterns, anomalies, suggestions, templates
+
+enum FLAnomalySeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum FLSuggestionStatus {
+  OPEN
+  ACCEPTED
+  REJECTED
+  APPLIED
+}
+
+enum FLTemplateScope {
+  GLOBAL
+  COMPANY
+  ROLE
+}
+
+model FLPattern {
+  id           String    @id @default(cuid())
+  name         String
+  codeMask     String    // e.g. "02.*" or "02.1.*"
+  description  String?
+  expectedNode FLNodeType[] // which node types expected under this mask
+  rules        Json?     // JSON rules (naming regex, required tags, policy, etc.)
+  enabled      Boolean   @default(true)
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([codeMask])
+}
+
+model FLTemplate {
+  id           String    @id @default(cuid())
+  name         String
+  scope        FLTemplateScope @default(GLOBAL)
+  companyId    String?   // when scope = COMPANY
+  company      Company?  @relation(fields: [companyId], references: [id])
+  rootCode     String?   // optional “insert under this code”
+  manifest     Json      // declarative nodes/files to create
+  enabled      Boolean   @default(true)
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([companyId])
+}
+
+model FLAnomaly {
+  id           String    @id @default(cuid())
+  nodeId       String
+  node         FLNode    @relation(fields: [nodeId], references: [id])
+
+  issue        String    // e.g. "Missing Pricelock Chain file", "Code out of order"
+  details      String?
+  severity     FLAnomalySeverity @default(MEDIUM)
+  detectedBy   String?   // agent name/id
+  resolved     Boolean   @default(false)
+  resolvedAt   DateTime?
+  resolverId   String?   // User.id
+  resolver     User?     @relation(fields: [resolverId], references: [id])
+
+  createdAt    DateTime  @default(now())
+
+  @@index([nodeId, severity])
+  @@index([resolved, createdAt])
+}
+
+model FLSuggestion {
+  id           String    @id @default(cuid())
+  nodeId       String
+  node         FLNode    @relation(fields: [nodeId], references: [id])
+
+  suggestion   String    // e.g. "Move under 02.1.0.0.0", "Rename to ...", "Apply policy 'Confidential'"
+  reason       String?
+  payload      Json?     // structured input for an executor (new parentId, new code, tags, etc.)
+  status       FLSuggestionStatus @default(OPEN)
+
+  createdById  String?   // User.id or AI agent-id
+  createdBy    User?     @relation("FLSuggCreatedBy", fields: [createdById], references: [id])
+
+  actionedById String?
+  actionedBy   User?     @relation("FLSuggActionedBy", fields: [actionedById], references: [id])
+
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([nodeId, status])
+}
+
+model FLIndexJob {
+  id           String   @id @default(cuid())
+  nodeId       String
+  node         FLNode   @relation(fields: [nodeId], references: [id])
+
+  reason       String?  // "version_uploaded", "policy_changed", "manual"
+  attempt      Int      @default(0)
+  lastError    String?
+  lockedAt     DateTime?
+  scheduledAt  DateTime @default(now())
+  doneAt       DateTime?
+
+  @@index([scheduledAt, doneAt])
+  @@index([nodeId, doneAt])
+}

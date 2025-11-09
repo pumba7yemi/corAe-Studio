@@ -1,4 +1,1 @@
-﻿node_modules
-.next
-dist
-*.log
+/.next/server/[0-9]*.js

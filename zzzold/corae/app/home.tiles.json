@@ -1,0 +1,29 @@
+{
+  "tiles": [
+    {
+      "name": "Build Queue",
+      "path": "/queue"
+    },
+    {
+      "name": "Generators",
+      "path": "/generators"
+    },
+    {
+      "name": "Modules",
+      "path": "/modules"
+    },
+    {
+      "name": "Integrations",
+      "path": "/integrations"
+    },
+    {
+      "name": "Deployments",
+      "path": "/deployments"
+    },
+    {
+      "name": "Settings",
+      "path": "/settings"
+    }
+  ],
+  "statusRibbon": "green"
+}

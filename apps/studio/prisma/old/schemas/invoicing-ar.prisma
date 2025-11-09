@@ -1,0 +1,53 @@
+// corAe Invoicing & A/R™
+enum InvoiceStatus { DRAFT ISSUED PARTIAL PAID VOID }
+
+model Invoice {
+  id            String       @id @default(cuid())
+  companyId     String
+  invoiceNo     String       @unique
+  partyId       String
+  status        InvoiceStatus @default(DRAFT)
+  dateIssued    DateTime     @default(now())
+  dueDate       DateTime?
+  currency      String       @default("AED")
+  subtotal      Decimal      @db.Decimal(14,4)
+  vatAmount     Decimal?     @db.Decimal(14,4)
+  total         Decimal      @db.Decimal(14,4)
+  paidTotal     Decimal      @db.Decimal(14,4) @default(0)
+  salesOrderId  String?
+  obariFlowId   String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  company       CompanyIdentity @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  party         Party           @relation(fields: [partyId], references: [id], onDelete: Restrict)
+
+  lines         InvoiceLine[]
+  receipts      Receipt[]
+}
+
+model InvoiceLine {
+  id         String   @id @default(cuid())
+  invoiceId  String
+  skuId      String?
+  description String?
+  qty        Decimal   @db.Decimal(12,3)
+  priceEach  Decimal   @db.Decimal(14,4)
+  vatRate    Decimal?  @db.Decimal(5,2)
+  vatAmount  Decimal?  @db.Decimal(14,4)
+  lineTotal  Decimal   @db.Decimal(14,4)
+
+  invoice    Invoice   @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  sku        Sku?      @relation(fields: [skuId], references: [id])
+}
+
+model Receipt {
+  id          String   @id @default(cuid())
+  invoiceId   String
+  amount      Decimal  @db.Decimal(14,4)
+  method      String
+  reference   String?
+  receivedAt  DateTime @default(now())
+
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+}

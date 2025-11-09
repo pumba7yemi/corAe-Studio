@@ -1,0 +1,27 @@
+// ─────────────────────────────────────────────
+// corAe Tenancy & White-Label
+// ─────────────────────────────────────────────
+
+model Tenant {
+  id         String    @id @default(cuid())
+  slug       String    @unique           // e.g., "choiceplus", "vs-group"
+  brandName  String
+  domain     String?   @unique
+  theme      Json?                         // colors, logoUrl, etc.
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  companies  CompanyIdentity[]
+}
+
+// NOTE: If you already have CompanyIdentity in another file, only add the relation fields below.
+model CompanyIdentity {
+  id            String    @id @default(cuid())
+  legalName     String
+  jurisdiction  String
+  activities    String[]
+  // … your existing fields …
+
+  tenantId      String?
+  tenant        Tenant?   @relation(fields: [tenantId], references: [id])
+}

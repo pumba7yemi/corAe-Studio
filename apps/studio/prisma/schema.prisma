@@ -1,0 +1,38 @@
+// FILE: prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db" // use env("DATABASE_URL") if you prefer
+}
+
+model Health {
+  id        String   @id @default(cuid())
+  note      String   @default("ok")
+  createdAt DateTime @default(now())
+
+  @@map("_Health")
+}
+
+model CashbackLedger {
+  id           String   @id @default(cuid())
+  ownerId      String
+  itemId       String?
+  shareSlug    String?
+  merchant     String
+  amountAED    Float?
+  cashbackPct  Float    @default(0)
+  event        String   // CLICK | ORDER_CONFIRMED | REJECTED
+  affiliateUrl String?
+  referer      String?
+  userAgent    String?
+  createdAt    DateTime @default(now())
+
+  @@index([ownerId, event, createdAt])
+  @@index([itemId])
+  @@index([shareSlug])
+  @@index([merchant])
+}

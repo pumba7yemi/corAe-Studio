@@ -1,0 +1,6 @@
+{
+  "name": "white-label-agent",
+  "version": "1.0.0",
+  "capabilities": ["WHITE_LABEL_BUILD", "AUTO_WORKFLOW"],
+  "entry": "dist/agent.js"
+}

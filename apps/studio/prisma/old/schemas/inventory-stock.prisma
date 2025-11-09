@@ -1,0 +1,220 @@
+// ────────────────────────────────────────────────
+// corAe Inventory & Stock™ — Catalog, Warehouses, Movements, Reservations
+// File: apps/studio/prisma/schema/inventory-stock.prisma
+// ────────────────────────────────────────────────
+// Depends on: core-company.prisma, chrono-workflow.prisma, obari-flow.prisma
+// Purpose: Support A+X sellers with clean SKU catalog, stock positions, lots/expiry,
+//          reservations (Booking), and movements linked to OBARI flows.
+// ────────────────────────────────────────────────
+
+enum SkuKind {
+  PRODUCT     // tangible
+  SERVICE     // intangible (no stock)
+}
+
+enum Unit {
+  EACH
+  PACK
+  BOX
+  CASE
+  KG
+  L
+  M
+  CUSTOM
+}
+
+enum PriceRuleKind {
+  A_PLUS_X    // A + X
+  FIXED       // fixed selling price
+}
+
+enum MoveType {
+  INBOUND     // purchase, return-in, correction+
+  OUTBOUND    // sale/issue, return-out, correction-
+  TRANSFER    // bin/warehouse transfer
+  ADJUST      // inventory adjustments (count variance)
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  RELEASED
+  CANCELLED
+  EXPIRED
+}
+
+model Sku {
+  id            String        @id @default(cuid())
+  companyId     String
+  code          String        @unique
+  title         String
+  kind          SkuKind       @default(PRODUCT)
+  unit          Unit          @default(EACH)
+  costA         Decimal?      @db.Decimal(14,4) // base cost (A)
+  priceRule     PriceRuleKind @default(A_PLUS_X)
+  xMarkup       Decimal?      @db.Decimal(14,4) // used if A+X
+  fixedPrice    Decimal?      @db.Decimal(14,4) // used if FIXED
+  active        Boolean       @default(true)
+  specs         Json?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  company       CompanyIdentity @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  // Relations
+  prices        SkuPriceHistory[]
+  stockLevels   StockLevel[]
+  batches       StockBatch[]
+  movements     StockMovement[]
+  reservations  StockReservation[]
+
+  @@index([companyId, active])
+}
+
+model SkuPriceHistory {
+  id         String   @id @default(cuid())
+  skuId      String
+  validFrom  DateTime @default(now())
+  costA      Decimal? @db.Decimal(14,4)
+  rule       PriceRuleKind
+  xMarkup    Decimal? @db.Decimal(14,4)
+  fixedPrice Decimal? @db.Decimal(14,4)
+  note       String?
+
+  sku        Sku      @relation(fields: [skuId], references: [id], onDelete: Cascade)
+
+  @@index([skuId, validFrom])
+}
+
+model Warehouse {
+  id          String     @id @default(cuid())
+  companyId   String
+  code        String     @unique
+  name        String
+  address     String?
+  isDefault   Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  company     CompanyIdentity @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  bins        StockBin[]
+  levels      StockLevel[]
+}
+
+model StockBin {
+  id          String     @id @default(cuid())
+  warehouseId String
+  code        String
+  name        String?
+  createdAt   DateTime   @default(now())
+
+  warehouse   Warehouse  @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+
+  @@unique([warehouseId, code])
+}
+
+model StockLevel {
+  id          String     @id @default(cuid())
+  companyId   String
+  skuId       String
+  warehouseId String
+  binId       String?
+  onHand      Decimal    @db.Decimal(18,3) @default(0)
+  reserved    Decimal    @db.Decimal(18,3) @default(0)
+  available   Decimal    @db.Decimal(18,3) @default(0)
+
+  company     CompanyIdentity @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  sku         Sku        @relation(fields: [skuId], references: [id], onDelete: Cascade)
+  warehouse   Warehouse  @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  bin         StockBin?  @relation(fields: [binId], references: [id])
+
+  @@unique([skuId, warehouseId, binId])
+  @@index([companyId])
+}
+
+model StockBatch {
+  id          String    @id @default(cuid())
+  companyId   String
+  skuId       String
+  lotNo       String?
+  mfgDate     DateTime?
+  expiryDate  DateTime?
+  qtyOnHand   Decimal   @db.Decimal(18,3) @default(0)
+  qtyReserved Decimal   @db.Decimal(18,3) @default(0)
+  createdAt   DateTime  @default(now())
+
+  company     CompanyIdentity @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  sku         Sku       @relation(fields: [skuId], references: [id], onDelete: Cascade)
+
+  @@index([skuId, expiryDate])
+}
+
+model StockMovement {
+  id            String     @id @default(cuid())
+  companyId     String
+  skuId         String
+  warehouseId   String
+  fromBinId     String?
+  toBinId       String?
+  moveType      MoveType
+  qty           Decimal     @db.Decimal(18,3)
+  unitCostA     Decimal?    @db.Decimal(14,4) // valued cost at time of move
+  reason        String?
+  flowId        String?     // link to OBARI flow for audit
+  batchId       String?
+  ts            DateTime    @default(now())
+  createdBy     String?     // actor ref (role or agent)
+
+  company       CompanyIdentity @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  sku           Sku         @relation(fields: [skuId], references: [id], onDelete: Cascade)
+  warehouse     Warehouse   @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  fromBin       StockBin?   @relation("MoveFromBin", fields: [fromBinId], references: [id])
+  toBin         StockBin?   @relation("MoveToBin", fields: [toBinId], references: [id])
+  batch         StockBatch? @relation(fields: [batchId], references: [id])
+  obariFlow     ObariFlow?  @relation(fields: [flowId], references: [id])
+
+  @@index([companyId, ts])
+  @@index([skuId])
+  @@index([warehouseId])
+  @@index([moveType])
+}
+
+model StockReservation {
+  id            String            @id @default(cuid())
+  companyId     String
+  skuId         String
+  warehouseId   String
+  qty           Decimal           @db.Decimal(18,3)
+  status        ReservationStatus @default(PENDING)
+  flowId        String?           // OBARI flow reference (Booking stage)
+  promisedAt    DateTime?
+  releasedAt    DateTime?
+  createdAt     DateTime          @default(now())
+
+  company       CompanyIdentity   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  sku           Sku               @relation(fields: [skuId], references: [id], onDelete: Cascade)
+  warehouse     Warehouse         @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  flow          ObariFlow?        @relation(fields: [flowId], references: [id])
+
+  @@index([companyId, status])
+  @@index([skuId, warehouseId])
+  @@index([flowId])
+}
+
+model ReorderPolicy {
+  id            String    @id @default(cuid())
+  companyId     String
+  skuId         String
+  minLevel      Decimal   @db.Decimal(18,3) @default(0)
+  maxLevel      Decimal   @db.Decimal(18,3) @default(0)
+  reorderQty    Decimal   @db.Decimal(18,3) @default(0)
+  supplierRef   String?
+  reviewedAt    DateTime?
+  createdAt     DateTime  @default(now())
+
+  company       CompanyIdentity @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  sku           Sku       @relation(fields: [skuId], references: [id], onDelete: Cascade)
+
+  @@unique([skuId, companyId])
+}

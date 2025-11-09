@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Nightly Studio Build",
+      "type": "shell",
+      "command": "pnpm --filter @corae/studio build",
+      "problemMatcher": []
+    }
+  ]
+}

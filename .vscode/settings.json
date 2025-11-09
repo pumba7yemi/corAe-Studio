@@ -1,7 +1,9 @@
 {
   "files.associations": { "*.css": "postcss" },
   "css.lint.unknownAtRules": "ignore",
-  "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
+  "editor.codeActionsOnSave": "source.fixAll",
   "eslint.useFlatConfig": true,
   "eslint.experimental.useFlatConfig": true
+  ,
+  "copilot.chat.safeConfigPath": "${workspaceFolder}/.copilot-safe.json"
 }

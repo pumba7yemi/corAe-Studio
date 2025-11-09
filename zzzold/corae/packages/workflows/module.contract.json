@@ -1,0 +1,10 @@
+{
+  "moduleId": "string",
+  "name": "string",
+  "layer": "Core|Care|Home|Studio|Academy|Marketplace",
+  "routes": ["string"],
+  "dataModels": [{"name":"string","schema":"zod|json-schema"}],
+  "jobs": [{"name":"scaffold","steps":["ui","api","db","tests"]}],
+  "whatsappNotices": [{"trigger":"onDeploy","templateId":"string"}],
+  "checks": [{"name":"lint"},{"name":"typecheck"},{"name":"route-health"}]
+}

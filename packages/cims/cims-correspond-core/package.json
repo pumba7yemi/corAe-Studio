@@ -1,0 +1,11 @@
+{
+  "name": "@cims/cims-correspond-core",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@prisma/client": "latest"
+  }
+}

@@ -1,0 +1,38 @@
+// corAe Sales Orders™ — (ties Inventory + OBARI + Finance)
+enum SalesStatus { DRAFT CONFIRMED BOOKED FULFILLED INVOICED CLOSED CANCELLED }
+
+model SalesOrder {
+  id            String      @id @default(cuid())
+  companyId     String
+  orderNo       String      @unique
+  partyId       String
+  status        SalesStatus @default(DRAFT)
+  promisedDate  DateTime?
+  currency      String      @default("AED")
+  notes         String?
+  obariFlowId   String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  company       CompanyIdentity @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  party         Party           @relation(fields: [partyId], references: [id], onDelete: Restrict)
+  lines         SalesLine[]
+}
+
+model SalesLine {
+  id           String     @id @default(cuid())
+  salesId      String
+  skuId        String
+  qty          Decimal    @db.Decimal(12,3)
+  costA        Decimal?   @db.Decimal(14,4)
+  priceEach    Decimal    @db.Decimal(14,4) // locked A+X or fixed
+  discount     Decimal?   @db.Decimal(14,4)
+  vatRate      Decimal?   @db.Decimal(5,2)
+  vatAmount    Decimal?   @db.Decimal(14,4)
+  lineTotal    Decimal    @db.Decimal(14,4)
+
+  sales        SalesOrder @relation(fields: [salesId], references: [id], onDelete: Cascade)
+  sku          Sku        @relation(fields: [skuId], references: [id], onDelete: Restrict)
+
+  @@index([skuId])
+}

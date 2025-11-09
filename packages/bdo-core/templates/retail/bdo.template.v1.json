@@ -1,0 +1,43 @@
+{
+  "blueprintKey": "retail.v1",
+  "name": "Retail 28-Day Replenishment",
+  "channel": "retail",
+  "cadenceDays": 28,
+  "orderPattern": "single",
+  "defaultTerms": "NET30",
+  "defaultMarginPct": 22,
+  "workflow": {
+    "stages": [
+      "Booking",
+      "Active",
+      "Reporting",
+      "Invoicing"
+    ]
+  },
+  "documentation": {
+    "required": [
+      "Delivery Note",
+      "GRV"
+    ],
+    "generateAuto": true,
+    "retainYears": 2
+  },
+  "vendorPolicy": {
+    "priceLock": true,
+    "renewalCycleDays": 28
+  },
+  "lines": [
+    {
+      "sku": "SKU-TEA-500",
+      "desc": "Tea 500g",
+      "uom": "pack",
+      "plannedQty": 120
+    },
+    {
+      "sku": "SKU-CUPS",
+      "desc": "Cups Case",
+      "uom": "case",
+      "plannedQty": 10
+    }
+  ]
+}

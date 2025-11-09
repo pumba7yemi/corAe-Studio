@@ -1,0 +1,533 @@
+/* ============================================================
+   corAe Biz (OMS / ERP-lite) — Items, Partners, P2P, O2C, MFG
+   NOTE: No datasource/generator here. Those live in prisma/schema.prisma
+   ============================================================ */
+
+/** -------------------- Shared lookups & masters -------------------- */
+
+model ItemCategory {
+  id       String         @id @default(cuid())
+  name     String
+  parentId String?
+  parent   ItemCategory?  @relation("CatParent", fields: [parentId], references: [id])
+  children ItemCategory[] @relation("CatParent")
+
+  items     Item[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ItemType {
+  FINISHED_GOOD
+  RAW_MATERIAL
+  SERVICE
+}
+
+model Item {
+  id                String           @id @default(cuid())
+  name              String
+  type              ItemType
+  sku               String?          @unique
+  categoryId        String?
+  category          ItemCategory?    @relation(fields: [categoryId], references: [id])
+  unit              String
+  reorderLevel      Float?
+  defaultSupplierId String?
+  defaultSupplier   BusinessPartner? @relation("ItemDefaultSupplier", fields: [defaultSupplierId], references: [id])
+
+  // SQLite-safe decimals
+  standardCost Decimal?
+  salesPrice   Decimal?
+
+  taxCodeId String?
+  taxCode   Tax?    @relation(fields: [taxCodeId], references: [id])
+  isActive  Boolean @default(true)
+
+  // relations
+  inventory           Inventory[]
+  bom                 BillOfMaterials?
+  poLines             PurchaseOrderLine[]
+  soLines             SalesOrderLine[]
+  invoiceLines        SalesInvoiceLine[]
+  invTrans            InventoryTransaction[]
+  PurchaseReceiptLine PurchaseReceiptLine[]
+  BOMLine             BOMLine[]
+  WorkOrder           WorkOrder[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+}
+
+model BusinessPartner {
+  id           String  @id @default(cuid())
+  name         String
+  isCustomer   Boolean @default(false)
+  isSupplier   Boolean @default(false)
+  isEmployee   Boolean @default(false)
+  phone        String?
+  email        String?
+  taxId        String?
+  billingAddr  String?
+  shippingAddr String?
+  paymentTerms String?
+
+  // SQLite-safe decimal
+  creditLimit Decimal?
+
+  // relations
+  supplierItems  Item[]            @relation("ItemDefaultSupplier")
+  purchaseOrders PurchaseOrder[]   @relation("PO_Supplier")
+  salesOrders    SalesOrder[]      @relation("SO_Customer")
+  invoices       SalesInvoice[]    @relation("INV_Customer")
+  purchaseBills  PurchaseInvoice[]
+  Payment        Payment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isCustomer, isSupplier])
+}
+
+model Employee {
+  id         String    @id @default(cuid())
+  name       String
+  role       String
+  locationId String?
+  location   Location? @relation(fields: [locationId], references: [id])
+  isActive   Boolean   @default(true)
+
+  PurchaseOrder   PurchaseOrder[]
+  PurchaseReceipt PurchaseReceipt[]
+  SalesOrder      SalesOrder[]
+  SalesInvoice    SalesInvoice[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Location {
+  id       String     @id @default(cuid())
+  name     String
+  type     String // STORE, WAREHOUSE, KITCHEN, ONLINE
+  address  String?
+  parentId String?
+  parent   Location?  @relation("LocParent", fields: [parentId], references: [id])
+  children Location[] @relation("LocParent")
+
+  inventory            Inventory[]
+  Employee             Employee[]
+  PurchaseOrder        PurchaseOrder[]
+  PurchaseReceipt      PurchaseReceipt[]
+  InventoryTransaction InventoryTransaction[]
+  SalesOrder           SalesOrder[]
+  SalesInvoice         SalesInvoice[]
+  WorkOrder            WorkOrder[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Account {
+  id       String    @id // e.g. "1000-CASH"
+  name     String
+  type     String // ASSET, LIABILITY, EQUITY, REVENUE, EXPENSE
+  parentId String?
+  parent   Account?  @relation("AcctParent", fields: [parentId], references: [id])
+  children Account[] @relation("AcctParent")
+  active   Boolean   @default(true)
+
+  Tax Tax[]
+}
+
+model Tax {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  description String?
+  rate        Decimal
+  type        String // SALES, PURCHASE, BOTH
+  accountId   String?
+  account     Account? @relation(fields: [accountId], references: [id])
+
+  Item              Item[]
+  PurchaseOrderLine PurchaseOrderLine[]
+  SalesOrderLine    SalesOrderLine[]
+  SalesInvoiceLine  SalesInvoiceLine[]
+}
+
+/** -------------------- Procurement (P2P) -------------------- */
+
+model PurchaseOrder {
+  id          String          @id @default(cuid())
+  supplierId  String
+  supplier    BusinessPartner @relation("PO_Supplier", fields: [supplierId], references: [id])
+  orderDate   DateTime
+  expectedAt  DateTime?
+  status      String // PENDING, APPROVED, PARTIAL, COMPLETE, CANCELED
+  locationId  String
+  location    Location        @relation(fields: [locationId], references: [id])
+  createdById String?
+  createdBy   Employee?       @relation(fields: [createdById], references: [id])
+
+  lines    PurchaseOrderLine[]
+  receipts PurchaseReceipt[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([supplierId, status, orderDate])
+}
+
+model PurchaseOrderLine {
+  id     String        @id @default(cuid())
+  poId   String
+  po     PurchaseOrder @relation(fields: [poId], references: [id])
+  itemId String
+  item   Item          @relation(fields: [itemId], references: [id])
+
+  qty       Decimal
+  unitPrice Decimal
+
+  taxCodeId String?
+  taxCode   Tax?    @relation(fields: [taxCodeId], references: [id])
+
+  PurchaseReceiptLine PurchaseReceiptLine[]
+
+  @@index([poId, itemId])
+}
+
+model PurchaseReceipt {
+  id           String         @id @default(cuid())
+  poId         String?
+  po           PurchaseOrder? @relation(fields: [poId], references: [id])
+  receiptDate  DateTime
+  supplierDoc  String?
+  status       String // RECEIVED, INSPECTED, CLOSED
+  locationId   String
+  location     Location       @relation(fields: [locationId], references: [id])
+  receivedById String?
+  receivedBy   Employee?      @relation(fields: [receivedById], references: [id])
+
+  lines           PurchaseReceiptLine[]
+  PurchaseInvoice PurchaseInvoice[]
+
+  createdAt DateTime @default(now())
+}
+
+model PurchaseReceiptLine {
+  id        String          @id @default(cuid())
+  receiptId String
+  receipt   PurchaseReceipt @relation(fields: [receiptId], references: [id])
+  itemId    String
+  item      Item            @relation(fields: [itemId], references: [id])
+
+  qtyReceived Decimal
+  qtyRejected Decimal?
+  poLineId    String?
+  poLine      PurchaseOrderLine? @relation(fields: [poLineId], references: [id])
+  unitCost    Decimal?
+
+  @@index([receiptId, itemId])
+}
+
+model PurchaseInvoice {
+  id          String          @id @default(cuid())
+  supplierId  String
+  supplier    BusinessPartner @relation(fields: [supplierId], references: [id])
+  invoiceDate DateTime
+  dueDate     DateTime?
+  status      String // UNPAID, PARTIAL, PAID, REJECTED
+
+  total    Decimal
+  taxTotal Decimal
+
+  reference String?
+  receiptId String?
+  receipt   PurchaseReceipt? @relation(fields: [receiptId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([supplierId, status, invoiceDate])
+}
+
+/** -------------------- Inventory -------------------- */
+
+model Inventory {
+  itemId     String
+  locationId String
+
+  onHand    Decimal @default(0)
+  allocated Decimal @default(0)
+  onOrder   Decimal @default(0)
+  backorder Decimal @default(0)
+
+  item     Item     @relation(fields: [itemId], references: [id])
+  location Location @relation(fields: [locationId], references: [id])
+
+  @@id([itemId, locationId])
+  @@index([locationId])
+}
+
+enum InvTransType {
+  PO_RECEIPT
+  SALE
+  ADJUSTMENT
+  TRANSFER_OUT
+  TRANSFER_IN
+  PROD_USE
+  PROD_OUT
+}
+
+model InventoryTransaction {
+  id         String       @id @default(cuid())
+  itemId     String
+  locationId String
+  date       DateTime     @default(now())
+  type       InvTransType
+  qtyChange  Decimal
+  refType    String // e.g. PurchaseReceipt, SalesInvoice, WorkOrder
+  refId      String
+  employeeId String?
+
+  item     Item     @relation(fields: [itemId], references: [id])
+  location Location @relation(fields: [locationId], references: [id])
+
+  @@index([itemId, date])
+  @@index([locationId, date])
+}
+
+/** -------------------- Sales (O2C) -------------------- */
+
+model SalesOrder {
+  id         String           @id @default(cuid())
+  customerId String?
+  customer   BusinessPartner? @relation("SO_Customer", fields: [customerId], references: [id])
+  orderDate  DateTime
+  requiredAt DateTime?
+  locationId String
+  location   Location         @relation(fields: [locationId], references: [id])
+  salesRepId String?
+  salesRep   Employee?        @relation(fields: [salesRepId], references: [id])
+  status     String
+
+  total    Decimal
+  taxTotal Decimal
+  netTotal Decimal
+
+  lines    SalesOrderLine[]
+  invoices SalesInvoice[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([customerId, status, orderDate])
+}
+
+model SalesOrderLine {
+  id      String     @id @default(cuid())
+  orderId String
+  order   SalesOrder @relation(fields: [orderId], references: [id])
+  itemId  String
+  item    Item       @relation(fields: [itemId], references: [id])
+
+  qty        Decimal
+  unitPrice  Decimal
+  discountPc Decimal? // %
+
+  taxCodeId String?
+  taxCode   Tax?    @relation(fields: [taxCodeId], references: [id])
+  lineTotal Decimal
+
+  @@index([orderId, itemId])
+}
+
+model SalesInvoice {
+  id          String           @id @default(cuid())
+  customerId  String?
+  customer    BusinessPartner? @relation("INV_Customer", fields: [customerId], references: [id])
+  invoiceDate DateTime
+  orderId     String?
+  order       SalesOrder?      @relation(fields: [orderId], references: [id])
+  locationId  String
+  location    Location         @relation(fields: [locationId], references: [id])
+  salesRepId  String?
+  salesRep    Employee?        @relation(fields: [salesRepId], references: [id])
+  status      String
+
+  total    Decimal
+  taxTotal Decimal
+
+  lines    SalesInvoiceLine[]
+  payments Payment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([customerId, status, invoiceDate])
+}
+
+model SalesInvoiceLine {
+  id        String       @id @default(cuid())
+  invoiceId String
+  invoice   SalesInvoice @relation(fields: [invoiceId], references: [id])
+  itemId    String
+  item      Item         @relation(fields: [itemId], references: [id])
+
+  qty       Decimal
+  unitPrice Decimal
+
+  taxCodeId String?
+  taxCode   Tax?    @relation(fields: [taxCodeId], references: [id])
+  lineTotal Decimal
+
+  @@index([invoiceId, itemId])
+}
+
+model Payment {
+  id         String           @id @default(cuid())
+  customerId String?
+  customer   BusinessPartner? @relation(fields: [customerId], references: [id])
+  date       DateTime         @default(now())
+  amount     Decimal
+  currency   String           @default("AED")
+  method     String
+  reference  String?
+  invoiceId  String?
+  invoice    SalesInvoice?    @relation(fields: [invoiceId], references: [id])
+}
+
+/** -------------------- Production (BOM & Work Orders) -------------------- */
+
+model BillOfMaterials {
+  id        String  @id @default(cuid())
+  productId String  @unique
+  product   Item    @relation(fields: [productId], references: [id])
+  yieldQty  Decimal @default(1)
+  version   String?
+  active    Boolean @default(true)
+
+  components BOMLine[]
+  WorkOrder  WorkOrder[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BOMLine {
+  id          String          @id @default(cuid())
+  bomId       String
+  bom         BillOfMaterials @relation(fields: [bomId], references: [id])
+  componentId String
+  component   Item            @relation(fields: [componentId], references: [id])
+
+  qtyPer  Decimal
+  wastePc Decimal? // optional scrap %
+
+  @@index([bomId, componentId])
+}
+
+enum WorkOrderStatus {
+  PLANNED
+  RELEASED
+  IN_PROCESS
+  COMPLETED
+  CANCELED
+}
+
+model WorkOrder {
+  id        String           @id @default(cuid())
+  productId String
+  product   Item             @relation(fields: [productId], references: [id])
+  bomId     String?
+  bom       BillOfMaterials? @relation(fields: [bomId], references: [id])
+
+  qtyPlanned  Decimal
+  qtyProduced Decimal?
+  startAt     DateTime?
+  endAt       DateTime?
+  status      WorkOrderStatus @default(PLANNED)
+  locationId  String
+  location    Location        @relation(fields: [locationId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId, status])
+}
+
+/** -------------------- 28-day BDO engine (renamed) -------------------- */
+
+model BDOPlan {
+  id           String   @id @default(cuid())
+  companyId    String
+  blueprintKey String
+  channel      String
+  orderPattern String // "single" | "dual"
+  cadenceDays  Int      @default(28)
+  status       String   @default("ACTIVE")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  cycles BDOCycle[]
+}
+
+model BDOCycle {
+  id            String    @id @default(cuid())
+  companyId     String
+  planId        String
+  cycleStart    DateTime
+  cycleEnd      DateTime
+  scheduledAt   DateTime?
+  launchedAt    DateTime?
+  obariRecordId String?
+  stage         String    @default("STAGED") // STAGED|ORDER|BOOKING|ACTIVE|REPORTING|INVOICING|CLOSED
+  notes         String?
+
+  plan      BDOPlan  @relation(fields: [planId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([companyId, planId, cycleStart, stage])
+}
+
+/** -------------------- Generic BDO + Event log -------------------- */
+
+model BDO {
+  id              String  @id @default(cuid())
+  name            String
+  tenantId        String?
+  lastKnownStatus String?
+
+  supplierId String?
+  locationId String?
+  reference  String?
+
+  estTotal Decimal?
+  estTax   Decimal?
+
+  events Event[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId, lastKnownStatus])
+  @@index([supplierId])
+  @@index([locationId])
+}
+
+model Event {
+  id      String  @id @default(cuid())
+  type    String // "statusChange" | "message" | "priceVariance" | "receipt" | ...
+  payload Json
+  bdoId   String?
+  bdo     BDO?    @relation(fields: [bdoId], references: [id])
+
+  refType String? // "PurchaseOrder" | "PurchaseReceipt" | "SalesInvoice" | ...
+  refId   String?
+
+  createdAt DateTime @default(now())
+
+  @@index([bdoId, type, createdAt])
+}

@@ -1,0 +1,152 @@
+// ────────────────────────────────────────────────
+// corAe Party Master™ — Customers, Vendors & Terms
+// File: apps/studio/prisma/schema/party-master.prisma
+// ────────────────────────────────────────────────
+// Depends on: core-company.prisma, finance-ledger.prisma (optional links)
+// Purpose: Canonical register of parties with credit terms, contacts, addresses,
+//          price agreements, and status controls (hold/blacklist).
+// ────────────────────────────────────────────────
+
+enum PartyKind {
+  CUSTOMER
+  VENDOR
+  BOTH
+}
+
+enum PartyStatus {
+  ACTIVE
+  HOLD
+  SUSPENDED
+  BLACKLISTED
+}
+
+enum PaymentTerm {
+  NET0
+  NET7
+  NET14
+  NET30
+  NET45
+  NET60
+  CUSTOM
+}
+
+enum CreditStatus {
+  OPEN
+  REVIEW
+  BLOCKED
+}
+
+model Party {
+  id             String        @id @default(cuid())
+  companyId      String
+  kind           PartyKind     @default(CUSTOMER)
+  code           String        @unique
+  name           String
+  status         PartyStatus   @default(ACTIVE)
+  taxId          String?
+  trn            String?       // VAT TRN (UAE)
+  website        String?
+  tags           String[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  company        CompanyIdentity @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  contacts       PartyContact[]
+  addresses      PartyAddress[]
+  terms          PartyTerm?
+  agreements     PriceAgreement[]
+
+  @@index([companyId, kind, status])
+  @@index([name])
+}
+
+model PartyContact {
+  id         String   @id @default(cuid())
+  partyId    String
+  fullName   String
+  email      String?
+  phone      String?
+  position   String?
+  isPrimary  Boolean  @default(false)
+  notes      String?
+
+  party      Party    @relation(fields: [partyId], references: [id], onDelete: Cascade)
+}
+
+model PartyAddress {
+  id           String   @id @default(cuid())
+  partyId      String
+  label        String?         // Billing, Shipping, etc.
+  line1        String
+  line2        String?
+  city         String?
+  stateRegion  String?
+  postalCode   String?
+  country      String?
+  isDefault    Boolean  @default(false)
+  geoLat       Decimal? @db.Decimal(10,6)
+  geoLng       Decimal? @db.Decimal(10,6)
+
+  party        Party    @relation(fields: [partyId], references: [id], onDelete: Cascade)
+}
+
+model PartyTerm {
+  id                String       @id @default(cuid())
+  partyId           String       @unique
+  paymentTerm       PaymentTerm  @default(NET0)
+  customDays        Int?
+  creditLimit       Decimal?     @db.Decimal(14,4)
+  creditStatus      CreditStatus @default(OPEN)
+  graceDays         Int?         // post-due tolerance (prefer 0 in corAe)
+  earlyPayDiscount  Decimal?     @db.Decimal(6,2)  // % discount
+  lateFeePct        Decimal?     @db.Decimal(6,2)  // % per period
+  reviewedAt        DateTime?
+  reviewerId        String?      // HrRole.id (Finance)
+  notes             String?
+
+  party             Party        @relation(fields: [partyId], references: [id], onDelete: Cascade)
+}
+
+model PriceAgreement {
+  id            String    @id @default(cuid())
+  partyId       String
+  skuCode       String
+  kind          String    @default("A+X") // "A+X" | "FIXED"
+  xMarkup       Decimal?  @db.Decimal(14,4)
+  fixedPrice    Decimal?  @db.Decimal(14,4)
+  validFrom     DateTime  @default(now())
+  validTo       DateTime?
+  notes         String?
+
+  party         Party     @relation(fields: [partyId], references: [id], onDelete: Cascade)
+
+  @@unique([partyId, skuCode, validFrom])
+  @@index([skuCode])
+}
+
+model PartyHold {
+  id            String     @id @default(cuid())
+  partyId       String
+  reason        String
+  imposedById   String?    // HrRole.id (who placed hold)
+  imposedAt     DateTime   @default(now())
+  liftedAt      DateTime?
+  liftNote      String?
+
+  party         Party      @relation(fields: [partyId], references: [id], onDelete: Cascade)
+}
+
+model BlacklistEntry {
+  id            String     @id @default(cuid())
+  partyId       String
+  reason        String
+  evidenceUrl   String?
+  createdAt     DateTime   @default(now())
+  reviewedById  String?    // HrRole.id
+  reviewedAt    DateTime?
+
+  party         Party      @relation(fields: [partyId], references: [id], onDelete: Cascade)
+
+  @@unique([partyId])
+}

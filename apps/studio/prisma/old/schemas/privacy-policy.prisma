@@ -1,0 +1,19 @@
+// corAe Pricing Policy™ — A+X Governance
+enum PolicyScope { GLOBAL PARTY SKU SEGMENT }
+
+model PricingPolicy {
+  id            String     @id @default(cuid())
+  companyId     String
+  scope         PolicyScope @default(GLOBAL)
+  partyId       String?
+  skuId         String?
+  segment       String?
+  minMarginPct  Decimal     @db.Decimal(8,4)  // hard stop
+  defaultX      Decimal?    @db.Decimal(14,4) // default X for A+X
+  allowVariance Decimal?    @db.Decimal(8,4)  // 0 = no variance
+  effectiveFrom DateTime    @default(now())
+  effectiveTo   DateTime?
+  notes         String?
+
+  company       CompanyIdentity @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}

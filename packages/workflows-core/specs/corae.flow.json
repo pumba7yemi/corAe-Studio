@@ -1,0 +1,13 @@
+{
+  "id": "corae.flow",
+  "version": "1.0.0",
+  "title": "corAe Generic Flow",
+  "checkpoints": [
+    { "id": "capture",  "desc": "Capture initial intent/context", "gate": "human-approve" },
+    { "id": "validate", "desc": "Validate inputs, constraints",   "gate": "auto" },
+    { "id": "plan",     "desc": "Plan minimal safe actions",      "gate": "human-approve" },
+    { "id": "execute",  "desc": "Execute planned actions",        "gate": "auto" },
+    { "id": "handoff",  "desc": "Summarise and notify",           "gate": "human-approve" }
+  ],
+  "on_error": "pause_and_notify"
+}

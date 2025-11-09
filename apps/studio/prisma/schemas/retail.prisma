@@ -1,0 +1,332 @@
+// prisma/retail.prisma
+// corAe • Choice Plus Retail Backbone (Catalog + Vendors + 28-Day Stock/PO flow)
+// Drop-in Prisma schema to power products w/ images, categories, vendors, stock, PO, GRV, and analysis.
+//
+// NOTES
+// - Phase 1 images: store under /public/products/<SKU>.jpg and set Product.imageUrl accordingly.
+// - Phase 2 images: switch to CDN/S3 and store full URLs in Product.imageUrl (+ thumbnails).
+// - 28-day logic: InventoryCycle + InventoryWeek + StockLedger give you counts + movements;
+//   PurchaseOrder/Items + GRV + PriceHistory enable end-to-end purchasing and analysis.
+// - Keep SKU unique and stable. Use StockLedger for all movements (PO receipt, sale, adjust, write-off).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = env("DATABASE_PROVIDER") // "postgresql" | "mysql" | "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/* ───────────────────────── Enums ───────────────────────── */
+
+enum Unit {
+  pc
+  kg
+  box
+  pack
+  litre
+  dozen
+}
+
+enum LedgerType {
+  RECEIPT        // +qty from supplier (PO receipt)
+  SALE           // -qty sold
+  ADJUSTMENT     // +/- manual correction (e.g., shrink/theft fix)
+  RETURN_VENDOR  // -qty returned to vendor (GRV)
+  WRITE_OFF      // -qty expired/damaged
+  TRANSFER_IN    // +qty from location A
+  TRANSFER_OUT   // -qty to location B
+}
+
+enum POStatus {
+  DRAFT
+  SENT
+  CONFIRMED      // "corAe Confirmed" (price/qty/date locked)
+  PARTIAL        // partially received
+  RECEIVED       // fully received
+  CLOSED         // invoiced & closed
+  CANCELLED
+}
+
+enum GRVReason {
+  DAMAGED
+  EXPIRED
+  WRONG_ITEM
+  PRICE_DISPUTE
+  OTHER
+}
+
+/* ───────────────────────── Core Tables ───────────────────────── */
+
+model Vendor {
+  id            String         @id @default(cuid())
+  code          String         @unique // short code e.g. "GASJ", "IFFCO"
+  name          String
+  email         String?        @db.VarChar(320)
+  phone         String?        @db.VarChar(64)
+  notes         String?
+  isActive      Boolean        @default(true)
+
+  // Commercial terms
+  requiresPO    Boolean        @default(true)   // Choice Plus policy
+  priceLock     Boolean        @default(true)   // corAe Pricelock Chain
+  defaultLeadDays Int         @default(3)
+  deliveryDays  String?        // CSV of expected weekdays, e.g. "Mon,Thu"
+  paymentTerms  String?        // e.g. "Prepaid", "Net 14", "First Friday M+1"
+
+  products      Product[]      @relation("VendorProducts")
+  purchaseOrders PurchaseOrder[]
+
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  slug      String    @unique
+  name      String
+  parentId  String?
+  parent    Category? @relation("CategoryToParent", fields: [parentId], references: [id])
+  children  Category[] @relation("CategoryToParent")
+  products  Product[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id           String     @id @default(cuid())
+  sku          String     @unique
+  barcode      String?    @unique
+  name          String
+  brand         String?
+  description   String?
+  unit          Unit       @default(pc)
+  unitSize      String?    // e.g., "110g", "200s", "1L"
+  // Pricing (current). Historic changes in PriceHistory.
+  retailPrice   Decimal    @db.Decimal(10,2) // AED
+  costPrice     Decimal    @db.Decimal(10,3) // AED (incl tax if you prefer)
+  vatRate       Decimal?   @db.Decimal(5,2)  // e.g., 5.00
+
+  // Categorisation
+  categoryId    String?
+  category      Category?  @relation(fields: [categoryId], references: [id])
+
+  // Supplier (primary)
+  vendorId      String?
+  vendor        Vendor?    @relation("VendorProducts", fields: [vendorId], references: [id])
+
+  // Images
+  imageUrl      String?    // Phase 1: `/products/<SKU>.jpg` or full CDN URL
+  thumbnailUrl  String?
+  blurDataUrl   String?
+
+  // Reorder policy (28-day cadence aware)
+  reorderThreshold Int      @default(0)      // when on-hand < threshold → order
+  suggestedOrderQty Int     @default(0)      // baseline suggestion
+  leadTimeDays     Int      @default(3)
+  cycleLengthDays  Int      @default(28)
+
+  // Status
+  isActive      Boolean     @default(true)
+  trackExpiry   Boolean     @default(false)
+
+  // Relations
+  images        ProductImage[]
+  priceHistory  PriceHistory[]
+  stockLedger   StockLedger[]
+  inventoryWeeks InventoryWeek[]
+  purchaseOrderItems PurchaseOrderItem[]
+  grvItems      GRVItem[]
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([name], map: "idx_product_name")
+  @@index([categoryId], map: "idx_product_category")
+  @@index([vendorId], map: "idx_product_vendor")
+}
+
+model ProductImage {
+  id         String   @id @default(cuid())
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id])
+  url        String
+  alt        String?
+  isPrimary  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+model PriceHistory {
+  id         String    @id @default(cuid())
+  productId  String
+  product    Product   @relation(fields: [productId], references: [id])
+  costPrice  Decimal   @db.Decimal(10,3)
+  retailPrice Decimal  @db.Decimal(10,2)
+  changedAt  DateTime  @default(now())
+  note       String?
+}
+
+/* ───────────────────────── Inventory & Analysis ─────────────────────────
+   Use StockLedger for source-of-truth movements (receipts, sales, returns, etc.)
+   Use InventoryCycle + InventoryWeek to capture weekly counts in the 28-day flow.
+*/
+
+model StockLedger {
+  id          String     @id @default(cuid())
+  productId   String
+  product     Product    @relation(fields: [productId], references: [id])
+  type        LedgerType
+  qty         Int
+  refId       String?    // link to PO, GRV, Sale, etc.
+  refTable    String?    // "PurchaseOrderItem", "GRVItem", "Sale", ...
+  location    String?    // future: multi-location
+  reason      String?
+  at          DateTime   @default(now())
+
+  @@index([productId, at], map: "idx_ledger_product_at")
+}
+
+model InventoryCycle {
+  id           String     @id @default(cuid())
+  label        String     @unique // e.g., "2025-Wk1-28DayCycle-#12"
+  startDate    DateTime
+  endDate      DateTime
+  cycleLengthDays Int     @default(28)
+  notes        String?
+
+  weeks        InventoryWeek[]
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model InventoryWeek {
+  id             String        @id @default(cuid())
+  cycleId        String
+  cycle          InventoryCycle @relation(fields: [cycleId], references: [id])
+
+  productId      String
+  product        Product        @relation(fields: [productId], references: [id])
+
+  weekNumber     Int            // 0..4 (0 = Starting Stock, 1..4 = weekly counts)
+  countedQty     Int            // stock-on-hand at that checkpoint
+  expiryDate     DateTime?      // if trackExpiry = true
+  notes          String?
+
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@unique([cycleId, productId, weekNumber], map: "uq_cycle_product_week")
+  @@index([productId, weekNumber], map: "idx_invweek_product_week")
+}
+
+/* ───────────────────────── Purchasing (PO) & GRV ───────────────────────── */
+
+model PurchaseOrder {
+  id            String           @id @default(cuid())
+  number        String           @unique   // human-friendly PO number
+  vendorId      String
+  vendor        Vendor           @relation(fields: [vendorId], references: [id])
+  status        POStatus         @default(DRAFT)
+
+  // Pricelock/Confirmed signals (corAe Pricelock Chain + corAe Confirmed)
+  priceLocked   Boolean          @default(false)
+  confirmedAt   DateTime?
+  deliveryDue   DateTime?        // requested delivery date
+  paymentTerms  String?          // redundancy for snapshotting
+
+  // Messaging trace (per SOP)
+  vendorMessageSentAt DateTime?  // Day 2 pre-PO confirm request
+  vendorConfirmNote   String?
+
+  items         PurchaseOrderItem[]
+  invoicesRef   String?          // external invoice ref(s)
+  notes         String?
+
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@index([vendorId, status], map: "idx_po_vendor_status")
+}
+
+model PurchaseOrderItem {
+  id            String        @id @default(cuid())
+  poId          String
+  po            PurchaseOrder @relation(fields: [poId], references: [id])
+  productId     String
+  product       Product       @relation(fields: [productId], references: [id])
+
+  orderedQty    Int
+  receivedQty   Int           @default(0)
+  unitCost      Decimal       @db.Decimal(10,3) // snapshot of agreed cost
+  unit          Unit          @default(pc)
+
+  // On receipt, write to StockLedger(RECEIPT)
+  receivedAt    DateTime?
+  notes         String?
+
+  @@index([poId])
+  @@index([productId])
+}
+
+model GRV { // Goods Return Voucher (under Stock & Expiry, UAE Retail module)
+  id           String     @id @default(cuid())
+  number       String     @unique
+  vendorId     String
+  vendor       Vendor     @relation(fields: [vendorId], references: [id])
+  reason       GRVReason
+  notes        String?
+  createdAt    DateTime   @default(now())
+
+  items        GRVItem[]
+}
+
+model GRVItem {
+  id         String    @id @default(cuid())
+  grvId      String
+  grv        GRV       @relation(fields: [grvId], references: [id])
+  productId  String
+  product    Product   @relation(fields: [productId], references: [id])
+  qty        Int
+  unit       Unit      @default(pc)
+  unitCost   Decimal   @db.Decimal(10,3) // snapshot
+
+  // When GRV is issued, write StockLedger(RETURN_VENDOR)
+}
+
+/* ───────────────────────── Sales Hook (POS Aggregate) ─────────────────────────
+   If using an external POS, mirror daily aggregates here (or line items if preferred).
+   On sync, write StockLedger(SALE).
+*/
+
+model SaleDay {
+  id          String    @id @default(cuid())
+  businessDay DateTime  // date-only preferred (use midnight in local TZ)
+  productId   String
+  product     Product   @relation(fields: [productId], references: [id])
+  qtySold     Int
+  revenueAED  Decimal   @db.Decimal(12,2)
+
+  createdAt   DateTime  @default(now())
+
+  @@unique([businessDay, productId])
+  @@index([productId, businessDay], map: "idx_saleday_product_day")
+}
+
+/* ───────────────────────── Convenience Views (Materializable) ─────────────────────────
+   Compute weekly sales in app code:
+   - Week1Sales = Starting(week 0) - Week1Count
+   - Week2Sales = Week1Count - Week2Count
+   - ... etc.
+   Flag reorder when (latestCount < reorderThreshold) OR (predicted < min).
+*/
+
+/* ───────────────────────── Seed Helpers (optional) ───────────────────────── */
+
+model SeedTag {
+  id        String   @id @default(cuid())
+  key       String   @unique // e.g., "seed:retail:v1"
+  createdAt DateTime @default(now())
+}

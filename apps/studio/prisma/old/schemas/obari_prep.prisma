@@ -1,0 +1,70 @@
+// ===========================================================
+// corAe • OBARI Intake (start-line) — 150.logic
+// Lives as an ephemeral/scratch record ahead of ObariOrder.
+// Sources: SCHEDULE | SALES | VISUAL | ADHOC | POS
+// Emits: ObariOrder (+ optional ObariBooking)
+// Reuses enums from obari.prisma (InvoiceDirection, ScheduleMode, WeekRef)
+// ===========================================================
+
+enum IntakeStatus {
+  DRAFT      // user/CAIA filling
+  READY      // validated; can issue
+  ISSUED     // order emitted (keep for audit trail)
+  CANCELLED  // abandoned
+}
+
+enum IntakeSource {
+  SCHEDULE
+  SALES
+  VISUAL
+  ADHOC
+  POS
+}
+
+model ObariIntake {
+  id            String        @id @default(cuid())
+
+  // Where this came from + lifecycle
+  source        IntakeSource  @default(ADHOC)
+  status        IntakeStatus  @default(DRAFT)
+
+  // Optional BDO preset that auto-fills fields
+  bdoId         String?
+
+  // OBARI alignment
+  direction     InvoiceDirection          // PURCHASE | SALES
+  scheduleMode  ScheduleMode   @default(CYCLE_28)
+  expectedWeek  WeekRef?
+
+  // Commercial / item (minimal — we keep it lean here)
+  itemCode      String
+  description   String?
+  qty           Decimal        @db.Decimal(14,3) @default(1)
+  unit          String?        // EA | KG | L
+  unitPrice     Decimal        @db.Decimal(12,4) @default(0)
+  currency      String         @default("AED")
+  taxCode       String?
+
+  // Parties (soft codes until Partners lands)
+  vendorCode    String?
+  customerCode  String?
+
+  // Diary + Script (optional helpers)
+  diaryHoldRef  String?        // reference to Pulse/Diary hold
+  script        String?        // YAML/JSON-ish “corAe Script” text
+
+  // Freeform notes
+  notes         String?
+
+  // Outcome (when ISSUED)
+  issuedOrderId String?
+  issuedAt      DateTime?
+
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  // Guidance indexes
+  @@index([status, source])
+  @@index([direction, expectedWeek])
+  @@index([bdoId])
+}

@@ -1,0 +1,122 @@
+// ────────────────────────────────────────────────
+/* corAe ChronoFlow™ — Global Event Ledger
+ * File: apps/studio/prisma/schema/chrono-workflow.prisma
+ * Purpose: Immutable, chronological audit of every action taken by wizards,
+ * agents, and humans across corAe (First Trade, HR, Finance, OBARI, etc.)
+ * Dependencies: core-company.prisma, hr-role.prisma, workflow-agent.prisma,
+ *               obari-flow.prisma, finance-ledger.prisma, first-trade.prisma
+ */
+// ────────────────────────────────────────────────
+
+enum ChronoModule {
+  CORE
+  FIRST_TRADE
+  HR
+  FINANCE
+  OBARI
+  INVENTORY
+  INVOICING
+  COMPLIANCE
+  AUTOMATE
+  APPRAISAL
+}
+
+enum ActorType {
+  HUMAN
+  AI_AGENT
+  SYSTEM
+}
+
+enum ChronoAction {
+  CREATE
+  UPDATE
+  APPROVE
+  REJECT
+  ESCALATE
+  ASSIGN
+  SCHEDULE
+  EXECUTE
+  COMPLETE
+  RECONCILE
+  CLOSE
+}
+
+enum ChronoResult {
+  SUCCESS
+  FAILURE
+  PARTIAL
+  BLOCKED
+  NOOP
+}
+
+model ChronoEvent {
+  id            String         @id @default(cuid())
+  ts            DateTime       @default(now())      // event timestamp
+  module        ChronoModule
+  action        ChronoAction
+  result        ChronoResult   @default(SUCCESS)
+
+  companyId     String
+  actorType     ActorType
+  actorId       String?        // WorkflowPartner.id (HUMAN) | WorkflowAgent.id (AI_AGENT) | system key (SYSTEM)
+  actorName     String?        // snapshot for human readability
+
+  // Context / cross-links (all optional, use when applicable)
+  roleId        String?        // HrRole.id (who held the baton)
+  agentId       String?        // WorkflowAgent.id
+  flowId        String?        // ObariFlow.id
+  ledgerEntryId String?        // LedgerEntry.id
+  invoiceId     String?        // ObariInvoice.id
+  firstDealId   String?        // FirstDeal.id
+  bdoId         String?        // BdoRecord.id
+  gapTicketRef  String?        // free-form ref to GapTicket or similar
+
+  summary       String?        // short human-readable line
+  details       Json?          // structured payload (input/output/changes)
+  checksum      String?        // optional integrity hash of payload/content
+
+  // Relations
+  company       CompanyIdentity  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  role          HrRole?          @relation(fields: [roleId], references: [id])
+  agent         WorkflowAgent?   @relation(fields: [agentId], references: [id])
+
+  // Baton edges (outgoing/incoming)
+  outgoingEdges ChronoEdge[]     @relation("EdgeFrom")
+  incomingEdges ChronoEdge[]     @relation("EdgeTo")
+
+  @@index([companyId, ts])
+  @@index([module, ts])
+  @@index([actorType, actorId])
+  @@index([flowId])
+  @@index([ledgerEntryId])
+  @@index([invoiceId])
+  @@index([firstDealId])
+}
+
+model ChronoEdge {
+  id            String       @id @default(cuid())
+  fromEventId   String
+  toEventId     String
+  batonNote     String?      // e.g., "ORDER → BOOKING", or escalation reason
+  createdAt     DateTime     @default(now())
+
+  from          ChronoEvent  @relation("EdgeFrom", fields: [fromEventId], references: [id], onDelete: Cascade)
+  to            ChronoEvent  @relation("EdgeTo", fields: [toEventId], references: [id], onDelete: Cascade)
+
+  @@index([fromEventId])
+  @@index([toEventId])
+}
+
+model ChronoAttachment {
+  id            String       @id @default(cuid())
+  eventId       String
+  label         String?      // e.g., "POD", "Invoice PDF", "Contract"
+  url           String       // storage location
+  mimeType      String?
+  bytes         Int?
+  createdAt     DateTime     @default(now())
+
+  event         ChronoEvent  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+}

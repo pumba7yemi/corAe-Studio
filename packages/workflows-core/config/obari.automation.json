@@ -1,0 +1,97 @@
+{
+  "_comment": "packages/workflows-core/config/obari.automation.json",
+  "$schema": "https://corae.os2/schemas/obari.automation.v1.json",
+  "namespace": "obari",
+  "version": 1,
+  "enabled": true,
+
+  "stages": {
+    "order":     { "auto": true },
+    "booking":   { "auto": true, "gate": "bookingCommit" },
+    "active":    { "auto": true },
+    "reporting": { "auto": true, "gate": "reportingSignoff" },
+    "invoicing": { "auto": true, "gate": "invoiceRaise" }
+  },
+
+  "sla": {
+    "bookingCommit_hours": 4,
+    "activeDelay_minutes": 30,
+    "reportingUpload_hours": 12,
+    "reportingSignoff_hours": 24,
+    "invoiceRaise_hours": 24
+  },
+
+  "variance": {
+    "qty_soft_pct": 2,
+    "qty_hard_pct": 10,
+    "price_change_blocked": true,
+    "date_slip_soft_minutes": 60,
+    "date_slip_hard_minutes": 240
+  },
+
+  "evidence": {
+    "required": ["GRV", "Photo", "Signature"],
+    "photo_min_count": 2,
+    "signature_types": ["customer", "driver"]
+  },
+
+  "exceptions": {
+    "classes": ["TIME_SLA", "QTY_VARIANCE", "EVIDENCE_MISSING", "PRICE_TERMS", "COMPLIANCE"],
+    "hard": ["PRICE_TERMS", "QTY_VARIANCE>qty_hard_pct", "TIME_SLA>date_slip_hard_minutes"],
+    "soft": ["QTY_VARIANCE>qty_soft_pct", "TIME_SLA>date_slip_soft_minutes", "EVIDENCE_MISSING", "COMPLIANCE"]
+  },
+
+  "gates": {
+    "bookingCommit":    { "ownerRole": "OperationsManager", "backupRole": "WorkflowExecutive" },
+    "reportingSignoff": { "ownerRole": "FinanceManager",    "backupRole": "Owner" },
+    "invoiceRaise":     { "ownerRole": "FinanceManager",    "enabled": true }
+  },
+
+  "messaging": {
+    "autoSend": true,
+    "channels": ["CIMS", "WhatsApp"],
+    "templates": {
+      "BOOKING_CONFIRM": "Booking confirmed ✅\\nPO {poId} · SO {soId}\\nDate: {bookingDate}\\nQty: {bookingQty} @ {unitPrice}",
+      "ETA_UPDATE": "Heads up ⏱️ New ETA {eta}. Ref: {poId}/{soId}",
+      "DELAY_NOTICE": "Delay reported ⚠️ {delayMinutes} mins. Reason: {reason}. New ETA {eta}.",
+      "GRV_SENT": "GRV & proofs sent 📎 Ref: {poId}/{soId}. Actual: {actualQty}. Returns: {returnsQty}.",
+      "CREDIT_NOTE_INFO": "Returns processed. Credit will reflect on invoice {invoiceId} (Ref: {soId})."
+    }
+  },
+
+  "escalation": {
+    "levels": [
+      { "after_minutes": 30,  "notifyRoles": ["OperationsManager"] },
+      { "after_minutes": 120, "notifyRoles": ["FinanceManager"] },
+      { "after_minutes": 360, "notifyRoles": ["Owner"] }
+    ]
+  },
+
+  "ui": {
+    "exceptionsQueue": { "sort": ["severity", "slaRemaining"], "filters": ["Booking", "Active", "Reporting"] },
+    "badges": { "priceLock": "Price-Locked", "reportingApproved": "Reporting Approved", "readyToInvoice": "Ready to Invoice" }
+  },
+
+  "policy": {
+    "noPriceEditsOutsideFinance": true,
+    "opsMayProposeQtyDateOnly": true,
+    "invoiceGuardRequiresReportingApproved": true
+  },
+
+  "workflows": {
+    "finance.po-so.issue.v1": {
+      "title": "Issue PO/SO (OBARI)",
+      "description": "Kick off Purchase/Sales Order flow under OBARI.",
+      "steps": [
+        { "id": "prepare-ledgers", "type": "task", "timeout": "5m" },
+        { "id": "draft-po", "type": "task", "timeout": "10m" },
+        { "id": "route-approval", "type": "decision", "assignee": "FINANCE_MANAGER" },
+        { "id": "issue-docs", "type": "task", "timeout": "5m" }
+      ],
+      "emitHaveYou": [
+        { "text": "Have you reviewed today’s pending POs?", "schedule": "DAILY 09:00", "scope": "BUSINESS" },
+        { "text": "Have you matched supplier invoices to POs?", "schedule": "DAILY 16:00", "scope": "BUSINESS" }
+      ]
+    }
+  }
+}

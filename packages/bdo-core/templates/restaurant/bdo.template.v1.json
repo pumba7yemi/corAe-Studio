@@ -1,0 +1,43 @@
+{
+  "blueprintKey": "restaurant.v1",
+  "name": "Restaurant 28-Day Supply",
+  "channel": "hospitality",
+  "cadenceDays": 28,
+  "orderPattern": "single",
+  "defaultTerms": "NET14",
+  "defaultMarginPct": 18,
+  "workflow": {
+    "stages": [
+      "Booking",
+      "Active",
+      "Reporting",
+      "Invoicing"
+    ]
+  },
+  "documentation": {
+    "required": [
+      "Delivery Note",
+      "GRV"
+    ],
+    "generateAuto": true,
+    "retainYears": 2
+  },
+  "vendorPolicy": {
+    "priceLock": true,
+    "renewalCycleDays": 28
+  },
+  "lines": [
+    {
+      "sku": "FOOD-RICE-25KG",
+      "desc": "Rice 25kg",
+      "uom": "bag",
+      "plannedQty": 20
+    },
+    {
+      "sku": "SERV-CLEAN",
+      "desc": "Kitchen Deep Clean",
+      "uom": "job",
+      "plannedQty": 1
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "id": "operations.obari.reporting.v1",
+  "version": "1.0.1",
+  "module": "obari",
+  "roleHint": ["WorkflowExecutive", "FinanceManager"],
+  "checkpoints": [
+    { "id": "grv-capture", "desc": "Upload GRV, proofs, photos", "gate": "auto" },
+    { "id": "returns-record", "desc": "Record returns/damages/write-offs", "gate": "auto" },
+    { "id": "variance-reconcile", "desc": "Reconcile plan vs actual quantities", "gate": "auto" },
+    { "id": "finance-signoff", "desc": "Finance verifies billable qty & credits", "gate": "human-approve", "onSuccess": ["obari.reporting.approved"] }
+  ]
+}

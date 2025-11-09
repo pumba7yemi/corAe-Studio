@@ -1,0 +1,78 @@
+// ────────────────────────────────────────────────
+// corAe HR™ — Roles, Workflow Partners™, and Overseers™
+// File: apps/studio/prisma/schema/hr-role.prisma
+// ────────────────────────────────────────────────
+// Depends on: core-company.prisma  (CompanyIdentity)
+// Purpose: define all human and AI-driven roles, hierarchies, and contract logic
+// ────────────────────────────────────────────────
+
+enum HrRoleType {
+  OWNER
+  MANAGEMENT
+  FINANCE
+  OPERATIONS
+  HR
+  WORKFLOW_EXECUTIVE   // Overseer of corAe System execution
+  WORKFLOW_PARTNER     // Ground-level operative
+  AI_AGENT             // Embedded AI automation unit
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  CONSULTANT
+  AI_AUTOMATION
+}
+
+enum PayrollCycle {
+  WEEKLY
+  BIWEEKLY
+  MONTHLY
+  PROJECT
+}
+
+model HrRole {
+  id              String           @id @default(cuid())
+  companyId       String
+  roleKey         HrRoleType
+  title           String
+  description     String?
+  employmentType  EmploymentType   @default(FULL_TIME)
+  payrollCycle    PayrollCycle     @default(MONTHLY)
+  baseSalary      Decimal?         @db.Decimal(14,4)
+  currency        String?          @default("AED")
+  aiAgentLinked   Boolean          @default(false)
+  reportsToId     String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  company         CompanyIdentity  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  reportsTo       HrRole?          @relation("HrRoleHierarchy", fields: [reportsToId], references: [id])
+  subordinates    HrRole[]         @relation("HrRoleHierarchy")
+
+  workflowPartners WorkflowPartner[]
+}
+
+model WorkflowPartner {
+  id              String           @id @default(cuid())
+  roleId          String
+  companyId       String
+  fullName        String
+  email           String?
+  phone           String?
+  visaNumber      String?
+  passportNumber  String?
+  nationality     String?
+  isHuman         Boolean          @default(true)
+  aiAgentRef      String?
+  status          String           @default("active") // active | suspended | exited
+  joinedAt        DateTime         @default(now())
+  exitedAt        DateTime?
+  accommodation   String?
+  insuranceNumber String?
+  remarks         String?
+
+  role            HrRole           @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  company         CompanyIdentity  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}

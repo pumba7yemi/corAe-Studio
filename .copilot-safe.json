@@ -1,0 +1,14 @@
+{
+  "safePaths": [
+    "apps/studio/**",
+    "apps/core/**",
+    "apps/shared/**",
+    "tests/**"
+  ],
+  "safeCommands": [
+    "pnpm --filter @corae/studio build",
+    "pnpm --filter @corae/studio dev",
+    "pnpm --filter @corae/studio test"
+  ],
+  "askForConfirmationOutsideSafeZone": true
+}

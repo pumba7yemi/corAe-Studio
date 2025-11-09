@@ -1,0 +1,161 @@
+// =====================================
+// CIMS Correspond™ Prisma Schema (v1.0)
+// Intelligent Correspondence Engine for CIMS
+// =====================================
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../../../packages/.generated/cims-correspond"
+}
+
+datasource db {
+  provider = "sqlite"      // or "postgresql" / "mysql" as per your env
+  url      = env("DATABASE_URL")
+}
+
+// ---------------- ENUMS ----------------
+enum CorrespondScope {
+  WORK
+  HOME
+  BUSINESS
+}
+
+enum CorrespondDirection {
+  INBOUND
+  OUTBOUND
+}
+
+// ---------------- MODELS ----------------
+
+model CorrespondEmailThread {
+  id               String                  @id @default(cuid())
+  externalThreadId String?
+  subject          String
+  participants     Json
+  scope            CorrespondScope         @default(WORK)
+  orgId            String?
+  householdId      String?
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
+
+  messages         CorrespondEmailMessage[]
+  snapshots        CorrespondSnapshot[]
+
+  @@index([scope, orgId])
+  @@index([scope, householdId])
+}
+
+model CorrespondEmailMessage {
+  id           String                 @id @default(cuid())
+  threadId     String
+  thread       CorrespondEmailThread  @relation(fields: [threadId], references: [id])
+  direction    CorrespondDirection
+  fromName     String?
+  fromEmail    String
+  toList       Json
+  ccList       Json?
+  bccList      Json?
+  subject      String
+  bodyText     String
+  bodyHtml     String?
+  attachments  Json?
+  headers      Json?
+  sentAt       DateTime               @default(now())
+  scope        CorrespondScope        @default(WORK)
+  orgId        String?
+  householdId  String?
+
+  @@index([threadId])
+  @@index([scope, sentAt])
+}
+
+model CorrespondSnapshot {
+  id            String                @id @default(cuid())
+  threadId      String
+  thread        CorrespondEmailThread @relation(fields: [threadId], references: [id])
+  messageId     String
+  signature     String
+  features      Json
+  responseText  String
+  responseHtml  String?
+  toneProfile   String
+  sentiment     String
+  autoMode      Boolean               @default(false)
+  scope         CorrespondScope       @default(WORK)
+  orgId         String?
+  householdId   String?
+  createdAt     DateTime              @default(now())
+
+  @@index([signature])
+  @@index([scope, createdAt])
+}
+
+model CorrespondLearningEvent {
+  id          String              @id @default(cuid())
+  snapshotId  String
+  snapshot    CorrespondSnapshot  @relation(fields: [snapshotId], references: [id])
+  kind        String
+  meta        Json?
+  createdAt   DateTime            @default(now())
+
+  @@index([snapshotId])
+  @@index([createdAt])
+}
+
+model CorrespondTemplate {
+  id          String           @id @default(cuid())
+  signature   String           @unique
+  text        String
+  html        String?
+  toneProfile String
+  useCount    Int              @default(0)
+  autoMode    Boolean          @default(false)
+  scope       CorrespondScope  @default(WORK)
+  orgId       String?
+  householdId String?
+  isShared    Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([scope, orgId])
+  @@index([scope, householdId])
+}
+
+model CorrespondAutoConfirmRule {
+  id           String           @id @default(cuid())
+  signature    String           @unique
+  approvals    Int              @default(0)
+  enabled      Boolean          @default(false)
+  scope        CorrespondScope  @default(WORK)
+  orgId        String?
+  householdId  String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@index([scope, enabled])
+}
+
+model CorrespondVerificationLog {
+  id              String          @id @default(cuid())
+  messageId       String
+  readerUserId    String
+  verifiedAt      DateTime        @default(now())
+  appraisalPoints Int             @default(1)
+  scope           CorrespondScope @default(WORK)
+  orgId           String?
+  householdId     String?
+
+  @@index([readerUserId, verifiedAt])
+  @@index([scope, verifiedAt])
+}
+
+// Shared ledger with Pulse/Appraisal
+model AppraisalCreditLedger {
+  id        String   @id @default(cuid())
+  userId    String
+  reason    String
+  points    Int      @default(1)
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}

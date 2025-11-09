@@ -1,0 +1,31 @@
+// corAe Shipping & Fulfilment™
+enum ShipmentStatus { READY PICKED PACKED IN_TRANSIT DELIVERED FAILED RETURNED }
+
+model Shipment {
+  id            String         @id @default(cuid())
+  companyId     String
+  salesOrderId  String
+  carrier       String?
+  trackingNo    String?
+  status        ShipmentStatus @default(READY)
+  shippedAt     DateTime?
+  deliveredAt   DateTime?
+  podUrl        String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  company       CompanyIdentity @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  salesOrder    SalesOrder      @relation(fields: [salesOrderId], references: [id], onDelete: Cascade)
+
+  lines         ShipmentLine[]
+}
+
+model ShipmentLine {
+  id          String    @id @default(cuid())
+  shipmentId  String
+  salesLineId String
+  qty         Decimal   @db.Decimal(12,3)
+
+  shipment    Shipment  @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  salesLine   SalesLine @relation(fields: [salesLineId], references: [id], onDelete: Cascade)
+}

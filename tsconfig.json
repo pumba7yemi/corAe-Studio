@@ -1,59 +1,95 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "jsx": "preserve",
+
     "strict": true,
     "noEmit": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "allowJs": true,
     "resolveJsonModule": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"],
-      "@/app/*": ["./app/*"],
-      "@/api/*": ["./api/*"],
-      "@/brand/*": ["./brand/*"],
-      "@/caia/*": ["./caia/*"],
-      "@/cims/*": ["./cims/*"],
-      "@/memory-cube/*": ["./memory-cube/*"],
-      "@/agent/*": ["./agent/*"],
-      "@/bbb/*": ["./bbb/*"],
-      "@/hr/*": ["./hr/*"],
-      "@/obari/*": ["./obari/*"],
-      "@/report/*": ["./report/*"],
-      "@/components/*": ["./components/*"],
-      "@/ship/*": ["./ship/*"],
-      "@/ui/*": ["./ui/*"],
-      "@/workflows/*": ["./workflows/*"]
-    },
-    "types": ["node"],
-    "plugins": [{ "name": "next" }],
+    "allowJs": true,
     "incremental": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+
+    "baseUrl": ".",
+
+  "paths": {
+      "@/*": ["src/*", "*"],
+
+      "@studio/*": ["apps/studio/*", "apps/studio/app/*"],
+      "@ship/*": ["apps/ship/*", "apps/ship/app/*"],
+      "@shipyard/*": ["apps/shipyard/*", "apps/shipyard/app/*"],
+
+      "@/app/*": [
+        "apps/studio/app/*",
+        "apps/shipyard/app/*",
+        "apps/ship/app/*",
+        "src/app/*",
+        "app/*"
+      ],
+      "@/api/*": [
+        "apps/studio/app/api/*",
+        "apps/shipyard/app/api/*",
+        "apps/ship/app/api/*",
+        "src/app/api/*",
+        "app/api/*"
+      ],
+
+  "@/lib/*": ["apps/studio/app/lib/*", "apps/studio/lib/*", "lib/*", "src/lib/*", "../../src/lib/*"],
+      "@/components/*": ["apps/studio/components/*", "src/components/*", "components/*"],
+      "@/ui/*": ["src/components/ui/*", "src/ui/*", "ui/*"],
+
+      "@biz-db": ["apps/studio/generated/biz"],
+
+      "@corae/cims-core": ["packages/cims-core/src"],
+  "@corae/caia-core": ["packages/caia-core/src"],
+  "@corae/workflows-core": ["packages/workflows-core/src"],
+      "@corae/workfocus-core/*": ["packages/workfocus-core/*"],
+      "@corae/bdo-core": ["packages/bdo-core/src"],
+      "@corae/bdo-core/*": ["packages/bdo-core/*"],
+
+      "@services/*": ["src/services/*", "services/*"],
+
+      "@/agent/*": ["src/agent/*", "packages/agent/*"],
+      "@/bbb/*": ["src/bbb/*", "packages/bbb/*"],
+      "@/build/*": ["src/build/*", "build/*"],
+  "@/caia/*": ["src/caia/*", "caia/*", "apps/studio/src/caia/*"],
+      "@/cims/*": ["src/cims/*", "cims/*"],
+      "@/memory-cube/*": ["src/memory-cube/*", "memory-cube/*"],
+      "@/hr/*": ["src/hr/*", "hr/*"],
+      "@/obari/*": ["src/obari/*", "packages/obari/*"],
+      "@/report/*": ["src/report/*", "report/*"],
+      "@/ship-old/*": ["zzzold/ship/*"],
+
+      "@app/*": ["apps/studio/app/*"],
+      "@components/*": ["apps/studio/components/*"],
+      "@api/*": ["apps/studio/app/api/*"]
+    },
+
+    "types": ["node"],
+    "plugins": [{ "name": "next" }]
   },
-  "include": [
+
+    "include": [
+    "src/**/*",
     "app/**/*",
-    "api/**/*",
-    "brand/**/*",
-    "caia/**/*",
-    "cims/**/*",
-    "memory-cube/**/*",
-    "agent/**/*",
-    "bbb/**/*",
-    "hr/**/*",
-    "obari/**/*",
-    "report/**/*",
+    "apps/studio/**/*",
+    "apps/ship/**/*",
+    "apps/shipyard/**/*",
     "components/**/*",
-    "ship/**/*",
-    "ui/**/*",
-    "workflows/**/*",
     "lib/**/*",
+    "packages/**/*",
+    "build/**/*",
+      "services/**/*",
+      "types/**/*.d.ts",
+      "**/*.d.ts",
+    "prisma.config.ts",
     "next-env.d.ts",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "dist", "coverage"]
+  "exclude": ["node_modules", "dist", "coverage", "apps/ship/old/**/*", "apps/**/old/**/*"]
 }

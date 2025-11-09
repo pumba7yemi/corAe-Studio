@@ -1,0 +1,105 @@
+// apps/studio/prisma/schemas/productcodes.prisma
+// SKU schemes (pattern-based), attributes/variants, barcodes
+
+enum BarcodeSymbology {
+  EAN13
+  UPC
+  CODE128
+  QR
+  ITF
+  GS1_128
+  OTHER
+}
+
+model SkuScheme {
+  id         String   @id @default(cuid())
+  name       String   @unique
+  pattern    String   // e.g. "{PREFIX}-{CAT}-{ATTR:SIZE}-{SEQ:5}"
+  prefix     String?  // optional fixed prefix
+  separator  String?  @default("-")
+  isActive   Boolean  @default(true)
+
+  // Optional scoping
+  companyId  String?
+  company    Company? @relation(fields: [companyId], references: [id])
+
+  sequences  SkuSequence[]
+  components SkuComponent[]
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model SkuComponent {
+  id         String   @id @default(cuid())
+  schemeId   String
+  scheme     SkuScheme @relation(fields: [schemeId], references: [id])
+
+  key        String   // e.g., "CAT", "SIZE", "COLOR"
+  type       String   // "CONST" | "ATTR" | "DATE" | "SEQ"
+  value      String?  // used when type=CONST
+  width      Int?     // zero-pad for SEQ
+  required   Boolean  @default(true)
+  position   Int      @default(0)
+
+  createdAt  DateTime @default(now())
+
+  @@unique([schemeId, key])
+  @@index([schemeId, position])
+}
+
+model SkuSequence {
+  id         String   @id @default(cuid())
+  schemeId   String
+  scheme     SkuScheme @relation(fields: [schemeId], references: [id])
+
+  scopeKey   String?  // e.g., category code to keep separate counters
+  nextValue  Int      @default(1)
+
+  @@unique([schemeId, scopeKey])
+}
+
+model ItemAttributeDef {
+  id        String   @id @default(cuid())
+  name      String   @unique       // e.g., "SIZE", "COLOR"
+  values    String[]               // allowed values or codes
+  createdAt DateTime @default(now())
+}
+
+model ItemVariant {
+  id        String   @id @default(cuid())
+  itemId    String
+  item      Item     @relation(fields: [itemId], references: [id])
+
+  // Keyed attributes (e.g., SIZE=M, COLOR=RED)
+  attributes Json
+
+  // Generated codes
+  sku       String   @unique
+  altCode   String?  // optional secondary code
+  schemeId  String?
+  scheme    SkuScheme? @relation(fields: [schemeId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  barcodes  ItemBarcode[]
+
+  @@index([itemId])
+  @@index([schemeId])
+}
+
+model ItemBarcode {
+  id         String          @id @default(cuid())
+  variantId  String
+  variant    ItemVariant     @relation(fields: [variantId], references: [id])
+
+  symbology  BarcodeSymbology @default(EAN13)
+  code       String
+  isPrimary  Boolean         @default(false)
+
+  createdAt  DateTime        @default(now())
+
+  @@unique([symbology, code])
+  @@index([variantId])
+}

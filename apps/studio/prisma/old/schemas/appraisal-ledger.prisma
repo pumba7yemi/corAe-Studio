@@ -1,0 +1,92 @@
+// ────────────────────────────────────────────────
+// corAe Appraisal Ledger™ — Company & Asset Appraisals
+// File: apps/studio/prisma/schema/appraisal-ledger.prisma
+// ────────────────────────────────────────────────
+// Depends on: core-company.prisma, chrono-workflow.prisma, finance-ledger.prisma
+// Purpose: Canonical record of appraisals (company, product lines, channels),
+//          used by the Appraisal Wizard and surfaced in CompanyIdentity.
+// ────────────────────────────────────────────────
+
+enum AppraisalScope {
+  COMPANY
+  BUSINESS_UNIT
+  PRODUCT_LINE
+  CHANNEL
+  PROJECT
+}
+
+enum AppraisalMethod {
+  SCORECARD          // weighted KPI score
+  DCF                // discounted cash flow
+  MULTIPLE           // revenue/EBITDA multiple
+  ASSET_BACKED       // NAV / replacement cost
+  MARKET_COMPARABLE  // comps
+}
+
+enum AppraisalStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model AppraisalRecord {
+  id             String           @id @default(cuid())
+  companyId      String
+  scope          AppraisalScope   @default(COMPANY)
+  scopeRef       String?          // optional: businessUnitId / productLineCode / channelId
+  method         AppraisalMethod  @default(SCORECARD)
+  status         AppraisalStatus  @default(DRAFT)
+
+  // Headline outputs (denormalized for fast reads)
+  score          Decimal?         @db.Decimal(6,2)    // 0..100 for SCORECARD
+  valueEstimate  Decimal?         @db.Decimal(18,4)   // currency amount if applicable
+  currency       String?          @default("AED")
+  confidencePct  Decimal?         @db.Decimal(5,2)
+
+  // Inputs & results
+  inputs         Json?            // raw factors used (weights, KPIs, assumptions)
+  findings       Json?            // structured findings (strengths, risks)
+  notes          String?
+
+  authoredById   String?          // WorkflowPartner.id or system key
+  authoredByName String?          // snapshot for readability
+  publishedAt    DateTime?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  // Links
+  company        CompanyIdentity  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  snapshots      AppraisalSnapshot[]
+  evidence       AppraisalEvidence[]
+
+  @@index([companyId, status])
+  @@index([scope, method])
+  @@index([createdAt])
+}
+
+model AppraisalSnapshot {
+  id             String          @id @default(cuid())
+  appraisalId    String
+  ts             DateTime        @default(now())
+  score          Decimal?        @db.Decimal(6,2)
+  valueEstimate  Decimal?        @db.Decimal(18,4)
+  currency       String?         @default("AED")
+  payload        Json?           // full frozen calculation payload
+
+  appraisal      AppraisalRecord @relation(fields: [appraisalId], references: [id], onDelete: Cascade)
+
+  @@index([appraisalId, ts])
+}
+
+model AppraisalEvidence {
+  id             String          @id @default(cuid())
+  appraisalId    String
+  label          String?
+  url            String
+  mimeType       String?
+  bytes          Int?
+  addedAt        DateTime        @default(now())
+  chronoEventId  String?         // link back to ChronoFlow if evidence came from a system event
+
+  appraisal      AppraisalRecord @relation(fields: [appraisalId], references: [id], onDelete: Cascade)
+}

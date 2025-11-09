@@ -1,0 +1,23 @@
+// apps/studio/prisma/10.start.company.prisma
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql" url = env("DATABASE_URL") }
+
+model Company {
+  id              String           @id @default(cuid())
+  name            String
+  createdByUserId String
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  modules         CompanyModule[]
+}
+
+model CompanyModule {
+  id        String   @id @default(cuid())
+  companyId String
+  moduleKey String
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  @@unique([companyId, moduleKey], name: "companyId_moduleKey")
+}

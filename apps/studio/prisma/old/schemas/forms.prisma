@@ -1,0 +1,45 @@
+// apps/studio/prisma/schemas/forms.prisma
+
+enum FormVisibility {
+  INTERNAL
+  PARTNER
+  PUBLIC
+}
+
+model FormDefinition {
+  id           String   @id @default(cuid())
+  key          String   @unique      // e.g. "vendor_onboarding_v1"
+  title        String
+  description  String?
+  visibility   FormVisibility @default(INTERNAL)
+  version      Int      @default(1)
+  schemaJson   Json     // JSON Schema / form layout
+  uiSchemaJson Json?    // optional UI hints
+  logicJson    Json?    // conditional logic, routing
+  createdById  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  submissions  FormSubmission[]
+}
+
+model FormSubmission {
+  id             String   @id @default(cuid())
+  formId         String
+  form           FormDefinition @relation(fields: [formId], references: [id])
+
+  // who/what this is about
+  contactId      String?        // → Contact.id (contacts.prisma)
+  companyId      String?        // → Company.id (biz.prisma)
+  submittedById  String?        // → User.id (hub.prisma)
+
+  status         String   @default("RECEIVED")  // RECEIVED | VALIDATED | REJECTED | ARCHIVED
+  answersJson    Json     // normalized answer payload
+  attachments    Json?    // optional lightweight references
+  submittedAt    DateTime @default(now())
+  validatedAt    DateTime?
+  notes          String?
+
+  // FileLogic link (the exported, immutable copy)
+  fileNodeId     String?        // → FLNode.id
+}

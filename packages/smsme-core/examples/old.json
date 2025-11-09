@@ -1,0 +1,17 @@
+{
+  "label": "initial",
+  "prismaVer": "5.0.0",
+  "models": [
+    {
+      "name": "User",
+      "fields": [
+        { "name": "id", "type": "uuid", "nullable": false },
+        { "name": "email", "type": "text", "nullable": false },
+        { "name": "name", "type": "text", "nullable": true }
+      ],
+      "indexes": [],
+      "uniques": []
+    }
+  ],
+  "enums": []
+}

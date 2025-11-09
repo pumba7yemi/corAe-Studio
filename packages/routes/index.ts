@@ -1,0 +1,2 @@
+export const studioRoutes = { home: "/", businessHub: "/business", oms: "/business/oms", pulse: "/work/pulse", chrono: "/work/chrono", work: "/work" } as const;
+export const shipRoutes   = { home: "/ship", businessHub: "/ship/business", oms: "/ship/business/oms", pulse: "/ship/work/pulse", chrono: "/ship/work/chrono", work: "/ship/work" } as const;

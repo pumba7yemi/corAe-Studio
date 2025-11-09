@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1800" style="font-family: 'Segoe UI', sans-serif; background-color:#0b0c10;">
+  <style>
+    text { fill: #e0e0e0; font-size: 15px; }
+    rect { stroke: #3a3a3a; stroke-width: 2; fill: #1e1f22; rx: 12; }
+    line { stroke: #4e4e4e; stroke-width: 2; }
+    .title { font-size: 24px; font-weight: bold; fill: #00d4ff; }
+    .layer { font-size: 18px; font-weight: bold; fill: #ffd166; }
+  </style>
+
+  <text x="800" y="60" class="title" text-anchor="middle">corAe OneStructure™ — Master System Diagram</text>
+
+  <!-- BTDO -->
+  <rect x="600" y="120" width="400" height="70" />
+  <text x="800" y="160" class="layer" text-anchor="middle">BTDO — Brokering the Deal Order</text>
+  <text x="800" y="180" text-anchor="middle">Identify opportunity · Quote · Intent</text>
+
+  <line x1="800" y1="190" x2="800" y2="220" />
+
+  <!-- BDO -->
+  <rect x="600" y="220" width="400" height="70" />
+  <text x="800" y="260" class="layer" text-anchor="middle">BDO — Brokered Deal Order</text>
+  <text x="800" y="280" text-anchor="middle">Confirm · Contract · Vendor Lock</text>
+
+  <line x1="800" y1="290" x2="800" y2="320" />
+
+  <!-- OBARI -->
+  <rect x="500" y="320" width="600" height="120" />
+  <text x="800" y="360" class="layer" text-anchor="middle">OBARI Chain</text>
+  <text x="800" y="380" text-anchor="middle">Order → Booking → Active → Reporting → Invoice</text>
+  <text x="800" y="400" text-anchor="middle">Core operational engine</text>
+
+  <line x1="800" y1="440" x2="800" y2="470" />
+
+  <!-- Finance + Pulse -->
+  <rect x="520" y="470" width="560" height="100" />
+  <text x="800" y="510" class="layer" text-anchor="middle">Finance + Pulse Layer</text>
+  <text x="800" y="530" text-anchor="middle">Bill-to-Bill · 28-Day Rhythm · Pricelock Chain</text>
+  <text x="800" y="550" text-anchor="middle">Links OBARI to cashflow cycles</text>
+
+  <line x1="800" y1="570" x2="800" y2="600" />
+
+  <!-- FileLogic -->
+  <rect x="550" y="600" width="500" height="80" />
+  <text x="800" y="635" class="layer" text-anchor="middle">FileLogic™ (Audit Spine)</text>
+  <text x="800" y="655" text-anchor="middle">GRV · POD · INV · Photo · AI Index</text>
+
+  <line x1="800" y1="680" x2="800" y2="710" />
+
+  <!-- Work + Home + CAIA -->
+  <rect x="480" y="710" width="640" height="150" />
+  <text x="800" y="750" class="layer" text-anchor="middle">Work OS² · Home OS · CAIA</text>
+  <text x="800" y="770" text-anchor="middle">WorkFocus · Ascend · FlowScore · Creator Access</text>
+  <text x="800" y="790" text-anchor="middle">Human–AI integration layer</text>
+
+  <line x1="800" y1="860" x2="800" y2="890" />
+
+  <!-- Learning & Uplift -->
+  <rect x="520" y="890" width="560" height="120" />
+  <text x="800" y="930" class="layer" text-anchor="middle">Learning · Uplift · Creator Path</text>
+  <text x="800" y="950" text-anchor="middle">Certification · Reward · Innovation Feedback</text>
+  <text x="800" y="970" text-anchor="middle">closes the Human-AI loop</text>
+
+  <!-- Labels -->
+  <text x="800" y="1040" text-anchor="middle" fill="#888" font-size="14">
+    corAe OS² — unified logic spine across all modules
+  </text>
+</svg>

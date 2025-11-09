@@ -1,0 +1,89 @@
+// ────────────────────────────────────────────────
+// corAe OBARI™ Flow Core (150.Logic Build)
+// File: apps/studio/prisma/schema/obari-flow.prisma
+// ────────────────────────────────────────────────
+// Purpose: Canonical forward-only process engine for Order → Booking → Active → Reporting → Invoicing
+// Governed under OBARI Constitutional Law — every deal must pass sequential stages with "=" baton logic.
+// ────────────────────────────────────────────────
+
+enum ObariStage {
+  ORDER
+  BOOKING
+  ACTIVE
+  REPORTING
+  INVOICING
+  FINALIZED
+}
+
+enum ObariEntityType {
+  VENDOR
+  CUSTOMER
+  INTERNAL
+}
+
+enum ObariDealType {
+  PRODUCT
+  SERVICE
+  LEASE
+  PROJECT
+}
+
+model ObariFlow {
+  id            String           @id @default(cuid())
+  reference     String           @unique
+  entityType    ObariEntityType
+  dealType      ObariDealType
+  stage         ObariStage       @default(ORDER)
+  legalEntity   String            // Company / Legal name
+  jurisdiction  String?
+  description   String?
+
+  // Relations
+  lines         ObariLine[]
+  reports       ObariReport[]
+  invoices      ObariInvoice[]
+
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@index([stage])
+}
+
+model ObariLine {
+  id           String         @id @default(cuid())
+  flowId       String
+  sku          String?
+  description  String?
+  qty          Decimal?       @db.Decimal(12,3)
+  unitPrice    Decimal?       @db.Decimal(12,4)
+  total        Decimal?       @db.Decimal(14,4)
+  vatRate      Decimal?       @db.Decimal(5,2)
+  vatAmount    Decimal?       @db.Decimal(14,4)
+
+  flow         ObariFlow      @relation(fields: [flowId], references: [id], onDelete: Cascade)
+}
+
+model ObariReport {
+  id           String      @id @default(cuid())
+  flowId       String
+  reportType   String
+  findings     String?
+  completedAt  DateTime?
+
+  flow         ObariFlow   @relation(fields: [flowId], references: [id], onDelete: Cascade)
+}
+
+model ObariInvoice {
+  id            String     @id @default(cuid())
+  flowId        String
+  invoiceNo     String     @unique
+  dateIssued    DateTime   @default(now())
+  amount        Decimal    @db.Decimal(14,4)
+  vatAmount     Decimal?   @db.Decimal(14,4)
+  total         Decimal    @db.Decimal(14,4)
+  paid          Boolean    @default(false)
+  paidDate      DateTime?
+  linkedLedger  String?
+
+  flow          ObariFlow  @relation(fields: [flowId], references: [id], onDelete: Cascade)
+}

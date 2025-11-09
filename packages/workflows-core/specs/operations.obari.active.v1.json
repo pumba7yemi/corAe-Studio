@@ -1,0 +1,11 @@
+{
+  "id": "operations.obari.active.v1",
+  "version": "1.0.0",
+  "module": "obari",
+  "roleHint": ["OperationsManager", "WorkflowExecutive"],
+  "checkpoints": [
+    { "id": "execute", "desc": "Run job; capture times/qty/media", "gate": "auto" },
+    { "id": "exceptions", "desc": "Record delays/shorts/overages", "gate": "auto" },
+    { "id": "handoff-reporting", "desc": "Move to Reporting stage", "gate": "human-approve", "onSuccess": ["obari.stage.reporting"] }
+  ]
+}

@@ -1,1 +1,155 @@
-export default function Page(){return(<div className='p-6 space-y-2'><h1 className='h1'>Home</h1><p className='muted'>Family • Routines • Personal OS</p></div>);}
+"use client";
+
+/**
+ * corAe — Ship/Home (Brand-Unified Layout)
+ * Matches DTD/CIMS dark slate theme.
+ * Includes CAIA card, quick tiles, and @corae/home components.
+ */
+
+import dynamic from "next/dynamic";
+import CaiaCard from "@/components/CaiaCard";
+
+// Client-only versions to avoid hydration mismatches
+const MealPlanner          = dynamic(() => import("@corae/home").then(m => m.MealPlanner), { ssr: false });
+const CleaningScheduleTile = dynamic(() => import("@corae/home").then(m => m.CleaningScheduleTile), { ssr: false });
+const FitnessTile          = dynamic(() => import("@corae/home").then(m => m.FitnessTile), { ssr: false });
+const WardrobeTile         = dynamic(() => import("@corae/home").then(m => m.WardrobeTile), { ssr: false });
+const GlamAndGlowTile      = dynamic(() => import("@corae/home").then(m => m.GlamAndGlowTile), { ssr: false });
+const WhatIWantTile        = dynamic(() => import("@corae/home").then(m => m.WhatIWantTile), { ssr: false });
+// Cast dynamic imports to `any` wrappers to allow passing decorative props like `id`
+const MealPlannerAny = MealPlanner as any;
+const CleaningScheduleTileAny = CleaningScheduleTile as any;
+const FitnessTileAny = FitnessTile as any;
+const WardrobeTileAny = WardrobeTile as any;
+const GlamAndGlowTileAny = GlamAndGlowTile as any;
+const WhatIWantTileAny = WhatIWantTile as any;
+import { HomeData } from "@corae/home";
+
+export default function ShipHomeSection() {
+  return (
+    <main className="page-home max-w-6xl mx-auto p-6 md:p-8 space-y-6">
+      {/* ───────── Header ───────── */}
+      <header className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2">
+            <span className="relative inline-flex h-3.5 w-3.5 rounded-full bg-emerald-500">
+              <span className="absolute inline-flex h-3.5 w-3.5 rounded-full bg-emerald-400 opacity-75 animate-ping" />
+            </span>
+            <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-slate-100">Home</h1>
+          </div>
+          <p className="text-sm text-slate-400">
+            Personal hub — peace, routines, pantry, wellness, 3³DTD diary.
+          </p>
+        </div>
+
+        <nav className="flex items-center gap-2 text-sm">
+          <a
+            href="/ship/business"
+            className="rounded-2xl border border-slate-700 px-3 py-1.5 hover:bg-slate-800/60"
+          >
+            Business
+          </a>
+          <a
+            href="/ship/work"
+            className="rounded-2xl border border-slate-700 px-3 py-1.5 hover:bg-slate-800/60"
+          >
+            Work
+          </a>
+        </nav>
+      </header>
+
+      {/* ───────── Faith Section ───────── */}
+      <section className="rounded-2xl border border-slate-700 bg-slate-900/40 p-4">
+        <h2 className="font-medium text-sky-200">Faith</h2>
+        <p className="text-sm text-slate-400">
+          Start with peace, then take the next right step.
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <a
+            href="/ship/faith"
+            className="rounded-xl border border-slate-700 px-3 py-2 text-sm hover:bg-slate-800/60"
+          >
+            Faith Hub
+          </a>
+          <a
+            href="/ship/faith/discern"
+            className="rounded-xl border border-slate-700 px-3 py-2 text-sm hover:bg-slate-800/60"
+          >
+            Discernment
+          </a>
+          <a
+            href="/ship/faith/panic-peace"
+            className="rounded-xl border border-slate-700 px-3 py-2 text-sm hover:bg-slate-800/60"
+          >
+            Panic → Peace
+          </a>
+        </div>
+      </section>
+
+      {/* ───────── All Home Sections (quick links) ───────── */}
+      <section className="rounded-2xl border border-slate-700 bg-slate-900/40 p-4">
+        <h2 className="font-medium text-sky-200">Home Sections</h2>
+        <p className="text-sm text-slate-400">Quick links to all Home areas.</p>
+        <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+          <a href="/ship/home/cleaning" className="rounded-xl border border-slate-700 px-3 py-2 text-sm hover:bg-slate-800/60">Cleaning</a>
+          <a href="/ship/home/maintenance" className="rounded-xl border border-slate-700 px-3 py-2 text-sm hover:bg-slate-800/60">Maintenance</a>
+          <a href="/ship/home/mealprep" className="rounded-xl border border-slate-700 px-3 py-2 text-sm hover:bg-slate-800/60">Meal Prep</a>
+          <a href="/ship/home/finance" className="rounded-xl border border-slate-700 px-3 py-2 text-sm hover:bg-slate-800/60">Finance</a>
+          <a href="/ship/home/fitness" className="rounded-xl border border-slate-700 px-3 py-2 text-sm hover:bg-slate-800/60">Fitness</a>
+          <a href="/ship/home/glamglow" className="rounded-xl border border-slate-700 px-3 py-2 text-sm hover:bg-slate-800/60">Glam &amp; Glow</a>
+          <a href="/ship/home/mindful" className="rounded-xl border border-slate-700 px-3 py-2 text-sm hover:bg-slate-800/60">Mindful</a>
+          <a href="/ship/home/shopping" className="rounded-xl border border-slate-700 px-3 py-2 text-sm hover:bg-slate-800/60">Shopping</a>
+          <a href="/ship/home/utilize" className="rounded-xl border border-slate-700 px-3 py-2 text-sm hover:bg-slate-800/60">Utilize</a>
+          <a href="/ship/home/wardrobe" className="rounded-xl border border-slate-700 px-3 py-2 text-sm hover:bg-slate-800/60">Wardrobe</a>
+          <a href="/ship/home/ascend/signup-loop" className="rounded-xl border border-amber-600 text-amber-300 px-3 py-2 text-sm hover:bg-amber-800/10">Ascend — Signup Loop</a>
+        </div>
+      </section>
+
+      {/* ───────── Quick Tiles ───────── */}
+      <section className="grid gap-4 sm:grid-cols-2">
+        <div className="rounded-2xl border border-slate-700 bg-slate-900/40 p-4">
+          <h2 className="font-medium text-sky-200">Today’s Routine</h2>
+          <ul className="text-sm mt-2 list-disc ml-4 text-slate-300">
+            <li>Morning walk with Grogu</li>
+            <li>Lemon water + coffee</li>
+            <li>Check fridge/pantry stock</li>
+          </ul>
+        </div>
+        <div className="rounded-2xl border border-slate-700 bg-slate-900/40 p-4">
+          <h2 className="font-medium text-sky-200">Reminders</h2>
+          <ul className="text-sm mt-2 list-disc ml-4 text-slate-300">
+            <li>Bill payment due Friday</li>
+            <li>Rotate frozen meat stock</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* ───────── corAe Home Tiles ───────── */}
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="c-home-tile rounded-2xl border border-slate-700 bg-slate-900/40 p-3">
+          <MealPlannerAny id="MealPlanner" title="Meal Planner" seed={HomeData.mealPlan} />
+        </div>
+        <div className="c-home-tile rounded-2xl border border-slate-700 bg-slate-900/40 p-3">
+          <CleaningScheduleTileAny id="CleaningSchedule" title="Cleaning" />
+        </div>
+        <div className="c-home-tile rounded-2xl border border-slate-700 bg-slate-900/40 p-3">
+          <FitnessTileAny id="Fitness" title="Fitness" />
+        </div>
+        <div className="c-home-tile rounded-2xl border border-slate-700 bg-slate-900/40 p-3">
+          <WardrobeTileAny id="Wardrobe" title="Wardrobe" />
+        </div>
+        <div className="c-home-tile rounded-2xl border border-slate-700 bg-slate-900/40 p-3">
+          <GlamAndGlowTileAny id="GlamAndGlow" title="Glam &amp; Glow" />
+        </div>
+        <div className="c-home-tile rounded-2xl border border-slate-700 bg-slate-900/40 p-3">
+          <WhatIWantTileAny id="WhatIWant" title="What I Want" />
+        </div>
+      </section>
+
+      {/* ───────── CAIA Card ───────── */}
+      <section>
+        <CaiaCard href="/ship/caia" label="🧠 CAIA (Ship)" subtitle="Home-aware assistant" />
+      </section>
+    </main>
+  );
+}

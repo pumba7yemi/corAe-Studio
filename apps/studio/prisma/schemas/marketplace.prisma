@@ -1,0 +1,52 @@
+// apps/studio/prisma/schemas/marketplace.prisma
+model Reservation {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  title           String
+  description     String?
+  flowMode        String   @default("BDO") // or BTDO
+  btdoStage       String?  // BOOK | TRADE_OPEN | TRADE_LOCKED | DEAL | ORDER
+  status          String   @default("BOOKED")
+  pricelockRef    String?
+  brokerRef       String?
+  vendorRef       String?
+  customerRef     String?
+  commission      Float?   @default(0)
+  marginBasis     Float?   @default(0)
+  resourceRef     String?
+  windowStart     DateTime?
+  windowEnd       DateTime?
+  quantity        Float?   @default(1)
+  tradeNotes      String?
+  dealId          String?
+  orderId         String?
+  notes           String?
+
+  Deal   Deal?   @relation(fields: [dealId], references: [id])
+  Order  Order?  @relation(fields: [orderId], references: [id])
+}
+
+model Deal {
+  id            String   @id @default(cuid())
+  reservationId String
+  confirmedAt   DateTime @default(now())
+  terms         String?
+  price         Float?
+  status        String   @default("CONFIRMED")
+  reservation   Reservation @relation(fields: [reservationId], references: [id])
+  order         Order?
+}
+
+model Order {
+  id          String   @id @default(cuid())
+  dealId      String
+  dispatched  DateTime?
+  fulfilled   DateTime?
+  invoiced    DateTime?
+  status      String   @default("SCHEDULED")
+  amount      Float?
+  invoiceRef  String?
+  workRef     String?
+  deal        Deal @relation(fields: [dealId], references: [id])
+}

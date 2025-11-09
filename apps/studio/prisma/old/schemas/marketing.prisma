@@ -1,0 +1,77 @@
+// ─────────────────────────────────────────────
+// corAe — Marketing Appraisal (schemas only)
+// Depends on CompanyIdentity (already in your repo)
+// ─────────────────────────────────────────────
+
+enum MarketingAppraisalStatus {
+  DRAFT
+  ACTIVE
+  PUBLISHED
+  ARCHIVED
+}
+
+enum MarketingChannel {
+  BRAND
+  WEBSITE
+  SEO
+  CONTENT
+  SOCIAL
+  ADS
+  EMAIL
+  CRM
+  PR
+  ANALYTICS
+}
+
+model MarketingAppraisal {
+  id              String                     @id @default(cuid())
+  companyId       String
+  company         CompanyIdentity             @relation(fields: [companyId], references: [id])
+
+  status          MarketingAppraisalStatus    @default(DRAFT)
+  periodStart     DateTime
+  periodEnd       DateTime
+
+  // Inputs (lightweight; expand as needed)
+  website         String?
+  sector          String?
+  location        String?
+  contactName     String?
+  quickHighlights String?                     // short comma-separated notes
+
+  // AI/Generator outputs
+  findings        Json?                       // structured observations
+  recommendations Json?                       // structured actions
+  scores          Json?                       // overall scoring blob (optional)
+
+  // Deliverables to surface in UI
+  expandedMd      String?                     // “Expanded Appraisal (Markdown)”
+  onePagerMd      String?                     // “One-Pager (Markdown)”
+  whatsappNudge   String?                     // “WhatsApp Nudge (plain text)”
+
+  // Links
+  chrono          Chrono[]                    @relation("MarketingChrono")
+  channelScores   MarketingChannelScore[]
+
+  createdAt       DateTime                    @default(now())
+  updatedAt       DateTime                    @updatedAt
+
+  @@index([companyId, status])
+  @@index([periodStart, periodEnd])
+}
+
+model MarketingChannelScore {
+  id            String           @id @default(cuid())
+  appraisalId   String
+  appraisal     MarketingAppraisal @relation(fields: [appraisalId], references: [id])
+
+  channel       MarketingChannel
+  score         Decimal?          @db.Decimal(5,2) // 0–100 or 0–10 as you prefer
+  notes         String?
+
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  @@unique([appraisalId, channel])
+  @@index([channel])
+}

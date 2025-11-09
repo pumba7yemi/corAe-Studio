@@ -16,3 +16,10 @@ yarn-error.log*
 # OS cruft
 .DS_Store
 Thumbs.db
+# Runtime/state
+.data/
+build/.data/
+.next/
+node_modules/
+*.log
+.logs/

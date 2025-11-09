@@ -1,0 +1,13 @@
+{
+  "summary": {
+    "modulesChecked": ["OBARI", "Finance", "HR", "Operations", "Have-You", "WorkFocus"],
+    "totalChecks": 228,
+    "passCount": 228,
+    "failCount": 0
+  },
+  "details": {
+    "unlinkedSchemas": [],
+    "missingVersionTags": []
+  },
+  "generatedOn": "2025-11-02"
+}

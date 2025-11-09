@@ -1,0 +1,337 @@
+{
+  "$schema": "https://corae.os2/workflows/schema/workflow-v1.json",
+  "id": "corae.first-trade",
+  "version": "1.0.0",
+  "namespace": "corae/workflows/onboarding",
+  "title": "corAe First Trade™ Wizard",
+  "description": "Guides a new business from setup to first live trade, integrating BTDO → BDO → OBARI with human/AI gates and compliance.",
+  "badges": ["corAe Confirmed™", "First Trade Badge™", "Pricelock Chain™"],
+  "roles": {
+    "owner": {
+      "label": "Owner / Subject 1",
+      "permissions": ["approve.pricelock", "sign.contracts", "submit.docs"]
+    },
+    "surveyor": {
+      "label": "Workflow Partner™ (Survey)",
+      "permissions": ["survey.capture", "upload.photos"]
+    },
+    "ops": {
+      "label": "Operations",
+      "permissions": ["grv.log", "delivery.update"]
+    },
+    "finance": {
+      "label": "Finance Manager",
+      "permissions": ["invoice.issue", "payment.schedule"]
+    },
+    "ai": {
+      "label": "CAIA",
+      "permissions": [
+        "draft.docs",
+        "validate.inputs",
+        "notify",
+        "generate.bdo",
+        "raise.invoice"
+      ]
+    }
+  },
+  "gates": {
+    "auto": {
+      "type": "auto",
+      "desc": "CAIA proceeds if validation passes."
+    },
+    "human-approve": {
+      "type": "manual",
+      "actor": "owner",
+      "desc": "Owner must review & approve."
+    }
+  },
+  "events": {
+    "onEnterStep": ["ui.render"],
+    "onExitStep": ["persist.state"],
+    "onBadgeIssued": ["cims.announce", "unwind.publish"]
+  },
+  "integrations": {
+    "cims": {
+      "topic": "first-trade",
+      "channels": ["owner", "ops", "finance"]
+    },
+    "obari": {
+      "stages": ["Order", "Booking", "Active", "Reporting", "Invoice"]
+    },
+    "btdo": { "docType": "Pricelock Agreement" },
+    "bdo": { "schedule": ["28-day", "ad-hoc"] },
+    "filelogic": { "vault": "/corae/files/onboarding" }
+  },
+  "state": {
+    "initial": "welcome",
+    "done": "certification",
+    "context": {
+      "business": {},
+      "legal": {},
+      "survey": {},
+      "btdo": {},
+      "bdo": {},
+      "delivery": {},
+      "finance": {},
+      "auditTrail": []
+    }
+  },
+  "steps": [
+    {
+      "id": "welcome",
+      "title": "Let’s make your First Trade",
+      "gate": "auto",
+      "ui": { "component": "WizardIntro", "props": { "cta": "Start" } },
+      "transitions": [{ "to": "identity", "when": "ui.next" }]
+    },
+    {
+      "id": "identity",
+      "title": "Identity & Setup",
+      "gate": "auto",
+      "form": {
+        "fields": [
+          {
+            "id": "business.name",
+            "label": "Business Name",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "business.type",
+            "label": "Business Type",
+            "type": "select",
+            "options": ["Retail", "Restaurant", "Services", "Brokerage", "Other"],
+            "required": true
+          },
+          {
+            "id": "business.jurisdiction",
+            "label": "Jurisdiction",
+            "type": "select",
+            "options": ["UAE", "UK", "PH", "Other"],
+            "required": true
+          },
+          {
+            "id": "legal.tradeLicence",
+            "label": "Trade Licence",
+            "type": "file",
+            "accept": ["pdf", "png", "jpg"]
+          },
+          { "id": "legal.vat", "label": "VAT Certificate", "type": "file" },
+          { "id": "legal.leaseEjari", "label": "Lease / Ejari", "type": "file" },
+          {
+            "id": "bank.iban",
+            "label": "Bank IBAN",
+            "type": "text",
+            "mask": "[A-Z0-9]{10,34}"
+          }
+        ]
+      },
+      "validate": [
+        {
+          "rule": "presence(business.name,business.type,business.jurisdiction)",
+          "message": "Name, type and jurisdiction are required."
+        }
+      ],
+      "effects": [
+        { "use": "filelogic.store", "with": ["legal.*"], "as": "identityPack" },
+        {
+          "use": "cims.notify",
+          "to": ["owner"],
+          "message": "Identity captured. Upload any missing legal docs when ready."
+        }
+      ],
+      "transitions": [{ "to": "survey", "when": "form.valid" }]
+    },
+    {
+      "id": "survey",
+      "title": "Site Survey",
+      "gate": "auto",
+      "ui": {
+        "component": "SurveyChooser",
+        "props": { "options": ["Schedule Visit", "Self-Upload Checklist"] }
+      },
+      "form": {
+        "fields": [
+          {
+            "id": "survey.mode",
+            "type": "radio",
+            "options": ["visit", "self"],
+            "required": true
+          },
+          { "id": "survey.address", "type": "text", "label": "Site Address", "required": true },
+          { "id": "survey.date", "type": "datetime", "label": "Preferred Date/Time", "required": true },
+          { "id": "survey.photos", "type": "file", "multiple": true }
+        ]
+      },
+      "effects": [
+        {
+          "if": "survey.mode == 'visit'",
+          "use": "cims.notify",
+          "to": ["surveyor"],
+          "message": "New site visit scheduled.",
+          "payloadRef": "survey"
+        },
+        {
+          "if": "survey.mode == 'self'",
+          "use": "ai.generate",
+          "template": "survey.checklist.v1",
+          "saveTo": "survey.checklist"
+        }
+      ],
+      "transitions": [{ "to": "survey-approval", "when": "form.valid" }]
+    },
+    {
+      "id": "survey-approval",
+      "title": "Survey Approval",
+      "gate": "human-approve",
+      "review": { "by": "owner", "items": ["survey.photos", "survey.checklist", "notes"] },
+      "effects": [
+        {
+          "use": "cims.notify",
+          "to": ["owner"],
+          "message": "Approve survey to open First Trade Gate."
+        }
+      ],
+      "transitions": [{ "to": "btdo", "when": "owner.approved" }]
+    },
+    {
+      "id": "btdo",
+      "title": "Broker The Deal Order (BTDO)",
+      "gate": "auto",
+      "form": {
+        "fields": [
+          { "id": "deal.product", "label": "Product/Service", "type": "text", "required": true },
+          {
+            "id": "deal.counterparty.type",
+            "label": "Counterparty Type",
+            "type": "select",
+            "options": ["Vendor", "Client"],
+            "required": true
+          },
+          { "id": "deal.counterparty.name", "label": "Name", "type": "text", "required": true },
+          { "id": "deal.price", "label": "Unit Price (AED)", "type": "number", "min": 0, "required": true },
+          { "id": "deal.qty", "label": "Quantity", "type": "number", "min": 1, "required": true },
+          { "id": "deal.deliveryWindow", "label": "Delivery Window", "type": "daterange", "required": true },
+          { "id": "deal.terms", "label": "Special Terms / Pricelock Notes", "type": "textarea" }
+        ]
+      },
+      "effects": [
+        {
+          "use": "ai.compose",
+          "template": "btdo.pricelock.v1",
+          "from": "deal.*",
+          "saveTo": "btdo.doc"
+        },
+        {
+          "use": "cims.notify",
+          "to": ["owner"],
+          "message": "Review & Confirm Pricelock.",
+          "payloadRef": "btdo.doc"
+        }
+      ],
+      "transitions": [{ "to": "btdo-approve", "when": "form.valid" }]
+    },
+    {
+      "id": "btdo-approve",
+      "title": "Pricelock Confirmation",
+      "gate": "human-approve",
+      "review": { "by": "owner", "doc": "btdo.doc" },
+      "effects": [
+        { "use": "filelogic.store", "with": ["btdo.doc"], "as": "PricelockAgreement" },
+        { "use": "cims.notify", "to": ["ai"], "message": "Pricelock Confirmed → Generate BDO." }
+      ],
+      "transitions": [{ "to": "bdo", "when": "owner.approved" }]
+    },
+    {
+      "id": "bdo",
+      "title": "Create Brokered Deal Order (BDO)",
+      "gate": "auto",
+      "form": {
+        "fields": [
+          { "id": "bdo.mode", "label": "Order Mode", "type": "radio", "options": ["28-day", "ad-hoc"], "required": true },
+          { "id": "bdo.firstDelivery", "label": "First Delivery Date", "type": "date", "required": true },
+          { "id": "bdo.logistics", "label": "Logistics Notes", "type": "textarea" }
+        ]
+      },
+      "effects": [
+        {
+          "use": "ai.generate",
+          "template": "bdo.order.v1",
+          "from": ["btdo.doc", "bdo.*"],
+          "saveTo": "bdo.order"
+        },
+        {
+          "use": "cims.notify",
+          "to": ["ops", "finance"],
+          "message": "BDO created. Prepare delivery & finance timeline.",
+          "payloadRef": "bdo.order"
+        }
+      ],
+      "transitions": [{ "to": "execution", "when": "form.valid" }]
+    },
+    {
+      "id": "execution",
+      "title": "Execution & GRV",
+      "gate": "auto",
+      "ui": { "component": "DeliveryTracker" },
+      "form": {
+        "fields": [
+          { "id": "delivery.date", "type": "datetime", "label": "Delivered/Serviced At", "required": true },
+          { "id": "delivery.docs", "type": "file", "label": "Delivery Note / GRV", "required": true },
+          { "id": "delivery.photos", "type": "file", "multiple": true }
+        ]
+      },
+      "effects": [
+        { "use": "obari.advance", "toStage": "Active" },
+        { "use": "ops.log", "payloadRef": "delivery" }
+      ],
+      "transitions": [{ "to": "invoice", "when": "form.valid" }]
+    },
+    {
+      "id": "invoice",
+      "title": "Invoice & Payment Schedule",
+      "gate": "auto",
+      "effects": [
+        {
+          "use": "ai.generate",
+          "template": "finance.invoice.v1",
+          "from": ["bdo.order", "delivery"],
+          "saveTo": "finance.invoice"
+        },
+        { "use": "finance.schedule", "from": "finance.invoice", "saveTo": "finance.plan" },
+        { "use": "obari.advance", "toStage": "Invoice" },
+        {
+          "use": "cims.notify",
+          "to": ["owner", "finance"],
+          "message": "First Invoice issued.",
+          "payloadRef": "finance.invoice"
+        }
+      ],
+      "transitions": [{ "to": "certification", "when": "effects.complete" }]
+    },
+    {
+      "id": "certification",
+      "title": "First Trade Complete",
+      "gate": "auto",
+      "effects": [
+        { "use": "badge.issue", "type": "First Trade Badge™", "saveTo": "certificate" },
+        {
+          "use": "timeline.record",
+          "entry": "First Trade achieved",
+          "meta": { "invoiceRef": "finance.invoice.id" }
+        },
+        { "use": "events.emit", "name": "firstTrade.completed", "payload": { "businessRef": "business.name" } },
+        {
+          "use": "cims.notify",
+          "to": ["owner"],
+          "message": "🎉 First Trade complete! Badge issued.",
+          "payloadRef": "certificate"
+        },
+        {
+          "use": "unwind.publish",
+          "post": { "title": "We’re Live: First Trade Achieved", "bodyRef": "certificate" }
+        }
+      ]
+    }
+  ]
+}

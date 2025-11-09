@@ -1,0 +1,2 @@
+// postcss.config.js (workspace root) - disabled per Tailwind v4 normalization
+module.exports = { plugins: { "@tailwindcss/postcss": {} } };

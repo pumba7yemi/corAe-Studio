@@ -1,0 +1,217 @@
+// apps/studio/seeds/message-packs/oms-core-v1.json
+{
+  "name": "corAe OMS Core v1.0",
+  "namespace": "corae-oms-core",
+  "description": "Universal Operating Messaging System for corAe OS². Covers Procurement, Operations, Finance, HR, Compliance and Customer Service modules with human intervention gates and WorkFocus logic.",
+  "templates": [
+    {
+      "module": "onboarding",
+      "stage": "welcome",
+      "audience": "client",
+      "channel": "email",
+      "tone": "friendly",
+      "subject": "Welcome to [businessName] — Connected by corAe",
+      "body": "Hello [client.name],\n\nWelcome aboard. corAe OS² links every part of your business — people, process and progress — through structured clarity. You will shortly receive your onboarding tasks and setup confirmation.\n\nIf any detail requires review, reply CONFIRM or REQUEST EDIT.\n\n[brand.signature]",
+      "requiresHumanApproval": false,
+      "tags": ["welcome","onboarding"]
+    },
+    {
+      "module": "procurement",
+      "stage": "pre_order_request",
+      "audience": "vendor",
+      "channel": "email",
+      "tone": "professional",
+      "subject": "Pre-Order Availability & Price Confirmation – [deliveryDate]",
+      "body": "Dear [vendor.name],\n\nKindly confirm product availability and pricing for [deliveryDate]. No delivery will proceed without written confirmation in line with the corAe Pricelock Chain™.\n\nPlease reply CONFIRM or ADVISE.\n\n[brand.signature]",
+      "requiresHumanApproval": true,
+      "tags": ["procurement","price-lock"]
+    },
+    {
+      "module": "procurement",
+      "stage": "po_issue",
+      "audience": "vendor",
+      "channel": "email",
+      "tone": "professional",
+      "subject": "Purchase Order [po.number] – Delivery [deliveryDate]",
+      "body": "Dear [vendor.name],\n\nPurchase Order [po.number] attached for delivery on [deliveryDate]. Please acknowledge receipt and provide delivery ETA.\n\nOnce confirmed this order becomes **corAe Confirmed™**.\n\n[brand.signature]",
+      "requiresHumanApproval": true,
+      "tags": ["po","confirmation"]
+    },
+    {
+      "module": "operations",
+      "stage": "daily_task_start",
+      "audience": "staff",
+      "channel": "cims",
+      "tone": "neutral",
+      "subject": null,
+      "body": "Good [timeOfDay]. Your WorkFocus tasks for today are ready. Review each, mark DONE ✅ as completed. If any barrier occurs, select HELP and CAIA will guide you.",
+      "requiresHumanApproval": false,
+      "tags": ["operations","workfocus"]
+    },
+    {
+      "module": "operations",
+      "stage": "handover_update",
+      "audience": "staff",
+      "channel": "cims",
+      "tone": "neutral",
+      "subject": null,
+      "body": "Shift handover for [site.name].\n\nOutgoing notes:\n- [notes]\n\nIncoming team to acknowledge RECEIVED and READY.",
+      "requiresHumanApproval": false,
+      "tags": ["handover","ops"]
+    },
+    {
+      "module": "finance",
+      "stage": "cash_drop_alert",
+      "audience": "finance",
+      "channel": "cims",
+      "tone": "urgent",
+      "subject": "Cash Drop Required – [po.number]",
+      "body": "Prepare cash drop for [po.number] / [vendor.name] by [deliveryDate]. Confirm transfer complete before vendor arrival.\n\nReply DONE ✅ once verified.",
+      "requiresHumanApproval": false,
+      "tags": ["cash","finance"]
+    },
+    {
+      "module": "finance",
+      "stage": "invoice_review",
+      "audience": "vendor",
+      "channel": "email",
+      "tone": "professional",
+      "subject": "Invoice Validation – Ref [po.number] / [site.name]",
+      "body": "Dear [vendor.name],\n\nPlease ensure invoice includes date of attendance, valid PO/SO numbers and approved costs. Invoices without correct references will be returned.\n\nFinance Team — [brand.signature]",
+      "requiresHumanApproval": false,
+      "tags": ["invoice","validation"]
+    },
+    {
+      "module": "finance",
+      "stage": "payment_release",
+      "audience": "finance",
+      "channel": "cims",
+      "tone": "neutral",
+      "subject": null,
+      "body": "Payment review for [po.number] ready. Verify against Pricelock Chain agreement and approve if values match. Select APPROVE or FLAG.",
+      "requiresHumanApproval": true,
+      "tags": ["approval","finance"]
+    },
+    {
+      "module": "hr",
+      "stage": "new_staff_welcome",
+      "audience": "staff",
+      "channel": "email",
+      "tone": "friendly",
+      "subject": "Welcome to [businessName] — Your WorkFocus Journey Begins",
+      "body": "Hi [client.name],\n\nWelcome to [businessName]. Your role is now activated within corAe WorkFocus™. Please log in, review your first training tasks and acknowledge START.\n\nIf assistance is needed, message HR via CIMS™.",
+      "requiresHumanApproval": false,
+      "tags": ["hr","onboarding"]
+    },
+    {
+      "module": "hr",
+      "stage": "shift_schedule",
+      "audience": "staff",
+      "channel": "cims",
+      "tone": "neutral",
+      "subject": null,
+      "body": "Your schedule for [weekLabel] is now published. Confirm availability within 2 hours to secure shift. Reply CONFIRM or REQUEST SWAP.",
+      "requiresHumanApproval": false,
+      "tags": ["rota","schedule"]
+    },
+    {
+      "module": "hr",
+      "stage": "training_due",
+      "audience": "staff",
+      "channel": "cims",
+      "tone": "friendly",
+      "subject": null,
+      "body": "Training module [businessName] – [stage] is due today. Access via corAe Academy™. Mark DONE ✅ once completed.",
+      "requiresHumanApproval": false,
+      "tags": ["training","academy"]
+    },
+    {
+      "module": "compliance",
+      "stage": "expiry_check",
+      "audience": "staff",
+      "channel": "cims",
+      "tone": "urgent",
+      "subject": "Expiry Alert – [site.name] Items Due",
+      "body": "Immediate expiry review required for [site.name]. Check listed items and record findings in Expiry Log. Reply DONE ✅ or ISSUE ⚠️.",
+      "requiresHumanApproval": false,
+      "tags": ["expiry","hygiene"]
+    },
+    {
+      "module": "compliance",
+      "stage": "audit_notice",
+      "audience": "staff",
+      "channel": "email",
+      "tone": "professional",
+      "subject": "Upcoming Compliance Audit — [action required]",
+      "body": "Dear Team,\n\nA routine audit is scheduled for [site.name] on [deliveryDate]. Ensure all records, certificates and GHP SOPs are accessible. CAIA will perform a digital pre-check 24 hours prior.\n\n[brand.signature]",
+      "requiresHumanApproval": false,
+      "tags": ["audit","compliance"]
+    },
+    {
+      "module": "customer",
+      "stage": "service_update",
+      "audience": "client",
+      "channel": "email",
+      "tone": "friendly",
+      "subject": "Your Service Update – [weekLabel]",
+      "body": "Hello [client.name],\n\nA brief update on your current service cycle for [weekLabel]:\n- [notes]\n\nThank you for partnering with [businessName].\n\n[brand.signature]",
+      "requiresHumanApproval": false,
+      "tags": ["update","customer"]
+    },
+    {
+      "module": "customer",
+      "stage": "feedback_request",
+      "audience": "client",
+      "channel": "email",
+      "tone": "friendly",
+      "subject": "We value your feedback — [businessName]",
+      "body": "Dear [client.name],\n\nYour feedback helps us improve. Please share your experience via the quick link below.\n\nThank you for helping shape a better workflow community.\n\n[brand.signature]",
+      "requiresHumanApproval": false,
+      "tags": ["feedback","customer"]
+    },
+    {
+      "module": "customer",
+      "stage": "issue_resolution",
+      "audience": "client",
+      "channel": "cims",
+      "tone": "professional",
+      "subject": null,
+      "body": "Client issue logged for [site.name]. Assigned to [staff]. Update status to RESOLVED once action completed. Attach evidence if required.",
+      "requiresHumanApproval": true,
+      "tags": ["issue","support"]
+    },
+    {
+      "module": "marketing",
+      "stage": "promotion_notice",
+      "audience": "client",
+      "channel": "email",
+      "tone": "friendly",
+      "subject": "Exclusive Update from [businessName]",
+      "body": "Hello [client.name],\n\nWe’re excited to share our latest offers and updates. Stay connected through corAe Unwind™ for live news and rewards.\n\n[brand.signature]",
+      "requiresHumanApproval": false,
+      "tags": ["marketing","unwind"]
+    },
+    {
+      "module": "core",
+      "stage": "system_alert",
+      "audience": "staff",
+      "channel": "cims",
+      "tone": "urgent",
+      "subject": "System Alert – [notes]",
+      "body": "CAIA detected an anomaly: [notes]. Review immediately and acknowledge ACK or ESCALATE.",
+      "requiresHumanApproval": false,
+      "tags": ["alert","system"]
+    },
+    {
+      "module": "core",
+      "stage": "update_release",
+      "audience": "staff",
+      "channel": "cims",
+      "tone": "friendly",
+      "subject": "corAe Update Release v[notes]",
+      "body": "New functions deployed: [notes]. Refresh your session to activate. Reply ACK ✅ when tested.",
+      "requiresHumanApproval": false,
+      "tags": ["system","release"]
+    }
+  ]
+}

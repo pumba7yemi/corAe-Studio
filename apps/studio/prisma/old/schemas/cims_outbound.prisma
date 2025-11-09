@@ -1,0 +1,89 @@
+// apps/studio/prisma/schemas/cims_outbound.prisma
+/* ============================================================
+   corAe CIMS Outbound
+   (Communications & Intelligence Messaging System)
+   Packs, Templates, Triggers, Outbound Messages
+   Works alongside CIMS core models and Office Management System (OMS)
+   ============================================================ */
+
+model MessagePack {
+  id          String   @id @default(cuid())
+  name        String
+  namespace   String   @unique
+  description String?
+
+  templates   MessageTemplate[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model MessageTemplate {
+  id String @id @default(cuid())
+
+  packId String
+  pack   MessagePack @relation(fields: [packId], references: [id], onDelete: Cascade)
+
+  module   String
+  stage    String
+  audience String
+  channel  String
+  tone     String
+
+  subject  String?
+  body     String
+
+  requiresHumanApproval Boolean @default(true)
+  isActive              Boolean @default(true)
+  tags                  Json
+  legacyCode            String?
+
+  usedAsDefaultForTriggers MessageTrigger[]  @relation("DefaultTemplate")
+  outboundMessages         OutboundMessage[] @relation("TemplateOutbound")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([module, stage, audience, channel])
+}
+
+model MessageTrigger {
+  id       String @id @default(cuid())
+  key      String @unique
+  module   String
+  stage    String
+  audience String
+
+  defaultTemplateId String?
+  defaultTemplate   MessageTemplate? @relation("DefaultTemplate", fields: [defaultTemplateId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([module, stage, audience])
+}
+
+model OutboundMessage {
+  id String @id @default(cuid())
+
+  templateId String
+  template   MessageTemplate @relation("TemplateOutbound", fields: [templateId], references: [id], onDelete: Restrict)
+
+  subject  String?
+  body     String
+  audience String
+  channel  String
+
+  status String @default("draft")
+  ctx    Json
+
+  createdBy String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Reconciliation link to CIMS Outbox
+  cimsOutbox CimsOutbox?
+
+  @@index([status, channel, audience])
+  @@index([createdAt])
+}

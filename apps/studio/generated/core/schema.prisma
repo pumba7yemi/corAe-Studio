@@ -1,0 +1,204 @@
+// apps/studio/prisma/150/schema.prisma
+// 150-logic: single source of truth, SQLite-safe (no JSON defaults)
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../generated/core" // -> apps/studio/prisma/generated/core
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL") // file:./apps/studio/prisma/data/corae.db
+}
+
+/**
+ * =========================
+ * Core app models
+ * =========================
+ */
+
+model User {
+  id          String   @id @default(uuid())
+  email       String   @unique
+  displayName String?
+  role        String   @default("workflow_partner")
+  createdAt   DateTime @default(now())
+
+  messages        CimsMessage[]
+  tasks           WorkfocusTask[] @relation("TaskOwner")
+  learnedMemories LearnedMemory[]
+}
+
+model CimsMessage {
+  id        String   @id @default(uuid())
+  threadId  String?
+  channel   String
+  direction String
+  body      String?
+  mediaUrl  String?
+  meta      Json
+  createdAt DateTime @default(now())
+
+  senderUserId String?
+  sender       User?   @relation(fields: [senderUserId], references: [id])
+
+  @@index([threadId])
+  @@index([createdAt])
+}
+
+model WorkfocusTask {
+  id          String    @id @default(uuid())
+  ownerUserId String?
+  owner       User?     @relation("TaskOwner", fields: [ownerUserId], references: [id])
+  bucket      String
+  title       String
+  status      String    @default("open")
+  dueAt       DateTime?
+  meta        Json
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([ownerUserId])
+  @@index([bucket])
+}
+
+/**
+ * =========================
+ * Base Memory (versioned packs) — ROM
+ * =========================
+ */
+
+model MemoryVendor {
+  id        String   @id @default(uuid())
+  name      String
+  website   String?
+  createdAt DateTime @default(now())
+
+  packs MemoryPack[]
+}
+
+model MemoryPack {
+  id        String   @id @default(uuid())
+  vendorId  String
+  slug      String
+  version   String
+  title     String
+  notes     String?
+  signature String?
+  createdAt DateTime @default(now())
+
+  vendor MemoryVendor @relation(fields: [vendorId], references: [id])
+
+  items    MemoryPackItem[]
+  installs MemoryInstall[]
+
+  @@unique([vendorId, slug, version])
+  @@index([slug, version])
+}
+
+model MemoryPackItem {
+  id        String   @id @default(uuid())
+  packId    String
+  kind      String
+  subject   String?
+  content   String
+  tags      String?
+  createdAt DateTime @default(now())
+
+  pack MemoryPack @relation(fields: [packId], references: [id])
+
+  overrides MemoryOverride[]
+
+  @@index([packId])
+}
+
+model MemoryTenant {
+  id        String   @id @default(uuid())
+  name      String
+  brandSlug String   @unique
+  createdAt DateTime @default(now())
+
+  installs  MemoryInstall[]
+  overrides MemoryOverride[]
+}
+
+model MemoryInstall {
+  id          String   @id @default(uuid())
+  tenantId    String
+  packId      String
+  installedAt DateTime @default(now())
+
+  tenant MemoryTenant @relation(fields: [tenantId], references: [id])
+  pack   MemoryPack   @relation(fields: [packId], references: [id])
+
+  @@unique([tenantId, packId])
+  @@index([tenantId])
+}
+
+model MemoryOverride {
+  id         String   @id @default(uuid())
+  tenantId   String
+  packItemId String
+  content    String
+  tags       String?
+  createdAt  DateTime @default(now())
+
+  tenant   MemoryTenant   @relation(fields: [tenantId], references: [id])
+  packItem MemoryPackItem @relation(fields: [packItemId], references: [id])
+
+  @@unique([tenantId, packItemId])
+  @@index([tenantId])
+}
+
+/**
+ * =========================
+ * Learned Memory — RAM
+ * =========================
+ */
+
+enum MemoryKind {
+  fact
+  preference
+  task
+  note
+  identity
+}
+
+model LearnedMemory {
+  id         String     @id @default(uuid())
+  tenantId   String
+  userId     String?
+  kind       MemoryKind
+  subject    String?
+  content    String
+  tags       String?
+  importance Int        @default(1)
+  source     String?
+  createdAt  DateTime   @default(now())
+  lastUsedAt DateTime?
+  expireAt   DateTime?
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([tenantId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+/**
+ * =========================
+ * Compatibility KV — for existing code paths
+ * =========================
+ */
+
+model CaiaMemory {
+  id        String   @id @default(cuid())
+  scope     String
+  key       String
+  value     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([scope, key])
+  @@map("caia_memory")
+}

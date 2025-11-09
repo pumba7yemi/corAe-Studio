@@ -1,0 +1,37 @@
+// ────────────────────────────────────────────────
+// corAe Core Company Identity™
+// File: apps/studio/prisma/schema/core-company.prisma
+// ────────────────────────────────────────────────
+
+enum BankIntent {
+  OPEN
+  CONNECTED
+}
+
+enum VatIntent {
+  REGISTER
+  CONNECTED
+}
+
+model CompanyIdentity {
+  id             String      @id @default(cuid())
+  legalName      String
+  jurisdiction   String
+  activities     String[]
+  bankIntent     BankIntent  @default(OPEN)
+  vatIntent      VatIntent   @default(REGISTER)
+  appraisalScore Decimal?    @db.Decimal(5,2)
+  pulseStatus    String?     // "active" | "dormant" | "archived"
+  aiRating       String?     // from Appraisal Wizard
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  // Relations
+  hrFiles        HrFile[]
+  hrRoles        HrRole[]
+  firstDeals     FirstDeal[]
+  bdos           BdoRecord[]
+  obariFlows     ObariFlow[]
+  ledgerAccounts LedgerAccount[]
+  appraisals     AppraisalRecord[]
+}

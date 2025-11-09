@@ -1,0 +1,148 @@
+// ===== MODULE: bdo.prisma =====
+// Business Development Orders — single staging funnel for all orders
+// 150.logic: compile-safe today; upgrade soft codes to relations later.
+
+// ---------- Enums ----------
+enum BDOType {
+  SALES
+  PURCHASE
+  TRANSFER
+  SERVICE
+}
+
+enum BDOStage {
+  LEAD
+  OPPORTUNITY
+  QUOTE
+  PROFORMA
+  ORDER_READY
+  WON
+  LOST
+  CANCELLED
+}
+
+enum BDOChannel {
+  INTERNAL
+  WEBSITE
+  WHATSAPP
+  EMAIL
+  PHONE
+  MARKETPLACE
+  WALKIN
+  OTHER
+}
+
+enum BDOPricingMode {
+  FIXED
+  NEGOTIATED
+  TIERED
+}
+
+// ---------- Models ----------
+model BDO {
+  id            String          @id @default(cuid())
+  code          String          @unique // e.g. BDO-2025-000123
+
+  type          BDOType
+  stage         BDOStage        @default(LEAD)
+  channel       BDOChannel      @default(INTERNAL)
+  pricingMode   BDOPricingMode  @default(FIXED)
+
+  // Parties (soft links: upgrade to relations when those models are present)
+  companyCode   String?         // our company (seller/buyer)
+  customerCode  String?         // external/customer code
+  supplierCode  String?         // external/supplier code
+  contactRef    String?         // contact id/email/phone composite
+  locationRef   String?         // depot/site code
+
+  // Commercials
+  currency      String          @default("AED")
+  incoterm      String?
+  paymentTerms  String?
+  validUntil    DateTime?
+  expectedDate  DateTime?
+
+  // Totals (denormalized)
+  subtotal      Decimal         @db.Decimal(14, 2) @default(0)
+  discountTotal Decimal         @db.Decimal(14, 2) @default(0)
+  taxTotal      Decimal         @db.Decimal(14, 2) @default(0)
+  shippingTotal Decimal         @db.Decimal(14, 2) @default(0)
+  grandTotal    Decimal         @db.Decimal(14, 2) @default(0)
+
+  // Ownership (soft)
+  ownerRef      String?         // user id/email
+
+  // Links into execution when converted (soft foreign keys to OBARI/Finance)
+  salesOrderCode    String?
+  purchaseOrderCode String?
+  salesInvoiceNo    String?
+
+  // FileLogic (soft)
+  fileNodeId    String?
+
+  notes         String?
+  sourceRef     String?         // external id/reference
+
+  lines         BDOLine[]
+  events        BDOEvent[]
+  quotes        BDOQuoteVersion[]
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([stage, type, channel])
+  @@index([customerCode, supplierCode])
+  @@index([ownerRef])
+  @@index([salesOrderCode, purchaseOrderCode])
+}
+
+model BDOLine {
+  id          String   @id @default(cuid())
+  bdoId       String
+  bdo         BDO      @relation(fields: [bdoId], references: [id], onDelete: Cascade)
+
+  // Product link: stable relation via Item.code
+  itemCode    String?
+  item        Item?    @relation(fields: [itemCode], references: [code], onDelete: SetNull)
+
+  description String
+  qty         Decimal  @db.Decimal(14, 3) @default(1)
+  unit        String?                      // EA, KG, L
+  unitPrice   Decimal  @db.Decimal(12, 4) @default(0)
+  discountPc  Decimal? @db.Decimal(6, 3)
+
+  // Tax as code until Tax model is landed
+  taxCode     String?
+  lineTotal   Decimal  @db.Decimal(14, 2) @default(0)
+
+  createdAt   DateTime @default(now())
+
+  @@index([bdoId, itemCode])
+}
+
+model BDOEvent {
+  id        String   @id @default(cuid())
+  bdoId     String
+  bdo       BDO      @relation(fields: [bdoId], references: [id], onDelete: Cascade)
+
+  actorRef  String?  // user id/email
+  stage     BDOStage
+  message   String?
+  createdAt DateTime @default(now())
+
+  @@index([bdoId, stage, createdAt])
+}
+
+model BDOQuoteVersion {
+  id         String   @id @default(cuid())
+  bdoId      String
+  bdo        BDO      @relation(fields: [bdoId], references: [id], onDelete: Cascade)
+
+  version    Int
+  pdfNodeId  String?  // FileLogic node id for rendered quote PDF
+  snapshot   Json     // captured header+lines used for this render
+  createdAt  DateTime @default(now())
+
+  @@unique([bdoId, version])
+  @@index([pdfNodeId])
+}

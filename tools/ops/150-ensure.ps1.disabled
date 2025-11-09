@@ -1,0 +1,7 @@
+<# Disabled: 150-ensure.ps1
+   This file was disabled to enforce a temporary ban on .ps1 files until
+   the repository-wide "150 logic" policy is accepted. To re-enable, remove
+   the .disabled suffix and ensure the policy is acceptable to the team.
+#>
+
+REM 150-ensure ps1 has been disabled until '150 logic' governs usage of PowerShell scripts.

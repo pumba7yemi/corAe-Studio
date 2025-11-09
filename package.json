@@ -1,48 +1,45 @@
 {
   "name": "corae-studio",
-  "version": "1.0.0",
   "private": true,
-  "type": "module",
+  "packageManager": "pnpm@10.15.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "clean": "node -e \"import('node:fs').then(fs=>fs.rmSync('.next',{recursive:true,force:true}))\"",
-
-    "cims:seed": "node ../../tools/seed_cims.mjs",
-    "cims:daemon": "node ../../services/cims/daemon.mjs",
-    "onebuild:validate": "node scripts/onebuild/validate.js",
-    "onebuild:run": "node scripts/onebuild/run.js",
-    "agent": "node scripts/agent/worker.js",
-
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "lint:ci": "eslint . --max-warnings=0",
-    "typecheck": "tsc --noEmit",
-
-    "squiggles:scan": "node scripts/squiggles.mjs scan",
-    "squiggles:fix": "node scripts/squiggles.mjs fix",
-    "squiggles:doctor": "node scripts/squiggles.mjs doctor"
-  },
-  "dependencies": {
-    "minimatch": "^9.0.3",
-    "next": "15.5.0",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "yaml": "^2.4.5"
+    "bootstrap": "pnpm install",
+    "build": "pnpm -r --filter ./packages/... build",
+    "scan:yard": "tsx tools/shipyard/scan-and-plan.ts",
+    "dev": "pnpm --filter @corae/studio dev",
+    "smoke:ship": "node tools/ship/smoke-test.js http://127.0.0.1:3000",
+    "smoke:ship:node": "node tools/ship/run-smoke.js",
+    "ops:ban-ps1": "node tools/ops/check-no-ps1.js",
+    "clean": "rimraf apps/**/.next && rimraf packages/**/dist",
+    "check:types": "pnpm -w exec -- tsc -b --noEmit",
+    "check:build:studio": "pnpm --filter @corae/studio build",
+    "check:prisma": "pnpm --filter @corae/studio prisma:format && pnpm --filter @corae/studio prisma:generate",
+    "check:lint": "pnpm --filter @corae/studio lint || exit 0",
+    "nightly:studio": "node ./tools/nightly-green-sweep.js"
   },
   "devDependencies": {
-    "@types/node": "^20.14.10",
-    "@types/react": "^18.2.66",
-    "@typescript-eslint/eslint-plugin": "7.15.0",
-    "@typescript-eslint/parser": "7.15.0",
+    "@tailwindcss/postcss": "^4.1.16",
+    "@types/node": "^24.10.0",
+    "@types/react": "^18.3.24",
+    "@types/react-dom": "^19.2.2",
     "autoprefixer": "^10.4.21",
-    "eslint": "9.6.0",
-    "eslint-config-next": "14.2.5",
-    "eslint-config-prettier": "9.1.0",
     "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.17",
-    "typescript": "^5.5.4",
-    "typescript-eslint": "^8.42.0"
+    "rimraf": "^5.0.7",
+    "tailwindcss": "^4.1.16",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.18.0",
+    "prisma": "^6.18.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "overrides": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   }
 }

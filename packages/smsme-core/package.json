@@ -1,0 +1,18 @@
+{
+  "name": "smsme-core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "plan": "node dist/cli.js plan --from examples/old.json --to examples/next.json --out plan.json",
+    "sql": "node dist/cli.js sql --plan plan.json --out migration.sql"
+  },
+  "dependencies": {
+    "fast-json-stable-stringify": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.8.1",
+    "typescript": "^5.6.3"
+  }
+}

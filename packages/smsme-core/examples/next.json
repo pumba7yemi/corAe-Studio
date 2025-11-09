@@ -1,0 +1,27 @@
+{
+  "label": "add_profile",
+  "prismaVer": "5.0.0",
+  "models": [
+    {
+      "name": "User",
+      "fields": [
+        { "name": "id", "type": "uuid", "nullable": false },
+        { "name": "email", "type": "text", "nullable": false },
+        { "name": "name", "type": "text", "nullable": true },
+        { "name": "profileId", "type": "int", "nullable": true }
+      ],
+      "indexes": [],
+      "uniques": []
+    },
+    {
+      "name": "Profile",
+      "fields": [
+        { "name": "id", "type": "int", "nullable": false },
+        { "name": "bio", "type": "text", "nullable": true }
+      ],
+      "indexes": [],
+      "uniques": []
+    }
+  ],
+  "enums": []
+}

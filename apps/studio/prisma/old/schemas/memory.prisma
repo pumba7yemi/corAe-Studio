@@ -1,0 +1,44 @@
+// ===== CAIA Persona =====
+model CaiaPersona {
+  id        String   @id @default(uuid())
+  name      String   @default("CAIA")
+  style     String   @default("calm_british_warm")
+  voiceHint String?  // e.g., "en-GB, rate 0.92, pitch -1st"
+  lexicon   Json?    // pronunciations { "corAe": "CORE-ay", ... }
+  rules     Json?    // guardrails, do/don't
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+// ===== CAIA Memory =====
+enum MemoryKind {
+  fact       // “Their name is Subject 1”
+  preference // “Likes 9:00 AM standups”
+  task       // “Follow-up vendor weekly”
+  note       // free-form note
+  identity   // about CAIA’s own persona
+}
+
+model CaiaMemory {
+  id          String     @id @default(uuid())
+  kind        MemoryKind
+  subject     String?          // who/what it’s about (e.g., "Subject 1", "CIMS")
+  content     String           // the memory text
+  tags        String?          // comma-separated tags for now
+  importance  Int        @default(1) // 1..5
+  source      String?          // "chat", "voice", "import", etc.
+  createdAt   DateTime   @default(now())
+  lastUsedAt  DateTime?        // update on recall
+  expireAt    DateTime?        // optional TTL
+}
+
+// Optional: link memories to app users
+model MemoryOwner {
+  id        String   @id @default(uuid())
+  userId    String?  // link to User.id if relevant
+  memoryId  String
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([memoryId])
+}

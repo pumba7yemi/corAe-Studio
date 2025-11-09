@@ -1,0 +1,41 @@
+{
+  "blueprintKey": "transport.v1",
+  "name": "Transport – Linked Haulage",
+  "channel": "transport",
+  "cadenceDays": 28,
+  "orderPattern": "dual",
+  "defaultTerms": "NET30",
+  "defaultMarginPct": 15,
+  "linkedBlueprint": "waste.v1",
+  "workflow": {
+    "stages": [
+      "VehicleAssign",
+      "SiteReadiness",
+      "Collection",
+      "Delivery",
+      "Proofs",
+      "Invoice"
+    ]
+  },
+  "documentation": {
+    "required": [
+      "Driver Manifest",
+      "Route Sheet",
+      "Delivery Proof"
+    ],
+    "generateAuto": true,
+    "retainYears": 2
+  },
+  "vendorPolicy": {
+    "priceLock": true,
+    "renewalCycleDays": 28
+  },
+  "lines": [
+    {
+      "sku": "SERV-COLLECT",
+      "desc": "Waste Collection Trip",
+      "uom": "trip",
+      "plannedQty": 1
+    }
+  ]
+}

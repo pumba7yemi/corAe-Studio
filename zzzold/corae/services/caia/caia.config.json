@@ -1,0 +1,10 @@
+{
+  "agentName": "CAIA",
+  "memoryStore": "file",
+  "paths": {
+    "memory": "services/caia/memory/memory.jsonl",
+    "index": "services/caia/memory/index.json",
+    "heartbeat": "services/caia/presence/heartbeat.json",
+    "logsDir": "services/caia/logs"
+  }
+}

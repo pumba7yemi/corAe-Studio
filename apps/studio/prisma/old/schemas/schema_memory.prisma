@@ -1,0 +1,138 @@
+// Schema Memory Layer — captures snapshots, diffs, and executable plans
+
+model SM_Snapshot {
+  id          String   @id @default(cuid())
+  label       String?            // e.g. "pre-forms", git SHA, tag
+  schemaHash  String   @unique   // hash of full DDL text
+  prismaVer   String?
+  createdAt   DateTime @default(now())
+
+  models      SM_Model[]
+  enums       SM_Enum[]
+  planFromPrev SM_Plan?          // planned migration from previous snapshot
+}
+
+model SM_Model {
+  id          String   @id @default(cuid())
+  snapshotId  String
+  snapshot    SM_Snapshot @relation(fields: [snapshotId], references: [id])
+
+  name        String
+  dbName      String?            // @map
+  composite   Boolean  @default(false)
+
+  fields      SM_Field[]
+  indexes     SM_Index[]
+  uniques     SM_Unique[]
+}
+
+model SM_Field {
+  id          String   @id @default(cuid())
+  modelId     String
+  model       SM_Model @relation(fields: [modelId], references: [id])
+
+  name        String
+  dbName      String?            // @map
+  type        String             // scalar|enum|model
+  isList      Boolean  @default(false)
+  isOptional  Boolean  @default(false)
+  defaultJson Json?
+  attributes  Json?              // @id, @unique, @updatedAt, @db.Decimal, etc.
+  relation    Json?              // {to:"Model", fields:[...], references:[...], onDelete:...}
+}
+
+model SM_Index {
+  id          String   @id @default(cuid())
+  modelId     String
+  model       SM_Model @relation(fields: [modelId], references: [id])
+
+  name        String?
+  fields      String[]           // order matters
+  isUnique    Boolean  @default(false)
+  raw         String?            // @@index(...) raw text if needed
+}
+
+model SM_Unique {
+  id          String   @id @default(cuid())
+  modelId     String
+  model       SM_Model @relation(fields: [modelId], references: [id])
+
+  name        String?
+  fields      String[]
+}
+
+model SM_Enum {
+  id          String   @id @default(cuid())
+  snapshotId  String
+  snapshot    SM_Snapshot @relation(fields: [snapshotId], references: [id])
+
+  name        String
+  values      String[]
+}
+
+model SM_Plan {
+  id            String   @id @default(cuid())
+  fromSnapshot  String?  // nullable for initial import
+  toSnapshot    String
+  createdAt     DateTime @default(now())
+  status        String   @default("DRAFT") // DRAFT | LOCKED | APPLIED
+
+  steps         SM_Step[]
+  riskSummary   Json?                  // counts by level
+  notes         String?
+}
+
+enum SM_StepKind {
+  ADD_MODEL
+  DROP_MODEL
+  RENAME_MODEL
+  ADD_FIELD
+  DROP_FIELD
+  RENAME_FIELD
+  ALTER_FIELD_TYPE
+  SET_NOT_NULL
+  DROP_NOT_NULL
+  ADD_INDEX
+  DROP_INDEX
+  ADD_UNIQUE
+  DROP_UNIQUE
+  ADD_ENUM_VALUE
+  CUSTOM_SQL
+  CREATE_VIEW_SHIM
+  DROP_VIEW_SHIM
+  BACKFILL
+}
+
+enum SM_Risk {
+  NONE
+  LOW
+  MEDIUM
+  HIGH
+  DESTRUCTIVE
+}
+
+model SM_Step {
+  id        String    @id @default(cuid())
+  planId    String
+  plan      SM_Plan   @relation(fields: [planId], references: [id])
+
+  kind      SM_StepKind
+  risk      SM_Risk   @default(NONE)
+  target    String?              // e.g. "Item.unit"
+  payload   Json?                // machine-usable args (e.g., NOT NULL flip, default, mapping)
+  sql       String?              // optional exact SQL when required
+  order     Int       @default(0)
+  notes     String?
+}
+
+model SM_BackfillJob {
+  id        String   @id @default(cuid())
+  planId    String
+  stepId    String?  // optional link to a BACKFILL step
+  status    String   @default("PENDING") // PENDING|RUNNING|DONE|FAILED
+  sql       String?           // batched backfill SQL
+  scriptRef String?           // reference to app script function
+  stats     Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

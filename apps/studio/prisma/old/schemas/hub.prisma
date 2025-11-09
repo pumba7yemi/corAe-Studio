@@ -1,0 +1,120 @@
+/* ============================================================
+   corAe Hub Module (Central Registry & Linking Tables)
+   + Workflows registry (templates, instances, runs)
+   ============================================================ */
+
+/// ---------- Core Hub ----------
+model Tenant {
+  id        String   @id @default(uuid())
+  name      String
+  code      String   @unique
+  region    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users     User[]
+  systems   SystemRegistry[]
+  logs      AuditLog[]
+  // Optional: tenant-scoped workflows (keep optional to avoid breaking)
+  workflowTemplates WorkflowTemplate[]
+}
+
+model SystemRegistry {
+  id             String   @id @default(uuid())
+  name           String
+  type           String   // "biz" | "home" | "work" | "academy" | "marketplace"
+  version        String?
+  status         String   @default("active")
+  linkedTenantId String?
+  linkedTenant   Tenant?  @relation(fields: [linkedTenantId], references: [id], onDelete: Cascade)
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  tenantId  String?
+  tenant    Tenant?  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  actor     String?
+  action    String
+  target    String?
+  details   Json?
+  createdAt DateTime @default(now())
+
+  @@index([tenantId, createdAt])
+}
+
+/// ---------- Workflows (as you already had) ----------
+model WorkflowTemplate {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  name      String
+  cron      String
+  summary   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // optional multi-tenant link (keeps previous behavior intact if unused)
+  tenantId  String?
+  tenant    Tenant?  @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+
+  steps     TemplateStep[]
+  instances WorkflowInstance[]
+
+  @@index([tenantId])
+}
+
+model TemplateStep {
+  id         String           @id @default(cuid())
+  templateId String
+  order      Int
+  title      String
+  prompt     String
+  ctaHref    String?
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  template   WorkflowTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@index([templateId, order])
+}
+
+model WorkflowInstance {
+  id         String           @id @default(cuid())
+  templateId String
+  date       DateTime
+  status     InstanceStatus   @default(PENDING)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  template   WorkflowTemplate @relation(fields: [templateId], references: [id])
+  runs       InstanceRun[]
+
+  @@index([templateId, date])
+  @@index([status])
+}
+
+model InstanceRun {
+  id         String          @id @default(cuid())
+  instanceId String
+  stepId     String
+  order      Int
+  title      String
+  prompt     String
+  ctaHref    String?
+  done       Boolean         @default(false)
+  doneAt     DateTime?
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  instance   WorkflowInstance @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+
+  @@index([instanceId, order])
+}
+
+enum InstanceStatus {
+  PENDING
+  IN_PROGRESS
+  DONE
+}

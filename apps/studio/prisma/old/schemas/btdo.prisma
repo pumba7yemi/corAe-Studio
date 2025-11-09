@@ -1,0 +1,139 @@
+// apps/studio/prisma/schemas/btdo.prisma
+// BTDO Foundations — Leads, Requirement Templates, Lead Requirements, Preset
+
+// ── Enums (reuse if they already exist elsewhere in the unified schema)
+enum LeadSource {
+  WEBSITE
+  PHONE
+  EMAIL
+  REFERRAL
+  OTHER
+}
+
+enum LeadStatus {
+  NEW
+  QUALIFYING
+  QUOTED
+  ACCEPTED
+  LOST
+}
+
+enum LeadEventKind {
+  NOTE
+  CALL
+  EMAIL
+  MEETING
+}
+
+enum DocStatus {
+  REQUIRED
+  PENDING
+  RECEIVED
+  VERIFIED
+  REJECTED
+}
+
+// ── Requirement Templates (campaigns)
+model BtdoRequirementTemplate {
+  id        String                        @id @default(cuid())
+  name      String                        @unique
+  lines     BtdoRequirementTemplateLine[]
+  createdAt DateTime                      @default(now())
+  updatedAt DateTime                      @updatedAt
+}
+
+model BtdoRequirementTemplateLine {
+  id         String                   @id @default(cuid())
+  templateId String
+  template   BtdoRequirementTemplate  @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  kind       String                   // e.g., POD, WTN, INV, OTHER
+  required   Boolean                  @default(true)
+  notes      String?
+  idx        Int                      @default(0)
+
+  @@index([templateId])
+}
+
+// ── Leads & activity
+model BtdoLead {
+  id           String               @id @default(cuid())
+  title        String
+  source       LeadSource           @default(WEBSITE)
+  status       LeadStatus           @default(NEW)
+
+  contactName  String?
+  contactPhone String?
+  contactEmail String?
+
+  events       BtdoLeadEvent[]
+  requirements BtdoLeadRequirement[]
+
+  // Optional preset snapshot when converted
+  presetId     String?
+  preset       BdoPreset?           @relation(fields: [presetId], references: [id])
+
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+
+  @@index([status, source])
+}
+
+model BtdoLeadEvent {
+  id        String        @id @default(cuid())
+  leadId    String
+  lead      BtdoLead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  kind      LeadEventKind @default(NOTE)
+  message   String
+  createdAt DateTime      @default(now())
+
+  @@index([leadId])
+}
+
+// Flattened requirements attached to a specific lead (from template or manual)
+model BtdoLeadRequirement {
+  id        String    @id @default(cuid())
+  leadId    String
+  lead      BtdoLead  @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  kind      String
+  required  Boolean   @default(true)
+  status    DocStatus @default(REQUIRED)
+  notes     String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([leadId])
+  @@index([status])
+}
+
+// ── Preset resulting from a qualified/accepted lead (feeds OBARI Prep/Order)
+model BdoPreset {
+  id            String   @id @default(cuid())
+  name          String
+
+  // Commercial direction and cadence (reuse enums if present in unified schema)
+  direction     Direction      @default(PURCHASE) // from OBARI schema
+  scheduleMode  ScheduleMode   @default(CYCLE_28) // from OBARI schema
+  defaultWeek   WeekRef?
+
+  // Parties & finance hints
+  vendorCode    String?
+  customerCode  String?
+  currency      String        @default("AED")
+  taxCode       String?
+
+  // Item hints (optional)
+  itemCode      String?
+  unit          String?
+  unitPrice     Decimal?      @db.Decimal(18, 4)
+
+  // Link back to the originating lead (optional)
+  originLeadId  String?
+  originLead    BtdoLead?     @relation(fields: [originLeadId], references: [id])
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([direction, scheduleMode])
+}

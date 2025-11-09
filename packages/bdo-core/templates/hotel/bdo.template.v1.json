@@ -1,0 +1,42 @@
+{
+  "blueprintKey": "hotel.v1",
+  "name": "Hotel 28-Day Procurement",
+  "channel": "hospitality",
+  "cadenceDays": 28,
+  "orderPattern": "single",
+  "defaultTerms": "NET30",
+  "defaultMarginPct": 20,
+  "workflow": {
+    "stages": [
+      "Booking",
+      "Active",
+      "Reporting",
+      "Invoicing"
+    ]
+  },
+  "documentation": {
+    "required": [
+      "Delivery Note"
+    ],
+    "generateAuto": true,
+    "retainYears": 2
+  },
+  "vendorPolicy": {
+    "priceLock": true,
+    "renewalCycleDays": 28
+  },
+  "lines": [
+    {
+      "sku": "LINEN-SET",
+      "desc": "Linen Set",
+      "uom": "set",
+      "plannedQty": 100
+    },
+    {
+      "sku": "TOILETRIES",
+      "desc": "Toiletries Pack",
+      "uom": "pack",
+      "plannedQty": 200
+    }
+  ]
+}

@@ -1,60 +1,416 @@
-/* corAe Studio globals */
+/* =========================
+  Tailwind base (v4 import)
+  ========================= */
+/* stylelint-disable at-rule-no-unknown */
+@import "tailwindcss";
+/* stylelint-enable at-rule-no-unknown */
+
+/* Ensure basic gap utilities exist before component @apply usages. */
+@layer utilities {
+  .gap-1 { gap: var(--gap-1) !important; }
+  .gap-2 { gap: var(--gap-2) !important; }
+  .gap-3 { gap: var(--gap-3) !important; }
+  .gap-4 { gap: var(--gap-4) !important; }
+  .gap-5 { gap: var(--gap-5) !important; }
+  .gap-6 { gap: var(--gap-6) !important; }
+}
+
+/* ========================================================================
+   corAe Design Tokens (namespaced to avoid collisions with shadcn/ui HSL)
+   ======================================================================== */
 
 /* @tokens:start */
-:root{
-  --primary:#7cc4ff;
-  --secondary:#22c55e;
-  --background:#0b0f14;
-  --surface:#121821;
-  --text:#e6eef7;
-  --muted:#9fb3c8;
-  --border:#213042;
-  --radius:16px;
-  --font:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "SF Pro", Arial, sans-serif;
+:root {
+  /* Base brand */
+  --corae-primary:   #7c5cff;
+  --corae-secondary: #22c55e;
+
+  /* Dark theme defaults (canonical corAe tokens) */
+  --corae-background: #0b0c10;
+  --corae-surface:    #111217;
+  --corae-text:       #e1e1ea;
+  --corae-muted:      #52555b;
+
+  /* System */
+  --corae-radius: 14px;
+  --corae-font: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+
+  /* Aliases expected by Tailwind-ish utilities in this file */
+  --bg:        var(--corae-background);
+  --panel:     var(--corae-surface);
+  --panel-2:   color-mix(in srgb, var(--corae-surface) 85%, white); /* subtle lift */
+  --border:    color-mix(in srgb, var(--corae-surface) 70%, white); /* ≈ slate-200 equiv */
+  --accent:    var(--corae-primary);
+
+  /* Spacing scale */
+  --gap-1: 4px;
+  --gap-2: 8px;
+  --gap-3: 12px;
+  --gap-4: 16px;
+  --gap-5: 20px;
+  --gap-6: 24px;
+  --gap-7: 28px;
+  --gap-8: 32px;
+
+  /* Shared shadow */
+  --shadow: 0 8px 24px rgba(0,0,0,.25);
+}
+
+/* Light theme: prefer data-theme set by your bootstrap; keep body.theme-light as fallback */
+html[data-theme="light"],
+body.theme-light {
+  --bg:        #f6f7f9;
+  --panel:     #ffffff;
+  --panel-2:   #f1f4f8;
+  --corae-text:#0b0f14;
+  --corae-muted:#5a6b7d;
+  --border:    #d6dee6;
+  --accent:    #0f172a;
 }
 /* @tokens:end */
 
-/* base layout & components (kept simple; you can extend freely) */
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0; background:var(--background); color:var(--text);
-  font-family: var(--font);
+/* ==========================================================
+   shadcn/ui Bridge — map corAe tokens into HSL variables it expects
+   (Do not redefine our canonical token names above)
+   ========================================================== */
+:root {
+  /* Convert corAe tokens → shadcn HSL space (approximate) */
+  /* Use OKLCH/OKLab when Tailwind supports; for now HSL constants tuned to your palette */
+
+  /* Page & text */
+  --background: 220 14% 6%;   /* ≈ var(--corae-background) #0b0c10 */
+  --foreground: 220 20% 92%;  /* ≈ var(--corae-text) */
+
+  /* Cards/panels */
+  --card: 220 14% 9%;         /* ≈ var(--panel) #111217 */
+  --card-foreground: 220 20% 92%;
+
+  /* Popovers/secondary surface */
+  --popover: 220 14% 12%;     /* ≈ var(--panel-2) */
+  --popover-foreground: 220 20% 92%;
+
+  /* Accents */
+  --primary: 257 100% 67%;        /* ≈ --corae-primary #7c5cff */
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 152 63% 46%;       /* ≈ --corae-secondary #22c55e */
+  --secondary-foreground: 0 0% 100%;
+
+  /* Muted / borders / inputs */
+  --muted: 220 8% 52%;            /* ≈ --corae-muted */
+  --muted-foreground: 220 8% 68%;
+
+  --border-hsl: 220 10% 24%;      /* HSL twin of --border */
+  --input: var(--border-hsl);
+  --ring: 210 100% 70%;           /* focus blue */
+
+  /* radius for shadcn (mirror corAe radius) */
+  --radius: 0.875rem; /* ≈ 14px */
 }
 
-.container{ max-width:1120px; margin:0 auto; padding:32px 24px; }
-.row{ display:flex; gap:16px; align-items:center; flex-wrap:wrap; }
-.grid{ display:grid; gap:24px; }
-.grid-auto{ grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-
-h1{ font-size: clamp(28px, 4vw, 44px); margin:0 0 12px; letter-spacing:.2px }
-h2{ font-size: clamp(20px, 3vw, 28px); margin:0 0 12px }
-.muted{ color: var(--muted); }
-.small{ font-size:.9rem; color: var(--muted); }
-
-.site-nav{
-  display:flex; gap:16px; flex-wrap:wrap;
-  padding:10px 0 18px; margin-bottom:24px;
-  border-bottom:1px solid var(--border);
+/* Ensure shadcn utilities respect our dark background */
+html, body {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
 }
-.site-nav a{ color:var(--text); text-decoration:none; opacity:.85 }
-.site-nav a:hover{ opacity:1; }
 
-.card{
-  background:var(--surface); border:1px solid var(--border);
-  border-radius: var(--radius); box-shadow: 0 8px 24px rgba(0,0,0,.25);
-  padding: 24px;
+/* If any component still renders light classes, force them dark */
+[class*="bg-white"],
+[class*="bg-gray-50"],
+[class*="bg-slate-50"] {
+  background-color: hsl(var(--card)) !important;
+  color: hsl(var(--card-foreground)) !important;
+  border-color: hsl(var(--border-hsl)) !important;
 }
-.card h3{ margin:0 0 6px; font-size:18px }
-.card .subtitle{ color:var(--muted); margin-bottom:16px }
 
-.btn{
-  padding:10px 14px; border-radius:10px; border:1px solid var(--border);
-  background: #0f151d; color:var(--text); cursor:pointer;
+/* Harmonise border utilities with corAe token */
+[class*="border-"],
+[class*="ring-"] {
+  border-color: var(--border) !important;
 }
-.btn:hover{ background:#121821; }
-.btn.primary{
-  background: linear-gradient(180deg, #4aa8ff, #328ef0);
-  border-color: #2d7ed3; color:#fff;
+
+/* =========================
+   Base
+   ========================= */
+* { box-sizing: border-box }
+html, body { height: 100% }
+:root { color-scheme: dark; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+body {
+  background-color: var(--bg);
+  color: var(--corae-text);
+  margin: 0;
+  font-family: var(--corae-font);
 }
-.btn.ghost{ background:transparent; }
+
+/* =========================
+   Utilities (plain CSS)
+   ========================= */
+.container { max-width: 1120px; margin: 0 auto; padding: var(--gap-6) var(--gap-4); }
+.stack > * + * { margin-top: var(--gap-4); }
+.row { display:flex; gap: var(--gap-3); flex-wrap:wrap; align-items:center; }
+.grid { display:grid; gap: var(--gap-4); }
+.grid-auto { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+
+/* =========================
+   Typography
+   ========================= */
+h1 { font-size: clamp(28px, 4vw, 44px); margin: 0 0 var(--gap-2); letter-spacing: .2px; }
+h2 { font-size: clamp(20px, 3vw, 28px); margin: 0 0 var(--gap-2); }
+.muted { color: var(--corae-muted); }
+.small { font-size: .9rem; color: var(--corae-muted); }
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--corae-text);
+}
+
+/* =========================
+   Tailwind fallback utilities (for @apply safety)
+   ========================= */
+@layer utilities {
+  .bg-background { background-color: var(--bg) !important; }
+  .bg-card { background-color: var(--panel) !important; }
+  .bg-surface { background-color: var(--panel-2) !important; }
+  .text-text { color: var(--corae-text) !important; }
+  .text-muted { color: var(--corae-muted) !important; }
+  .border-ring { border-color: var(--border) !important; }
+  .shadow-card { box-shadow: var(--shadow) !important; }
+  /* Fallback gap utilities (map corAe tokens to CSS gap utilities)
+     These allow @apply gap-<n> to work even if Tailwind utilities are not
+     generated by the pipeline in some environments. */
+  .gap-1 { gap: var(--gap-1) !important; }
+  .gap-2 { gap: var(--gap-2) !important; }
+  .gap-3 { gap: var(--gap-3) !important; }
+  .gap-4 { gap: var(--gap-4) !important; }
+  .gap-5 { gap: var(--gap-5) !important; }
+  .gap-6 { gap: var(--gap-6) !important; }
+  .gap-7 { gap: var(--gap-7) !important; }
+  .gap-8 { gap: var(--gap-8) !important; }
+}
+
+/* =========================
+   Component patterns (Tailwind)
+   ========================= */
+@layer components {
+  /* Site nav */
+  .site-nav {
+    display: flex;
+    gap: var(--gap-4);
+    flex-wrap: wrap;
+    padding-bottom: var(--gap-4);
+    margin-bottom: var(--gap-6);
+    border-bottom: 1px solid var(--border);
+  }
+  .site-nav a {
+    color: var(--corae-text);
+    text-decoration: none;
+    opacity: 0.9;
+  }
+  .site-nav a:hover { opacity: 1; }
+
+  /* Card */
+  .c-card {
+    border-radius: calc(var(--radius) + 8px);
+    border: 1px solid var(--border);
+    background: var(--panel);
+    box-shadow: var(--shadow);
+    padding: var(--gap-6);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .c-card:hover { transform: translateY(-0.5px); box-shadow: 0 10px 28px rgba(0,0,0,.28); }
+
+  /* Buttons */
+  .btn {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border);
+    background: var(--panel-2);
+    color: var(--corae-text);
+    cursor: pointer;
+  }
+  .btn:hover { background: var(--panel); }
+  .btn-primary { color:#fff; background: linear-gradient(180deg, #4aa8ff, #328ef0); border-color:#2d7ed3; }
+  .btn-ghost { background: transparent; }
+}
+
+/* =========================
+   OBARI helpers (token-aware)
+   ========================= */
+.pill {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--corae-text);
+  backdrop-filter: saturate(120%) blur(6px);
+}
+
+.hero-accent {
+  position: absolute; inset: 0; pointer-events: none;
+}
+.hero-accent::before,
+.hero-accent::after {
+  content: "";
+  position: absolute;
+  width: 18rem; height: 18rem; border-radius: 999px; filter: blur(36px);
+  background: var(--panel-2);
+  opacity: .6;
+}
+.hero-accent::before { top: -6rem; left: -6rem; }
+.hero-accent::after  { bottom: -6rem; right: -6rem; }
+
+/* =========================
+   Scroll polish
+   ========================= */
+::-webkit-scrollbar { width:10px; height:10px }
+::-webkit-scrollbar-thumb { background:#1c2633; border-radius:8px; border:2px solid #0b0f14; }
+
+/* =========================
+   Interaction polish
+   ========================= */
+::selection {
+  /* Fallback then enhanced (browser-safe) */
+  background: rgba(124, 92, 255, 0.3);
+  color: var(--corae-text);
+}
+@supports (color: color-mix(in oklab, white, black)) {
+  ::selection { background: color-mix(in oklab, var(--accent) 30%, transparent); }
+}
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Resets */
+a { color: inherit; text-decoration: none; }
+button { background: none; border: 0; padding: 0; font: inherit; color: inherit; }
+
+/* Reduced-motion safety */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ────────────────────────────────────────────────
+   corAe Home — unified brand overrides
+   Applies to @corae/home tiles inside .page-home
+   ──────────────────────────────────────────────── */
+.page-home .c-home-tile,
+.page-home .c-home-tile * {
+  color-scheme: dark;
+}
+
+/* Base card surfaces */
+.page-home .c-home-tile {
+  border-color: rgba(148, 163, 184, 0.25) !important; /* slate-400/25 */
+  background-color: rgba(2, 6, 23, 0.65) !important;  /* slate-950/65 */
+  backdrop-filter: blur(6px);
+}
+
+/* Light subcards → corAe slate */
+.page-home .c-home-tile [class*="bg-white"],
+.page-home .c-home-tile [class*="bg-gray-50"],
+.page-home .c-home-tile [class*="bg-slate-50"] {
+  background-color: rgba(15, 23, 42, 0.7) !important; /* slate-900/70 */
+  color: #e2e8f0 !important;                           /* slate-200 */
+  border-color: rgba(148, 163, 184, 0.18) !important;
+}
+
+/* Borders inside tiles */
+.page-home .c-home-tile .border,
+.page-home .c-home-tile [class*="border-"] {
+  border-color: rgb(51 65 85) !important;              /* slate-700 */
+}
+
+/* Inputs */
+.page-home .c-home-tile input,
+.page-home .c-home-tile textarea,
+.page-home .c-home-tile select {
+  background-color: rgb(30 41 59) !important;          /* slate-800 */
+  border-color: rgb(51 65 85) !important;              /* slate-700 */
+  color: rgb(226 232 240) !important;                  /* slate-200 */
+}
+
+/* Text tones */
+.page-home .c-home-tile [class*="text-gray-900"],
+.page-home .c-home-tile [class*="text-slate-900"],
+.page-home .c-home-tile [class*="text-gray-800"],
+.page-home .c-home-tile [class*="text-slate-800"] {
+  color: #f1f5f9 !important; /* slate-100 */
+}
+.page-home .c-home-tile [class*="text-gray-500"],
+.page-home .c-home-tile [class*="text-slate-500"] {
+  color: #94a3b8 !important; /* slate-400 */
+}
+
+/* Buttons → emerald brand */
+.page-home .c-home-tile button,
+.page-home .c-home-tile [role="button"] {
+  border: 1px solid #065f46 !important;
+  background: linear-gradient(to right, #059669, #10b981) !important;
+  color: #fff !important;
+  border-radius: 0.75rem !important;
+  padding: 0.4rem 0.75rem !important;
+  font-size: 0.85rem !important;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+.page-home .c-home-tile button:hover,
+.page-home .c-home-tile [role="button"]:hover {
+  background: linear-gradient(to right, #10b981, #34d399) !important;
+}
+
+/* Chips / tags */
+.page-home .c-home-tile [class*="badge"],
+.page-home .c-home-tile [class*="chip"],
+.page-home .c-home-tile [class*="Tag"],
+.page-home .c-home-tile [class*="Pill"],
+.page-home .c-home-tile [class*="badge-"],
+.page-home .c-home-tile [class*="Chip-"] {
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: #6ee7b7 !important;
+  border-radius: 9999px !important;
+  font-size: 0.7rem !important;
+  padding: 0.2rem 0.6rem !important;
+}
+
+/* Rounded subcards & subtle shadows */
+.page-home .c-home-tile [class*="rounded"],
+.page-home .c-home-tile [class*="card"],
+.page-home .c-home-tile [class*="panel"] {
+  border-radius: 1rem !important;
+  border-color: rgba(148, 163, 184, 0.18) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Scrollbars inside tiles */
+.page-home .c-home-tile ::-webkit-scrollbar { width: 6px; height: 6px; }
+.page-home .c-home-tile ::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.3);
+  border-radius: 10px;
+}
+.page-home .c-home-tile ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(148, 163, 184, 0.5);
+}
+
+/* Minimal fallback if a tile renders elsewhere (non /ship/home) */
+.c-home-tile [class*="bg-white"] { background-color: rgba(15,23,42,0.6) !important; }
+.c-home-tile [class*="border-"]  { border-color: rgb(51 65 85) !important; }
+.c-home-tile input,
+.c-home-tile textarea,
+.c-home-tile select {
+  background-color: rgb(30 41 59) !important;
+  border-color: rgb(51 65 85) !important;
+  color: rgb(226 232 240) !important;
+}

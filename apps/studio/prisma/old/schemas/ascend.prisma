@@ -1,0 +1,231 @@
+// apps/studio/prisma/schemas/ascend.prisma
+/* ============================================================
+   corAe Ascend™ — Governance & Intelligence Layer
+   - Tenancy / System registry / Audit log
+   - Workflow registry (templates, instances, runs)
+   - User growth & credit (AscendProfile + records)
+   ============================================================ */
+
+/* -------------------------
+   Tenancy / Registry / Audit
+-------------------------- */
+
+model Tenant {
+  id        String   @id @default(uuid())
+  name      String
+  code      String   @unique
+  region    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users     User[]
+  systems   SystemRegistry[]
+  logs      AuditLog[]
+
+  // Optional: tenant-scoped workflows
+  workflowTemplates WorkflowTemplate[]
+}
+
+model SystemRegistry {
+  id             String   @id @default(uuid())
+  name           String
+  type           String   // "biz" | "home" | "work" | "academy" | "marketplace"
+  version        String?
+  status         String   @default("active")
+  linkedTenantId String?
+  linkedTenant   Tenant?  @relation(fields: [linkedTenantId], references: [id], onDelete: Cascade)
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([type, status])
+  @@index([linkedTenantId])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  tenantId  String?
+  tenant    Tenant?  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  actor     String?          // user id or system (e.g., "caia")
+  action    String           // e.g., "WORKFLOW.RUN", "PROFILE.CREDIT.ADD"
+  target    String?          // entity pointer
+  details   Json?
+  createdAt DateTime @default(now())
+
+  @@index([tenantId, createdAt])
+}
+
+/* -------------------------
+   Workflow Registry
+-------------------------- */
+
+model WorkflowTemplate {
+  id        String   @id @default(cuid())
+  key       String   @unique              // e.g., "MORNING_EXEC.DAILY"
+  name      String
+  cron      String                        // cron expression for scheduling
+  summary   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Optional multi-tenant link
+  tenantId  String?
+  tenant    Tenant?  @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+
+  steps     TemplateStep[]
+  instances WorkflowInstance[]
+
+  @@index([tenantId])
+}
+
+model TemplateStep {
+  id         String           @id @default(cuid())
+  templateId String
+  order      Int
+  title      String
+  prompt     String
+  ctaHref    String?
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  template   WorkflowTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@index([templateId, order])
+}
+
+model WorkflowInstance {
+  id         String           @id @default(cuid())
+  templateId String
+  date       DateTime
+  status     InstanceStatus   @default(PENDING)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  template   WorkflowTemplate @relation(fields: [templateId], references: [id])
+  runs       InstanceRun[]
+
+  @@index([templateId, date])
+  @@index([status])
+}
+
+model InstanceRun {
+  id         String          @id @default(cuid())
+  instanceId String
+  stepId     String
+  order      Int
+  title      String
+  prompt     String
+  ctaHref    String?
+  done       Boolean         @default(false)
+  doneAt     DateTime?
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  instance   WorkflowInstance @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+
+  @@index([instanceId, order])
+}
+
+enum InstanceStatus {
+  PENDING
+  IN_PROGRESS
+  DONE
+}
+
+/* -------------------------
+   Ascend Profiles & Credits
+-------------------------- */
+
+enum AscendLevel {
+  SEED
+  GROW
+  BUILD
+  CREATE
+  LEAD
+}
+
+model AscendProfile {
+  id            String       @id @default(cuid())
+  userId        String       @unique
+  user          User         @relation(fields: [userId], references: [id])
+
+  level         AscendLevel  @default(SEED)
+  creditScore   Float        @default(0)
+  lastEvaluated DateTime     @default(now())
+
+  // aggregate stats
+  totalTasks    Int          @default(0)
+  completed     Int          @default(0)
+  learningHours Float        @default(0)
+  streakDays    Int          @default(0)
+
+  credits       AscendCredit[]
+  failures      AscendFailure[]
+  learning      AscendLearningRecord[]
+  rewards       AscendReward[]
+
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model AscendCredit {
+  id          String         @id @default(cuid())
+  profileId   String
+  profile     AscendProfile  @relation(fields: [profileId], references: [id])
+
+  source      String         // "TaskComplete" | "LearningModule" | "PeerFeedback" | ...
+  amount      Float
+  reason      String?
+  metadata    Json?
+  createdAt   DateTime       @default(now())
+
+  @@index([profileId, createdAt])
+}
+
+model AscendFailure {
+  id          String         @id @default(cuid())
+  profileId   String
+  profile     AscendProfile  @relation(fields: [profileId], references: [id])
+
+  description String
+  category    String?        // "MissedTask" | "Behaviour" | "ProcessError" | ...
+  resolved    Boolean        @default(false)
+  resolvedAt  DateTime?
+  improvement Json?          // what changed to redeem
+  createdAt   DateTime       @default(now())
+
+  @@index([profileId, createdAt])
+}
+
+model AscendLearningRecord {
+  id            String        @id @default(cuid())
+  profileId     String
+  profile       AscendProfile @relation(fields: [profileId], references: [id])
+
+  courseId      String?
+  moduleId      String?
+  courseName    String?
+  hours         Float?
+  score         Float?
+  passed        Boolean       @default(false)
+  completedAt   DateTime?
+  createdAt     DateTime      @default(now())
+
+  @@index([profileId, completedAt])
+}
+
+model AscendReward {
+  id            String        @id @default(cuid())
+  profileId     String
+  profile       AscendProfile @relation(fields: [profileId], references: [id])
+
+  title         String
+  description   String?
+  rewardType    String?       // "Voucher" | "Badge" | "Promotion"
+  value         Float?
+  grantedById   String?       // User.id (manager/AI)
+  grantedBy     User?         @relation(fields: [grantedById], references: [id])
+  createdAt     DateTime      @default(now())
+
+  @@index([profileId, createdAt])
+}

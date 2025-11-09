@@ -1,0 +1,198 @@
+{
+  "workflow_id": "marketing.loop.v1",
+  "name": "corAe Viral Loop Engine",
+  "description": "Automates profile optimisation, hooks, relevance, comments, shares, saves. Learns from results and escalates if targets are missed.",
+  "owner": "CAIA",
+  "version": "1.0.0",
+  "variables": {
+    "benchmarks": {
+      "followers_day": 15,
+      "view_through_rate": 0.35,
+      "like_rate": 0.03,
+      "comment_rate": 0.004,
+      "share_rate": 0.003,
+      "save_rate": 0.006
+    },
+    "review_delay_hours": 24,
+    "republish_wait_hours": 72,
+    "platforms": ["tiktok", "instagram", "youtube", "x", "facebook", "linkedin"]
+  },
+  "triggers": [
+    { "id": "onPublish", "type": "event", "event": "post.published" },
+    { "id": "audit6h", "type": "cron", "cron": "0 */6 * * *" }
+  ],
+  "nodes": [
+    {
+      "id": "track",
+      "type": "task",
+      "agent": "CAIA.Tracker.ingest",
+      "inputs": { "postId": "{{event.postId}}", "platform": "{{event.platform}}" },
+      "outputs": ["metrics"]
+    },
+    {
+      "id": "delay24h",
+      "type": "delay",
+      "hours": "{{variables.review_delay_hours}}"
+    },
+    {
+      "id": "compare",
+      "type": "task",
+      "agent": "CAIA.Tracker.compare",
+      "inputs": { "metrics": "{{track.metrics}}", "benchmarks": "{{variables.benchmarks}}" },
+      "outputs": ["gaps"] 
+    },
+
+    /* 1) No Followers → Profile Engine™ */
+    {
+      "id": "profileEngine",
+      "type": "task",
+      "agent": "CAIA.ProfileOptimiser",
+      "when": "{{gaps.followers_day_below}}",
+      "inputs": { "account": "{{event.account}}", "platforms": "{{variables.platforms}}" },
+      "outputs": ["profileRecommendations"]
+    },
+
+    /* 2) Low Views → HookStack100™ */
+    {
+      "id": "hooks",
+      "type": "task",
+      "agent": "ORION.HookMaster",
+      "when": "{{gaps.view_through_rate_below}}",
+      "inputs": { "topic": "{{event.topic}}", "audience": "{{event.audience}}", "count": 5 },
+      "outputs": ["hookVariants"]
+    },
+
+    /* 3) Low Likes → Relevance Mapper™ */
+    {
+      "id": "relevance",
+      "type": "task",
+      "agent": "ELARA.SentimentAnalyst",
+      "when": "{{gaps.like_rate_below}}",
+      "inputs": {
+        "postCopy": "{{event.copy}}",
+        "commentsSample": "{{track.metrics.sampleComments}}",
+        "audience": "{{event.audience}}"
+      },
+      "outputs": ["toneAdjustments", "angleSuggestions"]
+    },
+
+    /* 4) No Comments → Conversation Architect™ */
+    {
+      "id": "comments",
+      "type": "task",
+      "agent": "LYRA.ConversationBuilder",
+      "when": "{{gaps.comment_rate_below}}",
+      "inputs": { "topic": "{{event.topic}}", "audience": "{{event.audience}}", "count": 5 },
+      "outputs": ["conversationCTAs"]
+    },
+
+    /* 5) Low Shares → Relatability Reactor™ */
+    {
+      "id": "shares",
+      "type": "task",
+      "agent": "SOL.ViralCrafter",
+      "when": "{{gaps.share_rate_below}}",
+      "inputs": { "storySeed": "{{event.storySeed}}", "count": 4 },
+      "outputs": ["shareAngles"]
+    },
+
+    /* 6) Low Saves → Value Multiplier™ */
+    {
+      "id": "saves",
+      "type": "task",
+      "agent": "CLARA.ContentArchitect",
+      "when": "{{gaps.save_rate_below}}",
+      "inputs": { "topic": "{{event.topic}}", "format": "framework|template|checklist", "count": 3 },
+      "outputs": ["saveBoosters"]
+    },
+
+    /* Assemble improved post */
+    {
+      "id": "assemble",
+      "type": "task",
+      "agent": "CAIA.Assembly.composePost",
+      "inputs": {
+        "original": {
+          "copy": "{{event.copy}}",
+          "assets": "{{event.assets}}",
+          "topic": "{{event.topic}}",
+          "platform": "{{event.platform}}"
+        },
+        "hooks": "{{hooks.hookVariants}}",
+        "tone": "{{relevance.toneAdjustments}}",
+        "angles": "{{relevance.angleSuggestions}}",
+        "ctas": "{{comments.conversationCTAs}}",
+        "shareAngles": "{{shares.shareAngles}}",
+        "saveBoosters": "{{saves.saveBoosters}}"
+      },
+      "outputs": ["variants"] 
+    },
+
+    /* Human-in-the-loop safety */
+    {
+      "id": "review",
+      "type": "approval",
+      "reviewers": ["brand.owner", "brand.guardian"],
+      "inputs": { "variants": "{{assemble.variants}}", "profileRecommendations": "{{profileEngine.profileRecommendations}}" },
+      "outputs": ["approvedVariants", "profileApprovals"]
+    },
+
+    /* Publish across platforms */
+    {
+      "id": "publish",
+      "type": "task",
+      "agent": "CAIA.Publisher.multi",
+      "when": "{{approvedVariants.length > 0}}",
+      "inputs": { "variants": "{{review.approvedVariants}}", "platforms": "{{variables.platforms}}" },
+      "outputs": ["publishRefs"]
+    },
+
+    /* Republish timer for A/B */
+    {
+      "id": "delay72h",
+      "type": "delay",
+      "hours": "{{variables.republish_wait_hours}}"
+    },
+
+    /* Escalate if still below benchmark */
+    {
+      "id": "recheck",
+      "type": "task",
+      "agent": "CAIA.Tracker.recheck",
+      "inputs": { "refs": "{{publish.publishRefs}}", "benchmarks": "{{variables.benchmarks}}" },
+      "outputs": ["postStatus"]
+    },
+    {
+      "id": "digDeeper",
+      "type": "task",
+      "agent": "CAIA.GrowthAgent.escalate",
+      "when": "{{postStatus.anyBelow}}",
+      "inputs": {
+        "strategy": ["strongerEmotion", "newFormat", "creatorCollab", "paidSeed", "communityReplyStorm"],
+        "context": "{{postStatus}}"
+      }
+    }
+  ],
+  "edges": [
+    ["onPublish","track"],
+    ["track","delay24h"],
+    ["delay24h","compare"],
+    ["compare","profileEngine"],
+    ["compare","hooks"],
+    ["compare","relevance"],
+    ["compare","comments"],
+    ["compare","shares"],
+    ["compare","saves"],
+    ["profileEngine","assemble"],
+    ["hooks","assemble"],
+    ["relevance","assemble"],
+    ["comments","assemble"],
+    ["shares","assemble"],
+    ["saves","assemble"],
+    ["assemble","review"],
+    ["review","publish"],
+    ["publish","delay72h"],
+    ["delay72h","recheck"],
+    ["recheck","digDeeper"]
+  ]
+}

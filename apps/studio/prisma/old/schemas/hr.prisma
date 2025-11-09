@@ -1,0 +1,68 @@
+// ─────────────────────────────────────────────────────────────
+// corAe HR — Employees, Chronological Log, Appraisals
+// Composes with your main schema via /prisma/schema/ folder
+// ─────────────────────────────────────────────────────────────
+
+enum EmploymentStatus {
+  APPLICANT
+  ACTIVE
+  PROBATION
+  SUSPENDED
+  TERMINATED
+}
+
+enum ChronoScope {
+  HR
+  FINANCE
+  OPERATIONS
+  SALES
+  GENERAL
+}
+
+enum AppraisalStatus {
+  DRAFT
+  ACTIVE
+  CLOSED
+}
+
+model Employee {
+  id          String            @id @default(cuid())
+  code        String            @unique
+  firstName   String
+  lastName    String
+  email       String?           @unique
+  phone       String?
+  roleTitle   String
+  status      EmploymentStatus  @default(APPLICANT)
+  hiredAt     DateTime?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  appraisals  Appraisal[]
+  chrono      Chrono[]          @relation("EmployeeChrono")
+}
+
+model Chrono {
+  id          String        @id @default(cuid())
+  scope       ChronoScope   @default(HR)
+  message     String
+  refType     String?       // e.g., "Employee" | "Appraisal"
+  refId       String?
+  createdAt   DateTime      @default(now())
+
+  employeeId  String?
+  employee    Employee?     @relation("EmployeeChrono", fields: [employeeId], references: [id])
+}
+
+model Appraisal {
+  id          String           @id @default(cuid())
+  employeeId  String
+  employee    Employee         @relation(fields: [employeeId], references: [id])
+  status      AppraisalStatus  @default(DRAFT)
+  periodStart DateTime
+  periodEnd   DateTime
+  summary     String?          // quick notes
+  scores      Json?            // flexible rubric
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}

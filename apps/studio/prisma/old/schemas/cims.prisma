@@ -1,0 +1,65 @@
+/* ============================================================
+   corAe CIMS (Communications & Intelligence Management System)
+   Threads, Messages, Outbox, Signals
+   ============================================================ */
+
+model CimsThread {
+  id            String        @id @default(uuid())
+  subject       String
+  lastMessageAt DateTime?
+  lastPreview   String?
+  unread        Int?          @default(0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  messages      CimsMessage[]
+}
+
+model CimsMessage {
+  id        String     @id @default(uuid())
+  threadId  String
+  thread    CimsThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+
+  // Optional link to a platform user (matches: User { messages CimsMessage[] })
+  userId    String?
+  user      User?      @relation(fields: [userId], references: [id])
+
+  author    String?    // "system" | "user" | "vendor" | "automate" (free text for now)
+  body      String
+  createdAt DateTime   @default(now())
+
+  @@index([threadId, createdAt])
+  @@index([userId])
+}
+
+model CimsOutbox {
+  id          String   @id @default(uuid())
+  to          String
+  subject     String
+  body        String?
+  domain      String?  // management, hr, finance, etc.
+  status      String   @default("queued") // queued, sent, failed
+  time        DateTime @default(now())
+  retryCount  Int      @default(0)
+
+  // Link back to OMS OutboundMessage (optional 1–1)
+  outboundId  String?
+  outbound    OutboundMessage? @relation(fields: [outboundId], references: [id])
+
+  @@index([status, time])
+  @@index([domain])
+  @@index([outboundId])
+}
+
+model CimsSignal {
+  id            String   @id @default(uuid())
+  source        String
+  text          String
+  level         String   @default("info") // info, warn, critical
+  domain        String?
+  acknowledged  Boolean  @default(false)
+  time          DateTime @default(now())
+
+  @@index([level, time])
+  @@index([domain])
+}

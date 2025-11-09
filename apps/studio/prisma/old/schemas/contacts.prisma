@@ -1,0 +1,329 @@
+// apps/studio/prisma/schemas/contacts.prisma
+// corAe Contacts / CRM (people & orgs) — interoperates with biz, hub
+
+// ──────────────────────────
+// Enums
+// ──────────────────────────
+enum ContactType {
+  PERSON
+  COMPANY
+}
+
+enum ContactSource {
+  MANUAL
+  IMPORT
+  POS
+  WEBSITE
+  VENDOR
+  REFERRAL
+  OTHER
+}
+
+enum ChannelType {
+  MOBILE
+  PHONE
+  EMAIL
+  WHATSAPP
+  TELEGRAM
+  INSTAGRAM
+  FACEBOOK
+  TWITTER
+  WEBSITE
+  OTHER
+}
+
+enum AddressType {
+  HOME
+  WORK
+  BILLING
+  SHIPPING
+  OTHER
+}
+
+// ──────────────────────────
+/**
+ * Contact
+ * - PERSON or COMPANY
+ * - Links (optionally) to biz.BusinessPartner and hub.User
+ * - Primary email/phone for quick lookups; full set in ContactChannel
+ */
+// ──────────────────────────
+model Contact {
+  id             String        @id @default(cuid())
+  type           ContactType   @default(PERSON)
+
+  // Person fields
+  givenName      String?
+  familyName     String?
+  displayName    String        // fallback-friendly label
+  jobTitle       String?
+  companyName    String?       // for PERSON representing a company (quick display)
+
+  // Company linkage (biz)
+  companyId      String?       // FK → biz.Company (optional, soft link)
+  // Prisma cross-file relations require the model name, but not schema. Use cautious optional linkage:
+  companyRef     Company?      @relation(fields: [companyId], references: [id])
+
+  // Business partner linkage (biz)
+  partnerId      String?       // FK → biz.BusinessPartner.id
+  partner        BusinessPartner? @relation(fields: [partnerId], references: [id])
+
+  // Owner (hub)
+  ownerId        String?       // FK → hub.User.id
+  owner          User?         @relation(fields: [ownerId], references: [id])
+
+  source         ContactSource @default(MANUAL)
+  notes          String?
+
+  // Fast search fields (normalized for quick matches)
+  primaryEmail   String?
+  primaryPhone   String?
+  phoneE164      String?       // normalized E.164 if available
+  emailLower     String?       // lowercased email for matching
+
+  // Collections
+  channels       ContactChannel[]
+  addresses      ContactAddress[]
+  tags           ContactTagOnContact[]
+  groups         ContactGroupOnContact[]
+  links          ContactLink[]
+  notesLog       ContactNote[]
+
+  // Lifecycle
+  isArchived     Boolean       @default(false)
+  archivedAt     DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([type, displayName])
+  @@index([emailLower])
+  @@index([primaryPhone])
+  @@index([ownerId])
+  @@index([companyId])
+  @@index([partnerId])
+}
+
+/**
+ * Communication channels attached to a contact
+ * e.g. EMAIL, MOBILE, WHATSAPP, WEBSITE, etc.
+ */
+model ContactChannel {
+  id         String      @id @default(cuid())
+  contactId  String
+  contact    Contact     @relation(fields: [contactId], references: [id])
+
+  type       ChannelType
+  label      String?     // e.g. "Work", "Personal", "Support"
+  value      String      // the address/handle/number/url
+  isPrimary  Boolean     @default(false)
+  verifiedAt DateTime?
+  meta       Json?
+
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@index([contactId, type])
+  @@index([type, value])
+}
+
+/**
+ * Physical/postal addresses
+ */
+model ContactAddress {
+  id          String      @id @default(cuid())
+  contactId   String
+  contact     Contact     @relation(fields: [contactId], references: [id])
+
+  type        AddressType @default(OTHER)
+  line1       String
+  line2       String?
+  city        String?
+  region      String?
+  postalCode  String?
+  country     String?
+  isPrimary   Boolean     @default(false)
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([contactId, type])
+}
+
+/**
+ * Free-form URL/link storage (site, socials not covered by Channel)
+ */
+model ContactLink {
+  id         String   @id @default(cuid())
+  contactId  String
+  contact    Contact  @relation(fields: [contactId], references: [id])
+
+  label      String?  // e.g., "Company Profile", "GDrive Folder"
+  url        String
+  domain     String?  // parsed for reporting
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([contactId])
+}
+
+/**
+ * Notes on a contact (CRM-style timeline)
+ */
+model ContactNote {
+  id         String   @id @default(cuid())
+  contactId  String
+  contact    Contact  @relation(fields: [contactId], references: [id])
+
+  authorId   String?  // hub.User
+  author     User?    @relation(fields: [authorId], references: [id])
+
+  body       String
+  pinned     Boolean  @default(false)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([contactId])
+  @@index([authorId])
+}
+
+/**
+ * Tagging (global/simple)
+ */
+model ContactTag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  color     String?  // UI hint
+
+  contacts  ContactTagOnContact[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ContactTagOnContact {
+  contactId String
+  tagId     String
+  contact   Contact    @relation(fields: [contactId], references: [id])
+  tag       ContactTag @relation(fields: [tagId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@id([contactId, tagId])
+  @@index([tagId])
+}
+
+/**
+ * Groups/segments (optionally scoped to a company)
+ */
+model ContactGroup {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  companyId   String?  // FK → biz.Company.id (optional)
+  companyRef  Company? @relation(fields: [companyId], references: [id])
+
+  contacts    ContactGroupOnContact[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([companyId])
+  @@unique([companyId, name])
+}
+
+model ContactGroupOnContact {
+  contactId String
+  groupId   String
+  contact   Contact     @relation(fields: [contactId], references: [id])
+  group     ContactGroup @relation(fields: [groupId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@id([contactId, groupId])
+  @@index([groupId])
+}
+
+/**
+ * Merge ledger (records dedup actions)
+ */
+model ContactMerge {
+  id              String   @id @default(cuid())
+  targetContactId String
+  sourceContactId String
+  mergedAt        DateTime @default(now())
+  performedById   String?  // hub.User
+  performedBy     User?    @relation(fields: [performedById], references: [id])
+
+  @@index([targetContactId])
+  @@index([sourceContactId])
+
+/// ───────────────────────────────
+/// corAe OBARI Internal Routing
+/// Extends CRM with internal contact ownership
+/// for each OBARI stage (Order ▸ Booking ▸ Active ▸ Report ▸ Invoice ▸ Escalation)
+/// ───────────────────────────────
+
+enum ObariStage {
+  ORDER
+  BOOKING
+  ACTIVE
+  REPORT
+  INVOICE
+  ESCALATION
+}
+
+/**
+ * Profile marking a CRM Contact as an internal corAe Workflow Partner™
+ * Links (optionally) to hub.User and org Division.
+ */
+model InternalContactProfile {
+  contactId   String    @id
+  contact     Contact   @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  userId      String?
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  divisionId  String?
+  division    Division? @relation(fields: [divisionId], references: [id], onDelete: SetNull)
+
+  department  String?
+  active      Boolean   @default(true)
+  notes       String?
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([active])
+  @@index([userId])
+  @@index([divisionId])
+}
+
+/**
+ * OBARI stage-to-internal-owner mapping
+ * Each external Company must have an internal Contact assigned per stage.
+ */
+model CompanyContactAssignment {
+  id           String     @id @default(cuid())
+
+  companyId    String
+  company      Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  contactId    String
+  contact      Contact    @relation(fields: [contactId], references: [id], onDelete: Restrict)
+
+  obariStage   ObariStage
+
+  productId    String?
+  product      Product?   @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productScope String?
+  notes        String?
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@unique([companyId, obariStage, productId])
+  @@index([companyId, obariStage])
+  @@index([contactId])
+}

@@ -52,3 +52,14 @@ export function logEvent(typeOrEvent: string | BuildEvent, payload?: unknown): v
     _events.push(withDefaults(typeOrEvent));
   }
 }
+
+// Provide a default export with convenient logging helpers so code which
+// expects `appendEvent.info({...})` or `appendEvent.error({...})` works
+// without touching many call sites.
+const defaultLogger = {
+  info: (e: BuildEvent) => appendEvent({ ...e, level: 'INFO' }),
+  error: (e: BuildEvent) => appendEvent({ ...e, level: 'ERROR' }),
+  read: (limit?: number) => readEvents(limit),
+};
+
+export default defaultLogger;

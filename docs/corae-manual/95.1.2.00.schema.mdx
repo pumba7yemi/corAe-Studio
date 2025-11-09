@@ -1,0 +1,89 @@
+---
+title: Schema — Build, Use, and Migrate
+series: 95.1.2.0.0
+version: v0.1
+summary: How the corAe schema is composed from fragments, how you should use it in code, and what the Build and Migrate buttons do.
+---
+
+# Schema — Build, Use, and Migrate
+
+## What the Schema *is*
+- **Single source of truth**: `schema.prisma` (canonical).
+- **Authored as fragments**: small, numbered files like:
+  - `apps/studio/prisma/fragments/10.0.0.0.0 core.prisma`
+  - `apps/studio/prisma/fragments/10.1.0.0.0 contacts.prisma`
+  - `apps/studio/prisma/fragments/10.2.0.0.0 finance.prisma`
+- **Build step** concatenates fragments (sorted by FileLogic numbers) → writes the canonical `apps/studio/prisma/schema.prisma`.
+
+Why fragments? Safer edits, clearer reviews, zero merge wars.  
+Why single canonical file? Prisma tools expect one schema for generate/migrate.
+
+---
+
+## How you should use it in code
+- Import **types** from the generated client only:
+  - `import { PrismaClient, type Product } from '@prisma/client'`
+- **Do not** create “shadow” models or duplicate types in pages/services.
+- All DB writes/reads go through repo modules (e.g., `apps/studio/app/_repo/*`).
+
+**Rule:** If the UI/service needs a new field/model, add a **numbered fragment**, then build + migrate. Do **not** patch code around the schema.
+
+---
+
+## Buttons in Studio (what they do)
+You’ll find these in the **Schema Console** (Studio). They run predictable, idempotent steps:
+
+### 1) **Build**
+Runs:
+1. **Concatenate fragments** (sorted by series) → `schema.prisma`
+2. **Format & Validate** (`prisma format` + `prisma validate`)
+3. **Snapshot** (SMSME):
+   - Saves `apps/studio/prisma/_snapshots/<timestamp>.schema.json`
+   - Saves `<timestamp>.plan.json` (diff/plan metadata)
+
+**Outcome:** Canonical schema updated and safe to migrate.  
+**When it fails:** A fragment has a duplicate model/enum or invalid field. Fix the fragment—don’t hack the canonical file.
+
+---
+
+### 2) **Migrate**
+Runs **forward-only** migration on your dev DB, then regenerates the client:
+1. `prisma migrate dev --schema apps/studio/prisma/schema.prisma --name <series>-<slug>`
+2. `prisma generate --schema apps/studio/prisma/schema.prisma`
+3. (Optional if enabled) `prisma db seed`
+
+**Outcome:** DB structure matches the schema; types updated.  
+**When it fails:** You tried to drop/change a live column without a variance record. Add a new field + backfill instead, or use a controlled variance plan.
+
+---
+
+## Typical edit flow (5 minutes, no drama)
+1. **Edit** a fragment (e.g., add `expiryDate` to `Product` in `10.4.0.0.0 pos.prisma`).
+2. Click **Build**.
+   - Fix any errors shown; re-Build until it’s green.
+3. Click **Migrate**.
+   - A migration file with the series in its name is created and applied.
+4. Restart the app if needed (or it hot-reloads). Use the new field.
+
+---
+
+## When code and schema disagree (Drift → Return)
+- **Drift** = code expects shapes that aren’t in the canonical schema.
+- **Return** = fix the code to the schema (or extend the schema properly).
+- If the need is legitimate, add a **new fragment** with the next number, **Build**, then **Migrate**. Never hot-patch pages.
+
+---
+
+## Quick CLI (only if you’re not using the buttons)
+> Provided for reference; buttons already run these.
+
+```bash
+# Build equivalent
+pnpm -w run prisma:format
+pnpm -w run prisma:generate
+
+# Migrate equivalent (dev)
+pnpm -w prisma migrate dev --schema=apps/studio/prisma/schema.prisma --name 10.4.1.0.0-add-expiry
+
+# (Optional) seed
+pnpm -w prisma db seed --schema=apps/studio/prisma/schema.prisma

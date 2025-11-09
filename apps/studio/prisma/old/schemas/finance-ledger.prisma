@@ -1,0 +1,113 @@
+// ────────────────────────────────────────────────
+// corAe Finance™ — Ledger Core (150.Logic Build)
+// File: apps/studio/prisma/schema/finance-ledger.prisma
+// ────────────────────────────────────────────────
+
+enum LedgerEntryType {
+  SALE
+  PURCHASE
+  EXPENSE
+  PAYMENT
+  REFUND
+  ADJUSTMENT
+}
+
+enum LedgerAccountType {
+  ASSET
+  LIABILITY
+  EQUITY
+  INCOME
+  EXPENSE
+}
+
+enum PaymentChannel {
+  CASH
+  BANK
+  CARD
+  WALLET
+  INTERNAL
+}
+
+model LedgerAccount {
+  id          String             @id @default(cuid())
+  code        String             @unique
+  name        String
+  type        LedgerAccountType
+  description String?
+
+  entries     LedgerEntry[]
+
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+}
+
+model LedgerEntry {
+  id            String           @id @default(cuid())
+  entryType     LedgerEntryType
+  reference     String?          // PO / Invoice / Receipt number
+  date          DateTime         @default(now())
+  description   String?
+
+  debitAccountId  String
+  creditAccountId String
+
+  amount        Decimal          @db.Decimal(14,4)
+  currency      String           @default("AED")
+  paymentRef    String?
+  paymentVia    PaymentChannel?
+
+  // Relations
+  debitAccount   LedgerAccount   @relation("DebitAccount", fields: [debitAccountId], references: [id])
+  creditAccount  LedgerAccount   @relation("CreditAccount", fields: [creditAccountId], references: [id])
+
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@index([entryType])
+  @@index([date])
+}
+
+model LedgerBalance {
+  id            String   @id @default(cuid())
+  accountId     String
+  periodStart   DateTime
+  periodEnd     DateTime
+  openingDebit  Decimal? @db.Decimal(14,4)
+  openingCredit Decimal? @db.Decimal(14,4)
+  closingDebit  Decimal? @db.Decimal(14,4)
+  closingCredit Decimal? @db.Decimal(14,4)
+
+  account       LedgerAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@unique([accountId, periodStart, periodEnd])
+}
+
+model TaxRecord {
+  id          String   @id @default(cuid())
+  trn         String?
+  vatRate     Decimal? @db.Decimal(5,2)
+  taxableBase Decimal? @db.Decimal(14,4)
+  taxAmount   Decimal? @db.Decimal(14,4)
+  filingRef   String?
+  filingDate  DateTime?
+
+  sourceType  LedgerEntryType
+  sourceId    String?
+
+  createdAt   DateTime @default(now())
+}
+
+model PaymentRecord {
+  id            String   @id @default(cuid())
+  entryId       String
+  amount        Decimal  @db.Decimal(14,4)
+  method        PaymentChannel
+  reference     String?
+  cleared       Boolean  @default(false)
+  clearedDate   DateTime?
+  remarks       String?
+
+  entry         LedgerEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime @default(now())
+}

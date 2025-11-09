@@ -1,0 +1,170 @@
+/* ============================================================
+   corAe Agents & Exec Board (single-module bootstrap)
+   ============================================================ */
+
+enum AgentStatus {
+  ACTIVE
+  DISABLED
+  MAINTENANCE
+}
+
+enum AgentVisibility {
+  GLOBAL
+  TENANT
+  PRIVATE
+}
+
+model ExecBoard {
+  id        String   @id @default(cuid())
+  tenantId  String?
+  tenant    Tenant?  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  name      String   @default("Executive Board")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members   ExecBoardMember[]
+
+  @@index([tenantId])
+}
+
+model ExecBoardMember {
+  id          String     @id @default(cuid())
+  boardId     String
+  board       ExecBoard  @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  userId      String?
+  user        User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  agentId     String?
+  agent       AIAgent?   @relation(fields: [agentId], references: [id], onDelete: SetNull)
+
+  title       String?
+  since       DateTime   @default(now())
+  active      Boolean    @default(true)
+
+  @@index([boardId, active])
+  @@index([userId])
+  @@index([agentId])
+}
+
+model AIAgent {
+  id           String          @id @default(cuid())
+  key          String          @unique
+  name         String
+  status       AgentStatus     @default(ACTIVE)
+  visibility   AgentVisibility @default(TENANT)
+
+  tenantId     String?
+  tenant       Tenant?         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  ownerUserId  String?
+  ownerUser    User?           @relation(fields: [ownerUserId], references: [id], onDelete: SetNull)
+
+  capabilities Json
+  description  String?
+  avatarUrl    String?
+
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  assignments  AgentAssignment[]
+  runs         AgentRun[]
+}
+
+model AgentAssignment {
+  id          String   @id @default(cuid())
+  agentId     String
+  agent       AIAgent  @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  module      String
+  entityRef   String?
+  role        String?
+
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([agentId, module, active])
+  @@index([entityRef])
+}
+
+enum AgentRunStatus {
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+model AgentRun {
+  id                 String           @id @default(cuid())
+  agentId            String
+  agent              AIAgent          @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  trigger            String
+  status             AgentRunStatus   @default(QUEUED)
+  input              Json
+  output             Json?
+  error              String?
+
+  workflowInstanceId String?
+  workflowInstance   WorkflowInstance? @relation(fields: [workflowInstanceId], references: [id], onDelete: SetNull)
+
+  startedAt          DateTime?
+  finishedAt         DateTime?
+
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  @@index([agentId, status, createdAt])
+  @@index([workflowInstanceId])
+}
+
+model ExecDecisionLog {
+  id          String    @id @default(cuid())
+  tenantId    String?
+  tenant      Tenant?   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  userId      String?
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  agentId     String?
+  agent       AIAgent?  @relation(fields: [agentId], references: [id], onDelete: SetNull)
+
+  topic       String
+  decision    String
+  rationale   Json?
+  target      String?
+  tags        Json?
+
+  createdAt   DateTime  @default(now())
+
+  @@index([tenantId, createdAt])
+  @@index([userId])
+  @@index([agentId])
+}
+
+/* ────────────────────────────────
+   Minimal stubs so this module compiles alone.
+   Replace/extend later when you add real modules.
+   ──────────────────────────────── */
+
+model Tenant {
+  id        String   @id @default(cuid())
+  name      String?  @default("default")
+  createdAt DateTime @default(now())
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String?  @unique
+  createdAt DateTime @default(now())
+}
+
+model WorkflowInstance {
+  id        String   @id @default(cuid())
+  name      String?
+  createdAt DateTime @default(now())
+}

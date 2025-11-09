@@ -1,0 +1,14 @@
+{
+  "id": "finance.invoice.close.v1",
+  "version": "1.0.1",
+  "module": "finance",
+  "roleHint": ["FinanceManager"],
+  "checkpoints": [
+    { "id": "guard-reporting-approved", "desc": "Block until Reporting is Finance-signed", "gate": "auto", "onSuccess": ["guard.ok:reporting.approved"] },
+    { "id": "compile-charges", "desc": "Build invoice lines from APPROVED actuals", "gate": "auto" },
+    { "id": "apply-returns-credits", "desc": "Apply returns/damages as credits", "gate": "auto" },
+    { "id": "raise-invoice", "desc": "Post AR invoice", "gate": "human-approve", "onSuccess": ["finance.ar.opened"] },
+    { "id": "post-vendor-ap", "desc": "Post AP from PO with actuals", "gate": "auto" },
+    { "id": "reconcile", "desc": "Cash receipt/drop plan; close cycle", "gate": "auto", "onSuccess": ["obari.cycle.closed"] }
+  ]
+}

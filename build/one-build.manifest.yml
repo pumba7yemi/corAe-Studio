@@ -14,3 +14,76 @@ modules:
             content: |
               # corAe build
               Seed file created by One-Build (safe mode).
+  - key: ascension.integrations.ascend
+    actions:
+      - type: CODE
+        description: "Ascend integration scaffolding for Home/Work/Business and AscendProfile context"
+        files:
+          - path: apps/studio/app/lib/ascend/AscendProfile.ts
+            mode: CREATE_IF_NOT_EXISTS
+            content: |-
+              // Minimal AscendProfile type used by Ascend integration scaffolds
+              export type AscendLevel = 'home' | 'work' | 'business';
+
+              export type AscendProfile = {
+                id: string;
+                displayName?: string;
+                level?: AscendLevel;
+                createdAt?: string; // ISO timestamp
+              };
+
+          - path: apps/studio/app/lib/ascend/index.ts
+            mode: CREATE_IF_NOT_EXISTS
+            content: |-
+              export * from './AscendProfile';
+
+          - path: apps/studio/app/ship/home/ascend/page.tsx
+            mode: CREATE_IF_NOT_EXISTS
+            content: |-
+              'use server'
+              import React from 'react';
+
+              export const dynamic = 'force-dynamic';
+
+              export default function AscendHome() {
+                return (
+                  <div className="p-4">
+                    <h1>Ascend — Home integration (scaffold)</h1>
+                    <p>This is a lightweight scaffold for Home-level Ascend integration.</p>
+                  </div>
+                );
+              }
+
+          - path: apps/studio/app/ship/work/ascend/page.tsx
+            mode: CREATE_IF_NOT_EXISTS
+            content: |-
+              'use server'
+              import React from 'react';
+
+              export const dynamic = 'force-dynamic';
+
+              export default function AscendWork() {
+                return (
+                  <div className="p-4">
+                    <h1>Ascend — Work integration (scaffold)</h1>
+                    <p>Work-level Ascend scaffold placeholder.</p>
+                  </div>
+                );
+              }
+
+          - path: apps/studio/app/ship/business/ascend/page.tsx
+            mode: CREATE_IF_NOT_EXISTS
+            content: |-
+              'use server'
+              import React from 'react';
+
+              export const dynamic = 'force-dynamic';
+
+              export default function AscendBusiness() {
+                return (
+                  <div className="p-4">
+                    <h1>Ascend — Business integration (scaffold)</h1>
+                    <p>Business-level Ascend scaffold placeholder.</p>
+                  </div>
+                );
+              }
