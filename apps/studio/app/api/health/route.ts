@@ -40,7 +40,7 @@ import { prisma } from "@/lib/prisma";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function GET_DB() {
+async function GET_DB() {
   try {
     await prisma.$connect(); // why: surfaces connection/config issues early
     const latest = await prisma.health.findFirst({
@@ -55,3 +55,8 @@ export async function GET_DB() {
     );
   }
 }
+
+// Expose GET_DB for local debugging via a non-exported function. If you need an
+// external endpoint to return DB health separately, create a dedicated route
+// file (for example `app/api/health/db/route.ts`) to avoid adding extra exports
+// to this module which Next treats as part of the route entry shape.
