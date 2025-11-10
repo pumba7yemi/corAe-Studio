@@ -1,0 +1,8 @@
+=== corAe Tidy Plan (dry-run) ===
+
+Moves:
+ - MOVE "C:\corAe\corAe-Studio\apps\studio\app\ship\faith"  ->  "C:\corAe\corAe-Studio\apps\studio\app\ship\home\faith\faith"
+
+Deletes: None
+
+Apply with: node scripts/tidy-apply.mjs

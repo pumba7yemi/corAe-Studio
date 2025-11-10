@@ -123,13 +123,23 @@ export default function FaithHomePage() {
                 <h2 className="text-lg font-medium">{t.name}</h2>
                 <p className="text-xs text-neutral-500">{t.family}</p>
               </div>
-              <a
-                href={`/ship/home/faith/discern?tradition=${encodeURIComponent(t.id)}`}
-                className="rounded-lg border px-3 py-2 text-sm hover:bg-neutral-50"
-                title="Enter Discernment with this lens"
-              >
-                Discern with this lens
-              </a>
+              <div className="flex gap-2">
+                <a
+                  href={`/ship/home/faith/discern?tradition=${encodeURIComponent(t.id)}`}
+                  className="rounded-lg border px-3 py-2 text-sm hover:bg-neutral-50"
+                  title="Enter Discernment with this lens"
+                >
+                  Discern with this lens
+                </a>
+                {t.id === "christianity" && (
+                  <a
+                    href="/ship/faith/catholic/core-beliefs"
+                    className="rounded-lg border px-3 py-2 text-sm hover:bg-neutral-50"
+                  >
+                    Core Beliefs (Catholic)
+                  </a>
+                )}
+              </div>
             </header>
             <p className="text-sm text-neutral-700 mt-2">{t.summary}</p>
             {t.aliases && t.aliases.length > 0 && (

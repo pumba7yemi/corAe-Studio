@@ -51,6 +51,7 @@
       "@corae/workfocus-core/*": ["packages/workfocus-core/*"],
       "@corae/bdo-core": ["packages/bdo-core/src"],
       "@corae/bdo-core/*": ["packages/bdo-core/*"],
+  "@corae/core-faith/*": ["packages/core-faith/*"],
 
       "@services/*": ["src/services/*", "services/*"],
 
