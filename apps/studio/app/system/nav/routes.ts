@@ -17,6 +17,8 @@ export const ROUTES = {
   pos: "/ship/pos",
   finance: "/ship/accounts",
   cims: "/ship/cims",
+  // Social Contract campaign landing
+  socialContract: "/ship/home/social-contract",
   automate: "/ship/automate",
   reserve: "/ship/reserve",
   // OMS / OBARI — expose OBARI stages so overflow menus can list them

@@ -1,0 +1,17 @@
+[
+  {
+    "path": "apps/ship",
+    "issue": "root-level app tree detected",
+    "fixCmd": "# consider: git mv apps/ship apps/studio/ship"
+  },
+  {
+    "path": "apps/shipyard",
+    "issue": "root-level app tree detected",
+    "fixCmd": "# consider: git mv apps/shipyard apps/studio/shipyard"
+  },
+  {
+    "path": "apps/studio/apps",
+    "issue": "nested apps folder (duplicate)",
+    "fixCmd": "git rm -r --cached --force apps/studio/apps"
+  }
+]

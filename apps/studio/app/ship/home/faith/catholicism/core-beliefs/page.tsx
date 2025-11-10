@@ -1,5 +1,17 @@
-// @ts-ignore: JSON import, intentionally permissive for content files
-import data from "@/content/faith/catholic/core-beliefs.v1.json";
+// Read content files from disk at runtime in this server component to avoid
+// bundler path-alias resolution problems during the Next build step.
+import fs from "fs";
+import path from "path";
+
+// Next's build runs with the CWD at the app package (apps/studio). Resolve the
+// repo root from the current working dir by stepping up until we find a
+// `package.json` that identifies the workspace root. As a small and safe
+// heuristic here, step up two directories (apps/studio -> repo root) which
+// matches our monorepo layout.
+const repoRoot = path.join(process.cwd(), "..", "..");
+const data = JSON.parse(
+  fs.readFileSync(path.join(repoRoot, "content", "faith", "catholic", "core-beliefs.v1.json"), "utf8")
+);
 
 export const metadata = {
   title: "Core Beliefs — Catholic",

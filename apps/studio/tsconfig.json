@@ -46,6 +46,8 @@
       ,
       "@shared/wizard": ["app/ship/_shared/wizard/WizardShell.tsx"]
     }
+     ,
+     "@corae/core-culture": ["../../packages/core-culture/src"],
   },
 
   "include": [
