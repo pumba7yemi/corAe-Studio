@@ -55,6 +55,8 @@ async function getStore(): Promise<ThreadStore> {
   if (storePromise) return storePromise;
   storePromise = (async () => {
     try {
+      // Allow runtime-only dynamic import without requiring compile-time types
+      // @ts-ignore-next-line
       const mod: any = await import("@corae/cims-core");
       if (mod?.memoryStore) {
         const ms = mod.memoryStore;

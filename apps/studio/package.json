@@ -11,6 +11,7 @@
     "health:chunks": "node ./scripts/patch-chunks.cjs --check",
   "nightly": "pnpm build && pnpm run health:chunks",
     "typecheck:all": "pnpm -r run typecheck",
+  "demo": "cross-env DEMO_MODE=1 DEMO_SANDBOX=1 DEMO_AUTOPILOT=1 next dev -p 3001",
     "lint:all": "pnpm -r run lint",
     "prisma:gen": "pnpm -r exec prisma generate",
     "prisma:migrate:dev": "pnpm -r exec prisma migrate dev",
@@ -20,6 +21,9 @@
   "dependencies": {
     "@corae/have-you-core": "workspace:*",
     "@corae/caia-core": "workspace:*",
+  "@corae/core-ascend": "workspace:*",
+    "@corae/want-engine": "workspace:*",
+    "@corae/cims-core": "workspace:*",
     "@corae/memory-core": "workspace:*",
     "@corae/ui": "workspace:*",
     "@corae/workflows-core": "workspace:*",

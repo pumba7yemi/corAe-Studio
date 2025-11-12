@@ -71,6 +71,11 @@ async function getStore(): Promise<Store> {
 
   // 1️⃣ Try @corae/cims-core
   try {
+    // Allow runtime-only dynamic import without requiring compile-time types
+    // Next's typecheck sometimes fails to resolve workspace packages during
+    // build. We intentionally ignore TypeScript here and fall back at runtime
+    // if the package isn't present.
+    // @ts-ignore-next-line
     const core: any = await import("@corae/cims-core");
     if (core?.memoryStore && core?.send) {
       const { memoryStore, send } = core;

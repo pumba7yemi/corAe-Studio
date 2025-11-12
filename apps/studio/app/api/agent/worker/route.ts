@@ -1,7 +1,7 @@
 // apps/studio/app/api/agent/worker/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { runDevAgent } from '@/agent/devAgent';
-import { loadQueue, saveQueue } from '@/agent/queueStore';
+import { runDevAgent } from '@/src/agent/devagent';
+import { loadQueue, saveQueue } from '@/src/agent/queueStore';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
   // name; this keeps behavior conservative (empty string if missing) while
   // unblocking type-checking locally.
   const taskName = String(next.task ?? "");
-  const result = await runDevAgent(taskName, next.payload ?? {});
+  const result = await runDevAgent({ task: taskName, payload: next.payload ?? {} });
     next.result = result;
     next.status = 'done';
     next.finishedAt = new Date().toISOString();

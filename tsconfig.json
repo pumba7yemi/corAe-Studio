@@ -48,10 +48,13 @@
       "@corae/cims-core": ["packages/cims-core/src"],
   "@corae/caia-core": ["packages/caia-core/src"],
   "@corae/workflows-core": ["packages/workflows-core/src"],
+    "@corae/shared": ["packages/shared/src"],
+    "@corae/shared/*": ["packages/shared/src/*"],
       "@corae/workfocus-core/*": ["packages/workfocus-core/*"],
       "@corae/bdo-core": ["packages/bdo-core/src"],
       "@corae/bdo-core/*": ["packages/bdo-core/*"],
   "@corae/core-faith/*": ["packages/core-faith/*"],
+  "@/core-ascend/*": ["packages/core-ascend/src/*"],
 
       "@services/*": ["src/services/*", "services/*"],
 

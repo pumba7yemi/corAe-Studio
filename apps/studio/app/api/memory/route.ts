@@ -99,6 +99,8 @@ async function getStore(): Promise<Store> {
 
   // 1) Prefer @corae/cims-core.memoryStore (or dedicated @corae/memory-core)
   try {
+    // Allow runtime-only dynamic import without requiring compile-time types
+    // @ts-ignore-next-line
     const core: any = await import("@corae/cims-core");
     if (core?.memoryStore) {
       const s = core.memoryStore;

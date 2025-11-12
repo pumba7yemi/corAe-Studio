@@ -1,7 +1,32 @@
 "use client";
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { WantItem, WantList } from "@/app/lib/home/iwant/schemas";
+
+type WantItem = {
+  id: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  title: string;
+  category?: string;
+  estimate?: number;
+  priority?: "LOW" | "MEDIUM" | "HIGH";
+  targetDate?: string;
+  link?: string;
+  notes?: string;
+  tags?: string[];
+};
+
+const WantList = {
+  safeParse: (v: any): { success: true; data: WantItem[] } | { success: false } => {
+    if (Array.isArray(v)) {
+      // Basic pass-through validation: ensure each entry has an id and title
+      const ok = v.every((it) => it && typeof it.id === "string" && typeof it.title === "string");
+      if (ok) return { success: true, data: v as WantItem[] };
+    }
+    return { success: false };
+  },
+};
 
 type Draft = {
   title: string;
@@ -109,6 +134,22 @@ export default function IWantManagePage() {
     }
   };
 
+  const [compareResults, setCompareResults] = useState<any[] | null>(null);
+  const compareSelected = async () => {
+    const ids = Object.entries(selected).filter(([, v]) => v).map(([k]) => k);
+    if (!ids.length) return alert("Select at least one item to compare.");
+    const itemsToCompare = items.filter((i) => ids.includes(i.id)).map(i => ({ title: i.title, url: i.link, desiredPrice: i.estimate }));
+    try {
+      const r = await fetch("/api/ship/home/want/compare", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ items: itemsToCompare }) });
+      if (!r.ok) throw new Error(`status ${r.status}`);
+      const j = await r.json();
+      setCompareResults(j.results ?? null);
+    } catch (err) {
+      console.error(err);
+      alert("Compare failed.");
+    }
+  };
+
   return (
     <div className="mx-auto max-w-5xl p-6">
       <div className="flex items-center justify-between">
@@ -139,6 +180,7 @@ export default function IWantManagePage() {
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
         <button onClick={createShare} className="rounded-full border px-3 py-1 text-sm hover:bg-white/10">Create Share Link</button>
+        <button onClick={compareSelected} className="rounded-full border px-3 py-1 text-sm hover:bg-white/10">Compare selected</button>
         {sharingUrl && <Link href={sharingUrl} className="text-sm underline">Open shared page</Link>}
       </div>
 
@@ -166,6 +208,27 @@ export default function IWantManagePage() {
         ))}
         {!items.length && <div className="rounded-xl border border-dashed p-6 text-center text-sm text-zinc-400">No items yet.</div>}
       </div>
+
+      {compareResults && (
+        <div className="mt-6 rounded-xl border p-4">
+          <h2 className="text-lg font-medium">Compare results</h2>
+          <div className="mt-3 grid gap-3">
+            {compareResults.map((res: any, idx: number) => (
+              <div key={idx} className="rounded-lg border p-3">
+                <div className="font-medium">{res.item?.title ?? res.item?.name ?? 'Item'}</div>
+                <div className="mt-2 grid gap-2">
+                  {res.offers?.map((o: any, i: number) => (
+                    <div key={i} className="flex items-center justify-between">
+                      <div className="text-sm">{o.vendor} — {o.currency ?? ''} {o.price}</div>
+                      {o.affiliateUrl ? <a className="text-xs underline" href={o.affiliateUrl} target="_blank" rel="noreferrer">Buy</a> : null}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="mt-6 text-right text-sm text-zinc-400">Total (all): <span className="font-semibold text-white">AED {total.toLocaleString()}</span></div>
     </div>

@@ -3,18 +3,9 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
-    "module": "ESNext",
-    "target": "ES2022",
-    "moduleResolution": "Bundler",
-    "jsx": "react-jsx",
-    "strict": true,
-    "resolveJsonModule": true,
-    "declaration": true,
-    "skipLibCheck": true,
-
-    // 👇 override root settings that break dts build
-    "incremental": false,
-    "composite": false
+    "declaration": true
   },
-  "include": ["src"]
+  "include": ["src/index.ts"]
+  ,
+  "exclude": ["src/schema/**", "src/adapters/**"]
 }

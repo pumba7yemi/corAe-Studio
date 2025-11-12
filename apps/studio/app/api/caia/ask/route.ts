@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { appendEvent } from '@/build/log';
-import { appendDockyardMemory } from '@/caia/memory';
+import { appendEvent } from '../../../../src/build/log';
+import { appendDockyardMemory } from '../../../../src/caia/memory';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';

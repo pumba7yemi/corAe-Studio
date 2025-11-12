@@ -1,4 +1,4 @@
-import SocialContractAudit from "@/components/social/SocialContractAudit";
+import SocialContractAudit from "../../../../components/social/SocialContractAudit";
 
 export default function Page() {
   return (

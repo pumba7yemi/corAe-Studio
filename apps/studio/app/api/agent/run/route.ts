@@ -1,6 +1,6 @@
 // apps/studio/app/api/agent/run/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { runDevAgent } from '@/agent/devAgent';
+import { runDevAgent } from '@/src/agent/devagent';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     }
 
     const { task, payload } = await req.json();
-    const result = await runDevAgent(String(task), payload ?? {});
+    const result = await runDevAgent({ task: String(task), payload: payload ?? {} });
     return NextResponse.json({ ok: true, task, result });
   } catch (err: any) {
     return NextResponse.json(

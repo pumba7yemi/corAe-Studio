@@ -51,6 +51,8 @@ const LocalMessages: MessageStore = {
 async function getThreadStore(): Promise<ThreadStore> {
   // 1) Try core
   try {
+    // Allow runtime-only dynamic import without requiring compile-time types
+    // @ts-ignore-next-line
     const core: any = await import("@corae/cims-core");
     if (core?.memoryStore?.listThreads) {
       const ms = core.memoryStore;
@@ -71,8 +73,10 @@ async function getThreadStore(): Promise<ThreadStore> {
 
 async function getMessageStore(): Promise<MessageStore> {
   // 1) Try core
-  try {
-    const core: any = await import("@corae/cims-core");
+    try {
+      // Allow runtime-only dynamic import without requiring compile-time types
+      // @ts-ignore-next-line
+      const core: any = await import("@corae/cims-core");
     if (core?.memoryStore?.listMessages) {
       const ms = core.memoryStore;
       return {

@@ -12,7 +12,7 @@ export const Message = z.object({
   senderId: z.string(),
   channel: Channel,
   body: z.string().min(1),
-  meta: z.record(z.any()).default({}),
+  meta: z.record(z.string(), z.any()).default({}),
   createdAt: z.string(),
   readAt: z.string().nullable().default(null)
 });

@@ -1,14 +1,26 @@
 import { z } from "zod";
 
+export const WantPriority = z.enum(["LOW", "MEDIUM", "HIGH"]);
 export const WantStatus = z.enum(["WISHLIST", "ORDERED", "RECEIVED", "CANCELLED"]);
-export type WantStatus = z.infer<typeof WantStatus>;
+
+export const Offer = z.object({
+  merchant: z.string().optional(),
+  domain: z.string().optional(),
+  url: z.string().url().optional(),
+  affiliateUrl: z.string().url().optional(),
+  price: z.object({ value: z.number(), currency: z.string().optional() }).optional(),
+  total: z.number().optional(),
+  availability: z.string().optional(),
+  lastChecked: z.string().optional(),
+});
+export type Offer = z.infer<typeof Offer>;
 
 export const WantItem = z.object({
   id: z.string(),
   title: z.string().min(1),
   category: z.string().default("General"),
   estimate: z.number().nonnegative().default(0),
-  priority: z.enum(["LOW", "MEDIUM", "HIGH"]).default("MEDIUM"),
+  priority: WantPriority.default("MEDIUM"),
   targetDate: z.string().optional(),
   link: z.string().url().optional(),
   notes: z.string().optional(),
@@ -33,4 +45,4 @@ export const WantCreate = WantItem.pick({
 export const WantList = z.array(WantItem);
 export type WantList = z.infer<typeof WantList>;
 
-export default { WantItem, WantCreate, WantList };
+export default { WantItem, WantCreate, WantList, Offer, WantPriority, WantStatus };

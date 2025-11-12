@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import HabitCard from "@/components/caia/HabitCard.client";
 export const metadata: Metadata = { title: "corAe — CAIA" };
 
 export default function CAIAPage() {
@@ -32,8 +33,14 @@ export default function CAIAPage() {
         <h2>Dev Agent</h2>
         <div className="row" style={{ gap: 8 }}>
           <a className="btn" href="/api/health">API health</a>
-          <Link className="btn" href="/forge">Forge controls</Link>
         </div>
+      </section>
+
+      {/* Habits */}
+      <section className="c-card">
+        <h2>Habits</h2>
+        <p className="muted">Lightweight engine. Swap to Prisma/Mongo later.</p>
+        <HabitCard />
       </section>
     </main>
   );

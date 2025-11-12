@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { runStep } from "@/app/lib/automate/engine";
-import { pushSignal } from "@/app/lib/cims/store";
+import { runStep } from "@/lib/automate/engine";
+import { pushSignal } from "@/lib/cims/store";
 
 export async function POST(req: Request) {
   const body = await req.json();

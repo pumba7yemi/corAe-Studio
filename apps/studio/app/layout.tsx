@@ -12,11 +12,21 @@ import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import React, { PropsWithChildren } from "react";
 
-import NavBar from "@/app/system/nav/components/NavBar";
-import SideBar from "@/app/system/nav/components/SideBar";
+// Fallback stub for NavBar when the real module isn't available.
+// Replace this stub with the real import when "@/app/system/nav/components/NavBar" exists.
+function NavBar(): JSX.Element | null {
+  return null;
+}
+
+// Fallback stub for SideBar when the real module isn't available.
+// Replace this stub with the real import when "@/app/system/nav/components/SideBar" exists.
+function SideBar(): JSX.Element | null {
+  return null;
+}
 import CaiaClientShell from "@/components/CaiaClientShell";
 import CaiaProvider from "./_components/caia/CaiaProvider.client";
 import CaiaQuickActions from "./_components/caia/CaiaQuickActions.client";
+import DemoRibbon from "@/components/demo/DemoRibbon";
 // Placeholder for MobileTabsWrapper (real client-only component can be swapped in at the original path)
 function MobileTabsWrapper() {
   // This is a server-side placeholder that renders nothing; replace with the client-only implementation
@@ -108,6 +118,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <CaiaClientShell />
           {/* Mount CAIA quick actions UI (client-only) */}
           <CaiaQuickActions />
+          {/* Demo mode ribbon (client-only) */}
+          <DemoRibbon />
           <SkipToContent />
 
           {/* Top navigation (universal) */}

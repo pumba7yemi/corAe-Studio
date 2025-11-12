@@ -1,3 +1,10 @@
+// Temporary build stub for @corae/cims-core
+// TODO: Replace with the real CIMS logic package
+export const ping = () => "cims-core active";
+export type CimsEvent = { id: string; type: string; data?: any };
+export function emitCimsEvent(evt: CimsEvent) {
+  console.log("CIMS event:", evt);
+}
 import { memoryStore } from "./adapters/store.memory";
 export * from "./schema/types";
 export { memoryStore, MemoryCIMSStore } from "./adapters/store.memory";

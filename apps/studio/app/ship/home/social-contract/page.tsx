@@ -1,5 +1,5 @@
 import React from "react";
-import SignPledge from "@/components/social/SignPledge.client";
+import SignPledge from "../../../../components/social/SignPledge.client";
 
 export const metadata = {
   title: "The Social Contract — It Starts With You",

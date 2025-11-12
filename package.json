@@ -9,14 +9,15 @@
   "scripts": {
     "bootstrap": "pnpm install",
     "build": "pnpm -r --filter ./packages/... build",
-      "audit:corae": "node scripts/audit-corae-structure.mjs",
-      "tidy:apply": "node scripts/tidy-apply.mjs",
-      "pulse:test": "vitest run -r packages/core-pulse",
-      "typecheck": "tsc -b --pretty",
+    "audit:corae": "node scripts/audit-corae-structure.mjs",
+    "tidy:apply": "node scripts/tidy-apply.mjs",
+    "pulse:test": "vitest run packages/core-pulse/__tests__ --run",
+    "pulse:test:ci": "vitest run packages/core-pulse/__tests__ --run --reporter verbose",
+    "typecheck": "tsc -b --pretty",
     "audit": "node scripts/audit-corae.mjs",
     "tidy:plan": "node scripts/tidy-corae.mjs",
     "build:skim": "tsx scripts/build-skim.mts",
-  "build:verify": "cross-env CAIA_150_STRICT=true tsx scripts/build-verify.mts",
+    "build:verify": "cross-env CAIA_150_STRICT=true tsx scripts/build-verify.mts",
     "build:promote": "tsx scripts/build-promote.mts",
     "precommit": "pnpm build:skim && pnpm build:verify",
     "scan:yard": "tsx tools/shipyard/scan-and-plan.ts",
@@ -45,12 +46,13 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@corae/core-ascend": "workspace:*",
+    "@corae/core-pulse": "workspace:*",
     "@prisma/client": "^6.18.0",
     "prisma": "^6.18.0",
-    "@corae/core-pulse": "workspace:*",
     "react": "18.3.1",
-    "vitest": "^1.0.0",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "vitest": "^1.0.0"
   },
   "overrides": {
     "react": "18.3.1",

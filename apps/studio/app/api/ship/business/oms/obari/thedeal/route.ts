@@ -1,6 +1,6 @@
 // apps/studio/app/api/obari/deal/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { runDevAgent } from '@/agent/devAgent';
+import { runDevAgent } from '@/src/agent/devagent';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
