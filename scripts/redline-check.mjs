@@ -30,9 +30,9 @@ try {
     fail("pnpm-workspace.yaml must include packages: ['apps/*','packages/*'].");
   }
 
-  // 2) Lockfile sanity (dry run install)
-  log("lockfile check — pnpm install --frozen-lockfile --dry-run");
-  run("pnpm -w install --frozen-lockfile --dry-run");
+  // 2) Lockfile sanity (attempt install with frozen lockfile)
+  log("lockfile check — pnpm install --frozen-lockfile");
+  run("pnpm -w install --frozen-lockfile");
 
   // 3) Static guardrails
   log("guardrail: casing");
