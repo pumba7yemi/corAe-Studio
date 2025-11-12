@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Ensure 'use client'/'use server' directives are present only where expected in the app/ folder
 import { readFileSync } from 'fs';
-import { glob } from 'glob';
+import pkg from 'glob';
+const { glob } = pkg;
 
 const files = await glob('app/**/*.tsx', { ignore: ['**/node_modules/**'] });
 let issues = 0;
