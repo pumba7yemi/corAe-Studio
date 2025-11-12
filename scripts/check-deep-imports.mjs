@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Check for deep imports into other workspace packages (disallow importing from src or dist paths)
 import { readFileSync } from 'fs';
-import { glob } from 'glob';
+import pkg from 'glob';
+const { glob } = pkg;
 
 const BAD_PATTERNS = [/\/src\//, /\/dist\//];
 let errors = 0;
