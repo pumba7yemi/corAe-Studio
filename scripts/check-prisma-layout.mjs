@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Ensure prisma schema lives in expected folder and prisma client is generated in packages/*/node_modules/.prisma
 import { existsSync } from 'fs';
-import { glob } from 'glob';
+import pkg from 'glob';
+const { glob } = pkg;
 
 const schemaFiles = await glob('**/prisma/schema.prisma', { ignore: ['**/node_modules/**'] });
 if (!schemaFiles.length) {
