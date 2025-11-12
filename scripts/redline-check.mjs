@@ -36,15 +36,15 @@ try {
 
   // 3) Static guardrails
   log("guardrail: casing");
-  run("node scripts/check-casing.mjs");
+  run(`node ${join('corAe-Studio','scripts','check-casing.mjs')}`);
   log("guardrail: deep-imports");
-  run("node scripts/check-deep-imports.mjs");
+  run(`node ${join('corAe-Studio','scripts','check-deep-imports.mjs')}`);
   log("guardrail: next directives");
-  run("node scripts/check-next-directives.mjs");
+  run(`node ${join('corAe-Studio','scripts','check-next-directives.mjs')}`);
   log("guardrail: prisma layout");
-  run("node scripts/check-prisma-layout.mjs");
+  run(`node ${join('corAe-Studio','scripts','check-prisma-layout.mjs')}`);
   log("guardrail: env keys");
-  run("node scripts/check-env.mjs");
+  run(`node ${join('corAe-Studio','scripts','check-env.mjs')}`);
 
   // 4) Build pipeline (typecheck -> libs -> studio)
   log("tsc composite typecheck (no emit)");
