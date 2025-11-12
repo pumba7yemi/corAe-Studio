@@ -7,7 +7,12 @@ const { glob } = pkg;
 const BAD_PATTERNS = [/\/src\//, /\/dist\//];
 let errors = 0;
 
-const files = await glob('**/*.{ts,tsx,js,jsx,mjs,cjs}', { ignore: ['node_modules/**', 'pnpm-lock.yaml', 'dist/**', '.next/**'] });
+const files = await new Promise((resolve, reject) => {
+  pkg('**/*.{ts,tsx,js,jsx,mjs,cjs}', { ignore: ['node_modules/**', 'pnpm-lock.yaml', 'dist/**', '.next/**'] }, (err, matches) => {
+    if (err) return reject(err);
+    resolve(matches || []);
+  });
+});
 for (const f of files) {
   const txt = readFileSync(f, 'utf8');
   for (const p of BAD_PATTERNS) {
