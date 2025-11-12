@@ -2,9 +2,13 @@
 // Ensure 'use client'/'use server' directives are present only where expected in the app/ folder
 import { readFileSync } from 'fs';
 import pkg from 'glob';
-const { glob } = pkg;
 
-const files = await glob('app/**/*.tsx', { ignore: ['**/node_modules/**'] });
+const files = await new Promise((resolve, reject) => {
+  pkg('corAe-Studio/app/**/*.tsx', { ignore: ['**/node_modules/**'] }, (err, matches) => {
+    if (err) return reject(err);
+    resolve(matches || []);
+  });
+});
 let issues = 0;
 for (const f of files) {
   const txt = readFileSync(f, 'utf8');
