@@ -5,7 +5,7 @@ onlyBuiltDependencies:
 
 # Workspace packages. We include both root-level and inner corAe-Studio layout
 packages:
-  - 'apps/*'
-  - 'packages/*'
-  - 'corAe-Studio/apps/*'
-  - 'corAe-Studio/packages/*'
+  - "apps/*"
+  - "packages/*"
+  - "corAe-Studio/apps/*"
+  - "corAe-Studio/packages/*"
