@@ -1,11 +1,34 @@
 "use client";
 import React, { useMemo, useState } from "react";
-import { PLEDGES, type ContractDomain, type AuditEntry, type Pledge } from "../../../../packages/core-culture/src";
+import { PLEDGES } from "@/packages/core-culture/src";
+
+type Pledge = {
+  id: string;
+  label: string;
+  mandatory?: boolean;
+};
+
+type AuditEntry = {
+  id: string;
+  domain: string;
+  timestamp: string;
+  checkedPledges: string[];
+  pass: boolean;
+  reflection?: string;
+};
+
+type ContractDomain = string;
 
 type Props = { domain: ContractDomain; title: string; subtitle?: string };
 
 export default function SocialContractAudit({ domain, title, subtitle }: Props) {
-  const pledges = useMemo(() => PLEDGES[domain], [domain]);
+  const pledges = useMemo((): Pledge[] => {
+    try {
+      return ((PLEDGES as unknown) as Record<string, Pledge[]>)[domain] ?? [];
+    } catch {
+      return [];
+    }
+  }, [domain]);
   const [checked, setChecked] = useState<string[]>([]);
   const [reflection, setReflection] = useState("");
   const mandatoryIds = useMemo(() => pledges.filter((p: Pledge) => p.mandatory).map((p: Pledge) => p.id), [pledges]);

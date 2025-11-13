@@ -12,14 +12,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 // One level deeper → extra "../"
-import { Card, CardContent } from '../../../../../../../../../src/components/ui/card';
-import { Separator } from '../../../../../../../../../src/components/ui/separator';
+import { Card, CardContent } from '@/ui/card';
+import { Separator } from '@/ui/separator';
 import ArrowNav from '@/components/navigation/ArrowNav';
 
 import PeriodFilter, {
   computeRange,
   type PeriodValue,
-} from '../../../../../../../../../src/components/finance/PeriodFilter';
+} from '@/components/finance/PeriodFilter';
 
 type Money = number;
 const formatGBP = (m: number) => `£${(m / 100).toFixed(2)}`;
@@ -31,10 +31,7 @@ type AR = { date_iso: string; net_minor: Money; vat_minor: Money; paid_minor: Mo
 type AP = { date_iso: string; net_minor: Money; vat_minor: Money; paid_minor: Money; }; // purchase bills
 
 export default function BalanceSheetPage() {
-  const [period, setPeriod] = useState<PeriodValue>(() => ({
-    kind: 'month',
-    ...computeRange('month'),
-  }));
+  const [period, setPeriod] = useState<PeriodValue>(() => computeRange('month'));
 
   // Demo data (very small set)
   const [accounts, setAccounts] = useState<BankAcc[]>([]);

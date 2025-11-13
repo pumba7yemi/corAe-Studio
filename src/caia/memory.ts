@@ -9,5 +9,17 @@
 // ------------------------------------------------------------------
 
 // Resolve directly to source to avoid package type resolution ambiguity during workspace builds
-export { readDockyardMemory, writeDockyardMemory, readShipMemory, writeShipMemory } from "../../packages/caia-core/src/memory";
-// If/when memory-cube exports real functions, re-export them explicitly.
+// `@corae/caia-core` historically used CommonJS-style exports. For ES module
+// builds we import the whole module and re-export what we need as named
+// exports plus a default export. This avoids `export =` which isn't valid
+// when targeting ES modules.
+import * as caiaCore from "@corae/caia-core";
+
+// Default export of the upstream module (keeps compatibility for callers
+// that expect the module namespace).
+export default caiaCore as any;
+
+// Provide named helpers expected by the app. Use `any` to avoid type errors
+// if the upstream package doesn't include types in the workspace build.
+export const readShipMemory = (caiaCore as any).readShipMemory;
+export const writeShipMemory = (caiaCore as any).writeShipMemory;

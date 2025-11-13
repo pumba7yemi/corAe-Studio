@@ -1,13 +1,13 @@
 import React from "react";
 import ProgressOverviewClient from "./ProgressOverview.client";
-import { readShipMemory } from "@corae/caia-core/dist/memory";
+import { readShipMemory } from "@/caia/memory";
 
 const SCOPE = "social-contract-audit";
 const KEY = "entries";
 
 export default async function ProgressOverview() {
   try {
-    const store = await readShipMemory(SCOPE);
+  const store = await (readShipMemory as any)(SCOPE);
     const raw = (store as any)?.get ? (store as any).get(KEY) : (store as any)?.[KEY];
     const entries = raw ? JSON.parse(raw) : [];
     const domains = { home: false, work: false, business: false };

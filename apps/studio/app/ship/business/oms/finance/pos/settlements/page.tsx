@@ -11,16 +11,16 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 // ✅ Use the long relative imports that work in your workspace
-import { Card, CardContent } from '../../../../../../../../../src/components/ui/card';
-import { Button } from '../../../../../../../../../src/components/ui/button';
-import { Input } from '../../../../../../../../../src/components/ui/input';
-import { Separator } from '../../../../../../../../../src/components/ui/separator';
+import { Card, CardContent } from '@/ui/card';
+import { Button } from '@/ui/button';
+import { Input } from '@/ui/input';
+import { Separator } from '@/ui/separator';
 import ArrowNav from '@/components/navigation/ArrowNav';
 
 import PeriodFilter, {
   computeRange,
   type PeriodValue,
-} from '../../../../../../../../../src/components/finance/PeriodFilter';
+} from '@/components/finance/PeriodFilter';
 
 type Money = number;
 
@@ -41,10 +41,7 @@ const formatGBP = (m: number) => `£${(m / 100).toFixed(2)}`;
 
 export default function PosSettlementsPage() {
   // Flat period so period.from & period.to always exist
-  const [period, setPeriod] = useState<PeriodValue>(() => ({
-    kind: 'month',
-    ...computeRange('month'),
-  }));
+  const [period, setPeriod] = useState<PeriodValue>(() => computeRange('month'));
   const [q, setQ] = useState('');
   const [method, setMethod] = useState<'all' | 'cash' | 'card'>('all');
   const [rows, setRows] = useState<Settlement[]>([]);

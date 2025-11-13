@@ -4,8 +4,8 @@
  * OBARI — Invoicing (Stage 6)
  * Generates and manages invoices following Reporting stage.
  */
-import { Card, CardContent } from "../../../../../../../../src/components/ui/card";
-import { Button } from "../../../../../../../../src/components/ui/button";
+import { Card, CardContent } from "@/ui/card";
+import { Button } from "@/components/ui/button";
 import ArrowNav from "@/components/navigation/ArrowNav"; // ✅ alias (never breaks)
 
 export default function ObariInvoicingPage() {

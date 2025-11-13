@@ -1,5 +1,5 @@
 // @ts-ignore: module types are not available at compile time; ignore missing module/type errors
-import { readShipMemory } from "@corae/caia-core/dist/memory";
+import { readShipMemory } from "@/caia/memory";
 
 const SCOPE = "social-contract-audit";
 const KEY = "entries";

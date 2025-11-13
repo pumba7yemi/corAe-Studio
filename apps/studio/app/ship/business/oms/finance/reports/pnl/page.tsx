@@ -10,9 +10,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 // NOTE: one level deeper than Purchases → add one extra "../"
-import { Card, CardContent } from '../../../../../../../../../src/components/ui/card';
-import { Separator } from '../../../../../../../../../src/components/ui/separator';
-import { Button } from '../../../../../../../../../src/components/ui/button';
+import { Card, CardContent } from '@/ui/card';
+import { Separator } from '@/ui/separator';
+import { Button } from '@/ui/button';
 import ArrowNav from '@/components/navigation/ArrowNav';
 
 import PeriodFilter, {
@@ -29,10 +29,7 @@ type Other = { date_iso: string; net_minor: Money; label: string; sign: 1 | -1 }
 const formatGBP = (m: number) => `£${(m / 100).toFixed(2)}`;
 
 export default function PnLPage() {
-  const [period, setPeriod] = useState<PeriodValue>(() => ({
-    kind: 'month',
-    ...computeRange('month'),
-  }));
+  const [period, setPeriod] = useState<PeriodValue>(() => computeRange('month'));
 
   const [sales, setSales] = useState<Sale[]>([]);
   const [purchases, setPurchases] = useState<Purchase[]>([]);

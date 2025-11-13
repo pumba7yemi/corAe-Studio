@@ -13,16 +13,16 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 
 // ✅ Long relative paths
-import { Card, CardContent } from '../../../../../../../../../src/components/ui/card';
-import { Button } from '../../../../../../../../../src/components/ui/button';
-import { Input } from '../../../../../../../../../src/components/ui/input';
-import { Separator } from '../../../../../../../../../src/components/ui/separator';
+import { Card, CardContent } from '@/ui/card';
+import { Button } from '@/ui/button';
+import { Input } from '@/ui/input';
+import { Separator } from '@/ui/separator';
 
 import ArrowNav from '@/components/navigation/ArrowNav';
 import PeriodFilter, {
   computeRange,
   type PeriodValue,
-} from '../../../../../../../../../src/components/finance/PeriodFilter';
+} from '@/components/finance/PeriodFilter';
 
 type MoneyMinor = number;
 type APDocType = 'bill' | 'payment' | 'credit' | 'grn';
@@ -58,10 +58,7 @@ export default function VendorStatementPage() {
   const [docs, setDocs] = useState<APDoc[]>([]);
   const [q, setQ] = useState('');
 
-  const [period, setPeriod] = useState<PeriodValue>(() => ({
-    kind: 'month',
-    ...computeRange('month'),
-  }));
+  const [period, setPeriod] = useState<PeriodValue>(() => computeRange('month'));
 
   useEffect(() => {
     const all: Vendor[] = [

@@ -1,6 +1,18 @@
 // packages/shared/utils/pipeline.ts
 import type { Domain, Stage, Pipeline, HomeFlowKind, WorkFlowKind } from "./threadToken";
-import { findClientByEmailOrDomains, getClientById } from "../../core-clients/src/registry";
+
+// load @corae/core-clients at runtime if available; otherwise fall back to no-op stubs
+const _coreClients = (() => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    return require("@corae/core-clients");
+  } catch {
+    return null;
+  }
+})();
+
+const findClientByEmailOrDomains = _coreClients?.findClientByEmailOrDomains ?? ((_: string[]) => null);
+const getClientById = _coreClients?.getClientById ?? ((_: string | null) => null);
 
 export function inferDomain(subject: string, to: string[], from: string): Domain {
   const s = (subject || "").toLowerCase();

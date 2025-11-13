@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { listTasks } from "../../../../../../packages/core-3cubed/src/tasks";
+import { listTasks } from "@corae/core-3cubed";
 
 export async function GET(_: NextRequest) {
   try {

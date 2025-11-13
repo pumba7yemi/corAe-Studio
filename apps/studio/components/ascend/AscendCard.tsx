@@ -1,5 +1,5 @@
 "use client";
-import { Card } from "../../../../src/components/ui/card";
+import { Card } from "@/ui/card";
 
 // types for '@corae/ascend-core/src/stages' have been moved to a project declaration file (../../../../types/ascend-core-stages.d.ts)
 

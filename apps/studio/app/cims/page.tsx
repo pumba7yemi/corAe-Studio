@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 // If your components are at repo /components (root), prefer a relative import
 // to avoid alias drift. Adjust if yours differs.
-import { SessionUserSwitcher } from "../../../../src/components/cims/SessionUserSwitcher";
+import { SessionUserSwitcher } from "@/components/cims/SessionUserSwitcher";
 
 /* -------------------- Types -------------------- */
 type CIMSDomain = "management" | "hr" | "finance" | "operations" | "marketing";

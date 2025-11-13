@@ -10,10 +10,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 // ✅ Use the long relative path you confirmed works
-import { Card, CardContent } from '../../../../../../../../src/components/ui/card';
-import { Button } from '../../../../../../../../src/components/ui/button';
-import { Input } from '../../../../../../../../src/components/ui/input';
-import { Separator } from '../../../../../../../../src/components/ui/separator';
+import { Card, CardContent } from '@/ui/card';
+import { Button } from '@/ui/button';
+import { Input } from '@/ui/input';
+import { Separator } from '@/ui/separator';
 
 import ArrowNav from '@/components/navigation/ArrowNav';
 import PeriodFilter, {
@@ -55,10 +55,7 @@ export default function ExpensesLedgerPage() {
   const [kind, setKind] = useState<'all' | ExpenseKind>('all');
 
   // ✅ Flat default so period.from / period.to are always defined
-  const [period, setPeriod] = useState<PeriodValue>(() => ({
-    kind: 'month',
-    ...computeRange('month'),
-  }));
+  const [period, setPeriod] = useState<PeriodValue>(() => computeRange('month'));
 
   // Seed demo data
   useEffect(() => {

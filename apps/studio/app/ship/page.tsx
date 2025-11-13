@@ -5,9 +5,22 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 // keep shadcn buttons/inputs, but drop Card to avoid bg-card white
-import { Button } from '../../../../src/components/ui/button';
-import { Input } from '../../../../src/components/ui/input';
-import { Separator } from '../../../../src/components/ui/separator';
+// Local fallbacks for Button and Input if '@/ui/button' or '@/ui/input' aliases are not available
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'default' | 'outline' };
+const Button: React.FC<ButtonProps> = ({ children, className = '', variant, ...props }) => (
+  <button {...props} className={`inline-flex items-center px-3 py-2 rounded-md text-sm ${className}`}>
+    {children}
+  </button>
+);
+
+type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
+const Input: React.FC<InputProps> = (props) => (
+  <input {...props} className={`w-full px-3 py-2 rounded-md text-sm ${props.className || ''}`} />
+);
+// Local fallback Separator in case '@/ui/separator' is not present in this project
+const Separator: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className = '', ...props }) => (
+  <div {...props} className={`${className} h-px w-full`} />
+);
 
 const DEMOS = [
   { id: 'choiceplus', name: 'Choice Plus Supermarket', path: '/business/oms/obari' },

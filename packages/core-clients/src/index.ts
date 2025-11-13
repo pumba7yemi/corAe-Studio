@@ -1,3 +1,3 @@
 // Minimal stub for @corae/core-clients
-// TODO: replace with real exports
-export {};
+// Re-export registry helpers so callers can import from package root
+export * from "./registry";

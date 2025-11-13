@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build && pnpm run postbuild:patch-chunks",
+    "build:lite": "next build",
     "postbuild:patch-chunks": "node ./scripts/patch-chunks.cjs",
     "start": "pnpm run postbuild:patch-chunks && next start",
     "health:chunks": "node ./scripts/patch-chunks.cjs --check",

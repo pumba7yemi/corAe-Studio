@@ -1,4 +1,15 @@
 {
+  "copilot.chat.context": [
+    {
+      "role": "system",
+      "content": "Follow the corAe Constitution for all code changes: WIP=1, single-file edits, stop on first error, run `pnpm run check` (typecheck → libs build → studio build) before generating any new code. No deep imports. Lowercase filenames only. Propose the smallest correction possible and rerun the pipeline."
+    }
+  ],
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  }
+}
+{
   "files.associations": { "*.css": "postcss" },
   "css.lint.unknownAtRules": "ignore",
   "editor.codeActionsOnSave": "source.fixAll",

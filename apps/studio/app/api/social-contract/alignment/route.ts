@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { readShipMemory } from "@corae/caia-core/dist/memory";
+import { readShipMemory } from "@/caia/memory";
 
 const SCOPE = "social-contract-audit";
 const KEY = "entries";

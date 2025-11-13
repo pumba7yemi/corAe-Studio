@@ -13,9 +13,9 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 // ✅ Use the long relative UI imports you confirmed work
-import { Card, CardContent } from '../../../../../../../../src/components/ui/card';
-import { Button } from '../../../../../../../../src/components/ui/button';
-import { Separator } from '../../../../../../../../src/components/ui/separator';
+import { Card, CardContent } from '@/ui/card';
+import { Button } from '@/ui/button';
+import { Separator } from '@/ui/separator';
 import ArrowNav from '@/components/navigation/ArrowNav';
 
 import PeriodFilter, {
@@ -37,10 +37,7 @@ const money = (m: number) => `£${(m / 100).toFixed(2)}`;
 
 export default function VatPage() {
   // Flat period value (so period.from / period.to always exist)
-  const [period, setPeriod] = useState<PeriodValue>(() => ({
-    kind: 'quarter',
-    ...computeRange('quarter'),
-  }));
+  const [period, setPeriod] = useState<PeriodValue>(() => computeRange('quarter'));
 
   const [rows, setRows] = useState<VatLine[]>([]);
   const [q, setQ] = useState('');

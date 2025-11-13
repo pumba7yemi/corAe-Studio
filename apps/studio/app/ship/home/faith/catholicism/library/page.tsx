@@ -1,5 +1,6 @@
 import React from 'react';
-import { listPrayerDocs } from '../../../../../../../../packages/core-faith/library';
+// @ts-ignore: module does not have type declarations in this workspace
+import { listPrayerDocs } from '@/packages/core-faith';
 
 export default async function Page() {
   const items = await listPrayerDocs();

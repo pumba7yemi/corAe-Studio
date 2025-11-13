@@ -1,14 +1,14 @@
 // apps/studio/app/studio/page.tsx
 
 // CAIAHost lives at: corAe-Studio/src/components/CAIAHost.tsx
-import CAIAHost from "../../../../src/components/CAIAHost";
+import CAIAHost from "@/components/CAIAHost";
 
 // Studio-local pieces live under apps/studio
 // ShipButton: corAe-Studio/apps/studio/components/ship/ShipButton.tsx
 import ShipButton from "../../components/ship/ShipButton";
 
 // SMSME button/card: corAe-Studio/apps/studio/components/smsme/SMSMEControl.tsx
-import SMSMEControl from "../../../../src/components/SMSMEControl";
+import SMSMEControl from "@/components/SMSMEControl";
 
 // Build log helpers: corAe-Studio/apps/studio/lib/build/{log,artifacts}.ts
 import { readEvents, type BuildEvent } from "../../lib/build/log";

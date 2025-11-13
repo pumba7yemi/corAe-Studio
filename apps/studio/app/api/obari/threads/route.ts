@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 // TEMP: expose in-memory list via symbol access on module (safe for dev)
-import * as store from "../../../../../../packages/core-threads/src/threadStore";
+import * as store from "@corae/core-threads";
 const dbSym = (store as any).__DB__ as Map<string, any> | undefined;
 
 export async function GET(_: NextRequest) {

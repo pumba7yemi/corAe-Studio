@@ -7,6 +7,8 @@
     "packages/*"
   ],
   "scripts": {
+    "dev:lite": "cross-env NODE_OPTIONS=--max-old-space-size=2048 NEXT_TELEMETRY_DISABLED=1 pnpm --filter apps/studio dev",
+    "build:lite": "cross-env NODE_OPTIONS=--max-old-space-size=3072 NEXT_TELEMETRY_DISABLED=1 pnpm --filter apps/studio run build:lite",
     "bootstrap": "pnpm install",
     "build": "pnpm -r --filter ./packages/... build",
     "audit:corae": "node scripts/audit-corae-structure.mjs",
@@ -21,7 +23,7 @@
     "build:promote": "tsx scripts/build-promote.mts",
     "precommit": "pnpm build:skim && pnpm build:verify",
     "scan:yard": "tsx tools/shipyard/scan-and-plan.ts",
-    "dev": "pnpm --filter @corae/studio dev",
+  "dev": "pnpm --filter @corae/studio dev",
     "smoke:ship": "node tools/ship/smoke-test.js http://127.0.0.1:3000",
     "smoke:ship:node": "node tools/ship/run-smoke.js",
     "ops:ban-ps1": "node tools/ops/check-no-ps1.js",

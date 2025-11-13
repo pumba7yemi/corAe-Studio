@@ -1,0 +1,27 @@
+{
+  "engine": "HaveYouLogic",
+  "rule": "build-constitution",
+  "version": 1,
+  "constraints": {
+    "wip": 1,
+    "singleFileRule": true,
+    "stopOnFirstError": true,
+    "lowercaseFilenames": true,
+    "noDeepImports": true,
+    "runCheckScript": true
+  },
+  "actions": {
+    "before": [
+      "pnpm -w exec tsc -b --noEmit",
+      "pnpm --filter @corae/caia-core build",
+      "pnpm --filter @corae/bdo-core build",
+      "pnpm --filter @corae/studio build"
+    ],
+    "patternMemory": {
+      "thresholdAsk": 3,
+      "thresholdAutoApply": 6,
+      "thresholdDefault": 20,
+      "behaviour": "CAIA detects repeated issues (casing, imports, rogue folders, missing exports) and pre-corrects them before proposing fixes."
+    }
+  }
+}

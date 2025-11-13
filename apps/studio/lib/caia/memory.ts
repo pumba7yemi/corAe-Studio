@@ -1,6 +1,7 @@
 // apps/studio/lib/caia/memory.ts
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import * as memHelpers from './memoryHelpers';
 
 const ROOT = process.cwd();
 const DATA_DIR = path.join(ROOT, 'build', '.data', 'caia');
@@ -43,9 +44,27 @@ export async function readShipSeed(): Promise<{ system: string[]; facts: string[
   return { version: String(j.version || '1'), name: j.name || 'Seed', system: j.system || [], facts: j.facts || [] };
 }
 
-export async function readShipMemory(limit = 200): Promise<MemoryItem[]> {
+export async function readShipMemory(scopeOrLimit?: any, keyOrLimit?: any): Promise<any> {
+  // Overloaded behavior for dev shim:
+  // - readShipMemory(scope, key) => delegate to memoryHelpers.readShipMemory(scope)[key]
+  // - readShipMemory(scope) where scope is a string (and no key) => delegate to memoryHelpers.readShipMemory(scope)
+  // - readShipMemory(limit?) (legacy) => return recent MemoryItem[] from SHIP_FILE
+  if (typeof scopeOrLimit === 'string') {
+    const scope = scopeOrLimit;
+    const key = typeof keyOrLimit === 'string' ? keyOrLimit : undefined;
+    const obj = await memHelpers.readShipMemory(scope);
+    if (typeof key === 'string') return obj?.[key];
+    return obj;
+  }
+
+  const limit = typeof scopeOrLimit === 'number' ? scopeOrLimit : (typeof keyOrLimit === 'number' ? keyOrLimit : 200);
   await ensure();
   const raw = await fs.readFile(SHIP_FILE, 'utf8').catch(() => '');
   const lines = raw.split('\n').filter(Boolean).slice(-limit);
   return lines.map(l => JSON.parse(l));
 }
+
+// Re-export writeShipMemory from the src helper so code that dynamically
+// imports '@/caia/memory' has a writeShipMemory available (dev shim).
+// Relative path: lib/caia -> ../../src/caia
+export { writeShipMemory } from '../../src/caia/memory';

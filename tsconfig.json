@@ -8,16 +8,16 @@
 
     "strict": true,
     "noEmit": true,
-    "skipLibCheck": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "allowJs": true,
     "incremental": true,
     "isolatedModules": true,
+    "skipLibCheck": true,
 
     "baseUrl": ".",
 
-  "paths": {
+    "paths": {
       "@/*": ["src/*", "*"],
 
       "@studio/*": ["apps/studio/*", "apps/studio/app/*"],
@@ -31,6 +31,7 @@
         "src/app/*",
         "app/*"
       ],
+
       "@/api/*": [
         "apps/studio/app/api/*",
         "apps/shipyard/app/api/*",
@@ -39,29 +40,29 @@
         "app/api/*"
       ],
 
-  "@/lib/*": ["apps/studio/app/lib/*", "apps/studio/lib/*", "lib/*", "src/lib/*", "../../src/lib/*"],
+      "@/lib/*": ["apps/studio/app/lib/*", "apps/studio/lib/*", "lib/*", "src/lib/*", "../../src/lib/*"],
       "@/components/*": ["apps/studio/components/*", "src/components/*", "components/*"],
       "@/ui/*": ["src/components/ui/*", "src/ui/*", "ui/*"],
 
       "@biz-db": ["apps/studio/generated/biz"],
 
       "@corae/cims-core": ["packages/cims-core/src"],
-  "@corae/caia-core": ["packages/caia-core/src"],
-  "@corae/workflows-core": ["packages/workflows-core/src"],
-    "@corae/shared": ["packages/shared/src"],
-    "@corae/shared/*": ["packages/shared/src/*"],
+      "@corae/caia-core": ["packages/caia-core/src"],
+      "@corae/workflows-core": ["packages/workflows-core/src"],
+      "@corae/shared": ["packages/shared/src"],
+      "@corae/shared/*": ["packages/shared/src/*"],
       "@corae/workfocus-core/*": ["packages/workfocus-core/*"],
       "@corae/bdo-core": ["packages/bdo-core/src"],
       "@corae/bdo-core/*": ["packages/bdo-core/*"],
-  "@corae/core-faith/*": ["packages/core-faith/*"],
-  "@/core-ascend/*": ["packages/core-ascend/src/*"],
+      "@corae/core-faith/*": ["packages/core-faith/*"],
+      "@/core-ascend/*": ["packages/core-ascend/src/*"],
 
       "@services/*": ["src/services/*", "services/*"],
 
       "@/agent/*": ["src/agent/*", "packages/agent/*"],
       "@/bbb/*": ["src/bbb/*", "packages/bbb/*"],
       "@/build/*": ["src/build/*", "build/*"],
-  "@/caia/*": ["src/caia/*", "caia/*", "apps/studio/src/caia/*"],
+      "@/caia/*": ["src/caia/*", "caia/*", "apps/studio/src/caia/*"],
       "@/cims/*": ["src/cims/*", "cims/*"],
       "@/memory-cube/*": ["src/memory-cube/*", "memory-cube/*"],
       "@/hr/*": ["src/hr/*", "hr/*"],
@@ -78,7 +79,7 @@
     "plugins": [{ "name": "next" }]
   },
 
-    "include": [
+  "include": [
     "src/**/*",
     "app/**/*",
     "apps/studio/**/*",
@@ -88,12 +89,13 @@
     "lib/**/*",
     "packages/**/*",
     "build/**/*",
-      "services/**/*",
-      "types/**/*.d.ts",
-      "**/*.d.ts",
+    "services/**/*",
+    "types/**/*.d.ts",
+    "**/*.d.ts",
     "prisma.config.ts",
     "next-env.d.ts",
     ".next/types/**/*.ts"
   ],
+
   "exclude": ["node_modules", "dist", "coverage", "apps/ship/old/**/*", "apps/**/old/**/*"]
 }

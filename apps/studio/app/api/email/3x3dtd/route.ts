@@ -33,6 +33,17 @@ const FALLBACK = (() => {
 
 async function mem() {
   try {
+    // Prefer the local bridge to caia memory; dynamic import keeps this optional
+    // and avoids bundler errors when caia-core isn't present in some environments.
+    // Try the bridge first, then fall back to the optional package namespace.
+    const bridge = await import("@/caia/memory").catch(() => null);
+    if (bridge) {
+      return {
+        read: bridge.readShipMemory ?? (bridge as any).readShipMemory,
+        write: bridge.writeShipMemory ?? (bridge as any).writeShipMemory,
+      };
+    }
+
     // @ts-ignore optional in some environments
     const core = (await import("@corae/caia-core")).default ?? (await import("@corae/caia-core"));
     return {

@@ -1,6 +1,6 @@
 // apps/studio/app/api/filelogic/route.ts
 import { NextRequest } from "next/server";
-import { readShipMemory, writeShipMemory } from "@/src/caia/memory";
+import { readShipMemory, writeShipMemory } from "@/caia/memory";
 
 export const runtime = "nodejs";
 export const revalidate = 0;
