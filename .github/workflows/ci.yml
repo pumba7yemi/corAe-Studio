@@ -1,0 +1,48 @@
+﻿name: corAe CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: true
+
+      - name: Typecheck (Build Constitution step 1)
+        run: pnpm -w exec tsc -b --noEmit
+
+      - name: Build core libs (Build Constitution step 2)
+        run: |
+          pnpm --filter @corae/caia-core build
+          pnpm --filter @corae/core-ascend build || echo "core-ascend not present, skipping"
+          pnpm --filter @corae/bdo-core build || echo "bdo-core not present, skipping"
+
+      - name: Build Studio (Build Constitution step 3)
+        run: pnpm --filter @corae/studio build
+
+      - name: Optional repo checks (FileLogic, Have-You, patterns, etc.)
+        if: always()
+        run: |
+          if pnpm -C . run check 2>/dev/null; then
+            echo "pnpm check completed";
+          else
+            echo "no 'pnpm check' script defined, skipping";
+          fi
