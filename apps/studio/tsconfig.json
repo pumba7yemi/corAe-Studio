@@ -5,6 +5,8 @@
     "paths": {
       "@corae/want-engine": ["../../packages/want-engine/src"],
       "@corae/want-engine/*": ["../../packages/want-engine/src/*"],
+      "@corae/home": ["../../packages/corae-home/src"],
+      "@corae/home/*": ["../../packages/corae-home/src/*"],
   "@/*": ["app/*", "lib/*", "src/*"],
   "@/components/*": ["components/*", "src/components/*", "app/components/*"],
       "@/src/*": ["src/*"],
