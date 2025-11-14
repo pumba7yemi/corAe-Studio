@@ -1,10 +1,26 @@
 "use client";
 import Link from "next/link";
-import { useNav } from "../hooks/useNav";
+import { usePathname } from "next/navigation";
 import { getIcon } from "../registry";
+import { ROUTES } from "../routes";
 
 export default function SideBar() {
-  const { groups, pathname } = useNav();
+  const pathname = usePathname();
+
+  const sections = [
+    {
+      title: "Home / Work / Business",
+      items: [ROUTES.home, ROUTES.work, ROUTES.business],
+    },
+    {
+      title: "System / Dev",
+      items: [ROUTES.system, ROUTES.dev],
+    },
+    {
+      title: "Space",
+      items: [ROUTES.spaceStudio, ROUTES.spaceShip, ROUTES.spaceShipped, ROUTES.spaceDockyard],
+    },
+  ];
 
   return (
     <aside
@@ -13,23 +29,19 @@ export default function SideBar() {
       aria-label="Primary"
     >
       <div className="space-y-6">
-        {groups.map((g) => (
-          <section key={g.title}>
+        {sections.map((s) => (
+          <section key={s.title}>
             <h2 className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-wider text-neutral-500">
-              {g.title}
+              {s.title}
             </h2>
             <ul className="space-y-1">
-              {g.items.map((n) => {
-                const Icon = getIcon(n.icon);
-                const isActive =
-                  !!pathname &&
-                  (pathname === n.path ||
-                    (n.path !== "/" && pathname.startsWith(n.path)));
-
+              {s.items.map((r: any) => {
+                const Icon = getIcon(r.icon);
+                const isActive = !!pathname && (pathname === r.path || (r.path !== "/" && pathname.startsWith(r.path)));
                 return (
-                  <li key={`${n.id}:${n.path}`}>
+                  <li key={r.path}>
                     <Link
-                      href={n.path as unknown as any}
+                      href={r.path as unknown as any}
                       aria-current={isActive ? "page" : undefined}
                       className={[
                         "group flex items-center gap-2 rounded-lg px-2 py-2 text-sm transition",
@@ -39,7 +51,7 @@ export default function SideBar() {
                       ].join(" ")}
                     >
                       {Icon ? <Icon className="h-4 w-4" /> : null}
-                      <span>{n.label}</span>
+                      <span>{r.label}</span>
                     </Link>
                   </li>
                 );
