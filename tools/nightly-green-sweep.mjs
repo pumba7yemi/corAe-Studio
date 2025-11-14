@@ -44,9 +44,116 @@ async function main() {
   }
 
   console.log('Nightly sweep completed successfully.');
-  process.exit(0);
+    const moduleResult = await runModuleChecks();
+    if (!moduleResult.ok) {
+      console.error('Nightly module map check failed.');
+      process.exit(2);
+    }
+    console.log('✓ NIGHTLY GREEN SWEEP OK');
+    process.exit(0);
 }
 
+  // Now run module map checks if available
+  async function runModuleChecks() {
+    const modAdapterPath = path.join(repoRoot, 'tools', 'caia-modules.mjs');
+    let loadModules = null;
+    try {
+      const url = 'file://' + modAdapterPath.replace(/\\/g, '/');
+      const mod = await import(url);
+      loadModules = mod.loadModules ?? (mod.default && mod.default.loadModules);
+    } catch (e) {
+      console.warn('Module map adapter not found or failed to import:', e && e.message ? e.message : e);
+    }
+
+    if (!loadModules) {
+      console.log('No module map adapter available; skipping module checks.');
+      return { ok: true, missing: [], extra: [] };
+    }
+
+    let modules;
+    try {
+      modules = await loadModules();
+    } catch (e) {
+      console.error('Failed to load module map:', e && e.message ? e.message : e);
+      return { ok: false, missing: ['__module_map_unreadable__'], extra: [] };
+    }
+
+    const groupsToCheck = {
+      homeCore: '/ship/home/core',
+      workCore: '/ship/work/core',
+      businessCore: '/ship/business/core',
+      businessFront: '/ship/business/front',
+    };
+
+    const missing = [];
+    const extra = [];
+
+    for (const [key, prefix] of Object.entries(groupsToCheck)) {
+      const entries = modules[key] || [];
+      // expected set
+      const expected = new Set(entries.map((e) => String(e.path).replace(/\/$/, '')));
+
+      // actual on-disk paths under apps/studio/app + prefix
+      const rel = prefix.replace(/^\//, '');
+      const folder = path.join(repoRoot, 'apps', 'studio', 'app', rel);
+      let actualNames = [];
+      try {
+        const items = await fs.readdir(folder, { withFileTypes: true });
+        for (const it of items) {
+          if (!it.isDirectory()) continue;
+          const pageFile = path.join(folder, it.name, 'page.tsx');
+          try {
+            await fs.access(pageFile);
+            actualNames.push(`/${rel}/${it.name}`);
+          } catch {
+            // no page.tsx — ignore
+          }
+        }
+      } catch (e) {
+        // folder may not exist
+      }
+
+      const actualSet = new Set(actualNames.map((p) => p.replace(/\\/g, '/')));
+
+      // missing: in expected but not in actualSet
+      for (const exp of expected) {
+        const p = exp.replace(/\\/g, '/');
+        // normalize to leading slash for comparison
+        const norm = p.startsWith('/') ? p : '/' + p;
+        // Map norm like '/ship/home/core/faith' -> '/ship/home/core/faith'
+        if (!actualSet.has(norm)) missing.push({ group: key, path: norm });
+      }
+
+      // extra: in actualSet but not in expected
+      for (const act of actualSet) {
+        const normalized = act.replace(/\\/g, '/');
+        if (!expected.has(normalized)) extra.push({ group: key, path: normalized });
+      }
+    }
+
+    const ok = missing.length === 0;
+
+    // write summary to logs
+    try {
+      const outDir = path.join(repoRoot, 'logs', 'nightly');
+      await fs.mkdir(outDir, { recursive: true });
+      const outPath = path.join(outDir, `module-check-${Date.now()}.json`);
+      const summary = { ok, missing, extra, timestamp: new Date().toISOString() };
+      await fs.writeFile(outPath, JSON.stringify(summary, null, 2), 'utf8');
+      console.log('Module check summary written to', outPath);
+    } catch (e) {
+      console.warn('Failed to write nightly log:', e && e.message ? e.message : e);
+    }
+
+    if (!ok) {
+      console.error('Modules: missing', missing.map((m) => m.path).join(', '));
+      console.error('Modules: extra', extra.map((m) => m.path).join(', '));
+    } else {
+      console.log('Modules: OK');
+    }
+
+    return { ok, missing, extra };
+  }
 main();
 #!/usr/bin/env node
 import { exec } from 'child_process';
