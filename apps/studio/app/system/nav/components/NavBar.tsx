@@ -39,8 +39,24 @@ export default function NavBar() {
       // fallback: ignore landing area population if config is missing
     }
 
-    // Then append global ROUTES entries
+    // Then append selected ROUTES entries (include space shortcuts first)
+    const prioritized = [
+      'space',
+      'spaceStudio',
+      'spaceShip',
+      'spaceShipped',
+      'spaceDockyard',
+    ];
+    for (const key of prioritized) {
+      const v = (ROUTES as any)[key];
+      if (v) {
+        const label = key.replace(/([A-Z])/g, ' $1').replace(/[-_]/g, ' ').replace(/^./, (s) => s.toUpperCase());
+        items.push({ href: v, label });
+      }
+    }
+    // then append the rest
     for (const [k, v] of Object.entries(ROUTES as Record<string, string>)) {
+      if (prioritized.includes(k)) continue;
       const label = k.replace(/([A-Z])/g, ' $1').replace(/[-_]/g, ' ').replace(/^./, (s) => s.toUpperCase());
       items.push({ href: v, label });
     }
