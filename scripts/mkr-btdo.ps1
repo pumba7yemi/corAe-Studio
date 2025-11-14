@@ -1,3 +1,4 @@
+# DEPRECATED — replaced by `scripts/mkr-btdo.mjs` (Node runner).
 # ───────────────────────────────────────────────
 # corAe — MKR (Make Required) for BTDO Module
 # Creates all directories for BTDO APIs + pages + data store

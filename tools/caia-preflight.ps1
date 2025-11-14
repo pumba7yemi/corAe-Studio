@@ -1,3 +1,4 @@
+$null = '# DEPRECATED — replaced by Node tools (use `pnpm caia:preflight` / `pnpm caia:nightly`).'
 Param()
 $ErrorActionPreference = 'Stop'
 function Run-Cmd($label, $cmd) {

@@ -1,3 +1,4 @@
+# DEPRECATED — replaced by `scripts/schedule-haveyou.mjs` (Node helper). Keep for reference.
 # scripts/schedule-haveyou.ps1
 <#
 Registers a Windows Scheduled Task that pings the Have-You tick endpoint every minute.

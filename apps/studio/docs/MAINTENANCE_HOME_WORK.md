@@ -24,7 +24,7 @@ This document is a light-weight maintenance checklist for Home & Work subsystems
 
 ## Quick commands (run from repo root where appropriate)
 - Install deps: `pnpm install`
-- Full maintenance runner (from apps/studio): `pwsh ./scripts/onebuild/maintenance.ps1`
+- Full maintenance runner (from apps/studio): `node ./scripts/onebuild/maintenance.mjs`
 - Studio build: `pnpm --filter @corae/studio build`
 - Ship build: `pnpm --filter @corae/ship build`
 

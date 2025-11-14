@@ -11,7 +11,22 @@ const port = process.env.PORT || process.env.DEV_PORT || argPort || 3000;
 
 // Try multiple host candidates so the checker works regardless of whether
 // Next bound to IPv4 localhost, IPv6 ::1, or a network interface.
-const hosts = argHost ? [argHost] : ["localhost", "127.0.0.1", "::1"];
+import os from 'node:os';
+
+function localIPs() {
+  const ifaces = os.networkInterfaces();
+  const ips = [];
+  for (const name of Object.keys(ifaces)) {
+    for (const info of ifaces[name] || []) {
+      if (info.family === 'IPv4' && !info.internal) ips.push(info.address);
+    }
+  }
+  return ips;
+}
+
+const hosts = argHost
+  ? [argHost]
+  : ["localhost", "127.0.0.1", "::1", ...localIPs()];
 
 async function findBase() {
   for (const h of hosts) {

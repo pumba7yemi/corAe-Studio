@@ -1,3 +1,4 @@
+# DEPRECATED — replaced by `scripts/caia-tidy.mjs` (Node runner). Keep for reference.
 <#
 CAIA tidy script (safe, interactive)
 

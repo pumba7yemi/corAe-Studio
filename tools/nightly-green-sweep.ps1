@@ -1,3 +1,4 @@
+$null = '# DEPRECATED — replaced by Node tools (use `pnpm caia:preflight` / `pnpm caia:nightly`).'
 Param([switch]$FailOnLint = $false)
 $ErrorActionPreference = "Stop"
 function Step($n,$c){Write-Host "▶ $n"; & cmd /c $c; if($LASTEXITCODE -ne 0){throw "$n failed"}; Write-Host "✓ $n"}

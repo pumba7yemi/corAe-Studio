@@ -4,6 +4,7 @@ param(
   [switch]$StudioOnly
 )
 
+# DEPRECATED — replaced by `apps/studio/scripts/onebuild/maintenance.mjs` (Node runner).
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSCommandPath
 # This runner is intended to be executed from inside apps/studio. It keeps workspace-local changes here.

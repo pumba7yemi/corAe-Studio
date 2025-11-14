@@ -55,6 +55,7 @@ const ICONS: Record<string, LucideIcon> = {
   finance: CreditCard,
   inbox: Inbox,
   rocket: Rocket,
+  globe: LayoutDashboard,
 };
 export function getIcon(name?: string): LucideIcon | undefined {
   return name && ICONS[name] ? ICONS[name] : undefined;
@@ -73,7 +74,15 @@ const CATEGORY_ICON: Record<string, string> = {
 export function buildNav(): NavItem[] {
   const base: NavItem[] = [
     { id: "home", label: "Home", path: "/", icon: "home" },
+    { id: "corae-space", label: "corAe Space", path: "/ship/space", icon: "layout-dashboard" },
     { id: "dashboard", label: "Dashboard", path: "/dashboard", icon: "layout-dashboard" },
+  ];
+
+  const devItems: NavItem[] = [
+    { id: "dev-atlas", label: "Atlas", path: "/ship/dev/atlas", category: "dev", icon: "globe" },
+    { id: "dev-patterns", label: "Patterns", path: "/ship/dev/patterns", category: "dev", icon: "workflow" },
+    { id: "dev-gate-logs", label: "Gate Logs", path: "/ship/dev/gate-logs", category: "dev", icon: "inbox" },
+    { id: "dev-health", label: "Health", path: "/ship/dev/health", category: "dev", icon: "inbox" },
   ];
 
   const engines: NavItem[] = ENGINES.map((e) => ({
@@ -85,7 +94,7 @@ export function buildNav(): NavItem[] {
   }));
 
   const seen = new Set<string>();
-  return [...base, ...engines].filter((n) => {
+  return [...base, ...devItems, ...engines].filter((n) => {
     const key = `${n.id}:${n.path}`;
     if (seen.has(key)) return false;
     seen.add(key);
@@ -101,7 +110,7 @@ export function buildNavGroups(): NavGroup[] {
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key)!.push(n);
   }
-  const order = ["Core", "work", "finance", "home", "communications", "automate", "marketplace", "engines"];
+  const order = ["Core", "dev", "work", "finance", "home", "communications", "automate", "marketplace", "engines"];
   const sorted: NavGroup[] = [];
   for (const key of order) if (groups.has(key)) sorted.push({ title: cap(key), items: groups.get(key)! });
   for (const [k, v] of groups) if (!order.includes(k)) sorted.push({ title: cap(k), items: v });

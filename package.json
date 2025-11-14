@@ -25,20 +25,27 @@
     "scan:yard": "tsx tools/shipyard/scan-and-plan.ts",
   "dev": "pnpm --filter @corae/studio dev",
     "smoke:ship": "node tools/ship/smoke-test.js http://127.0.0.1:3000",
-    "smoke:ship:node": "node tools/ship/run-smoke.js",
+    "smoke:ship:node": "node tools/ship/run-smoke.mjs",
     "ops:ban-ps1": "node tools/ops/check-no-ps1.js",
     "clean": "rimraf apps/**/.next && rimraf packages/**/dist",
     "check:types": "pnpm -w exec -- tsc -b --noEmit",
     "check:build:studio": "pnpm --filter @corae/studio build",
     "check:prisma": "pnpm --filter @corae/studio prisma:format && pnpm --filter @corae/studio prisma:generate",
     "check:lint": "pnpm --filter @corae/studio lint || exit 0",
-    "nightly:studio": "node ./tools/nightly-green-sweep.js"
+    "caia:dev-gate": "node tools/caia-dev-gate.mjs",
+    "nightly:studio": "node ./tools/nightly-green-sweep.mjs",
+    "caia:preflight": "node tools/caia-preflight.mjs",
+    "caia:nightly": "node tools/nightly-green-sweep.mjs",
+    "ship:smoke": "pnpm caia:preflight && pnpm --filter @corae/studio build",
+    "ship:start-dev-and-smoke": "pnpm --filter @corae/studio dev & pnpm ship:smoke",
+    "dev:ship": "pnpm --filter @corae/studio dev",
+    "check": "pnpm -w exec tsc -b --noEmit && pnpm --filter @corae/studio build"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.16",
     "@types/node": "^24.10.0",
     "@types/react": "^18.3.24",
-    "@types/react-dom": "^19.2.2",
+    "@types/react-dom": "^18.3.1",
     "autoprefixer": "^10.4.21",
     "cross-env": "^10.1.0",
     "postcss": "^8.5.6",
@@ -59,5 +66,12 @@
   "overrides": {
     "react": "18.3.1",
     "react-dom": "18.3.1"
+  }
+  ,
+  "pnpm": {
+    "overrides": {
+      "@types/react": "18.3.24",
+      "@types/react-dom": "18.3.1"
+    }
   }
 }

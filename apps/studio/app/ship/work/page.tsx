@@ -3,6 +3,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { buildNav } from '../../../src/caia/nav-builder';
 
 /* ScrollInbox module not found at '@/src/components/ScrollInbox'; using local inline stub below */
 /* TaskSheetsMini module not found at ../../src/components/TaskSheetsMini; using local inline stub below */
@@ -43,6 +44,11 @@ export default function WorkHubPage() {
 
   return (
     <main style={styles.page}>
+      <nav style={{ marginBottom: 12, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        {buildNav().work.map((n: any) => (
+          <Link key={n.href} href={n.href as unknown as any} style={{ padding: '6px 10px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.06)' }}>{n.label}</Link>
+        ))}
+      </nav>
       {/* Header */}
       <header style={styles.header}>
         <div style={styles.logo}>corAe • Work</div>

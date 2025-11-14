@@ -1,4 +1,5 @@
 <#
+  DEPRECATED — replaceable via Node scaffolding scripts; kept for reference.
   corAe Manual Scaffold (v0.2)
   Aligns manual numbering to FileLogic™ band 95.
   Creates folders and seed docs under /docs/corae-manual.

@@ -1,3 +1,4 @@
+# DEPRECATED — replaced by `tools/create-signin-structure.mjs` (Node runner).
 # corAe Ship — Sign-in & Company Selector Full Scaffold
 # ------------------------------------------------------
 # Creates all folders + empty files ready for code paste.
