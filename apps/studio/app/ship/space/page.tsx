@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { MODULES } from '../../../src/caia/modules-map'
 
+export const dynamic = 'force-static'
+
 function corePath(layer: 'home' | 'work' | 'business') {
   const m = MODULES[layer].find((x: any) => x.id.endsWith('.core'))
   return m?.path ?? (`/ship/${layer}`)
