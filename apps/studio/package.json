@@ -25,6 +25,7 @@
     "@corae/caia-core": "workspace:*",
   "@corae/core-ascend": "workspace:*",
     "@corae/want-engine": "workspace:*",
+    "@corae/home": "workspace:*",
     "@corae/cims-core": "workspace:*",
     "@corae/memory-core": "workspace:*",
     "@corae/ui": "workspace:*",
