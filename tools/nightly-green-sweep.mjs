@@ -1,193 +1,14 @@
 #!/usr/bin/env node
-import fs from 'fs';
-import path from 'path';
-import { spawnSync } from 'child_process';
-
-const root = process.cwd();
-const ruleFile = path.join(root, '.corae', 'caia.rule.build.json');
-
-function readRules() {
-  if (!fs.existsSync(ruleFile)) return {};
-  try {
-    const raw = fs.readFileSync(ruleFile, 'utf8');
-    return raw ? JSON.parse(raw) : {};
-  } catch (e) {
-    console.error('Failed to read rule file:', e && e.message ? e.message : e);
-    return {};
-  }
-}
-
-function runCmd(cmd, opts = {}) {
-  console.log('> ' + cmd);
-  const res = spawnSync(cmd, { shell: true, stdio: 'inherit', cwd: opts.cwd || root, env: process.env });
-  if (res.error) {
-    console.error('Command failed to start:', res.error.message || res.error);
-    return { code: 1 };
-  }
-  return { code: res.status === null ? 1 : res.status };
-}
-
-async function main() {
-  const rules = readRules();
-  const actions = (rules.actions && (rules.actions.nightly || rules.actions.sweep)) || [];
-  if (!actions.length) {
-    console.log('No nightly actions configured (actions.nightly or actions.sweep is empty). Nothing to do.');
-    process.exit(0);
-  }
-
-  for (const cmd of actions) {
-    const r = runCmd(cmd);
-    if (r.code !== 0) {
-      console.error(`Nightly command failed (exit ${r.code}): ${cmd}`);
-      process.exit(r.code || 1);
-    }
-  }
-
-  console.log('Nightly sweep completed successfully.');
-    const moduleResult = await runModuleChecks();
-    if (!moduleResult.ok) {
-      console.error('Nightly module map check failed.');
-      process.exit(2);
-    }
-    console.log('✓ NIGHTLY GREEN SWEEP OK');
-    process.exit(0);
-}
-
-  // Now run module map checks if available
-  async function runModuleChecks() {
-    const modAdapterPath = path.join(repoRoot, 'tools', 'caia-modules.mjs');
-    let loadModules = null;
-    try {
-      const url = 'file://' + modAdapterPath.replace(/\\/g, '/');
-      const mod = await import(url);
-      loadModules = mod.loadModules ?? (mod.default && mod.default.loadModules);
-    } catch (e) {
-      console.warn('Module map adapter not found or failed to import:', e && e.message ? e.message : e);
-    }
-
-    if (!loadModules) {
-      console.log('No module map adapter available; skipping module checks.');
-      return { ok: true, missing: [], extra: [] };
-    }
-
-    let modules;
-    try {
-      modules = await loadModules();
-    } catch (e) {
-      console.error('Failed to load module map:', e && e.message ? e.message : e);
-      return { ok: false, missing: ['__module_map_unreadable__'], extra: [] };
-    }
-
-    const groupsToCheck = {
-      homeCore: '/ship/home/core',
-      workCore: '/ship/work/core',
-      businessCore: '/ship/business/core',
-      businessFront: '/ship/business/front',
-    };
-
-    const missing = [];
-    const extra = [];
-
-    for (const [key, prefix] of Object.entries(groupsToCheck)) {
-      const entries = modules[key] || [];
-      // expected set
-      const expected = new Set(entries.map((e) => String(e.path).replace(/\/$/, '')));
-
-      // actual on-disk paths under apps/studio/app + prefix
-      const rel = prefix.replace(/^\//, '');
-      const folder = path.join(repoRoot, 'apps', 'studio', 'app', rel);
-      let actualNames = [];
-      try {
-        const items = await fs.readdir(folder, { withFileTypes: true });
-        for (const it of items) {
-          if (!it.isDirectory()) continue;
-          const pageFile = path.join(folder, it.name, 'page.tsx');
-          try {
-            await fs.access(pageFile);
-            actualNames.push(`/${rel}/${it.name}`);
-          } catch {
-            // no page.tsx — ignore
-          }
-        }
-      } catch (e) {
-        // folder may not exist
-      }
-
-      const actualSet = new Set(actualNames.map((p) => p.replace(/\\/g, '/')));
-
-      // missing: in expected but not in actualSet
-      for (const exp of expected) {
-        const p = exp.replace(/\\/g, '/');
-        // normalize to leading slash for comparison
-        const norm = p.startsWith('/') ? p : '/' + p;
-        // Map norm like '/ship/home/core/faith' -> '/ship/home/core/faith'
-        if (!actualSet.has(norm)) missing.push({ group: key, path: norm });
-      }
-
-      // extra: in actualSet but not in expected
-      for (const act of actualSet) {
-        const normalized = act.replace(/\\/g, '/');
-        if (!expected.has(normalized)) extra.push({ group: key, path: normalized });
-      }
-    }
-
-    const ok = missing.length === 0;
-
-    // write summary to logs
-    try {
-      const outDir = path.join(repoRoot, 'logs', 'nightly');
-      await fs.mkdir(outDir, { recursive: true });
-      const outPath = path.join(outDir, `module-check-${Date.now()}.json`);
-      const summary = { ok, missing, extra, timestamp: new Date().toISOString() };
-      await fs.writeFile(outPath, JSON.stringify(summary, null, 2), 'utf8');
-      console.log('Module check summary written to', outPath);
-    } catch (e) {
-      console.warn('Failed to write nightly log:', e && e.message ? e.message : e);
-    }
-
-    if (!ok) {
-      console.error('Modules: missing', missing.map((m) => m.path).join(', '));
-      console.error('Modules: extra', extra.map((m) => m.path).join(', '));
-    } else {
-      console.log('Modules: OK');
-    }
-
-    return { ok, missing, extra };
-  }
-main();
-#!/usr/bin/env node
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import fs from 'fs/promises';
+import fsSync from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const execP = promisify(exec);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-function findRepoRoot(start) {
-  let cur = path.resolve(start);
-  const root = path.parse(cur).root;
-  while (true) {
-    const candidate = path.join(cur, '.corae', 'caia.rule.build.json');
-    try {
-      // use synchronous stat check via promises with try/catch
-      // but keep it simple: try to read
-      // If file exists, return cur
-      // We won't throw here; just check via fs.access
-      // (using promises)
-      // We'll do this outside the loop to avoid top-level await issues
-    } catch (e) {
-      // ignored
-    }
-    if (cur === root) break;
-    cur = path.dirname(cur);
-  }
-  return null;
-}
-
-// Walk upwards to find folder containing .corae/caia.rule.build.json
-// Try multiple starting points (script location and process.cwd()) to avoid duplicated or nested paths
 async function resolveRepoRoot() {
   const starts = [path.resolve(__dirname, '..'), process.cwd()];
   const root = path.parse(starts[0]).root;
@@ -240,6 +61,7 @@ try {
   }
   console.warn('CAIA Dev Gate reported issues; continuing nightly in calm autopilot mode.');
 }
+
 let ruleText;
 try {
   ruleText = await fs.readFile(rulePath, 'utf8');
@@ -287,6 +109,113 @@ for (let i = 0; i < cmds.length; i++) {
     console.error(`Exit code: ${code}`);
     process.exit(code);
   }
+}
+
+// Module map checks
+async function runModuleChecks() {
+  const modAdapterPath = path.join(repoRoot, 'tools', 'caia-modules.mjs');
+  let loadModules = null;
+  try {
+    const url = 'file://' + modAdapterPath.replace(/\\/g, '/');
+    const mod = await import(url);
+    loadModules = mod.loadModules ?? (mod.default && mod.default.loadModules);
+  } catch (e) {
+    console.warn('Module map adapter not found or failed to import:', e && e.message ? e.message : e);
+  }
+
+  if (!loadModules) {
+    console.log('No module map adapter available; skipping module checks.');
+    return { ok: true, missing: [], extra: [] };
+  }
+
+  let modules;
+  try {
+    modules = await loadModules();
+  } catch (e) {
+    console.error('Failed to load module map:', e && e.message ? e.message : e);
+    return { ok: false, missing: ['__module_map_unreadable__'], extra: [] };
+  }
+
+  const groupsToCheck = {
+    homeCore: '/ship/home/core',
+    workCore: '/ship/work/core',
+    businessCore: '/ship/business/core',
+    businessFront: '/ship/business/front',
+  };
+
+  const missing = [];
+  const extra = [];
+
+  for (const [key, prefix] of Object.entries(groupsToCheck)) {
+    const entries = modules[key] || [];
+    // expected set
+    const expected = new Set(entries.map((e) => String(e.path).replace(/\/$/, '')));
+
+    // actual on-disk paths under apps/studio/app + prefix
+    const rel = prefix.replace(/^\//, '');
+    const folder = path.join(repoRoot, 'apps', 'studio', 'app', rel);
+    let actualNames = [];
+    try {
+      const items = await fs.readdir(folder, { withFileTypes: true });
+      for (const it of items) {
+        if (!it.isDirectory()) continue;
+        const pageFile = path.join(folder, it.name, 'page.tsx');
+        try {
+          await fs.access(pageFile);
+          actualNames.push(`/${rel}/${it.name}`);
+        } catch {
+          // no page.tsx — ignore
+        }
+      }
+    } catch (e) {
+      // folder may not exist
+    }
+
+    const actualSet = new Set(actualNames.map((p) => p.replace(/\\/g, '/')));
+
+    // missing: in expected but not in actualSet
+    for (const exp of expected) {
+      const p = exp.replace(/\\/g, '/');
+      // normalize to leading slash for comparison
+      const norm = p.startsWith('/') ? p : '/' + p;
+      if (!actualSet.has(norm)) missing.push({ group: key, path: norm });
+    }
+
+    // extra: in actualSet but not in expected
+    for (const act of actualSet) {
+      const normalized = act.replace(/\\/g, '/');
+      if (!expected.has(normalized)) extra.push({ group: key, path: normalized });
+    }
+  }
+
+  const ok = missing.length === 0;
+
+  // write summary to logs
+  try {
+    const outDir = path.join(repoRoot, 'logs', 'nightly');
+    await fs.mkdir(outDir, { recursive: true });
+    const outPath = path.join(outDir, `module-check-${Date.now()}.json`);
+    const summary = { ok, missing, extra, timestamp: new Date().toISOString() };
+    await fs.writeFile(outPath, JSON.stringify(summary, null, 2), 'utf8');
+    console.log('Module check summary written to', outPath);
+  } catch (e) {
+    console.warn('Failed to write nightly log:', e && e.message ? e.message : e);
+  }
+
+  if (!ok) {
+    console.error('Modules: missing', missing.map((m) => m.path).join(', '));
+    console.error('Modules: extra', extra.map((m) => m.path).join(', '));
+  } else {
+    console.log('Modules: OK');
+  }
+
+  return { ok, missing, extra };
+}
+
+const moduleResult = await runModuleChecks();
+if (!moduleResult.ok) {
+  console.error('Nightly module map check failed.');
+  process.exit(2);
 }
 
 console.log('✓ NIGHTLY GREEN SWEEP OK');
