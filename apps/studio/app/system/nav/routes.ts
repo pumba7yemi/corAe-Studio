@@ -31,8 +31,8 @@ export const ROUTES = {
   obariInvoicing: "/obari/invoices",
   // corAe Space landing + shortcuts
   space: "/ship/space",
-  spaceStudio: "/studio",
-  spaceShip: "/ship",
-  spaceShipped: "/ship/shipped",
-  spaceDockyard: "/ship/dev/health",
+  spaceStudio: "/ship/space/studio",
+  spaceShip: "/ship/space/ship",
+  spaceShipped: "/ship/space/shipped",
+  spaceDockyard: "/ship/space/dockyard",
 } as const;
