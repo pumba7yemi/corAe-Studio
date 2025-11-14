@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+  schedule:
+    - cron: '0 4 * * *' # daily at 04:00 UTC
+
+jobs:
+  verify:
+    name: Verify (typecheck + studio build)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+
+      - name: Install
+        run: pnpm -w install --frozen-lockfile
+
+      - name: Run TypeScript build (noEmit)
+        run: pnpm -w exec tsc -b --noEmit
+
+      - name: Build @corae/studio
+        run: pnpm --filter @corae/studio build
+
+  nightly:
+    name: Nightly module checks
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+
+      - name: Install
+        run: pnpm -w install --frozen-lockfile
+
+      - name: Run TypeScript build (noEmit)
+        run: pnpm -w exec tsc -b --noEmit
+
+      - name: Build @corae/studio
+        run: pnpm --filter @corae/studio build
+
+      - name: Run module-map checks
+        run: node tools/nightly-green-sweep.mjs
+
+      - name: Upload nightly logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-logs
+          path: logs/nightly/*.json
