@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getIcon } from "../registry";
-import { ROUTES } from "../routes";
+import { ROUTES, ROUTE_META } from "../routes";
 
 export default function SideBar() {
   const pathname = usePathname();
@@ -10,15 +10,15 @@ export default function SideBar() {
   const sections = [
     {
       title: "Home / Work / Business",
-      items: [ROUTES.home, ROUTES.work, ROUTES.business],
+      items: ["home", "work", "business"],
     },
     {
       title: "System / Dev",
-      items: [ROUTES.system, ROUTES.dev],
+      items: ["system", "dev"],
     },
     {
       title: "Space",
-      items: [ROUTES.spaceStudio, ROUTES.spaceShip, ROUTES.spaceShipped, ROUTES.spaceDockyard],
+      items: ["spaceStudio", "spaceShip", "spaceShipped", "spaceDockyard"],
     },
   ];
 
@@ -35,13 +35,15 @@ export default function SideBar() {
               {s.title}
             </h2>
             <ul className="space-y-1">
-              {s.items.map((r: any) => {
-                const Icon = getIcon(r.icon);
-                const isActive = !!pathname && (pathname === r.path || (r.path !== "/" && pathname.startsWith(r.path)));
+              {s.items.map((k: any) => {
+                const path = (ROUTES as any)[k];
+                const meta = (ROUTE_META as any)[k];
+                const Icon = getIcon(meta?.icon);
+                const isActive = !!pathname && (pathname === path || (path !== "/" && pathname.startsWith(path)));
                 return (
-                  <li key={r.path}>
+                  <li key={path}>
                     <Link
-                      href={r.path as unknown as any}
+                      href={path as unknown as any}
                       aria-current={isActive ? "page" : undefined}
                       className={[
                         "group flex items-center gap-2 rounded-lg px-2 py-2 text-sm transition",
@@ -51,7 +53,7 @@ export default function SideBar() {
                       ].join(" ")}
                     >
                       {Icon ? <Icon className="h-4 w-4" /> : null}
-                      <span>{r.label}</span>
+                      <span>{meta?.label ?? path}</span>
                     </Link>
                   </li>
                 );

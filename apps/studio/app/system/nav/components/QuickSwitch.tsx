@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
-import { ROUTES } from "../routes";
+import { ROUTES, ROUTE_META } from "../routes";
 
 /**
  * QuickSwitch: small dropdown to jump between key Classic areas.
@@ -26,10 +26,10 @@ export default function QuickSwitch() {
   }, []);
 
   const groups = [
-    { title: "Home & Work", items: [ROUTES.home, ROUTES.work] },
-    { title: "Business & System", items: [ROUTES.business, ROUTES.system] },
-    { title: "Space", items: [ROUTES.spaceStudio, ROUTES.spaceShip, ROUTES.spaceShipped, ROUTES.spaceDockyard] },
-    { title: "Dev & Tools", items: [ROUTES.dev] },
+    { title: "Home & Work", items: ["home", "work"] },
+    { title: "Business & System", items: ["business", "system"] },
+    { title: "Space", items: ["spaceStudio", "spaceShip", "spaceShipped", "spaceDockyard"] },
+    { title: "Dev & Tools", items: ["dev", "dev-atlas"] },
   ];
 
   return (
@@ -49,17 +49,21 @@ export default function QuickSwitch() {
             <div key={g.title} className="mb-2">
               <div className="px-3 text-xs font-semibold text-neutral-500">{g.title}</div>
               <ul className="space-y-1">
-                {g.items.map((r: any) => (
-                  <li key={r.path}>
-                    <Link
-                      href={r.path as any}
-                      onClick={() => setOpen(false)}
-                      className="block rounded-md px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
-                    >
-                      {r.label}
-                    </Link>
-                  </li>
-                ))}
+                {g.items.map((k: any) => {
+                  const path = (ROUTES as any)[k];
+                  const meta = (ROUTE_META as any)[k] ?? { label: k };
+                  return (
+                    <li key={path}>
+                      <Link
+                        href={path as any}
+                        onClick={() => setOpen(false)}
+                        className="block rounded-md px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                      >
+                        {meta.label}
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}

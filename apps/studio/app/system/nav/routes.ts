@@ -7,37 +7,65 @@ import type { LucideIcon } from "lucide-react";
 // Export icon keys (strings) that map to the registry icon set (see registry.ts)
 
 export const ROUTES = {
-  home: { path: "/ship/home", label: "Home", icon: "home" },
-  work: { path: "/ship/work", label: "Work", icon: "workflow" },
-  business: { path: "/ship/business", label: "Business", icon: "store" },
+  home: "/ship/home",
+  work: "/ship/work",
+  business: "/ship/business",
 
-  system: { path: "/system", label: "CAIA / System", icon: "layout-dashboard" },
-  dev: { path: "/ship/dev/overview", label: "Dev", icon: "globe" },
+  system: "/system",
+  dev: "/ship/dev/overview",
 
-  // Space / Ship area
-  ship: { path: "/ship/space", label: "Space", icon: "layout-dashboard" },
-  shipped: { path: "/ship/space/shipped", label: "Shipped", icon: "store" },
-  dockyard: { path: "/ship/space/dockyard", label: "Dockyard", icon: "inbox" },
+  ship: "/ship/space",
+  shipped: "/ship/space/shipped",
+  dockyard: "/ship/space/dockyard",
 
-  // Explicit space children
-  spaceStudio: { path: "/ship/space/studio", label: "Studio", icon: "layout-dashboard" },
-  spaceShip: { path: "/ship/space/ship", label: "Ship", icon: "rocket" },
-  spaceShipped: { path: "/ship/space/shipped", label: "Shipped", icon: "store" },
-  spaceDockyard: { path: "/ship/space/dockyard", label: "Dockyard", icon: "inbox" },
-    // Legacy / additional engine routes (kept to avoid breaking references)
-    pos: { path: "/ship/pos", label: "POS", icon: "credit-card" },
-    finance: { path: "/ship/accounts", label: "Finance", icon: "finance" },
-    cims: { path: "/ship/cims", label: "CIMS", icon: "inbox" },
-    socialContract: { path: "/ship/home/social-contract", label: "Social Contract", icon: "store" },
-    automate: { path: "/ship/automate", label: "Automate", icon: "rocket" },
-    reserve: { path: "/ship/reserve", label: "Reserve", icon: "store" },
-    oms: { path: "/oms", label: "OMS", icon: "layout-dashboard" },
-    obari: { path: "/obari", label: "OBARI", icon: "layout-dashboard" },
-    obariOrders: { path: "/obari/orders", label: "OBARI Orders", icon: "layout-dashboard" },
-    obariBookings: { path: "/obari/bookings", label: "OBARI Bookings", icon: "layout-dashboard" },
-    obariActive: { path: "/obari/active", label: "OBARI Active", icon: "layout-dashboard" },
-    obariReporting: { path: "/obari/report", label: "OBARI Reports", icon: "layout-dashboard" },
-    obariInvoicing: { path: "/obari/invoices", label: "OBARI Invoices", icon: "layout-dashboard" },
-  } as const;
+  spaceStudio: "/ship/space/studio",
+  spaceShip: "/ship/space/ship",
+  spaceShipped: "/ship/space/shipped",
+  spaceDockyard: "/ship/space/dockyard",
+
+  // Legacy / additional engine routes (kept to avoid breaking references)
+  pos: "/ship/pos",
+  finance: "/ship/accounts",
+  cims: "/ship/cims",
+  socialContract: "/ship/home/social-contract",
+  automate: "/ship/automate",
+  reserve: "/ship/reserve",
+  oms: "/oms",
+  obari: "/obari",
+  obariOrders: "/obari/orders",
+  obariBookings: "/obari/bookings",
+  obariActive: "/obari/active",
+  obariReporting: "/obari/report",
+  obariInvoicing: "/obari/invoices",
+} as const;
+
+export const ROUTE_META = {
+  home: { label: "Home", icon: "home" },
+  work: { label: "Work", icon: "workflow" },
+  business: { label: "Business", icon: "store" },
+  system: { label: "CAIA / System", icon: "layout-dashboard" },
+  dev: { label: "Dev", icon: "globe" },
+  ship: { label: "Space", icon: "layout-dashboard" },
+  shipped: { label: "Shipped", icon: "store" },
+  dockyard: { label: "Dockyard", icon: "inbox" },
+  spaceStudio: { label: "Studio", icon: "layout-dashboard" },
+  spaceShip: { label: "Ship", icon: "rocket" },
+  spaceShipped: { label: "Shipped", icon: "store" },
+  spaceDockyard: { label: "Dockyard", icon: "inbox" },
+  pos: { label: "POS", icon: "credit-card" },
+  finance: { label: "Finance", icon: "finance" },
+  cims: { label: "CIMS", icon: "inbox" },
+  socialContract: { label: "Social Contract", icon: "store" },
+  automate: { label: "Automate", icon: "rocket" },
+  reserve: { label: "Reserve", icon: "store" },
+  oms: { label: "OMS", icon: "layout-dashboard" },
+  obari: { label: "OBARI", icon: "layout-dashboard" },
+  obariOrders: { label: "OBARI Orders", icon: "layout-dashboard" },
+  obariBookings: { label: "OBARI Bookings", icon: "layout-dashboard" },
+  obariActive: { label: "OBARI Active", icon: "layout-dashboard" },
+  obariReporting: { label: "OBARI Reports", icon: "layout-dashboard" },
+  obariInvoicing: { label: "OBARI Invoices", icon: "layout-dashboard" },
+} as const;
 
 export type RouteKey = keyof typeof ROUTES;
+export type RouteMetaKey = keyof typeof ROUTE_META;
