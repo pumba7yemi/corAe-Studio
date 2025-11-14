@@ -68,6 +68,8 @@ const CATEGORY_ICON: Record<string, string> = {
   home: "home",
   communications: "inbox",
   automate: "rocket",
+  // corAe Space category (landing with Studio / Ship / Shipped / Dockyard)
+  space: "layout-dashboard",
 };
 
 /* ───── Builders ───── */
@@ -76,6 +78,14 @@ export function buildNav(): NavItem[] {
     { id: "home", label: "Home", path: "/", icon: "home" },
     { id: "corae-space", label: "corAe Space", path: "/ship/space", icon: "layout-dashboard" },
     { id: "dashboard", label: "Dashboard", path: "/dashboard", icon: "layout-dashboard" },
+  ];
+
+  // Explicit corAe Space children for clearer navigation grouping
+  const spaceItems: NavItem[] = [
+    { id: "space-studio", label: "Studio", path: "/studio", category: "space", icon: "layout-dashboard" },
+    { id: "space-ship", label: "Ship", path: "/ship", category: "space", icon: "rocket" },
+    { id: "space-shipped", label: "Shipped", path: "/ship/shipped", category: "space", icon: "store" },
+    { id: "space-dockyard", label: "Dockyard", path: "/ship/dev/health", category: "space", icon: "inbox" },
   ];
 
   const devItems: NavItem[] = [
@@ -94,7 +104,8 @@ export function buildNav(): NavItem[] {
   }));
 
   const seen = new Set<string>();
-  return [...base, ...devItems, ...engines].filter((n) => {
+  // Merge base, explicit space items, dev items, then engines — keep unique by id+path
+  return [...base, ...spaceItems, ...devItems, ...engines].filter((n) => {
     const key = `${n.id}:${n.path}`;
     if (seen.has(key)) return false;
     seen.add(key);
@@ -111,8 +122,10 @@ export function buildNavGroups(): NavGroup[] {
     groups.get(key)!.push(n);
   }
   const order = ["Core", "dev", "work", "finance", "home", "communications", "automate", "marketplace", "engines"];
+  // place `space` just after Core for visibility
+  const enhancedOrder = ["Core", "space", ...order.filter((o) => o !== "Core")];
   const sorted: NavGroup[] = [];
-  for (const key of order) if (groups.has(key)) sorted.push({ title: cap(key), items: groups.get(key)! });
+  for (const key of enhancedOrder) if (groups.has(key)) sorted.push({ title: cap(key), items: groups.get(key)! });
   for (const [k, v] of groups) if (!order.includes(k)) sorted.push({ title: cap(k), items: v });
   return sorted;
 }
