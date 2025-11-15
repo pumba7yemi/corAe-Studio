@@ -39,7 +39,8 @@
     "ship:smoke": "pnpm caia:preflight && pnpm --filter @corae/studio build",
     "ship:start-dev-and-smoke": "pnpm --filter @corae/studio dev & pnpm ship:smoke",
     "dev:ship": "pnpm --filter @corae/studio dev",
-    "check": "pnpm -w exec tsc -b --noEmit && pnpm --filter @corae/studio build"
+    "check": "pnpm -w exec tsc -b --noEmit && pnpm --filter @corae/studio build",
+    "build:guard": "node ./scripts/build-guardian.mts"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.16",

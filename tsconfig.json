@@ -91,6 +91,7 @@
     "build/**/*",
     "services/**/*",
     "types/**/*.d.ts",
+    "packages/types",
     "**/*.d.ts",
     "prisma.config.ts",
     "next-env.d.ts",
