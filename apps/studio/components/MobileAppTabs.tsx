@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { House, ShoppingCart } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
@@ -54,7 +53,7 @@ export default function MobileAppTabs() {
     <nav
       role="navigation"
       aria-label="corAe App Tabs"
-      className="fixed inset-x-0 bottom-0 z-50 border-t bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:bg-neutral-950/80 dark:border-neutral-800"
+      className="fixed inset-x-0 bottom-0 z-50 border-t bg-white/90 backdrop-blur supports-backdrop-filter:bg-white/60 dark:bg-neutral-950/80 dark:border-neutral-800"
       style={{ paddingBottom: "max(env(safe-area-inset-bottom), 0px)" }}
     >
       <ul className="mx-auto grid max-w-md grid-cols-4 gap-1 px-2 py-2">
@@ -63,8 +62,8 @@ export default function MobileAppTabs() {
 
           return (
             <li key={href}>
-              <Link
-                href={href as any}
+              <a
+                href={href}
                 data-testid={testId}
                 aria-label={label}
                 className={[
@@ -76,7 +75,7 @@ export default function MobileAppTabs() {
               >
                 <Icon className={["h-5 w-5", active ? "scale-110" : "opacity-80 group-hover:opacity-100"].join(" ")} />
                 <span className="mt-1 leading-none">{label}</span>
-              </Link>
+              </a>
             </li>
           );
         })}
@@ -97,13 +96,13 @@ export default function MobileAppTabs() {
               <ul className="space-y-1">
                 {overflowItems.map((it) => (
                   <li key={it.href}>
-                    <Link
-                      href={it.href as any}
+                    <a
+                      href={it.href}
                       onClick={() => setMoreOpen(false)}
                       className="block rounded-md px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
                     >
                       {it.label}
-                    </Link>
+                    </a>
                   </li>
                 ))}
               </ul>

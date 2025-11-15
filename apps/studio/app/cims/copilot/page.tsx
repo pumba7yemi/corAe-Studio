@@ -34,7 +34,7 @@ export default async function CopilotPanelPage() {
     <div className="p-6 space-y-6">
       <div className="text-2xl font-semibold">Copilot — Orchestrator</div>
 
-      <form action={runOnceAction}>
+      <form action="">
         <button
           className="px-4 py-2 rounded-2xl border text-sm hover:opacity-90"
           title="Run the next queued job once"

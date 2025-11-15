@@ -15,7 +15,7 @@ export default async function Page() {
       <section>
         <h2>Home Core</h2>
         <ul>
-          {home.map((m) => (
+          {home.map((m: any) => (
             <li key={m.id}><Link href={m.path}>{m.label} — {m.path}</Link></li>
           ))}
         </ul>
@@ -23,7 +23,7 @@ export default async function Page() {
       <section>
         <h2>Work Core</h2>
         <ul>
-          {work.map((m) => (
+          {work.map((m: any) => (
             <li key={m.id}><Link href={m.path}>{m.label} — {m.path}</Link></li>
           ))}
         </ul>
@@ -31,7 +31,7 @@ export default async function Page() {
       <section>
         <h2>Business Core</h2>
         <ul>
-          {bizCore.map((m) => (
+          {bizCore.map((m: any) => (
             <li key={m.id}><Link href={m.path}>{m.label} — {m.path}</Link></li>
           ))}
         </ul>
@@ -39,7 +39,7 @@ export default async function Page() {
       <section>
         <h2>Business Front</h2>
         <ul>
-          {bizFront.map((m) => (
+          {bizFront.map((m: any) => (
             <li key={m.id}><Link href={m.path}>{m.label} — {m.path}</Link></li>
           ))}
         </ul>

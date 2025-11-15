@@ -209,7 +209,7 @@ export default function Header() {
             trigger={
               <span className="text-sm font-semibold text-gray-300 hover:text-blue-300">
                 {"cor"}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-emerald-400 to-sky-500 font-bold">
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-sky-400 via-emerald-400 to-sky-500 font-bold">
                   {"A"}
                 </span>
                 {"e"}

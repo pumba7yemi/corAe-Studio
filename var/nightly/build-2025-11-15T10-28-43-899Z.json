@@ -1,0 +1,7 @@
+{
+  "startedAt": "2025-11-15T10:28:43.899Z",
+  "finishedAt": "2025-11-15T10:28:53.534Z",
+  "success": true,
+  "command": "pnpm -w exec tsc -b --noEmit",
+  "output": ""
+}

@@ -2,6 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "skipLibCheck": true,
+    "types": ["node"],
     "paths": {
       "@corae/want-engine": ["../../packages/want-engine/src"],
       "@corae/want-engine/*": ["../../packages/want-engine/src/*"],
@@ -19,7 +21,7 @@
   "@/build": ["../../build"]
     }
   },
-  "include": ["app/**/*", "src/**/*", "components/**/*", "next-env.d.ts", ".next/types/**/*.ts"],
+  "include": ["app/**/*", "src/**/*", "components/**/*", "next-env.d.ts", ".next/types/**/*.ts", "types/**/*.d.ts"],
   "exclude": [
     "node_modules",
     "dist",

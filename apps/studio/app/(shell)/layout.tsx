@@ -27,7 +27,7 @@ const HealthStrip = function HealthStrip() {
 /* Local lightweight stub for ShellNav to avoid missing-module errors in this nested layout. */
 const ShellNav: React.FC = () => {
   return (
-    <nav aria-label="Shell navigation" className="w-64 flex-shrink-0">
+    <nav aria-label="Shell navigation" className="w-64 shrink-0">
       <div
         aria-hidden
         className="h-full px-2 py-4 bg-white/50 dark:bg-neutral-900/30 rounded"

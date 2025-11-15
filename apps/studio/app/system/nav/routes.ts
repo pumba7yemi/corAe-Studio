@@ -27,6 +27,7 @@ export const ROUTES = {
   pos: "/ship/pos",
   finance: "/ship/accounts",
   cims: "/ship/cims",
+  ascend: "/ascend",
   socialContract: "/ship/home/social-contract",
   automate: "/ship/automate",
   reserve: "/ship/reserve",
@@ -65,6 +66,7 @@ export const ROUTE_META = {
   obariActive: { label: "OBARI Active", icon: "layout-dashboard" },
   obariReporting: { label: "OBARI Reports", icon: "layout-dashboard" },
   obariInvoicing: { label: "OBARI Invoices", icon: "layout-dashboard" },
+  ascend: { label: "Ascend", icon: "layout-dashboard" },
 } as const;
 
 export type RouteKey = keyof typeof ROUTES;
