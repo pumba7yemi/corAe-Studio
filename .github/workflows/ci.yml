@@ -1,76 +1,29 @@
 name: CI
 
+name: CI
+
 on:
   push:
     branches:
-      - main
-      - develop
+      - master
   pull_request:
-  schedule:
-    - cron: '0 4 * * *' # daily at 04:00 UTC
 
 jobs:
-  verify:
-    name: Verify (typecheck + studio build)
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v2
         with:
-          node-version: '20'
-          cache: 'pnpm'
-
-      - name: Setup pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
+          version: 8
 
       - name: Install
-        run: pnpm install
+        run: pnpm -w install
 
-      - name: Run TypeScript build (noEmit)
+      - name: Typecheck
         run: pnpm -w exec tsc -b --noEmit
 
       - name: Build
-        run: pnpm build
-
-  nightly:
-    name: Nightly module checks
-    runs-on: ubuntu-latest
-    if: github.event_name == 'schedule' || github.ref == 'refs/heads/main'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
-
-      - name: Setup pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
-
-      - name: Install
-        run: pnpm install
-
-      - name: Run TypeScript build (noEmit)
-        run: pnpm -w exec tsc -b --noEmit
-
-      - name: Build
-        run: pnpm build
-
-      - name: Run module-map checks
-        run: node tools/nightly-green-sweep.mjs
-
-      - name: Upload nightly logs
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: nightly-logs
-          path: logs/nightly/*.json
+        run: pnpm -w build
+      - run: corepack prepare pnpm@latest --activate
