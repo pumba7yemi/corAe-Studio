@@ -1,0 +1,13 @@
+Hi {{CONTACT}}, I’m David from corAe.
+
+We help {{SECTOR}} firms move from email-and-task friction to AI-run, director-led operations in 30–90 days.
+
+Why this might matter for {{COMPANY}}:
+• Sector-common challenges: tasks across email, manual renewals/maintenance, delayed reporting
+• corAe automates routine work (maintenance triage, tenant replies, renewals, docs)
+• Pulse dashboard gives directors live KPIs at a glance
+
+Built on real business experience, realized with contained AI.
+Open to a 10-minute intro this week?
+
+— David

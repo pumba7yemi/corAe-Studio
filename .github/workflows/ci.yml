@@ -29,13 +29,13 @@ jobs:
           corepack prepare pnpm@latest --activate
 
       - name: Install
-        run: pnpm -w install --frozen-lockfile
+        run: pnpm install
 
       - name: Run TypeScript build (noEmit)
         run: pnpm -w exec tsc -b --noEmit
 
-      - name: Build @corae/studio
-        run: pnpm --filter @corae/studio build
+      - name: Build
+        run: pnpm build
 
   nightly:
     name: Nightly module checks
@@ -57,13 +57,13 @@ jobs:
           corepack prepare pnpm@latest --activate
 
       - name: Install
-        run: pnpm -w install --frozen-lockfile
+        run: pnpm install
 
       - name: Run TypeScript build (noEmit)
         run: pnpm -w exec tsc -b --noEmit
 
-      - name: Build @corae/studio
-        run: pnpm --filter @corae/studio build
+      - name: Build
+        run: pnpm build
 
       - name: Run module-map checks
         run: node tools/nightly-green-sweep.mjs

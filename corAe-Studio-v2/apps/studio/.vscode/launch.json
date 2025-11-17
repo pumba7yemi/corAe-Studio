@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Studio (Next dev)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/studio",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev"],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Ship (Next dev)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/ship",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev"],
+      "console": "integratedTerminal"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "title": "Examination of Conscience (Sample)",
+  "description": "Minimal assessment used by the Discern stub. Expand as needed.",
+  "questions": [
+    { "id": "q1", "text": "Have I loved God above all things?" },
+    { "id": "q2", "text": "Have I loved my neighbor as myself?" }
+  ]
+}

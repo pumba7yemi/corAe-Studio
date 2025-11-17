@@ -1,0 +1,28 @@
+{
+  "property": {
+    "risks": [
+      "Email-led maintenance triage",
+      "Manual renewals tracking",
+      "Fragmented spreadsheets",
+      "Lagging director visibility"
+    ],
+    "benchmarks": {
+      "hours_reclaimed_pct": [25, 45],
+      "ttr_improvement_pct": [30, 50],
+      "arrears_improvement_pct": [10, 20],
+      "units_per_fte_multiplier": [1.5, 3.0]
+    }
+  },
+  "generic_services": {
+    "risks": [
+      "Inbox as workflow, unclear ownership",
+      "Spreadsheet silos, version drift",
+      "Manual SLAs, follow-ups slip",
+      "Leadership visibility lag"
+    ],
+    "benchmarks": {
+      "hours_reclaimed_pct": [20, 40],
+      "sla_improvement_pct": [15, 35]
+    }
+  }
+}

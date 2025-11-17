@@ -1,0 +1,5 @@
+{
+  "version": "1.0",
+  "price_lock_hours": 72,
+  "min_compete_sources": 3
+}

@@ -1,0 +1,129 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0",
+  "sectors": {
+    "Waste": {
+      "services": {
+        "General Waste": {
+          "oneOff": [
+            { "type": "WTN", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" },
+            { "type": "POD", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" },
+            { "type": "Photo Proof", "category": "OPERATIONAL", "mandatory": false, "requiredFrom": "SUPPLIER" }
+          ],
+          "recurring": [
+            { "type": "Monthly WTN", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" },
+            { "type": "Contract Copy", "category": "COMMERCIAL", "mandatory": true, "requiredFrom": "CLIENT" },
+            { "type": "Insurance Certificate", "category": "COMMERCIAL", "mandatory": true, "requiredFrom": "SUPPLIER" }
+          ],
+          "project": [
+            { "type": "WTN", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" },
+            { "type": "Disposal Ticket", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" },
+            { "type": "RAMS", "category": "OPERATIONAL", "mandatory": false, "requiredFrom": "SUPPLIER" }
+          ],
+          "emergency": [
+            { "type": "WTN", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" },
+            { "type": "POD", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" }
+          ]
+        },
+        "Food Waste": {
+          "oneOff": [
+            { "type": "WTN", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" },
+            { "type": "POD", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" }
+          ],
+          "recurring": [
+            { "type": "Monthly WTN", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" },
+            { "type": "Contract Copy", "category": "COMMERCIAL", "mandatory": true, "requiredFrom": "CLIENT" }
+          ]
+        }
+      }
+    },
+    "Construction": {
+      "services": {
+        "Skip Hire": {
+          "oneOff": [
+            { "type": "Delivery Note", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" },
+            { "type": "Disposal Ticket", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" }
+          ],
+          "project": [
+            { "type": "RAMS", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" },
+            { "type": "Delivery Note", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" },
+            { "type": "POD", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" }
+          ]
+        },
+        "Material Supply": {
+          "oneOff": [
+            { "type": "PO", "category": "COMMERCIAL", "mandatory": true, "requiredFrom": "CLIENT" },
+            { "type": "Delivery Note", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" }
+          ],
+          "recurring": [
+            { "type": "Master PO", "category": "COMMERCIAL", "mandatory": true, "requiredFrom": "CLIENT" },
+            { "type": "Invoice", "category": "COMMERCIAL", "mandatory": true, "requiredFrom": "SUPPLIER" }
+          ]
+        }
+      }
+    },
+    "Hospitality": {
+      "services": {
+        "Kitchen Deep Clean": {
+          "oneOff": [
+            { "type": "Job Sheet", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" },
+            { "type": "Before/After Photos", "category": "OPERATIONAL", "mandatory": false, "requiredFrom": "SUPPLIER" }
+          ],
+          "recurring": [
+            { "type": "Service Logbook", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" },
+            { "type": "Invoice", "category": "COMMERCIAL", "mandatory": true, "requiredFrom": "SUPPLIER" }
+          ]
+        },
+        "Pest Control": {
+          "oneOff": [
+            { "type": "Treatment Report", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" }
+          ],
+          "recurring": [
+            { "type": "Service Report", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" },
+            { "type": "Contract Copy", "category": "COMMERCIAL", "mandatory": true, "requiredFrom": "CLIENT" }
+          ]
+        }
+      }
+    },
+    "Retail": {
+      "services": {
+        "Stock Supply": {
+          "oneOff": [
+            { "type": "PO", "category": "COMMERCIAL", "mandatory": true, "requiredFrom": "CLIENT" },
+            { "type": "Delivery Note", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" }
+          ],
+          "recurring": [
+            { "type": "Master PO", "category": "COMMERCIAL", "mandatory": true, "requiredFrom": "CLIENT" },
+            { "type": "Invoice", "category": "COMMERCIAL", "mandatory": true, "requiredFrom": "SUPPLIER" }
+          ]
+        }
+      }
+    },
+    "Transport": {
+      "services": {
+        "Courier": {
+          "oneOff": [
+            { "type": "POD", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" }
+          ],
+          "recurring": [
+            { "type": "POD", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" },
+            { "type": "Monthly Invoice", "category": "COMMERCIAL", "mandatory": true, "requiredFrom": "SUPPLIER" }
+          ]
+        }
+      }
+    },
+    "Cleaning": {
+      "services": {
+        "General Cleaning": {
+          "oneOff": [
+            { "type": "Job Sheet", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" }
+          ],
+          "recurring": [
+            { "type": "Service Logbook", "category": "OPERATIONAL", "mandatory": true, "requiredFrom": "SUPPLIER" }
+          ]
+        }
+      }
+    }
+  },
+  "module": "Operations"
+}

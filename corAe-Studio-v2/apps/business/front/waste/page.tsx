@@ -1,0 +1,11 @@
+import Link from 'next/link'
+
+export default function Page(){
+  return (
+    <div style={{padding:24}}>
+      <h1>Waste</h1>
+      <p>Front door — Waste / Interlink</p>
+      <p><Link href="/ship/business/front/waste">Open</Link></p>
+    </div>
+  )
+}

@@ -1,0 +1,25 @@
+{
+	"dependencies": {
+		"@prisma/client": "^6.18.0",
+		"date-fns": "^4.1.0",
+		"framer-motion": "^12.23.24",
+		"jotai": "^2.15.1",
+		"pdf-lib": "^1.17.1",
+		"prisma": "^6.18.0",
+		"react": "^19.2.0",
+		"swr": "^2.3.6",
+		"zod": "^4.1.12"
+	},
+	"devDependencies": {
+		"@types/node": "^24.10.0",
+		"@types/react": "^19.2.2",
+		"@types/react-dom": "^19.2.2",
+		"typescript": "^5.9.3",
+		"glob": "^8.1.0",
+		"node-fetch": "^2.6.7"
+	},
+	"scripts": {
+		"check": "node corAe-Studio/scripts/redline-check.mjs",
+		"guard:dev": "node corAe-Studio/scripts/redline-check.mjs --dev"
+	}
+}

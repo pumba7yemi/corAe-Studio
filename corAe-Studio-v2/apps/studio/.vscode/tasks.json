@@ -1,0 +1,9 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "Maintenance: Full", "type": "shell", "command": "node ./scripts/onebuild/maintenance.mjs" },
+    { "label": "Maintenance: Studio Only", "type": "shell", "command": "node ./scripts/onebuild/maintenance.mjs -StudioOnly" },
+    { "label": "Maintenance: Ship Only", "type": "shell", "command": "node ./scripts/onebuild/maintenance.mjs -ShipOnly" },
+    { "label": "Maintenance: Clean Build", "type": "shell", "command": "node ./scripts/onebuild/maintenance.mjs -Clean" }
+  ]
+}

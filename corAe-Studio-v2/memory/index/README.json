@@ -1,0 +1,12 @@
+{
+  "docs": [
+    {
+      "id": "oms",
+      "file": "memory/docs/OMS.md"
+    },
+    {
+      "id": "obari",
+      "file": "memory/docs/OBARI.md"
+    }
+  ]
+}

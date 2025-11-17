@@ -1,0 +1,12 @@
+/* apps/shipyard/app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* tiny design tokens for Shipyard */
+@layer components {
+  .card { @apply rounded-2xl border bg-white p-4 shadow-card; }
+  .btn  { @apply inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-sm; }
+  .btn.primary { @apply border-transparent bg-brand-600 text-white hover:bg-brand-700; }
+  .subtitle { @apply text-sm text-slate-600; }
+}
