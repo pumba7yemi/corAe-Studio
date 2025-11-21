@@ -1,16 +1,4 @@
 {
-  "name": "corae-studio-railway",
-  "private": true,
-  "scripts": {
-    "postinstall": "cd corAe-Studio-v2 && pnpm install",
-    "build": "cd corAe-Studio-v2/apps/studio && pnpm build",
-    "start": "cd corAe-Studio-v2/apps/studio && pnpm start"
-  },
-  "engines": {
-    "node": ">=20"
-  }
-}
-{
   "name": "corae-studio",
   "private": true,
   "packageManager": "pnpm@10.15.0",

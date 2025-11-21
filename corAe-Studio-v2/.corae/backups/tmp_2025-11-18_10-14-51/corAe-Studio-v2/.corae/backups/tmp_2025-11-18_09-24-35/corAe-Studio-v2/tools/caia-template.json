@@ -1,0 +1,10 @@
+{
+  "templateVersion": "1.0",
+  "entries": [
+    { "id": "daily.routine", "prompt": "Guide me through my daily routine for this sphere." },
+    { "id": "mood.check", "prompt": "How are you feeling today? Record mood and suggestions." },
+    { "id": "health.logic", "prompt": "Run a quick health check relevant for this sphere." },
+    { "id": "soft.sil", "prompt": "Suggest structural improvements (soft SIL guidance)." },
+    { "id": "green.confidence", "prompt": "Note: this suggestion respects Green Confidence and will be verified against 150-logic." }
+  ]
+}

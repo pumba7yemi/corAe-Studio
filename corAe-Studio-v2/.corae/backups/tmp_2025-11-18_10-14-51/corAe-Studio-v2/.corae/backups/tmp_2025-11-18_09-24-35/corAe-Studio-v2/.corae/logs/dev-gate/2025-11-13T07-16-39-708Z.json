@@ -1,0 +1,12 @@
+{
+  "time": "2025-11-13T07:16:39.697Z",
+  "mode": "auto",
+  "rules": {
+    "requireModule": true,
+    "requirePathConfirmation": true,
+    "requireEndArchitectureCheck": true,
+    "requireWipCheck": true,
+    "requireFilelogicCheck": true
+  },
+  "note": "Gate run start"
+}

@@ -1,0 +1,631 @@
+{
+  "status": "AMBER",
+  "score150": 102.68,
+  "lastNightly": {
+    "lastStart": "2025-11-18T17:52:22.362Z",
+    "lastResult": "success",
+    "lastMessage": "Nightly sweep passed"
+  },
+  "cassandra": {
+    "forbiddenCount": 0,
+    "lastPatternId": 1763451245126,
+    "lastUpdated": "2025-11-18T07:34:05.126Z"
+  },
+  "mood": "ATTENTIVE",
+  "moodScore150": 121.61,
+  "sil": {
+    "silMatch": false,
+    "silDomain": null,
+    "silCertainty": 0,
+    "silReason": "No domain match in SIL atlas",
+    "enforced": true,
+    "precedent": "precedent-structure-duplication",
+    "warnsOnDuplicate": true
+  },
+  "build": {
+    "lastKnownGood": {
+      "caia-health": {
+        "status": "AMBER",
+        "score150": 105.83,
+        "lastNightly": {
+          "lastStart": "2025-11-18T17:52:22.362Z",
+          "lastResult": "success",
+          "lastMessage": "Nightly sweep passed"
+        },
+        "cassandra": {
+          "forbiddenCount": 0,
+          "lastPatternId": 1763451245126,
+          "lastUpdated": "2025-11-18T07:34:05.126Z"
+        },
+        "mood": "ATTENTIVE",
+        "moodScore150": 123.5,
+        "sil": {
+          "silMatch": false,
+          "silDomain": null,
+          "silCertainty": 0,
+          "silReason": "No domain match in SIL atlas",
+          "enforced": true,
+          "precedent": "precedent-structure-duplication",
+          "warnsOnDuplicate": true
+        },
+        "build": {
+          "lastKnownGood": {
+            "caia-health": {
+              "status": "AMBER",
+              "score150": 126.49,
+              "lastNightly": {
+                "lastStart": "2025-11-18T05:55:23.424Z",
+                "lastResult": "success",
+                "lastMessage": "Nightly sweep passed"
+              },
+              "cassandra": {
+                "forbiddenCount": 0,
+                "lastPatternId": 1763441062085,
+                "lastUpdated": "2025-11-18T04:44:22.085Z"
+              },
+              "generatedAt": "2025-11-18T05:58:36.454Z"
+            },
+            "caia.atlas": {
+              "version": "1.0.0",
+              "pillars": [
+                {
+                  "id": "obari",
+                  "title": "OBARI Order Lifecycle",
+                  "path": "/ship/business/oms"
+                },
+                {
+                  "id": "3dtd",
+                  "title": "3³DTD Task Engine",
+                  "path": "/ship/common/diary"
+                },
+                {
+                  "id": "filelogic",
+                  "title": "FileLogic Numbered System",
+                  "path": "/ship/business/filelogic"
+                },
+                {
+                  "id": "haveyou",
+                  "title": "Have-You Logic",
+                  "path": "/ship/core/haveyou"
+                },
+                {
+                  "id": "caia",
+                  "title": "Core CAIA Engine",
+                  "path": "/ship/dev/overview"
+                }
+              ]
+            },
+            "caia.dev-governor": {
+              "version": 1,
+              "rules": {
+                "requireModule": true,
+                "requirePathConfirmation": true,
+                "requireEndArchitectureCheck": true,
+                "requireWipCheck": true,
+                "requireFilelogicCheck": true
+              },
+              "messages": {
+                "modulePrompt": "Which corAe module does this belong to? (home, work, business, system, dev)",
+                "pathPrompt": "Confirm the EXACT folder path where this file should live.",
+                "architecturePrompt": "How does this fit the final architecture (CAIA → Story → Atlas → 3³DTD → FileLogic → OBARI)?",
+                "fileLogicPrompt": "Confirm this folder code+title matches FileLogic rules.",
+                "wipPrompt": "WIP=1 — what change is currently in flight?",
+                "confPrompt": "Are you sure you want Copilot to generate this now? (yes/no)"
+              }
+            },
+            "caia.modules": {
+              "version": "1.0.0",
+              "homeCore": [
+                {
+                  "id": "home-faith",
+                  "label": "Faith",
+                  "path": "/ship/home/core/faith"
+                },
+                {
+                  "id": "home-cleaning",
+                  "label": "Home Cleaning",
+                  "path": "/ship/home/core/cleaning"
+                }
+              ],
+              "workCore": [
+                {
+                  "id": "work-dashboard",
+                  "label": "Work Dashboard",
+                  "path": "/ship/work/core/dashboard"
+                }
+              ],
+              "businessCore": [
+                {
+                  "id": "biz-obari",
+                  "label": "OBARI",
+                  "path": "/ship/business/core/obari"
+                }
+              ],
+              "businessFront": [
+                {
+                  "id": "front-cleaning",
+                  "label": "Cleaning",
+                  "path": "/ship/business/front/cleaning"
+                },
+                {
+                  "id": "front-glam",
+                  "label": "Glam & Glow",
+                  "path": "/ship/business/front/glam"
+                }
+              ]
+            },
+            "caia.patterns": {},
+            "caia.rule.build": {
+              "version": "1.0.0",
+              "enforce": {
+                "noPS1": true,
+                "atlasOnly": true,
+                "noVerticals": true,
+                "wip": 1
+              },
+              "engine": "HaveYouLogic",
+              "rule": "build-constitution",
+              "constraints": {
+                "wip": 1,
+                "singleFileRule": true,
+                "stopOnFirstError": true,
+                "lowercaseFilenames": true,
+                "noDeepImports": true,
+                "runCheckScript": true
+              },
+              "actions": {
+                "before": [
+                  "node tools/caia-dev-gate.mjs",
+                  "pnpm -w exec tsc -b --noEmit",
+                  "pnpm --filter @corae/caia-core build",
+                  "pnpm --filter @corae/bdo-core build",
+                  "pnpm --filter @corae/studio build"
+                ],
+                "nightly": [
+                  "pnpm -w exec tsc -b --noEmit",
+                  "pnpm --filter @corae/caia-core build",
+                  "pnpm --filter @corae/studio build"
+                ],
+                "patternMemory": {
+                  "thresholdAsk": 3,
+                  "thresholdAutoApply": 6,
+                  "thresholdDefault": 20,
+                  "behaviour": "CAIA detects repeated issues (casing, imports, rogue folders, missing exports) and pre-corrects them before proposing fixes."
+                }
+              },
+              "notes": "Repository-level build rules for CAIA tooling: no PowerShell (.ps1) runners, only atlas/dev UI edits, and WIP=1 policy. Tools should surface policyViolations in logs and failing runs when enforcement is enabled.",
+              "createdBy": "copilot",
+              "createdAt": "2025-11-13T00:00:00.000Z"
+            },
+            "cassandra-meta": {
+              "entries": [
+                {
+                  "id": 1763440150532,
+                  "subject": "v2-build",
+                  "summary": "Recorded result: ok. Reason: v2 build succeeded for @corae/life",
+                  "ts": "2025-11-18T04:29:10.532Z"
+                },
+                {
+                  "id": 1763441062085,
+                  "subject": "nightly-sweep",
+                  "summary": "Recorded result: start. Reason: Nightly green sweep starting",
+                  "ts": "2025-11-18T04:44:22.085Z"
+                },
+                {
+                  "id": 1763451245126,
+                  "subject": "v2-build-run",
+                  "summary": "Recorded result: green. Reason: build-verify core checks passed",
+                  "ts": "2025-11-18T07:34:05.126Z"
+                }
+              ]
+            },
+            "forbidden-patterns": {
+              "entries": [
+                {
+                  "id": 1763449990001,
+                  "subject": "manual boost for gate",
+                  "reason": "forbidden: bypass 150-logic",
+                  "ts": "2025-11-18T06:30:00.000Z"
+                },
+                {
+                  "id": 1763449990002,
+                  "subject": "manual verification seed",
+                  "reason": "forbidden: bypass 150-logic",
+                  "ts": "2025-11-18T06:30:01.000Z"
+                },
+                {
+                  "id": 1763449990003,
+                  "subject": "seed and rerun",
+                  "reason": "forbidden: bypass 150-logic",
+                  "ts": "2025-11-18T06:30:02.000Z"
+                },
+                {
+                  "id": 1763449990004,
+                  "subject": "seed decision memory",
+                  "reason": "forbidden: bypass 150-logic",
+                  "ts": "2025-11-18T06:30:03.000Z"
+                },
+                {
+                  "id": 1763449990005,
+                  "subject": "boost the gate",
+                  "reason": "forbidden: bypass 150-logic",
+                  "ts": "2025-11-18T06:30:04.000Z"
+                },
+                {
+                  "id": 1763449990006,
+                  "subject": "bypass gate quietly",
+                  "reason": "forbidden: bypass 150-logic",
+                  "ts": "2025-11-18T06:30:05.000Z"
+                },
+                {
+                  "id": 1763449135208,
+                  "subject": "duplicate surface",
+                  "reason": "SIL forbidden pattern",
+                  "ts": "2025-11-18T06:58:54.409Z"
+                },
+                {
+                  "id": 1763449134826,
+                  "subject": "duplicate app",
+                  "reason": "SIL forbidden pattern",
+                  "ts": "2025-11-18T06:58:54.416Z"
+                },
+                {
+                  "id": 1763449135110,
+                  "subject": "duplicate page",
+                  "reason": "SIL forbidden pattern",
+                  "ts": "2025-11-18T06:58:54.416Z"
+                },
+                {
+                  "id": 1763449134805,
+                  "subject": "create new instead of reuse",
+                  "reason": "SIL forbidden pattern",
+                  "ts": "2025-11-18T06:58:54.416Z"
+                },
+                {
+                  "id": 1763449134520,
+                  "subject": "skip SIL",
+                  "reason": "SIL forbidden pattern",
+                  "ts": "2025-11-18T06:58:54.416Z"
+                },
+                {
+                  "id": 1763449134687,
+                  "subject": "override SIL",
+                  "reason": "SIL forbidden pattern",
+                  "ts": "2025-11-18T06:58:54.416Z"
+                },
+                {
+                  "id": 1763449134905,
+                  "subject": "ignore SIL",
+                  "reason": "SIL forbidden pattern",
+                  "ts": "2025-11-18T06:58:54.416Z"
+                }
+              ]
+            },
+            "last-known-good-build": {
+              "subject": "v2-build-run",
+              "ts": "2025-11-18T17:54:55.625Z",
+              "passRate": 0.5625,
+              "greens": 9,
+              "reds": 7,
+              "score150": 84.38
+            },
+            "reason-constitution": {
+              "entries": [
+                {
+                  "id": "green-confidence-law",
+                  "subject": "green-confidence-law",
+                  "summary": "Recurring green signals define correctness; reds do not wipe out greens.",
+                  "priority": "core",
+                  "addedAt": "2025-11-18T08:06:39.673Z"
+                }
+              ]
+            }
+          }
+        },
+        "timesense": {
+          "hasPlan": false,
+          "date": null,
+          "mode": "normal",
+          "blocks": 0,
+          "aheadOfSchedule": false,
+          "behindSchedule": false,
+          "activeBlock": null,
+          "driftMode": "ok",
+          "minutesBehind": 0
+        },
+        "systemBuilder": {
+          "status": "never-run"
+        },
+        "systemBuilderLife": {
+          "status": "never-run"
+        },
+        "systemBuilderWork": {
+          "status": "never-run"
+        },
+        "laws": {
+          "greenConfidence": true
+        },
+        "generatedAt": "2025-11-18T17:54:55.915Z"
+      },
+      "caia.atlas": {
+        "version": "1.0.0",
+        "pillars": [
+          {
+            "id": "obari",
+            "title": "OBARI Order Lifecycle",
+            "path": "/ship/business/oms"
+          },
+          {
+            "id": "3dtd",
+            "title": "3³DTD Task Engine",
+            "path": "/ship/common/diary"
+          },
+          {
+            "id": "filelogic",
+            "title": "FileLogic Numbered System",
+            "path": "/ship/business/filelogic"
+          },
+          {
+            "id": "haveyou",
+            "title": "Have-You Logic",
+            "path": "/ship/core/haveyou"
+          },
+          {
+            "id": "caia",
+            "title": "Core CAIA Engine",
+            "path": "/ship/dev/overview"
+          }
+        ]
+      },
+      "caia.dev-governor": {
+        "version": 1,
+        "rules": {
+          "requireModule": true,
+          "requirePathConfirmation": true,
+          "requireEndArchitectureCheck": true,
+          "requireWipCheck": true,
+          "requireFilelogicCheck": true
+        },
+        "messages": {
+          "modulePrompt": "Which corAe module does this belong to? (home, work, business, system, dev)",
+          "pathPrompt": "Confirm the EXACT folder path where this file should live.",
+          "architecturePrompt": "How does this fit the final architecture (CAIA → Story → Atlas → 3³DTD → FileLogic → OBARI)?",
+          "fileLogicPrompt": "Confirm this folder code+title matches FileLogic rules.",
+          "wipPrompt": "WIP=1 — what change is currently in flight?",
+          "confPrompt": "Are you sure you want Copilot to generate this now? (yes/no)"
+        }
+      },
+      "caia.modules": {
+        "version": "1.0.0",
+        "homeCore": [
+          {
+            "id": "home-faith",
+            "label": "Faith",
+            "path": "/ship/home/core/faith"
+          },
+          {
+            "id": "home-cleaning",
+            "label": "Home Cleaning",
+            "path": "/ship/home/core/cleaning"
+          }
+        ],
+        "workCore": [
+          {
+            "id": "work-dashboard",
+            "label": "Work Dashboard",
+            "path": "/ship/work/core/dashboard"
+          }
+        ],
+        "businessCore": [
+          {
+            "id": "biz-obari",
+            "label": "OBARI",
+            "path": "/ship/business/core/obari"
+          }
+        ],
+        "businessFront": [
+          {
+            "id": "front-cleaning",
+            "label": "Cleaning",
+            "path": "/ship/business/front/cleaning"
+          },
+          {
+            "id": "front-glam",
+            "label": "Glam & Glow",
+            "path": "/ship/business/front/glam"
+          }
+        ]
+      },
+      "caia.patterns": {},
+      "caia.rule.build": {
+        "version": "1.0.0",
+        "enforce": {
+          "noPS1": true,
+          "atlasOnly": true,
+          "noVerticals": true,
+          "wip": 1
+        },
+        "engine": "HaveYouLogic",
+        "rule": "build-constitution",
+        "constraints": {
+          "wip": 1,
+          "singleFileRule": true,
+          "stopOnFirstError": true,
+          "lowercaseFilenames": true,
+          "noDeepImports": true,
+          "runCheckScript": true
+        },
+        "actions": {
+          "before": [
+            "node tools/caia-dev-gate.mjs",
+            "pnpm -w exec tsc -b --noEmit",
+            "pnpm --filter @corae/caia-core build",
+            "pnpm --filter @corae/bdo-core build",
+            "pnpm --filter @corae/studio build"
+          ],
+          "nightly": [
+            "pnpm -w exec tsc -b --noEmit",
+            "pnpm --filter @corae/caia-core build",
+            "pnpm --filter @corae/studio build"
+          ],
+          "patternMemory": {
+            "thresholdAsk": 3,
+            "thresholdAutoApply": 6,
+            "thresholdDefault": 20,
+            "behaviour": "CAIA detects repeated issues (casing, imports, rogue folders, missing exports) and pre-corrects them before proposing fixes."
+          }
+        },
+        "notes": "Repository-level build rules for CAIA tooling: no PowerShell (.ps1) runners, only atlas/dev UI edits, and WIP=1 policy. Tools should surface policyViolations in logs and failing runs when enforcement is enabled.",
+        "createdBy": "copilot",
+        "createdAt": "2025-11-13T00:00:00.000Z"
+      },
+      "cassandra-meta": {
+        "entries": [
+          {
+            "id": 1763440150532,
+            "subject": "v2-build",
+            "summary": "Recorded result: ok. Reason: v2 build succeeded for @corae/life",
+            "ts": "2025-11-18T04:29:10.532Z"
+          },
+          {
+            "id": 1763441062085,
+            "subject": "nightly-sweep",
+            "summary": "Recorded result: start. Reason: Nightly green sweep starting",
+            "ts": "2025-11-18T04:44:22.085Z"
+          },
+          {
+            "id": 1763451245126,
+            "subject": "v2-build-run",
+            "summary": "Recorded result: green. Reason: build-verify core checks passed",
+            "ts": "2025-11-18T07:34:05.126Z"
+          }
+        ]
+      },
+      "forbidden-patterns": {
+        "entries": [
+          {
+            "id": 1763449990001,
+            "subject": "manual boost for gate",
+            "reason": "forbidden: bypass 150-logic",
+            "ts": "2025-11-18T06:30:00.000Z"
+          },
+          {
+            "id": 1763449990002,
+            "subject": "manual verification seed",
+            "reason": "forbidden: bypass 150-logic",
+            "ts": "2025-11-18T06:30:01.000Z"
+          },
+          {
+            "id": 1763449990003,
+            "subject": "seed and rerun",
+            "reason": "forbidden: bypass 150-logic",
+            "ts": "2025-11-18T06:30:02.000Z"
+          },
+          {
+            "id": 1763449990004,
+            "subject": "seed decision memory",
+            "reason": "forbidden: bypass 150-logic",
+            "ts": "2025-11-18T06:30:03.000Z"
+          },
+          {
+            "id": 1763449990005,
+            "subject": "boost the gate",
+            "reason": "forbidden: bypass 150-logic",
+            "ts": "2025-11-18T06:30:04.000Z"
+          },
+          {
+            "id": 1763449990006,
+            "subject": "bypass gate quietly",
+            "reason": "forbidden: bypass 150-logic",
+            "ts": "2025-11-18T06:30:05.000Z"
+          },
+          {
+            "id": 1763449135208,
+            "subject": "duplicate surface",
+            "reason": "SIL forbidden pattern",
+            "ts": "2025-11-18T06:58:54.409Z"
+          },
+          {
+            "id": 1763449134826,
+            "subject": "duplicate app",
+            "reason": "SIL forbidden pattern",
+            "ts": "2025-11-18T06:58:54.416Z"
+          },
+          {
+            "id": 1763449135110,
+            "subject": "duplicate page",
+            "reason": "SIL forbidden pattern",
+            "ts": "2025-11-18T06:58:54.416Z"
+          },
+          {
+            "id": 1763449134805,
+            "subject": "create new instead of reuse",
+            "reason": "SIL forbidden pattern",
+            "ts": "2025-11-18T06:58:54.416Z"
+          },
+          {
+            "id": 1763449134520,
+            "subject": "skip SIL",
+            "reason": "SIL forbidden pattern",
+            "ts": "2025-11-18T06:58:54.416Z"
+          },
+          {
+            "id": 1763449134687,
+            "subject": "override SIL",
+            "reason": "SIL forbidden pattern",
+            "ts": "2025-11-18T06:58:54.416Z"
+          },
+          {
+            "id": 1763449134905,
+            "subject": "ignore SIL",
+            "reason": "SIL forbidden pattern",
+            "ts": "2025-11-18T06:58:54.416Z"
+          }
+        ]
+      },
+      "last-known-good-build": {
+        "subject": "v2-build-run",
+        "ts": "2025-11-18T20:03:01.180Z",
+        "passRate": 0.6190476190476191,
+        "greens": 13,
+        "reds": 8,
+        "score150": 92.86
+      },
+      "reason-constitution": {
+        "entries": [
+          {
+            "id": "green-confidence-law",
+            "subject": "green-confidence-law",
+            "summary": "Recurring green signals define correctness; reds do not wipe out greens.",
+            "priority": "core",
+            "addedAt": "2025-11-18T08:06:39.673Z"
+          }
+        ]
+      }
+    }
+  },
+  "timesense": {
+    "hasPlan": false,
+    "date": null,
+    "mode": "normal",
+    "blocks": 0,
+    "aheadOfSchedule": false,
+    "behindSchedule": false,
+    "activeBlock": null,
+    "driftMode": "ok",
+    "minutesBehind": 0
+  },
+  "systemBuilder": {
+    "status": "never-run"
+  },
+  "systemBuilderLife": {
+    "status": "never-run"
+  },
+  "systemBuilderWork": {
+    "status": "never-run"
+  },
+  "laws": {
+    "greenConfidence": true
+  },
+  "generatedAt": "2025-11-19T01:57:46.809Z"
+}

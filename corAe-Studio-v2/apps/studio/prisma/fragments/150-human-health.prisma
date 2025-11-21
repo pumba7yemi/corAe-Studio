@@ -1,0 +1,13 @@
+// 150-human-health.prisma
+// Fragment: HumanDailyHealth model for daily health check-ins
+
+model HumanDailyHealth {
+  id        String   @id @default(cuid())
+  userId    String
+  date      DateTime @db.Date
+  score     Int
+  notes     String?
+  createdAt DateTime @default(now())
+
+  @@index([userId, date])
+}

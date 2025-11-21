@@ -1,0 +1,1666 @@
+{
+  "entries": [
+    {
+      "id": 1763405138392,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "fail",
+      "reason": "gate: metrics json parse error",
+      "ts": "2025-11-17T18:45:38.392Z"
+    },
+    {
+      "id": 1763405329571,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "fail",
+      "reason": "gate: blocked (score 0 < 140)",
+      "ts": "2025-11-17T18:48:49.571Z"
+    },
+    {
+      "id": 1763406626811,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "fail",
+      "reason": "gate: blocked (score 0 < 140)",
+      "ts": "2025-11-17T19:10:26.811Z"
+    },
+    {
+      "id": 1763407277634,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 1",
+      "ts": "2025-11-17T19:21:17.634Z"
+    },
+    {
+      "id": 1763407277732,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 2",
+      "ts": "2025-11-17T19:21:17.732Z"
+    },
+    {
+      "id": 1763407277801,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 3",
+      "ts": "2025-11-17T19:21:17.801Z"
+    },
+    {
+      "id": 1763407277868,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 4",
+      "ts": "2025-11-17T19:21:17.868Z"
+    },
+    {
+      "id": 1763407277949,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 5",
+      "ts": "2025-11-17T19:21:17.949Z"
+    },
+    {
+      "id": 1763407278016,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 6",
+      "ts": "2025-11-17T19:21:18.016Z"
+    },
+    {
+      "id": 1763407278083,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 7",
+      "ts": "2025-11-17T19:21:18.083Z"
+    },
+    {
+      "id": 1763407278151,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 8",
+      "ts": "2025-11-17T19:21:18.151Z"
+    },
+    {
+      "id": 1763407278232,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 9",
+      "ts": "2025-11-17T19:21:18.232Z"
+    },
+    {
+      "id": 1763407278299,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 10",
+      "ts": "2025-11-17T19:21:18.299Z"
+    },
+    {
+      "id": 1763407278366,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 11",
+      "ts": "2025-11-17T19:21:18.366Z"
+    },
+    {
+      "id": 1763407278449,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 12",
+      "ts": "2025-11-17T19:21:18.449Z"
+    },
+    {
+      "id": 1763407278516,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 13",
+      "ts": "2025-11-17T19:21:18.516Z"
+    },
+    {
+      "id": 1763407278583,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 14",
+      "ts": "2025-11-17T19:21:18.583Z"
+    },
+    {
+      "id": 1763407278649,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 15",
+      "ts": "2025-11-17T19:21:18.649Z"
+    },
+    {
+      "id": 1763407278718,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 16",
+      "ts": "2025-11-17T19:21:18.718Z"
+    },
+    {
+      "id": 1763407278798,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 17",
+      "ts": "2025-11-17T19:21:18.798Z"
+    },
+    {
+      "id": 1763407278866,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 18",
+      "ts": "2025-11-17T19:21:18.866Z"
+    },
+    {
+      "id": 1763407278933,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 19",
+      "ts": "2025-11-17T19:21:18.933Z"
+    },
+    {
+      "id": 1763407279001,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 20",
+      "ts": "2025-11-17T19:21:19.001Z"
+    },
+    {
+      "id": 1763407279082,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 21",
+      "ts": "2025-11-17T19:21:19.082Z"
+    },
+    {
+      "id": 1763407279149,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 22",
+      "ts": "2025-11-17T19:21:19.149Z"
+    },
+    {
+      "id": 1763407279218,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 23",
+      "ts": "2025-11-17T19:21:19.218Z"
+    },
+    {
+      "id": 1763407279284,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 24",
+      "ts": "2025-11-17T19:21:19.284Z"
+    },
+    {
+      "id": 1763407279352,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 25",
+      "ts": "2025-11-17T19:21:19.352Z"
+    },
+    {
+      "id": 1763407279432,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 26",
+      "ts": "2025-11-17T19:21:19.432Z"
+    },
+    {
+      "id": 1763407279499,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 27",
+      "ts": "2025-11-17T19:21:19.499Z"
+    },
+    {
+      "id": 1763407279568,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 28",
+      "ts": "2025-11-17T19:21:19.568Z"
+    },
+    {
+      "id": 1763407279635,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 29",
+      "ts": "2025-11-17T19:21:19.635Z"
+    },
+    {
+      "id": 1763407279700,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 30",
+      "ts": "2025-11-17T19:21:19.701Z"
+    },
+    {
+      "id": 1763407279782,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 31",
+      "ts": "2025-11-17T19:21:19.782Z"
+    },
+    {
+      "id": 1763407279849,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 32",
+      "ts": "2025-11-17T19:21:19.849Z"
+    },
+    {
+      "id": 1763407279918,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 33",
+      "ts": "2025-11-17T19:21:19.918Z"
+    },
+    {
+      "id": 1763407279984,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 34",
+      "ts": "2025-11-17T19:21:19.984Z"
+    },
+    {
+      "id": 1763407280051,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 35",
+      "ts": "2025-11-17T19:21:20.051Z"
+    },
+    {
+      "id": 1763407280132,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 36",
+      "ts": "2025-11-17T19:21:20.132Z"
+    },
+    {
+      "id": 1763407280201,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 37",
+      "ts": "2025-11-17T19:21:20.201Z"
+    },
+    {
+      "id": 1763407280273,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 38",
+      "ts": "2025-11-17T19:21:20.273Z"
+    },
+    {
+      "id": 1763407280335,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 39",
+      "ts": "2025-11-17T19:21:20.335Z"
+    },
+    {
+      "id": 1763407280401,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 40",
+      "ts": "2025-11-17T19:21:20.401Z"
+    },
+    {
+      "id": 1763407280483,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 41",
+      "ts": "2025-11-17T19:21:20.483Z"
+    },
+    {
+      "id": 1763407280549,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed success 42",
+      "ts": "2025-11-17T19:21:20.549Z"
+    },
+    {
+      "id": 1763407300132,
+      "subject": "build-verify",
+      "actor": "system",
+      "result": "fail",
+      "reason": "Command failed: node tools/ops/check-no-ps1.js",
+      "ts": "2025-11-17T19:21:40.132Z"
+    },
+    {
+      "id": 1763407300215,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "fail",
+      "reason": "Command failed: node tools/ops/check-no-ps1.js",
+      "ts": "2025-11-17T19:21:40.215Z"
+    },
+    {
+      "id": 1763407334932,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "fail",
+      "reason": "gate: blocked (score 136.96 < 140)",
+      "ts": "2025-11-17T19:22:14.932Z"
+    },
+    {
+      "id": 1763407352138,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 1",
+      "ts": "2025-11-17T19:22:32.138Z"
+    },
+    {
+      "id": 1763407352214,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 2",
+      "ts": "2025-11-17T19:22:32.214Z"
+    },
+    {
+      "id": 1763407352281,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 3",
+      "ts": "2025-11-17T19:22:32.281Z"
+    },
+    {
+      "id": 1763407352350,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 4",
+      "ts": "2025-11-17T19:22:32.350Z"
+    },
+    {
+      "id": 1763407352431,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 5",
+      "ts": "2025-11-17T19:22:32.431Z"
+    },
+    {
+      "id": 1763407352498,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 6",
+      "ts": "2025-11-17T19:22:32.498Z"
+    },
+    {
+      "id": 1763407352567,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 7",
+      "ts": "2025-11-17T19:22:32.567Z"
+    },
+    {
+      "id": 1763407352648,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 8",
+      "ts": "2025-11-17T19:22:32.648Z"
+    },
+    {
+      "id": 1763407352731,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 9",
+      "ts": "2025-11-17T19:22:32.731Z"
+    },
+    {
+      "id": 1763407352809,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 10",
+      "ts": "2025-11-17T19:22:32.809Z"
+    },
+    {
+      "id": 1763407352881,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 11",
+      "ts": "2025-11-17T19:22:32.881Z"
+    },
+    {
+      "id": 1763407352948,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 12",
+      "ts": "2025-11-17T19:22:32.948Z"
+    },
+    {
+      "id": 1763407353017,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 13",
+      "ts": "2025-11-17T19:22:33.017Z"
+    },
+    {
+      "id": 1763407353098,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 14",
+      "ts": "2025-11-17T19:22:33.098Z"
+    },
+    {
+      "id": 1763407353165,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 15",
+      "ts": "2025-11-17T19:22:33.165Z"
+    },
+    {
+      "id": 1763407353233,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 16",
+      "ts": "2025-11-17T19:22:33.233Z"
+    },
+    {
+      "id": 1763407353314,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 17",
+      "ts": "2025-11-17T19:22:33.314Z"
+    },
+    {
+      "id": 1763407353381,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 18",
+      "ts": "2025-11-17T19:22:33.381Z"
+    },
+    {
+      "id": 1763407353450,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 19",
+      "ts": "2025-11-17T19:22:33.450Z"
+    },
+    {
+      "id": 1763407353531,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 20",
+      "ts": "2025-11-17T19:22:33.531Z"
+    },
+    {
+      "id": 1763407353598,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 21",
+      "ts": "2025-11-17T19:22:33.598Z"
+    },
+    {
+      "id": 1763407353666,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 22",
+      "ts": "2025-11-17T19:22:33.666Z"
+    },
+    {
+      "id": 1763407353751,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 23",
+      "ts": "2025-11-17T19:22:33.751Z"
+    },
+    {
+      "id": 1763407353830,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 24",
+      "ts": "2025-11-17T19:22:33.830Z"
+    },
+    {
+      "id": 1763407353898,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 25",
+      "ts": "2025-11-17T19:22:33.898Z"
+    },
+    {
+      "id": 1763407353967,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 26",
+      "ts": "2025-11-17T19:22:33.967Z"
+    },
+    {
+      "id": 1763407354048,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 27",
+      "ts": "2025-11-17T19:22:34.048Z"
+    },
+    {
+      "id": 1763407354114,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed2 success 28",
+      "ts": "2025-11-17T19:22:34.114Z"
+    },
+    {
+      "id": 1763407368797,
+      "subject": "build-verify",
+      "actor": "system",
+      "result": "fail",
+      "reason": "Command failed: node tools/ops/check-no-ps1.js",
+      "ts": "2025-11-17T19:22:48.797Z"
+    },
+    {
+      "id": 1763407368865,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "fail",
+      "reason": "Command failed: node tools/ops/check-no-ps1.js",
+      "ts": "2025-11-17T19:22:48.865Z"
+    },
+    {
+      "id": 1763407417030,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "fail",
+      "reason": "gate: blocked (score 138.16 < 140)",
+      "ts": "2025-11-17T19:23:37.030Z"
+    },
+    {
+      "id": 1763407440715,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 1",
+      "ts": "2025-11-17T19:24:00.715Z"
+    },
+    {
+      "id": 1763407440785,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 2",
+      "ts": "2025-11-17T19:24:00.785Z"
+    },
+    {
+      "id": 1763407440863,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 3",
+      "ts": "2025-11-17T19:24:00.863Z"
+    },
+    {
+      "id": 1763407440930,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 4",
+      "ts": "2025-11-17T19:24:00.930Z"
+    },
+    {
+      "id": 1763407440998,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 5",
+      "ts": "2025-11-17T19:24:00.998Z"
+    },
+    {
+      "id": 1763407441080,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 6",
+      "ts": "2025-11-17T19:24:01.080Z"
+    },
+    {
+      "id": 1763407441146,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 7",
+      "ts": "2025-11-17T19:24:01.146Z"
+    },
+    {
+      "id": 1763407441229,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 8",
+      "ts": "2025-11-17T19:24:01.229Z"
+    },
+    {
+      "id": 1763407441296,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 9",
+      "ts": "2025-11-17T19:24:01.296Z"
+    },
+    {
+      "id": 1763407441365,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 10",
+      "ts": "2025-11-17T19:24:01.365Z"
+    },
+    {
+      "id": 1763407441434,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 11",
+      "ts": "2025-11-17T19:24:01.434Z"
+    },
+    {
+      "id": 1763407441512,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 12",
+      "ts": "2025-11-17T19:24:01.512Z"
+    },
+    {
+      "id": 1763407441580,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 13",
+      "ts": "2025-11-17T19:24:01.580Z"
+    },
+    {
+      "id": 1763407441646,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 14",
+      "ts": "2025-11-17T19:24:01.646Z"
+    },
+    {
+      "id": 1763407441734,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 15",
+      "ts": "2025-11-17T19:24:01.734Z"
+    },
+    {
+      "id": 1763407441799,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 16",
+      "ts": "2025-11-17T19:24:01.799Z"
+    },
+    {
+      "id": 1763407441880,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 17",
+      "ts": "2025-11-17T19:24:01.880Z"
+    },
+    {
+      "id": 1763407441948,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 18",
+      "ts": "2025-11-17T19:24:01.948Z"
+    },
+    {
+      "id": 1763407442015,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 19",
+      "ts": "2025-11-17T19:24:02.015Z"
+    },
+    {
+      "id": 1763407442096,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 20",
+      "ts": "2025-11-17T19:24:02.096Z"
+    },
+    {
+      "id": 1763407442165,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 21",
+      "ts": "2025-11-17T19:24:02.165Z"
+    },
+    {
+      "id": 1763407442232,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 22",
+      "ts": "2025-11-17T19:24:02.232Z"
+    },
+    {
+      "id": 1763407442313,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 23",
+      "ts": "2025-11-17T19:24:02.313Z"
+    },
+    {
+      "id": 1763407442380,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 24",
+      "ts": "2025-11-17T19:24:02.380Z"
+    },
+    {
+      "id": 1763407442448,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 25",
+      "ts": "2025-11-17T19:24:02.448Z"
+    },
+    {
+      "id": 1763407442529,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 26",
+      "ts": "2025-11-17T19:24:02.529Z"
+    },
+    {
+      "id": 1763407442596,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 27",
+      "ts": "2025-11-17T19:24:02.596Z"
+    },
+    {
+      "id": 1763407442679,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "seed3 success 28",
+      "ts": "2025-11-17T19:24:02.679Z"
+    },
+    {
+      "id": 1763438498476,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "v2 build succeeded for @corae/life",
+      "ts": "2025-11-18T04:01:38.476Z"
+    },
+    {
+      "id": 1763438588363,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "v2 build succeeded for @corae/life",
+      "ts": "2025-11-18T04:03:08.363Z"
+    },
+    {
+      "id": 1763439704336,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "v2 build succeeded for @corae/life",
+      "ts": "2025-11-18T04:21:44.336Z"
+    },
+    {
+      "id": 1763439765367,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "v2 build succeeded for @corae/life",
+      "ts": "2025-11-18T04:22:45.367Z"
+    },
+    {
+      "id": 1763440150514,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "v2 build succeeded for @corae/life",
+      "ts": "2025-11-18T04:29:10.514Z"
+    },
+    {
+      "id": 1763441062062,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "start",
+      "reason": "Nightly green sweep starting",
+      "ts": "2025-11-18T04:44:22.062Z"
+    },
+    {
+      "id": 1763441062148,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "fail",
+      "reason": "Nightly green sweep failed with exit code 1",
+      "ts": "2025-11-18T04:44:22.148Z"
+    },
+    {
+      "id": 1763441115790,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "v2 build succeeded for @corae/life",
+      "ts": "2025-11-18T04:45:15.790Z"
+    },
+    {
+      "id": 1763441145678,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "start",
+      "reason": "Nightly green sweep starting",
+      "ts": "2025-11-18T04:45:45.678Z"
+    },
+    {
+      "id": 1763441145800,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "fail",
+      "reason": "Nightly green sweep failed with exit code 1",
+      "ts": "2025-11-18T04:45:45.800Z"
+    },
+    {
+      "id": 1763441206386,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "start",
+      "reason": "Nightly green sweep starting",
+      "ts": "2025-11-18T04:46:46.386Z"
+    },
+    {
+      "id": 1763441206519,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "fail",
+      "reason": "Nightly green sweep failed with exit code 1",
+      "ts": "2025-11-18T04:46:46.519Z"
+    },
+    {
+      "id": 1763441322825,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "start",
+      "reason": "Nightly green sweep starting",
+      "ts": "2025-11-18T04:48:42.826Z"
+    },
+    {
+      "id": 1763441322958,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "fail",
+      "reason": "Nightly green sweep failed with exit code 1",
+      "ts": "2025-11-18T04:48:42.958Z"
+    },
+    {
+      "id": 1763441387847,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "start",
+      "reason": "Nightly green sweep starting",
+      "ts": "2025-11-18T04:49:47.847Z"
+    },
+    {
+      "id": 1763441423051,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "v2 build succeeded for @corae/life",
+      "ts": "2025-11-18T04:50:23.051Z"
+    },
+    {
+      "id": 1763441423141,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "success",
+      "reason": "Nightly green sweep passed",
+      "ts": "2025-11-18T04:50:23.141Z"
+    },
+    {
+      "id": 1763443203040,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "start",
+      "reason": "Nightly green sweep started",
+      "ts": "2025-11-18T05:20:03.040Z"
+    },
+    {
+      "id": 1763443241603,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "v2 build succeeded for @corae/life",
+      "ts": "2025-11-18T05:20:41.603Z"
+    },
+    {
+      "id": 1763443241712,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "success",
+      "reason": "Nightly sweep passed",
+      "ts": "2025-11-18T05:20:41.712Z"
+    },
+    {
+      "id": 1763444403300,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "start",
+      "reason": "Nightly green sweep started",
+      "ts": "2025-11-18T05:40:03.300Z"
+    },
+    {
+      "id": 1763444446526,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "v2 build succeeded for @corae/life",
+      "ts": "2025-11-18T05:40:46.526Z"
+    },
+    {
+      "id": 1763444446667,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "success",
+      "reason": "Nightly sweep passed",
+      "ts": "2025-11-18T05:40:46.667Z"
+    },
+    {
+      "id": 1763445011462,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "v2 build succeeded for @corae/life",
+      "ts": "2025-11-18T05:50:11.462Z"
+    },
+    {
+      "id": 1763445323424,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "start",
+      "reason": "Nightly green sweep started",
+      "ts": "2025-11-18T05:55:23.424Z"
+    },
+    {
+      "id": 1763445364980,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "ok",
+      "reason": "v2 build succeeded for @corae/life",
+      "ts": "2025-11-18T05:56:04.980Z"
+    },
+    {
+      "id": 1763445365093,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "success",
+      "reason": "Nightly sweep passed",
+      "ts": "2025-11-18T05:56:05.093Z"
+    },
+    {
+      "id": 1763446214034,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "fail",
+      "reason": "v2 build failed: Command failed: pnpm --filter @corae/life build  ⚠ Invalid next.config.mjs options detected:   ⚠     Unrecognized key(s) in object: 'appDir' at \"experimental\"  ⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config  ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.  We detected multiple lockfiles and selected the directory of C:\\corAe\\pnpm-lock.yaml as the root directory.  To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.    See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.  Detected additional lockfiles:     * C:\\corAe\\corAe-Studio\\corAe-Studio-v2\\pnpm-lock.yaml    * C:\\corAe\\corAe-Studio\\pnpm-lock.yaml   ⨯ ESLint must be installed in order to run during builds: pnpm install --save-dev eslint Failed to compile.  ./app/page.tsx:60:67 Type error: Property 'mood' does not exist on type '{ status?: string; }'.  \u001b[0m \u001b[90m 58 |\u001b[39m             \u001b[33m<\u001b[39m\u001b[33mdiv\u001b[39m className\u001b[33m=\u001b[39m\u001b[32m\"text-xs text-slate-300\"\u001b[39m\u001b[33m>\u001b[39m\u001b[33mCAIA\u001b[39m \u001b[33mHealth\u001b[39m\u001b[33m:\u001b[39m\u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33mdiv\u001b[39m\u001b[33m>\u001b[39m  \u001b[90m 59 |\u001b[39m             \u001b[33m<\u001b[39m\u001b[33mdiv\u001b[39m className\u001b[33m=\u001b[39m\u001b[32m\"text-sm font-semibold\"\u001b[39m\u001b[33m>\u001b[39m{health\u001b[33m.\u001b[39mstatus}\u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33mdiv\u001b[39m\u001b[33m>\u001b[39m \u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 60 |\u001b[39m             \u001b[33m<\u001b[39m\u001b[33mdiv\u001b[39m className\u001b[33m=\u001b[39m\u001b[32m\"text-xs text-slate-400\"\u001b[39m\u001b[33m>\u001b[39m\u001b[33mMood\u001b[39m\u001b[33m:\u001b[39m {health\u001b[33m.\u001b[39mmood}\u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33mdiv\u001b[39m\u001b[33m>\u001b[39m  \u001b[90m    |\u001b[39m                                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m  \u001b[90m 61 |\u001b[39m             \u001b[33m<\u001b[39m\u001b[33mdiv\u001b[39m className\u001b[33m=\u001b[39m\u001b[32m\"text-xs text-slate-400\"\u001b[39m\u001b[33m>\u001b[39m\u001b[33mLast\u001b[39m sweep\u001b[33m:\u001b[39m {\u001b[36mnew\u001b[39m \u001b[33mDate\u001b[39m(health\u001b[33m.\u001b[39mlastNightly\u001b[33m.\u001b[39mlastStart \u001b[33m||\u001b[39m health\u001b[33m.\u001b[39mgeneratedAt)\u001b[33m.\u001b[39mtoLocaleString()}\u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33mdiv\u001b[39m\u001b[33m>\u001b[39m  \u001b[90m 62 |\u001b[39m           \u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33mdiv\u001b[39m\u001b[33m>\u001b[39m  \u001b[90m 63 |\u001b[39m         \u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33mdiv\u001b[39m\u001b[33m>\u001b[39m\u001b[0m Next.js build worker exited with code: 1 and signal: null ",
+      "ts": "2025-11-18T06:10:14.034Z"
+    },
+    {
+      "id": 1763446389907,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "fail",
+      "reason": "gate: blocked (spinning bottle)",
+      "ts": "2025-11-18T06:13:09.907Z"
+    },
+    {
+      "id": 1763446605119,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "fail",
+      "reason": "gate: blocked (spinning bottle)",
+      "ts": "2025-11-18T06:16:45.119Z"
+    },
+    {
+      "id": 1763447330936,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "fail",
+      "reason": "gate: blocked (spinning bottle)",
+      "ts": "2025-11-18T06:28:50.936Z"
+    },
+    {
+      "id": 1763450000000,
+      "subject": "precedent-structure-duplication",
+      "reason": "Before creating new surfaces (pages, routes, components, features), call SIL. If SIL maps the user intent to an existing domain with certainty >= 0.72, reuse the existing surface. Do NOT create duplicates (e.g., want/iwant).",
+      "ts": "PRECEDENT"
+    },
+    {
+      "id": 1763449134509,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "fail",
+      "reason": "gate: blocked (spinning bottle)",
+      "ts": "2025-11-18T06:58:54.509Z"
+    },
+    {
+      "id": 1763449349322,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "fail",
+      "reason": "gate: blocked (spinning bottle)",
+      "ts": "2025-11-18T07:02:29.322Z"
+    },
+    {
+      "id": 1763449449604,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "fail",
+      "reason": "gate: blocked (spinning bottle)",
+      "ts": "2025-11-18T07:04:09.604Z"
+    },
+    {
+      "id": 1763449510419,
+      "subject": "v2-build",
+      "actor": "system",
+      "result": "fail",
+      "reason": "gate: blocked (spinning bottle)",
+      "ts": "2025-11-18T07:05:10.419Z"
+    },
+    {
+      "id": 1763451245104,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-18T07:34:05.104Z"
+    },
+    {
+      "id": 1763453199689,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-18T08:06:39.689Z"
+    },
+    {
+      "id": 1763453887005,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-18T08:18:07.005Z"
+    },
+    {
+      "id": 1763454308572,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-18T08:25:08.572Z"
+    },
+    {
+      "id": 1763454989606,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-18T08:36:29.606Z"
+    },
+    {
+      "id": 1763466625608,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-18T11:50:25.608Z"
+    },
+    {
+      "id": 1763470908874,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "red",
+      "reason": "build-verify core checks failed",
+      "ts": "2025-11-18T13:01:48.874Z"
+    },
+    {
+      "id": 1763471620810,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "red",
+      "reason": "build-verify core checks failed",
+      "ts": "2025-11-18T13:13:40.810Z"
+    },
+    {
+      "id": 1763473798948,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "red",
+      "reason": "build-verify core checks failed",
+      "ts": "2025-11-18T13:49:58.948Z"
+    },
+    {
+      "id": 1763473849059,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "red",
+      "reason": "build-verify core checks failed",
+      "ts": "2025-11-18T13:50:49.059Z"
+    },
+    {
+      "id": 1763473886213,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "red",
+      "reason": "build-verify core checks failed",
+      "ts": "2025-11-18T13:51:26.213Z"
+    },
+    {
+      "id": 1763474311683,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "red",
+      "reason": "build-verify core checks failed",
+      "ts": "2025-11-18T13:58:31.683Z"
+    },
+    {
+      "id": 1763474357351,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "red",
+      "reason": "build-verify core checks failed",
+      "ts": "2025-11-18T13:59:17.351Z"
+    },
+    {
+      "id": 1763486437359,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-18T17:20:37.359Z"
+    },
+    {
+      "id": 1763487316333,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "start",
+      "reason": "Nightly green sweep started",
+      "ts": "2025-11-18T17:35:16.333Z"
+    },
+    {
+      "id": 1763487351055,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-18T17:35:51.055Z"
+    },
+    {
+      "id": 1763487464543,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "success",
+      "reason": "Nightly sweep passed",
+      "ts": "2025-11-18T17:37:44.543Z"
+    },
+    {
+      "id": 1763488342362,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "start",
+      "reason": "Nightly green sweep started",
+      "ts": "2025-11-18T17:52:22.362Z"
+    },
+    {
+      "id": 1763488380215,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-18T17:53:00.215Z"
+    },
+    {
+      "id": 1763488495750,
+      "subject": "nightly-sweep",
+      "actor": "system",
+      "result": "success",
+      "reason": "Nightly sweep passed",
+      "ts": "2025-11-18T17:54:55.750Z"
+    },
+    {
+      "id": 1763489285483,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "red",
+      "reason": "build-verify core checks failed",
+      "ts": "2025-11-18T18:08:05.483Z"
+    },
+    {
+      "id": 1763491186516,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-18T18:39:46.516Z"
+    },
+    {
+      "id": 1763493934917,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-18T19:25:34.917Z"
+    },
+    {
+      "id": 1763494306011,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-18T19:31:46.011Z"
+    },
+    {
+      "id": 1763496049845,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-18T20:00:49.845Z"
+    },
+    {
+      "id": 1763523955940,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-19T03:45:55.940Z"
+    },
+    {
+      "id": 1763525732280,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-19T04:15:32.280Z"
+    },
+    {
+      "id": 1763529536581,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-19T05:18:56.581Z"
+    },
+    {
+      "id": 1763529993829,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-19T05:26:33.829Z"
+    },
+    {
+      "id": 1763530239641,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-19T05:30:39.641Z"
+    },
+    {
+      "id": 1763530748483,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-19T05:39:08.483Z"
+    },
+    {
+      "id": 1763533991872,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-19T06:33:11.872Z"
+    },
+    {
+      "id": 1763536522680,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-19T07:15:22.680Z"
+    },
+    {
+      "id": 1763574865900,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-19T17:54:25.900Z"
+    },
+    {
+      "id": 1763576880600,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-19T18:28:00.600Z"
+    },
+    {
+      "id": 1763599549289,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-20T00:45:49.289Z"
+    },
+    {
+      "id": 1763604849199,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-20T02:14:09.199Z"
+    },
+    {
+      "id": 1763606163496,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-20T02:36:03.496Z"
+    },
+    {
+      "id": 1763613880245,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-20T04:44:40.245Z"
+    },
+    {
+      "id": 1763615460724,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-20T05:11:00.724Z"
+    },
+    {
+      "id": 1763615858070,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-20T05:17:38.071Z"
+    },
+    {
+      "id": 1763617373566,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-20T05:42:53.566Z"
+    },
+    {
+      "id": 1763624988820,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-20T07:49:48.820Z"
+    },
+    {
+      "id": 1763631125712,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-20T09:32:05.712Z"
+    },
+    {
+      "id": 1763631930773,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-20T09:45:30.773Z"
+    },
+    {
+      "id": 1763632709008,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-20T09:58:29.008Z"
+    },
+    {
+      "id": 1763661083596,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-20T17:51:23.596Z"
+    },
+    {
+      "id": 1763661324804,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-20T17:55:24.804Z"
+    },
+    {
+      "id": 1763661505027,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-20T17:58:25.027Z"
+    },
+    {
+      "id": 1763688765049,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-21T01:32:45.049Z"
+    },
+    {
+      "id": 1763691833945,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "red",
+      "reason": "build-verify core checks failed",
+      "ts": "2025-11-21T02:23:53.945Z"
+    },
+    {
+      "id": 1763692458112,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-21T02:34:18.112Z"
+    },
+    {
+      "id": 1763694367310,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "red",
+      "reason": "build-verify core checks failed",
+      "ts": "2025-11-21T03:06:07.310Z"
+    },
+    {
+      "id": 1763694580930,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "red",
+      "reason": "build-verify core checks failed",
+      "ts": "2025-11-21T03:09:40.930Z"
+    },
+    {
+      "id": 1763694775366,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-21T03:12:55.366Z"
+    },
+    {
+      "id": 1763696280995,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-21T03:38:00.995Z"
+    },
+    {
+      "id": 1763696890854,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-21T03:48:10.854Z"
+    },
+    {
+      "id": 1763698295608,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-21T04:11:35.608Z"
+    },
+    {
+      "id": 1763705420758,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-21T06:10:20.758Z"
+    },
+    {
+      "id": 1763710634938,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-21T07:37:14.938Z"
+    },
+    {
+      "id": 1763712613344,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-21T08:10:13.344Z"
+    },
+    {
+      "id": 1763713487076,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-21T08:24:47.076Z"
+    },
+    {
+      "id": 1763713869446,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-21T08:31:09.446Z"
+    },
+    {
+      "id": 1763714569335,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-21T08:42:49.335Z"
+    },
+    {
+      "id": 1763715964780,
+      "subject": "v2-build-run",
+      "actor": "system",
+      "result": "green",
+      "reason": "build-verify core checks passed",
+      "ts": "2025-11-21T09:06:04.780Z"
+    }
+  ]
+}

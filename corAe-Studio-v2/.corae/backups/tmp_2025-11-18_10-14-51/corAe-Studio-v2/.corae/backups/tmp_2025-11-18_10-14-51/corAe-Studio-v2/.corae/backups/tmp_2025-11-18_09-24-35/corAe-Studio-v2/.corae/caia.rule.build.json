@@ -1,0 +1,42 @@
+{
+  "version": "1.0.0",
+  "enforce": {
+    "noPS1": true,
+    "atlasOnly": true,
+    "noVerticals": true,
+    "wip": 1
+  },
+  "engine": "HaveYouLogic",
+  "rule": "build-constitution",
+  "constraints": {
+    "wip": 1,
+    "singleFileRule": true,
+    "stopOnFirstError": true,
+    "lowercaseFilenames": true,
+    "noDeepImports": true,
+    "runCheckScript": true
+  },
+  "actions": {
+    "before": [
+      "node tools/caia-dev-gate.mjs",
+      "pnpm -w exec tsc -b --noEmit",
+      "pnpm --filter @corae/caia-core build",
+      "pnpm --filter @corae/bdo-core build",
+      "pnpm --filter @corae/studio build"
+    ],
+    "nightly": [
+      "pnpm -w exec tsc -b --noEmit",
+      "pnpm --filter @corae/caia-core build",
+      "pnpm --filter @corae/studio build"
+    ],
+    "patternMemory": {
+      "thresholdAsk": 3,
+      "thresholdAutoApply": 6,
+      "thresholdDefault": 20,
+      "behaviour": "CAIA detects repeated issues (casing, imports, rogue folders, missing exports) and pre-corrects them before proposing fixes."
+    }
+  },
+  "notes": "Repository-level build rules for CAIA tooling: no PowerShell (.ps1) runners, only atlas/dev UI edits, and WIP=1 policy. Tools should surface policyViolations in logs and failing runs when enforcement is enabled.",
+  "createdBy": "copilot",
+  "createdAt": "2025-11-13T00:00:00.000Z"
+}

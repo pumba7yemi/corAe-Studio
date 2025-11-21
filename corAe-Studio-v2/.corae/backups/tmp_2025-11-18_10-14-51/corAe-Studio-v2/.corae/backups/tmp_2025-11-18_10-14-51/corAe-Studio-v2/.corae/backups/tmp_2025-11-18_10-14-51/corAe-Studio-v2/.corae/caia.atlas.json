@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "pillars": [
+    { "id": "obari", "title": "OBARI Order Lifecycle", "path": "/ship/business/oms" },
+    { "id": "3dtd", "title": "3³DTD Task Engine", "path": "/ship/common/diary" },
+    { "id": "filelogic", "title": "FileLogic Numbered System", "path": "/ship/business/filelogic" },
+    { "id": "haveyou", "title": "Have-You Logic", "path": "/ship/core/haveyou" },
+    { "id": "caia", "title": "Core CAIA Engine", "path": "/ship/dev/overview" }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2025-11-21T00:00:00Z",
+  "note": "Preliminary map of files matching keywords (home, work, business, oms, obari, finance, hr, management, tasks). This is an automated, read-only snapshot. Review before any copy operations.",
+  "matches": [
+    "c:\\corAe\\corAe-Studio\\apps\\studio\\app\\ship\\page.tsx",
+    "c:\\corAe\\corAe-Studio\\corAe-Studio-v2\\apps\\life\\app\\page.tsx",
+    "c:\\corAe\\corAe-Studio\\corAe-Studio-v2\\apps\\life\\app\\home-os\\page.tsx",
+    "c:\\CorAe\\corAe-Studio\\corAe-Studio-v2\\apps\\studio\\app\\core\\timesense\\matrix.ts",
+    "c:\\CorAe\\corAe-Studio\\corAe-Studio-v2\\apps\\studio\\app\\core\\timesense\\engine.ts",
+    "c:\\CorAe\\corAe-Studio\\corAe-Studio-v2\\apps\\studio\\app\\core\\timesense\\correction.ts",
+    "c:\\CorAe\\corAe-Studio\\corAe-Studio-v2\\apps\\studio\\app\\corae-ship\\page.tsx",
+    "c:\\corAe\\backup-core.mjs",
+    "c:\\corAe\\COPILOT_BUILD_FIRST.md",
+    "c:\\corAe\\corAe-Studio\\apps\\home\\page.tsx",
+    "c:\\corAe\\corAe-Studio\\apps\\work\\page.tsx",
+    "c:\\corAe\\corAe-Studio\\apps\\business\\page.tsx",
+    "c:\\corAe\\corAe-Studio\\corAe-Studio-v2\\apps\\studio\\app\\ship\\work\\page.tsx",
+    "c:\\corAe\\corAe-Studio\\corAe-Studio-v2\\apps\\studio\\app\\ship\\business\\oms\\obari\\*",
+    "c:\\corAe\\corAe-Studio\\corAe-Studio-v2\\apps\\studio\\app\\ship\\home\\*",
+    "c:\\corAe\\corAe-Studio\\corAe-Studio-v2\\apps\\life\\app\\work\\page.tsx",
+    "c:\\corAe\\corAe-Studio\\corAe-Studio-v2\\apps\\life\\app\\business\\page.tsx",
+    "c:\\corAe\\corAe-Studio\\corAe-Studio-v2\\apps\\home\\page.tsx",
+    "c:\\corAe\\corAe-Studio\\corAe-Studio-v2\\apps\\work\\page.tsx",
+    "c:\\corAe\\corAe-Studio\\corAe-Studio-v2\\apps\\business\\page.tsx"
+  ]
+}

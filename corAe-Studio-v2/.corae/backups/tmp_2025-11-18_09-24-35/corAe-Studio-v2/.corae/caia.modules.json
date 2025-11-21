@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "homeCore": [
+    { "id": "home-faith", "label": "Faith", "path": "/ship/home/core/faith" },
+    { "id": "home-cleaning", "label": "Home Cleaning", "path": "/ship/home/core/cleaning" }
+  ],
+  "workCore": [
+    { "id": "work-dashboard", "label": "Work Dashboard", "path": "/ship/work/core/dashboard" }
+  ],
+  "businessCore": [
+    { "id": "biz-obari", "label": "OBARI", "path": "/ship/business/core/obari" }
+  ],
+  "businessFront": [
+    { "id": "front-cleaning", "label": "Cleaning", "path": "/ship/business/front/cleaning" },
+    { "id": "front-glam", "label": "Glam & Glow", "path": "/ship/business/front/glam" }
+  ]
+}
