@@ -1,9 +1,9 @@
-// OBARI API Singletons (dev/demo)
+﻿// OBARI API Singletons (dev/demo)
 // Unified in-memory repo + number-series generators for local/demo builds.
 // Safe defaults ensure UI pages never crash even if store is empty.
 //
 // Import examples:
-//   import { repo, series } from "@/app/api/ship/business/oms/obari/_singletons";
+//   import { repo, series } from "@/app/api/business/oms/obari/_singletons";
 
 type AnySnap = {
   snapshot_id: string;
@@ -17,9 +17,9 @@ type AnySnap = {
   [k: string]: any;
 };
 
-// ──────────────────────────────────────────────
-// Series generator — used to simulate order numbers
-// ──────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Series generator â€” used to simulate order numbers
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function makeSeries() {
   let po = 0;
   let so = 0;
@@ -29,9 +29,9 @@ function makeSeries() {
   };
 }
 
-// ──────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // In-memory repository (mock DB)
-// ──────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function makeRepo() {
   const store = new Map<string, AnySnap>();
 
@@ -64,8 +64,8 @@ function makeRepo() {
   };
 }
 
-// ──────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Exports
-// ──────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export const series = makeSeries();
 export const repo = makeRepo();

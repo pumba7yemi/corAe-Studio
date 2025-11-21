@@ -1,4 +1,4 @@
-import { join, relative } from "path";
+﻿import { join, relative } from "path";
 import { existsSync } from "fs";
 const root = process.cwd();
 const moves = [];
@@ -6,9 +6,9 @@ const deletes = [];
 
 // Guide: faith/discern
 const CANON = [
-  "apps/studio/app/ship/home/faith",
-  "apps/studio/app/ship/work/faith",
-  "apps/studio/app/ship/business/faith",
+  "apps/studio/app/home/faith",
+  "apps/studio/app/work/faith",
+  "apps/studio/app/business/faith",
 ];
 function planMove(from, to) {
   moves.push({ from, to });
@@ -27,7 +27,7 @@ const bads = [
 
 for (const b of bads) {
   // propose move into home/faith by default
-  const target = join(root, "apps/studio/app/ship/home/faith", relative(join(root, "apps/studio/app/ship"), b));
+  const target = join(root, "apps/studio/app/home/faith", relative(join(root, "apps/studio/app/ship"), b));
   planMove(b, target);
 }
 
@@ -44,3 +44,4 @@ if (deletes.length) {
 console.log("\nApply with: node scripts/tidy-apply.mjs");
 
 export const __plan = { moves, deletes };
+

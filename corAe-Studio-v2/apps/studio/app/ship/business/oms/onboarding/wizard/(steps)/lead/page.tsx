@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -100,7 +100,7 @@ export default function LeadStep() {
     if (companyId) p.set("companyId", companyId);
     p.set("mode", mode);
     p.set("relationship", relationship);
-    return `/ship/business/oms/onboarding/wizard/intake?${p.toString()}`;
+    return `/business/oms/onboarding/wizard/intake?${p.toString()}`;
   }, [companyId, mode, relationship]);
 
   function saveSeedAndGo() {
@@ -296,7 +296,7 @@ export default function LeadStep() {
               <input
                 className="input"
                 value={lead.surveyPreferredWindow}
-                placeholder={surveyMode === "SALE" ? "e.g., Tue AM next week" : "e.g., Thu 09:00–11:00"}
+                placeholder={surveyMode === "SALE" ? "e.g., Tue AM next week" : "e.g., Thu 09:00â€“11:00"}
                 onChange={(e) => setLead({ ...lead, surveyPreferredWindow: e.target.value })}
               />
             </Field>
@@ -305,7 +305,7 @@ export default function LeadStep() {
             <input
               className="input"
               value={lead.surveyAccessNotes}
-              placeholder={surveyMode === "SALE" ? "Gate code, key-holder, PPE…" : "Dock, forklift, packaging, pallets…"}
+              placeholder={surveyMode === "SALE" ? "Gate code, key-holder, PPEâ€¦" : "Dock, forklift, packaging, palletsâ€¦"}
               onChange={(e) => setLead({ ...lead, surveyAccessNotes: e.target.value })}
             />
           </Field>
@@ -313,7 +313,7 @@ export default function LeadStep() {
           <div className="end">
             <button
               className="ghost"
-              onClick={() => router.push("/ship/business/oms/onboarding/wizard/company")}
+              onClick={() => router.push("/business/oms/onboarding/wizard/company")}
             >
               Company/Person setup
             </button>
@@ -322,7 +322,7 @@ export default function LeadStep() {
               disabled={!canContinueNew}
               onClick={saveSeedAndGo}
             >
-              Save Lead & Continue →
+              Save Lead & Continue â†’
             </button>
           </div>
         </section>
@@ -351,7 +351,7 @@ export default function LeadStep() {
             </Field>
           </Two>
           <div className="end">
-            <button className="ghost" onClick={() => setMode("NEW")}>← Switch to New Lead</button>
+            <button className="ghost" onClick={() => setMode("NEW")}>â† Switch to New Lead</button>
             <button
               className="primary"
               disabled={!companyId}
@@ -383,7 +383,7 @@ export default function LeadStep() {
                 router.push(nextHref);
               }}
             >
-              Continue to Intake →
+              Continue to Intake â†’
             </button>
           </div>
         </section>

@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 import React, { useEffect, useRef, useState } from "react";
-import HomeSectionLayout, { Card, Btn } from "../../ship/home/_shared/HomeSectionLayout";
+import HomeSectionLayout, { Card, Btn } from "../../home/_shared/HomeSectionLayout";
 
 export default function ViewportTestPage() {
   const refDvh = useRef<HTMLDivElement | null>(null);
@@ -19,7 +19,7 @@ export default function ViewportTestPage() {
   useEffect(() => { doMeasure(); window.addEventListener("resize", doMeasure); return () => window.removeEventListener("resize", doMeasure); }, []);
 
   return (
-    <HomeSectionLayout title="Dev • Viewport test" hint="Compare min-h-dvh vs min-h-screen and 100dvh style">
+    <HomeSectionLayout title="Dev â€¢ Viewport test" hint="Compare min-h-dvh vs min-h-screen and 100dvh style">
       <Card title="Viewport measures" hint="Resize the window / rotate device to observe differences">
         <div className="space-y-3">
           <div className="flex gap-3">
@@ -30,31 +30,32 @@ export default function ViewportTestPage() {
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="rounded border border-zinc-800 p-3">
               <div className="text-xs text-zinc-400">Browser innerHeight</div>
-              <div className="text-lg font-semibold">{measure.inner ?? '—'} px</div>
+              <div className="text-lg font-semibold">{measure.inner ?? 'â€”'} px</div>
             </div>
 
             <div className="rounded border border-zinc-800 p-3">
               <div className="text-xs text-zinc-400">CSS min-h-dvh element</div>
               <div ref={refDvh} className="min-h-dvh bg-zinc-900/40 mt-2 rounded">&nbsp;</div>
-              <div className="text-sm text-zinc-300 mt-2">Measured: {measure.dvh ?? '—'} px</div>
+              <div className="text-sm text-zinc-300 mt-2">Measured: {measure.dvh ?? 'â€”'} px</div>
             </div>
 
             <div className="rounded border border-zinc-800 p-3">
               <div className="text-xs text-zinc-400">CSS min-h-screen element (100vh)</div>
               <div ref={refVh} className="min-h-screen bg-zinc-900/40 mt-2 rounded">&nbsp;</div>
-              <div className="text-sm text-zinc-300 mt-2">Measured: {measure.vh ?? '—'} px</div>
+              <div className="text-sm text-zinc-300 mt-2">Measured: {measure.vh ?? 'â€”'} px</div>
             </div>
 
             <div className="rounded border border-zinc-800 p-3">
               <div className="text-xs text-zinc-400">Inline style 100dvh</div>
               <div ref={refStyle} style={{ minHeight: '100dvh' }} className="bg-zinc-900/40 mt-2 rounded">&nbsp;</div>
-              <div className="text-sm text-zinc-300 mt-2">Measured: {measure.styled ?? '—'} px</div>
+              <div className="text-sm text-zinc-300 mt-2">Measured: {measure.styled ?? 'â€”'} px</div>
             </div>
           </div>
 
-          <div className="text-xs text-zinc-400">Last measured: {measure.ts ?? '—'}</div>
+          <div className="text-xs text-zinc-400">Last measured: {measure.ts ?? 'â€”'}</div>
         </div>
       </Card>
     </HomeSectionLayout>
   );
 }
+

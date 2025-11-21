@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 export const dynamic = "force-dynamic";
 import { useEffect, useState } from 'react';
 import ArrowNav from '@/components/navigation/ArrowNav';
@@ -26,13 +26,13 @@ export default function BdoSchedulePage() {
   function save() {
     const payload = { mode, weekRef, month, year, startDate, endDate, label: label || null };
     sessionStorage.setItem('bdo.schedule.selection', JSON.stringify(payload));
-    alert('✅ Schedule saved for BDO');
+    alert('âœ… Schedule saved for BDO');
   }
 
   return (
     <main className="p-6 space-y-6">
       <header className="stack">
-        <h1 className="text-3xl font-bold">OBARI — BDO Schedule</h1>
+        <h1 className="text-3xl font-bold">OBARI â€” BDO Schedule</h1>
         <p className="muted">Pick cadence and window. This snapshot will be used in BDO Prep/Order.</p>
       </header>
 
@@ -83,8 +83,8 @@ export default function BdoSchedulePage() {
         </div>
       </section>
 
-      <ArrowNav backHref="/ship/business/oms/obari/thedeal/bdo/bdo-ready" nextHref="/ship/business/oms/obari/thedeal/bdo/prep" nextLabel="To BDO Prep">
-        Step 2 of 3 — BDO Schedule
+      <ArrowNav backHref="/business/oms/obari/thedeal/bdo/bdo-ready" nextHref="/business/oms/obari/thedeal/bdo/prep" nextLabel="To BDO Prep">
+        Step 2 of 3 â€” BDO Schedule
       </ArrowNav>
     </main> 
   );

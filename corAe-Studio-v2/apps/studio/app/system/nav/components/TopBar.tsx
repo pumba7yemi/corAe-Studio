@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 /**
- * corAe Ship • TopBar
+ * corAe Ship â€¢ TopBar
  * - Desktop: "Business" has a dropdown with OMS, Pulse, Chrono.
- * - Mobile: no dropdowns; "Business" is a plain link to /ship/business (the hub page).
+ * - Mobile: no dropdowns; "Business" is a plain link to /business (the hub page).
  */
 
 // Lightweight local Link shim to avoid requiring the 'next/link' types at build time.
@@ -16,11 +16,11 @@ import { ROUTES } from "@/app/system/nav/routes";
 
 const R = {
   home: "/ship",
-  businessHub: "/ship/business",   // mobile goes here
-  oms: "/ship/business/oms",
-  pulse: "/ship/work/pulse",
-  chrono: "/ship/work/chrono",
-  work: "/ship/work",
+  businessHub: "/business",   // mobile goes here
+  oms: "/business/oms",
+  pulse: "/work/pulse",
+  chrono: "/work/chrono",
+  work: "/work",
 };
 
 export default function TopBar() {
@@ -40,7 +40,7 @@ export default function TopBar() {
 
         {/* Center: brand */}
         <div className="flex-1 text-center">
-          <Link href={R.home} className="text-lg font-semibold tracking-tight">corAe • Ship</Link>
+          <Link href={R.home} className="text-lg font-semibold tracking-tight">corAe â€¢ Ship</Link>
         </div>
 
         {/* Right: overflow / mobile compact */}
@@ -58,8 +58,8 @@ export default function TopBar() {
 }
 
 /* ====== building blocks ====== */
-/* helper components removed: TopLink / Dropdown / MenuItem / SimpleLink —
-   TopBar now uses a single overflow menu (⋮) to provide navigation. */
+/* helper components removed: TopLink / Dropdown / MenuItem / SimpleLink â€”
+   TopBar now uses a single overflow menu (â‹®) to provide navigation. */
 
 function OverflowMenu({ compact }: { compact?: boolean }) {
   const pathname = usePathname();
@@ -91,7 +91,7 @@ function OverflowMenu({ compact }: { compact?: boolean }) {
         onClick={() => setOpen(v => !v)}
         className="p-2 rounded-md text-neutral-600 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
       >
-        <span className="inline-block leading-none text-lg">⋮</span>
+        <span className="inline-block leading-none text-lg">â‹®</span>
       </button>
 
       {open && (

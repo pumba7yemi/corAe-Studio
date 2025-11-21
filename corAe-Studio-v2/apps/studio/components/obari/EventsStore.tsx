@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 /**
  * OBARI Shared Event Store
- * - Persists to localStorage so /obari (engine) and /ship/business/oms/obari (lifecycle)
+ * - Persists to localStorage so /obari (engine) and /business/oms/obari (lifecycle)
  *   see the same live data.
  * - API: publish(), useEvents(), useEventsByStage(), clear().
  */
@@ -129,3 +129,4 @@ export function formatWhen(iso: string) {
     return iso;
   }
 }
+

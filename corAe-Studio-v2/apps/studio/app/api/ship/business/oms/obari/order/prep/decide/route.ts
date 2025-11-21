@@ -1,10 +1,10 @@
-// apps/studio/app/api/ship/business/oms/obari/order/prep/decide/route.ts
-// OBARI — Order ▸ PO-Prep Decide
+﻿// apps/studio/app/api/business/oms/obari/order/prep/decide/route.ts
+// OBARI â€” Order â–¸ PO-Prep Decide
 // Reads BDO "=" (commercial demand) and POS stock snapshots, then decides whether to start PO prep.
 // FS layout expected:
-//   .data/equals/{dealId}-*.json                ← latest BDO "=" (stage:"BDO")
-//   .data/pos/stock/*.json                      ← per-SKU stock snapshots { sku, onHand, reserved, reorderPoint? }
-//   .data/pos/sales/{dealId}-*.json (optional)  ← sales hints or forecast per deal (to bias demand)
+//   .data/equals/{dealId}-*.json                â† latest BDO "=" (stage:"BDO")
+//   .data/pos/stock/*.json                      â† per-SKU stock snapshots { sku, onHand, reserved, reorderPoint? }
+//   .data/pos/sales/{dealId}-*.json (optional)  â† sales hints or forecast per deal (to bias demand)
 // No DB writes. No aliases.
 
 import { NextResponse } from "next/server";
@@ -260,3 +260,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: msg }, { status: 400 });
   }
 }
+

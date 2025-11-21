@@ -1,4 +1,4 @@
-// apps/studio/app/ship/business/[id]/page.tsx
+﻿// apps/studio/app/business/[id]/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -14,7 +14,7 @@ export default function BusinessCompanyViewPage() {
   useEffect(() => {
     async function load() {
       try {
-        const resModules = await fetch(`/api/ship/business/modules?companyId=${id}`);
+        const resModules = await fetch(`/api/business/modules?companyId=${id}`);
         const dataModules = await resModules.json();
         setModules(dataModules.modules ?? []);
       } catch (e) {
@@ -40,7 +40,7 @@ export default function BusinessCompanyViewPage() {
         </div>
 
         {loading ? (
-          <div className="text-sm text-zinc-400">Loading modules…</div>
+          <div className="text-sm text-zinc-400">Loading modulesâ€¦</div>
         ) : (
           <div>
             <h2 className="text-lg font-semibold mb-3">Enabled Modules</h2>
@@ -52,7 +52,7 @@ export default function BusinessCompanyViewPage() {
                 >
                   <div className="text-sm">{m.moduleKey}</div>
                   <div className="text-xs text-zinc-400">
-                    {m.enabled ? "✅ Enabled" : "❌ Disabled"}
+                    {m.enabled ? "âœ… Enabled" : "âŒ Disabled"}
                   </div>
                 </div>
               ))}

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -21,13 +21,13 @@ const REGIONS: Array<{
   taxLabel: string;     // what we call tax/VAT in this region
   notes: string;        // short compliance hint shown on screen
 }> = [
-  { code: "UK",   name: "United Kingdom",     currency: "GBP", taxLabel: "VAT",       notes: "Companies House • VAT (GB) • Postcode format" },
-  { code: "EU",   name: "European Union",     currency: "EUR", taxLabel: "VAT",       notes: "EU VAT (country-specific) • EORI (where applicable)" },
-  { code: "US",   name: "United States",      currency: "USD", taxLabel: "Sales Tax", notes: "State Sales Tax • EIN" },
-  { code: "UAE",  name: "United Arab Emirates", currency: "AED", taxLabel: "VAT",     notes: "TRN • Ejari/Trade Licence attachments" },
-  { code: "SA",   name: "Saudi Arabia",       currency: "SAR", taxLabel: "VAT",       notes: "ZATCA • CR Number" },
-  { code: "IN",   name: "India",              currency: "INR", taxLabel: "GST",       notes: "GSTIN • PAN" },
-  { code: "OTHER",name: "Other / Not Listed", currency: "USD", taxLabel: "Tax",       notes: "Generic profile; we’ll capture details in intake" },
+  { code: "UK",   name: "United Kingdom",     currency: "GBP", taxLabel: "VAT",       notes: "Companies House â€¢ VAT (GB) â€¢ Postcode format" },
+  { code: "EU",   name: "European Union",     currency: "EUR", taxLabel: "VAT",       notes: "EU VAT (country-specific) â€¢ EORI (where applicable)" },
+  { code: "US",   name: "United States",      currency: "USD", taxLabel: "Sales Tax", notes: "State Sales Tax â€¢ EIN" },
+  { code: "UAE",  name: "United Arab Emirates", currency: "AED", taxLabel: "VAT",     notes: "TRN â€¢ Ejari/Trade Licence attachments" },
+  { code: "SA",   name: "Saudi Arabia",       currency: "SAR", taxLabel: "VAT",       notes: "ZATCA â€¢ CR Number" },
+  { code: "IN",   name: "India",              currency: "INR", taxLabel: "GST",       notes: "GSTIN â€¢ PAN" },
+  { code: "OTHER",name: "Other / Not Listed", currency: "USD", taxLabel: "Tax",       notes: "Generic profile; weâ€™ll capture details in intake" },
 ];
 
 function guessRegion(): RegionCode {
@@ -58,7 +58,7 @@ export default function RegionStepPage() {
   const [msg, setMsg] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  // seed: url > session > guess — read params in effect to avoid SSR read
+  // seed: url > session > guess â€” read params in effect to avoid SSR read
   const [region, setRegion] = useState<RegionCode>(guessRegion());
 
   useEffect(() => {
@@ -91,9 +91,9 @@ export default function RegionStepPage() {
       sessionStorage.setItem("wizard:seed:region", JSON.stringify(seed));
 
       // Continue to LEAD with query param (so pages can key behaviour)
-      router.push(`/ship/business/oms/onboarding/wizard/(steps)/lead?region=${encodeURIComponent(region)}`);
+      router.push(`/business/oms/onboarding/wizard/(steps)/lead?region=${encodeURIComponent(region)}`);
     } catch (e: any) {
-      setMsg(`❌ ${e?.message || "Could not continue"}`);
+      setMsg(`âŒ ${e?.message || "Could not continue"}`);
     } finally {
       setBusy(false);
     }
@@ -144,9 +144,9 @@ export default function RegionStepPage() {
       </section>
 
       <div className="end">
-        <button className="ghost" onClick={() => (router as any).back?.()}>← Back</button>
+        <button className="ghost" onClick={() => (router as any).back?.()}>â† Back</button>
         <button className="primary" disabled={busy} onClick={goNext}>
-          Continue →
+          Continue â†’
         </button>
       </div>
 

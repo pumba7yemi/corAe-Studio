@@ -1,5 +1,5 @@
-// apps/studio/app/api/ship/business/oms/obari/deal/btdo/leads/[id]/events/route.ts
-// BTDO — Lead Events
+﻿// apps/studio/app/api/business/oms/obari/deal/btdo/leads/[id]/events/route.ts
+// BTDO â€” Lead Events
 // POST /api/btdo/leads/:id/events   { kind:"NOTE"|"CALL"|"EMAIL"|"TASK", message:string }
 // GET  /api/btdo/leads/:id/events?limit=20&cursor=<token>
 //

@@ -1,5 +1,5 @@
-// apps/studio/app/api/ship/business/oms/obari/bookings/[bookingId]/report/route.ts
-// Studio API — Reporting Adjust: apply a multiplier to the Deal's immutable "=" snapshot,
+﻿// apps/studio/app/api/business/oms/obari/bookings/[bookingId]/report/route.ts
+// Studio API â€” Reporting Adjust: apply a multiplier to the Deal's immutable "=" snapshot,
 // persist an adjusted (read-only) snapshot for reporting/reconciliation, and return it.
 
 import { NextResponse } from "next/server";
@@ -16,7 +16,7 @@ declare global {
 const prisma: PrismaClient =
   global.__studio_prisma__ ?? (global.__studio_prisma__ = new PrismaClient());
 
-// ---- Types (local — no alias risk)
+// ---- Types (local â€” no alias risk)
 type EqualsSnapshot = {
   dealId: string;
   at: string;          // ISO timestamp

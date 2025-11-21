@@ -1,24 +1,24 @@
-# CAIA Embodiment Path — From Copilot to corAe OS²
+﻿# CAIA Embodiment Path â€” From Copilot to corAe OSÂ²
 
 Purpose
 -------
-This document captures a concise, actionable, ship-ready plan to evolve CAIA from a Dev Shell (Copilot-driven code edits) into a Resident Mode inside corAe Studio. It is written as an internal build doctrine to follow the project's single-file edit → build → accept/revert workflow.
+This document captures a concise, actionable, ship-ready plan to evolve CAIA from a Dev Shell (Copilot-driven code edits) into a Resident Mode inside corAe Studio. It is written as an internal build doctrine to follow the project's single-file edit â†’ build â†’ accept/revert workflow.
 
 One-line ethos
 --------------
-“We are corAe — the mother to the mother, the colleague to the worker, the silent partner to the owner.”
+â€œWe are corAe â€” the mother to the mother, the colleague to the worker, the silent partner to the owner.â€
 
 What "embodiment" means
 ------------------------
-- Dev Shell (today): CAIA acts through GitHub Copilot to read/patch code, propose diffs, and run the single-file → build → keep/revert loop.
-- Resident Mode (tomorrow): CAIA runs inside corAe with the same Observe → Suggest → Apply → Log behaviors, surfaced primarily through the Business/Work/Home wizards.
+- Dev Shell (today): CAIA acts through GitHub Copilot to read/patch code, propose diffs, and run the single-file â†’ build â†’ keep/revert loop.
+- Resident Mode (tomorrow): CAIA runs inside corAe with the same Observe â†’ Suggest â†’ Apply â†’ Log behaviors, surfaced primarily through the Business/Work/Home wizards.
 
 Minimal architecture (practical, incremental)
 -------------------------------------------
 UI surfaces (wire first)
-- `apps/studio/app/ship/business/oms/onboarding/wizard/*`
-- `apps/studio/app/ship/work/onboarding/wizard/*`
-- `apps/studio/app/ship/home/onboarding/wizard/*`
+- `apps/studio/app/business/oms/onboarding/wizard/*`
+- `apps/studio/app/work/onboarding/wizard/*`
+- `apps/studio/app/home/onboarding/wizard/*`
 - `apps/studio/app/ship/_shared/wizard/WizardShell.tsx` (single shell)
 - `apps/studio/app/components/EthosCard.tsx`
 
@@ -29,11 +29,11 @@ Logic (lib-level)
 
 APIs
 - `apps/studio/app/api/ship/*` and `.../oms/*` (wizard actions, reports)
-- `apps/studio/app/api/cims/*` — keep static-loader pattern; avoid expression imports
+- `apps/studio/app/api/cims/*` â€” keep static-loader pattern; avoid expression imports
 
-Core behaviors (Dev → Resident parity)
+Core behaviors (Dev â†’ Resident parity)
 -------------------------------------
-1) Observe → Suggest → Apply → Log
+1) Observe â†’ Suggest â†’ Apply â†’ Log
   - Observe inputs (wizard answers, Have-You ticks, telemetry)
   - Suggest structured next step (UI prompt + rationale)
   - Apply automation where safe (schedule, message, file)
@@ -63,10 +63,10 @@ Security & privacy (non-negotiable)
 - Redact PII at logging boundary; Pulse stores signals, not raw content.
 - Automation jobs are idempotent and cancelable.
 
-Telemetry (Pulse) — day one
+Telemetry (Pulse) â€” day one
 --------------------------
 - Wizard completion rate / time-to-complete
-- Have-You tick velocity (per day/week) and “stuck” flags
+- Have-You tick velocity (per day/week) and â€œstuckâ€ flags
 - Home: family graph completeness %
 - Work: task diary adoption (created vs completed)
 - Business: OBARI step throughput
@@ -78,7 +78,7 @@ Rollout plan (3 steps)
 
 2) Wire V1 Hooks
   - Implement `lib/automation/hooks.ts` with safe no-ops + server endpoints.
-  - Add wizard → automation handoffs for 2–3 flows (schedule reminder, generate message, file summary).
+  - Add wizard â†’ automation handoffs for 2â€“3 flows (schedule reminder, generate message, file summary).
 
 3) Turn on Pulse panels
   - Minimal dashboard cards for Home/Work/Business with the metrics above.
@@ -90,9 +90,9 @@ Guardrails: Single-file edits only inside `apps/studio/**`. After each edit run 
 
 Steps for first PR (example tasks)
 1. Consolidate WizardShell: replace local wizard shells to import `WizardShell` and wrap content as `<LegacyView/>` children. Files to edit (single-file each):
-   - `apps/studio/app/ship/business/oms/onboarding/wizard/page.tsx`
-   - `apps/studio/app/ship/work/onboarding/wizard/page.tsx`
-   - `apps/studio/app/ship/home/onboarding/wizard/*/page.tsx`
+   - `apps/studio/app/business/oms/onboarding/wizard/page.tsx`
+   - `apps/studio/app/work/onboarding/wizard/page.tsx`
+   - `apps/studio/app/home/onboarding/wizard/*/page.tsx`
 
 2. Add Automation Hooks (no-op): create `apps/studio/app/lib/automation/hooks.ts` with `enqueue()` that logs and returns an AutomationJob.
 
@@ -103,7 +103,7 @@ Steps for first PR (example tasks)
 
 4. Family Graph MVP: implement `apps/studio/app/lib/home/familyGraph.ts` and add a small Family Bubble UI in Home wizard (single-file edit).
 
-5. Pulse cards MVP: create `apps/studio/app/ship/pulse/cards.tsx` and include 1–2 cards in each Wizard page.
+5. Pulse cards MVP: create `apps/studio/app/ship/pulse/cards.tsx` and include 1â€“2 cards in each Wizard page.
 
 Acceptance checklist (V1 Embodiment)
 -----------------------------------
@@ -122,4 +122,5 @@ Next actions (first small, reversible edits)
 
 If you want, I can also add this file as `apps/studio/docs/EMBODIMENT.md` in a different format or create an RFC PR template.
 
-— End of document
+â€” End of document
+

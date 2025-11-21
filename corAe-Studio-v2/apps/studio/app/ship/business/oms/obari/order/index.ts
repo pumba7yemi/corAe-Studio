@@ -1,9 +1,9 @@
-// apps/ship/business/oms/obari/order/index.ts
-// OBARI — Stage: ORDER (the “O” in OBARI)
+﻿// apps/business/oms/obari/order/index.ts
+// OBARI â€” Stage: ORDER (the â€œOâ€ in OBARI)
 // Purpose:
 //  - Register a lawful Order from a confirmed BDO outcome (post Prep + Schedule).
 //  - Classify direction (inbound=PO, outbound=SO) and manage order numbers.
-//  - Request/attach PO/SO numbers and mark the Order “ready_for_booking”.
+//  - Request/attach PO/SO numbers and mark the Order â€œready_for_bookingâ€.
 //  - Persist an auditable event trail to hand off to Booking.
 //
 // Notes:
@@ -13,7 +13,7 @@
 export type Minor = number;
 export type ISODate = string;
 
-export type Direction = "inbound" | "outbound"; // inbound ⇒ Purchase (we buy); outbound ⇒ Sales (we sell)
+export type Direction = "inbound" | "outbound"; // inbound â‡’ Purchase (we buy); outbound â‡’ Sales (we sell)
 export type TransportFlag = "CDIQ" | "CDC" | "CDN";
 
 export type ScheduleKind =
@@ -37,7 +37,7 @@ export interface OrderLine {
 }
 
 export interface BdoOutcome {
-  // Minimal payload passed from BDO stage after “Prep + Schedule”
+  // Minimal payload passed from BDO stage after â€œPrep + Scheduleâ€
   bdo_id: string;
   direction: Direction;
   counterparty: { id: string; name: string; site_id?: string; site_name?: string };
@@ -70,7 +70,7 @@ export interface OrderRecord {
   references: {
     quote_id?: string;
     product_ids?: string[];
-    client_po?: string;   // inbound: we request PO from our side? (for vendors we hold SO) — retained for trace
+    client_po?: string;   // inbound: we request PO from our side? (for vendors we hold SO) â€” retained for trace
     po_number?: string;   // inbound (we issue PO to vendor or receive PO from client if agreed model)
     so_number?: string;   // outbound (client SO to us) or our SO to client (depending on org convention)
     external?: Record<string, string>; // ERP/Sage refs etc.
@@ -156,11 +156,11 @@ function compact<T extends object>(obj: T): T {
 
 function emailSubject(order: OrderRecord): string {
   const tag = order.direction === "inbound" ? "PO Request" : "SO Request";
-  const site = order.counterparty.site_name ? ` — ${order.counterparty.site_name}` : "";
-  return `[OBARI · Order] ${tag}${site} • ${order.order_id}`;
+  const site = order.counterparty.site_name ? ` â€” ${order.counterparty.site_name}` : "";
+  return `[OBARI Â· Order] ${tag}${site} â€¢ ${order.order_id}`;
 }
 
-function currency(minor: Minor, symbol = "£") {
+function currency(minor: Minor, symbol = "Â£") {
   return `${symbol}${(minor / 100).toFixed(2)}`;
 }
 
@@ -169,9 +169,9 @@ function emailHTML_RequestNumbers(order: OrderRecord): string {
   const want = isInbound ? "Purchase Order (PO)" : "Sales Order (SO)";
   const sched =
     order.schedule.kind === "scheduled"
-      ? `<p><strong>Schedule:</strong> ${order.schedule.rule}${order.schedule.day ? ` • ${order.schedule.day}` : ""}${order.schedule.window ? ` • ${order.schedule.window}` : ""}</p>`
+      ? `<p><strong>Schedule:</strong> ${order.schedule.rule}${order.schedule.day ? ` â€¢ ${order.schedule.day}` : ""}${order.schedule.window ? ` â€¢ ${order.schedule.window}` : ""}</p>`
       : order.schedule.kind === "rental"
-        ? `<p><strong>Schedule:</strong> Rental • ${order.schedule.rule}</p>`
+        ? `<p><strong>Schedule:</strong> Rental â€¢ ${order.schedule.rule}</p>`
         : `<p><strong>Schedule:</strong> Ad-hoc</p>`;
 
   const lines = order.lines
@@ -192,14 +192,14 @@ function emailHTML_RequestNumbers(order: OrderRecord): string {
       ? "Collection/Delivery is included in the quoted price."
       : tf === "CDC"
         ? "Transport will be billed separately."
-        : "Collection/Delivery required — we will arrange and confirm price.";
+        : "Collection/Delivery required â€” we will arrange and confirm price.";
 
   return `
   <div style="font-family: Inter, Arial, sans-serif; line-height:1.45">
     <p>Dear ${order.counterparty.name},</p>
     <p>We are setting up your order and require your ${want} reference to proceed to booking.</p>
     ${sched}
-    <p><strong>Transport:</strong> ${tf} — ${tfTxt}</p>
+    <p><strong>Transport:</strong> ${tf} â€” ${tfTxt}</p>
 
     <table width="100%" cellspacing="0" cellpadding="6" style="border-collapse:collapse;border:1px solid #ddd;margin:8px 0">
       <thead>

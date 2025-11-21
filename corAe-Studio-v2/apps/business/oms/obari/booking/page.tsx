@@ -1,14 +1,14 @@
-"use client";
+﻿"use client";
 
 /**
- * OBARI — Booking (corAe Stable Alias Build)
+ * OBARI â€” Booking (corAe Stable Alias Build)
  * - Lists staged PO/SO snapshots from repo
- * - One-click “Confirm Booking” → POST /api/ship/business/oms/obari/booking
+ * - One-click â€œConfirm Bookingâ€ â†’ POST /api/business/oms/obari/booking
  * - Stage: after Order / before Active
  */
 
 import { useEffect, useState } from "react";
-import ArrowNav from "@/components/navigation/ArrowNav"; // ✅ alias (never breaks)
+import ArrowNav from "@/components/navigation/ArrowNav"; // âœ… alias (never breaks)
 
 type Staged = {
   snapshot_id: string;
@@ -32,12 +32,12 @@ export default function ObariBookingPage() {
   async function load() {
     setMsg(null);
     try {
-      const res = await fetch("/api/ship/business/oms/obari/booking", { cache: "no-store" });
+      const res = await fetch("/api/business/oms/obari/booking", { cache: "no-store" });
       const data: ListResp = await res.json();
       if (!data.ok) throw new Error(data.error || "Failed to load");
       setRows(data.staged);
     } catch (e: any) {
-      setMsg(`❌ ${e?.message || "Failed to load"}`);
+      setMsg(`âŒ ${e?.message || "Failed to load"}`);
     }
   }
 
@@ -48,17 +48,17 @@ export default function ObariBookingPage() {
     setBusy(snapshot_id);
     setMsg(null);
     try {
-      const res = await fetch("/api/ship/business/oms/obari/booking", {
+      const res = await fetch("/api/business/oms/obari/booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ snapshotId: snapshot_id }),
       });
       const data: BookResp = await res.json();
       if (!data.ok) throw new Error(data.error || "Booking failed");
-      setMsg(`✅ Booked ${data.booking.order_no} (${data.booking.booking_id})`);
+      setMsg(`âœ… Booked ${data.booking.order_no} (${data.booking.booking_id})`);
       await load();
     } catch (e: any) {
-      setMsg(`❌ ${e?.message || "Booking failed"}`);
+      setMsg(`âŒ ${e?.message || "Booking failed"}`);
     } finally {
       setBusy(null);
     }
@@ -73,7 +73,7 @@ export default function ObariBookingPage() {
           <span className="relative inline-flex h-3.5 w-3.5 rounded-full bg-emerald-500">
             <span className="absolute inline-flex h-3.5 w-3.5 rounded-full bg-emerald-400 opacity-75 animate-ping" />
           </span>
-          <h1 className="text-2xl font-semibold tracking-tight">OBARI — Booking</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">OBARI â€” Booking</h1>
         </div>
         <p className="text-sm text-slate-400">
           Pick a staged order (PO/SO) and confirm booking (demo).
@@ -103,7 +103,7 @@ export default function ObariBookingPage() {
                   <div>
                     <div className="font-mono text-slate-200">{r.order_no}</div>
                     <div className="text-xs text-slate-400 mt-0.5">
-                      {r.direction.toUpperCase()} •{" "}
+                      {r.direction.toUpperCase()} â€¢{" "}
                       {new Date(r.created_at_iso).toLocaleString()}
                     </div>
                   </div>
@@ -113,14 +113,14 @@ export default function ObariBookingPage() {
                     disabled={busy === r.snapshot_id}
                     onClick={() => confirm(r.snapshot_id)}
                   >
-                    {busy === r.snapshot_id ? "Booking…" : "Confirm Booking"}
+                    {busy === r.snapshot_id ? "Bookingâ€¦" : "Confirm Booking"}
                   </button>
                 </div>
 
                 <div className="text-xs text-slate-300 mt-2">
                   {r.lines.map((l, i) => (
                     <span key={i} className="mr-3">
-                      {l.sku} × {l.qty}
+                      {l.sku} Ã— {l.qty}
                       {l.uom ? ` ${l.uom}` : ""} @ {(l.unit_price / 100).toFixed(2)}
                     </span>
                   ))}
@@ -136,11 +136,11 @@ export default function ObariBookingPage() {
 
       {/* Nav */}
       <ArrowNav
-        backHref="/ship/business/oms/obari/order"
-        nextHref="/ship/business/oms/obari/active"
+        backHref="/business/oms/obari/order"
+        nextHref="/business/oms/obari/active"
         nextLabel="To Active"
       >
-        Step 4 — Booking
+        Step 4 â€” Booking
       </ArrowNav>
     </main>
   );

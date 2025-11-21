@@ -1,10 +1,10 @@
-/* eslint-disable */
-// apps/studio/app/ship/home/onboarding/wizard/mealprep/page.tsx
+﻿/* eslint-disable */
+// apps/studio/app/home/onboarding/wizard/mealprep/page.tsx
 "use client";
 /**
- * corAe • Home • Onboarding • Meal Prep
+ * corAe â€¢ Home â€¢ Onboarding â€¢ Meal Prep
  * 28-day rotation, pantry-first usage, vendor tie-in.
- * Seeds: /api/ship/home/mealprep (+Have-You prompts)
+ * Seeds: /api/home/mealprep (+Have-You prompts)
  */
 import React, { useEffect, useMemo, useState } from "react";
 import EthosCard from "../../../../../components/EthosCard";
@@ -61,7 +61,7 @@ export default function MealPrepWizard(){
           <Input placeholder="Tags (comma)" value={tags} onChange={e=>setTags(e.target.value)} />
           <Button variant="secondary" onClick={add}>+ Add</Button>
         </div>
-        {s.pantry.length>0 && <div className="flex flex-wrap gap-2 pt-2">{s.pantry.map(i=><span key={i.id} className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/60 px-3 py-1 text-xs">{i.name} • {i.qty}{i.unit?` ${i.unit}`:""}{i.expires?` • exp ${i.expires}`:""}</span>)}</div>}
+        {s.pantry.length>0 && <div className="flex flex-wrap gap-2 pt-2">{s.pantry.map(i=><span key={i.id} className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/60 px-3 py-1 text-xs">{i.name} â€¢ {i.qty}{i.unit?` ${i.unit}`:""}{i.expires?` â€¢ exp ${i.expires}`:""}</span>)}</div>}
         <Row><Button variant="ghost" onClick={()=>go("WELCOME")}>Back</Button><Button onClick={()=>go("PREFERENCES")} disabled={s.pantry.length===0}>Continue</Button></Row>
       </Card>
     );
@@ -105,7 +105,7 @@ export default function MealPrepWizard(){
                   <div className="text-xs text-zinc-400 mb-1">{m.time}</div>
                   <select className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm"
                     value={m.mealId ?? ""} onChange={e=>setMeal(dp.day,i,e.target.value)}>
-                    <option value="">— select —</option>
+                    <option value="">â€” select â€”</option>
                     {allMeals.map(me=> <option key={me.id} value={me.id}>{me.title}</option>)}
                   </select>
                 </div>
@@ -120,13 +120,13 @@ export default function MealPrepWizard(){
 
   const Plan=()=> {
     const reminders = useMemo(()=>[
-      { text:`Have you prepped today’s meals?`, schedule:`DAILY 07:00` },
+      { text:`Have you prepped todayâ€™s meals?`, schedule:`DAILY 07:00` },
       { text:`Have you reviewed pantry before shopping?`, schedule:`${s.anchorDay} 09:00` },
     ],[s.anchorDay]);
     return (
-      <Card title="Prompts & Checks" hint="We’ll create simple Have-You nudges for meal prep and pantry usage.">
+      <Card title="Prompts & Checks" hint="Weâ€™ll create simple Have-You nudges for meal prep and pantry usage.">
         <ul className="list-disc pl-5 text-sm text-zinc-300">
-          {reminders.map((r,i)=><li key={i}>{r.text} • {r.schedule}</li>)}
+          {reminders.map((r,i)=><li key={i}>{r.text} â€¢ {r.schedule}</li>)}
         </ul>
         <Row><Button variant="ghost" onClick={()=>go("ROTATION")}>Back</Button><Button onClick={()=>go("BLUEPRINT")}>Continue</Button></Row>
       </Card>
@@ -142,9 +142,9 @@ export default function MealPrepWizard(){
     }),[s]);
     useEffect(()=> set({blueprintJson:JSON.stringify(bp,null,2)}),[bp]);
     async function seedApis(){
-      try { await fetch("/api/ship/home/mealprep",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"seedFromBlueprint",blueprint:bp})}); } catch {}
-      try { await fetch("/api/ship/home/haveyou",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"bulkUpsert",items:[
-        { text:`Have you prepped today’s meals?`, schedule:`DAILY 07:00` },
+      try { await fetch("/api/home/mealprep",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"seedFromBlueprint",blueprint:bp})}); } catch {}
+      try { await fetch("/api/home/haveyou",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"bulkUpsert",items:[
+        { text:`Have you prepped todayâ€™s meals?`, schedule:`DAILY 07:00` },
         { text:`Have you reviewed pantry before shopping?`, schedule:`${s.anchorDay} 09:00` },
       ]})}); } catch {}
     }
@@ -168,7 +168,7 @@ export default function MealPrepWizard(){
       {s.step==="ROTATION"&&<Rotation/>}
       {s.step==="PLAN"&&<Plan/>}
       {s.step==="BLUEPRINT"&&<Blueprint/>}
-      {s.step==="SUCCESS"&&<Card title="Meal Plan Ready 🎉" hint="Routines and prompts are live." children={undefined}/>}
+      {s.step==="SUCCESS"&&<Card title="Meal Plan Ready ðŸŽ‰" hint="Routines and prompts are live." children={undefined}/>}
       {s.step!=="SUCCESS" && <div className="fixed bottom-4 right-4"><Button variant="secondary" onClick={save}>Save & Continue Later</Button></div>}
     </div>
   );

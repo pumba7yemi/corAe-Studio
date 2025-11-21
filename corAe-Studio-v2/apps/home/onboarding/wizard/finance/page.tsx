@@ -1,9 +1,9 @@
-// apps/studio/app/ship/home/onboarding/wizard/finance/page.tsx
+﻿// apps/studio/app/home/onboarding/wizard/finance/page.tsx
 "use client";
 /**
- * corAe • Home • Onboarding • Finance
+ * corAe â€¢ Home â€¢ Onboarding â€¢ Finance
  * Budgets, bills, shared expenses, savings. 28-day rhythm alignment.
- * Seeds: /api/ship/home/finance  (+Have-You reminders for bill due dates)
+ * Seeds: /api/home/finance  (+Have-You reminders for bill due dates)
  */
 import React, { useEffect, useMemo, useState } from "react";
 
@@ -19,7 +19,7 @@ interface Budget {
   id: string; category: string; amount: number; freq: Frequency;
 }
 interface Bill {
-  id: string; name: string; amount: number; dueDay: number; // 1–31
+  id: string; name: string; amount: number; dueDay: number; // 1â€“31
   reminderDay?: number; // days before due
   channel?: "CARD" | "BANK" | "CASH" | "OTHER"; note?: string;
 }
@@ -50,7 +50,7 @@ const timeAgo = (iso?:string|null)=>!iso?"never":((d=>d<60?`${d}m ago`:d<1440?`$
 const Shell = ({children,right}:{children:React.ReactNode; right?:React.ReactNode})=>(
   <div className="min-h-dvh bg-zinc-950 text-zinc-100">
     <header className="mx-auto flex max-w-5xl items-center justify-between px-4 pt-8">
-      <div><h1 className="text-2xl font-semibold">Home Onboarding • Finance</h1><p className="text-xs text-zinc-400">Budgets, bills, savings — synced to your weekly anchor.</p></div>
+      <div><h1 className="text-2xl font-semibold">Home Onboarding â€¢ Finance</h1><p className="text-xs text-zinc-400">Budgets, bills, savings â€” synced to your weekly anchor.</p></div>
       {right}
     </header>
     <main className="mx-auto max-w-5xl px-4 pb-28 pt-6">{children}</main>
@@ -68,7 +68,7 @@ const Input = (p:React.InputHTMLAttributes<HTMLInputElement>)=> <input {...p} cl
 const Row = ({children}:{children:React.ReactNode})=> <div className="flex flex-col gap-3 sm:flex-row sm:items-center">{children}</div>;
 const SaveBar = ({onSave,savedAt,saving}:{onSave:()=>void;savedAt?:string|null;saving:boolean})=>(
   <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900/70 px-3 py-2 text-xs backdrop-blur">
-    <Button variant="secondary" onClick={onSave} disabled={saving}>{saving?"Saving…":"Save & Continue Later"}</Button>
+    <Button variant="secondary" onClick={onSave} disabled={saving}>{saving?"Savingâ€¦":"Save & Continue Later"}</Button>
     <span className="text-zinc-400">{savedAt?`Last saved ${timeAgo(savedAt)}`:"Not saved yet"}</span>
   </div>
 );
@@ -137,7 +137,7 @@ export default function HomeFinanceWizardPage(){
         </div>
         {s.incomes.length>0 && <div className="space-y-2 pt-2">{s.incomes.map(i=>(
           <div key={i.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm flex items-center justify-between">
-            <div><span className="font-medium">{i.source}</span> <span className="text-zinc-400">• {i.freq}{i.day?` • ${i.day}`:""} • {i.amount}</span></div>
+            <div><span className="font-medium">{i.source}</span> <span className="text-zinc-400">â€¢ {i.freq}{i.day?` â€¢ ${i.day}`:""} â€¢ {i.amount}</span></div>
             <Button variant="danger" onClick={()=>remove(i.id)}>Remove</Button>
           </div>
         ))}</div>}
@@ -151,7 +151,7 @@ export default function HomeFinanceWizardPage(){
     const add=()=>{ if(!category.trim()||!amount) return; set({budgets:[...s.budgets,{id:rid("bdg"),category:category.trim(),amount:Number(amount),freq}]}); setCategory(""); setAmount(""); setFreq("MONTHLY"); };
     const remove=(id:string)=> set({budgets:s.budgets.filter(x=>x.id!==id)});
     return (
-      <Card title="Budgets" hint="Plan by category — Groceries, Utilities, Transport, Giving, etc.">
+      <Card title="Budgets" hint="Plan by category â€” Groceries, Utilities, Transport, Giving, etc.">
         <div className="grid gap-3 sm:grid-cols-5">
           <Input placeholder="Category" value={category} onChange={e=>setCategory(e.target.value)} />
           <Input placeholder="Amount" value={amount} onChange={e=>setAmount(e.target.value)} />
@@ -162,8 +162,8 @@ export default function HomeFinanceWizardPage(){
         </div>
         {s.budgets.length>0 && <div className="flex flex-wrap gap-2 pt-2">{s.budgets.map(b=>(
           <span key={b.id} className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/60 px-3 py-1 text-xs">
-            {b.category} • {b.freq} • {b.amount}
-            <button onClick={()=>remove(b.id)} className="text-zinc-400 hover:text-zinc-100">✕</button>
+            {b.category} â€¢ {b.freq} â€¢ {b.amount}
+            <button onClick={()=>remove(b.id)} className="text-zinc-400 hover:text-zinc-100">âœ•</button>
           </span>
         ))}</div>}
         <Row><Button variant="ghost" onClick={()=>go("INCOME")}>Back</Button><Button onClick={()=>go("BILLS")}>Continue</Button></Row>
@@ -180,11 +180,11 @@ export default function HomeFinanceWizardPage(){
     };
     const remove=(id:string)=> set({bills:s.bills.filter(x=>x.id!==id)});
     return (
-      <Card title="Bills" hint="Due day (1–31). Reminders can be set N days before.">
+      <Card title="Bills" hint="Due day (1â€“31). Reminders can be set N days before.">
         <div className="grid gap-3 sm:grid-cols-7">
           <Input placeholder="Bill name" value={name} onChange={e=>setName(e.target.value)} />
           <Input placeholder="Amount" value={amount} onChange={e=>setAmount(e.target.value)} />
-          <Input placeholder="Due day (1–31)" value={dueDay} onChange={e=>setDueDay(e.target.value)} />
+          <Input placeholder="Due day (1â€“31)" value={dueDay} onChange={e=>setDueDay(e.target.value)} />
           <Input placeholder="Remind N days before" value={rem} onChange={e=>setRem(e.target.value)} />
           <select className="rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm" value={channel} onChange={e=>setChannel(e.target.value as any)}>
             <option value="BANK">BANK</option><option value="CARD">CARD</option><option value="CASH">CASH</option><option value="OTHER">OTHER</option>
@@ -194,7 +194,7 @@ export default function HomeFinanceWizardPage(){
         </div>
         {s.bills.length>0 && <div className="space-y-2 pt-2">{s.bills.map(b=>(
           <div key={b.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm flex items-center justify-between">
-            <div><span className="font-medium">{b.name}</span> <span className="text-zinc-400">• due {b.dueDay} • {b.amount}{b.reminderDay?` • remind ${b.reminderDay}d prior`:""}{b.channel?` • ${b.channel}`:""}</span></div>
+            <div><span className="font-medium">{b.name}</span> <span className="text-zinc-400">â€¢ due {b.dueDay} â€¢ {b.amount}{b.reminderDay?` â€¢ remind ${b.reminderDay}d prior`:""}{b.channel?` â€¢ ${b.channel}`:""}</span></div>
             <Button variant="danger" onClick={()=>remove(b.id)}>Remove</Button>
           </div>
         ))}</div>}
@@ -221,8 +221,8 @@ export default function HomeFinanceWizardPage(){
         </div>
         {s.goals.length>0 && <div className="flex flex-wrap gap-2 pt-2">{s.goals.map(g=>(
           <span key={g.id} className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/60 px-3 py-1 text-xs">
-            {g.name} • {g.freq} • target {g.target} • +{g.perPeriod}
-            <button onClick={()=>remove(g.id)} className="text-zinc-400 hover:text-zinc-100">✕</button>
+            {g.name} â€¢ {g.freq} â€¢ target {g.target} â€¢ +{g.perPeriod}
+            <button onClick={()=>remove(g.id)} className="text-zinc-400 hover:text-zinc-100">âœ•</button>
           </span>
         ))}</div>}
         <Row><Button variant="ghost" onClick={()=>go("BILLS")}>Back</Button><Button onClick={()=>go("BLUEPRINT")} disabled={s.goals.length===0 && s.bills.length===0 && s.budgets.length===0}>Continue</Button></Row>
@@ -234,8 +234,8 @@ export default function HomeFinanceWizardPage(){
     const bp=useMemo(()=>makeBlueprint(s),[s]);
     useEffect(()=>{ set({blueprintJson:JSON.stringify(bp,null,2)}); },[bp]);
     async function seedApis(){
-      try { await fetch("/api/ship/home/finance",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"seedFromBlueprint",blueprint:bp})}); } catch {}
-      try { const reminders=makeFinanceHaveYou(s); await fetch("/api/ship/home/haveyou",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"bulkUpsert",items:reminders})}); } catch {}
+      try { await fetch("/api/home/finance",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"seedFromBlueprint",blueprint:bp})}); } catch {}
+      try { const reminders=makeFinanceHaveYou(s); await fetch("/api/home/haveyou",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"bulkUpsert",items:reminders})}); } catch {}
     }
     function download(){ const blob=new Blob([s.blueprintJson],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=`${s.householdName||"home-finance"}-blueprint.json`; a.click(); URL.revokeObjectURL(url); }
     return (
@@ -269,8 +269,8 @@ export default function HomeFinanceWizardPage(){
       {s.step==="SAVINGS" && <Savings />}
       {s.step==="BLUEPRINT" && <Blueprint />}
       {s.step==="SUCCESS" && (
-        <Card title="Finance Setup Complete 🎉" hint="You’ll get nudges on anchor day for check-ins, and before bill due dates.">
-          <p className="text-sm text-zinc-300">You can edit or expand any time in Home → Finance.</p>
+        <Card title="Finance Setup Complete ðŸŽ‰" hint="Youâ€™ll get nudges on anchor day for check-ins, and before bill due dates.">
+          <p className="text-sm text-zinc-300">You can edit or expand any time in Home â†’ Finance.</p>
         </Card>
       )}
 

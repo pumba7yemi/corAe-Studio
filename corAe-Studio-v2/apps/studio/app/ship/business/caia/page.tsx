@@ -1,4 +1,4 @@
-// apps/studio/app/ship/business/caia/page.tsx
+﻿// apps/studio/app/business/caia/page.tsx
 export default function BusinessCAIA() {
   return (
     <div className="space-y-3">
@@ -10,3 +10,4 @@ export default function BusinessCAIA() {
     </div>
   );
 }
+

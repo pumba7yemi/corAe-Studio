@@ -1,15 +1,15 @@
-'use client';
+﻿'use client';
 
 /**
- * Finance — Expenses (OPEX / Staff Reimbursements)
+ * Finance â€” Expenses (OPEX / Staff Reimbursements)
  * - Lists expense claims & vendor expenses with quick filters & totals
  * - Uses PeriodFilter that returns flat { kind, from, to }
- * - Bottom arrows: back → Finance Hub, next → Bank/Cashbook
+ * - Bottom arrows: back â†’ Finance Hub, next â†’ Bank/Cashbook
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
 
-// ✅ Use the long relative path you confirmed works
+// âœ… Use the long relative path you confirmed works
 import { Card, CardContent } from '@/ui/card';
 import { Button } from '@/ui/button';
 import { Input } from '@/ui/input';
@@ -46,7 +46,7 @@ type ExpenseRow = {
   ref?: string;           // optional ref (PO/Trip etc.)
 };
 
-const money = (m: number) => `£${(m / 100).toFixed(2)}`;
+const money = (m: number) => `Â£${(m / 100).toFixed(2)}`;
 
 export default function ExpensesLedgerPage() {
   const [rows, setRows] = useState<ExpenseRow[]>([]);
@@ -54,7 +54,7 @@ export default function ExpensesLedgerPage() {
   const [status, setStatus] = useState<'all' | ExpenseStatus>('all');
   const [kind, setKind] = useState<'all' | ExpenseKind>('all');
 
-  // ✅ Flat default so period.from / period.to are always defined
+  // âœ… Flat default so period.from / period.to are always defined
   const [period, setPeriod] = useState<PeriodValue>(() => computeRange('month'));
 
   // Seed demo data
@@ -65,7 +65,7 @@ export default function ExpensesLedgerPage() {
         date_iso: '2025-03-03',
         claimant: 'A. Patel',
         supplier: 'City Cabs',
-        description: 'Client site visit – taxi',
+        description: 'Client site visit â€“ taxi',
         kind: 'travel',
         net_minor: 2800,
         vat_minor: 560,
@@ -78,7 +78,7 @@ export default function ExpensesLedgerPage() {
         date_iso: '2025-03-11',
         claimant: 'J. Smith',
         supplier: 'BP Service Station',
-        description: 'Fuel – delivery van',
+        description: 'Fuel â€“ delivery van',
         kind: 'fuel',
         net_minor: 7200,
         vat_minor: 1440,
@@ -117,7 +117,7 @@ export default function ExpensesLedgerPage() {
         date_iso: '2025-03-31',
         claimant: 'Finance',
         supplier: 'SaaS Co.',
-        description: 'Accounting software – monthly',
+        description: 'Accounting software â€“ monthly',
         kind: 'software',
         net_minor: 2500,
         vat_minor: 500,
@@ -228,7 +228,7 @@ export default function ExpensesLedgerPage() {
               <Input
                 value={q}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQ(e.target.value)}
-                placeholder="Search id, claimant, supplier, description…"
+                placeholder="Search id, claimant, supplier, descriptionâ€¦"
               />
               <select
                 value={status}
@@ -290,9 +290,9 @@ export default function ExpensesLedgerPage() {
                     <div className="flex-1">
                       <div className="font-mono font-semibold">{r.id}</div>
                       <div className="text-xs text-muted">
-                        {r.date_iso} • {r.claimant}
-                        {r.supplier ? ` • ${r.supplier}` : ''} • {r.kind.toUpperCase()}
-                        {r.ref ? ` • Ref ${r.ref}` : ''}
+                        {r.date_iso} â€¢ {r.claimant}
+                        {r.supplier ? ` â€¢ ${r.supplier}` : ''} â€¢ {r.kind.toUpperCase()}
+                        {r.ref ? ` â€¢ Ref ${r.ref}` : ''}
                       </div>
                       <div className="text-sm mt-1">{r.description}</div>
                     </div>
@@ -301,7 +301,7 @@ export default function ExpensesLedgerPage() {
                         Gross: <span className="font-medium">{money(gross)}</span>
                       </div>
                       <div className="text-xs text-muted">
-                        Paid {money(r.paid_minor)} • Due {money(outstanding)}
+                        Paid {money(r.paid_minor)} â€¢ Due {money(outstanding)}
                       </div>
                     </div>
                   </div>
@@ -358,11 +358,11 @@ export default function ExpensesLedgerPage() {
       </Card>
 
       <ArrowNav
-        backHref="/ship/business/oms/finance"
-        nextHref="/ship/business/oms/finance/bank"
+        backHref="/business/oms/finance"
+        nextHref="/business/oms/finance/bank"
         nextLabel="Bank / Cashbook"
       >
-        Finance · Expenses
+        Finance Â· Expenses
       </ArrowNav>
     </main>
   );

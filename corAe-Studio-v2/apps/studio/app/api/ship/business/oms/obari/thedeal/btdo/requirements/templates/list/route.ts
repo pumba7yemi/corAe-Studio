@@ -1,5 +1,5 @@
-// apps/studio/app/api/ship/business/oms/obari/thedeal/btdo/requirements/templates/list/route.ts
-// BTDO — Requirement Templates (List)
+﻿// apps/studio/app/api/business/oms/obari/thedeal/btdo/requirements/templates/list/route.ts
+// BTDO â€” Requirement Templates (List)
 // GET: ?q=&limit=20&cursor=<templateId>
 
 import { NextResponse } from "next/server";
@@ -75,3 +75,4 @@ export async function GET(req: Request) {
     );
   }
 }
+

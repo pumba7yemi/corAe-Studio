@@ -1,15 +1,15 @@
-// apps/studio/app/ship/business/oms/finance/purchases/page.tsx
+﻿// apps/studio/app/business/oms/finance/purchases/page.tsx
 'use client';
 
 /**
- * Finance — Purchases Ledger (AP)
+ * Finance â€” Purchases Ledger (AP)
  * - Lists supplier invoices/bills with quick filters & totals
  * - Uses PeriodFilter that returns { kind, from, to } (flat)
- * - Bottom arrows: back → Finance Hub, next → VAT (you can change later)
+ * - Bottom arrows: back â†’ Finance Hub, next â†’ VAT (you can change later)
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
-// ✅ Use the long relative path you confirmed works
+// âœ… Use the long relative path you confirmed works
 import { Card, CardContent } from '@/ui/card';
 import { Button } from '@/ui/button';
 import { Input } from '@/ui/input';
@@ -33,7 +33,7 @@ type PurchaseBill = {
   status: 'draft' | 'posted' | 'overdue' | 'paid' | 'part-paid';
 };
 
-const money = (m: number) => `£${(m / 100).toFixed(2)}`;
+const money = (m: number) => `Â£${(m / 100).toFixed(2)}`;
 const daysBetween = (a: string, b: string) =>
   Math.round((new Date(b).getTime() - new Date(a).getTime()) / (1000 * 60 * 60 * 24));
 
@@ -42,7 +42,7 @@ export default function PurchasesLedgerPage() {
   const [q, setQ] = useState('');
   const [status, setStatus] = useState<'all' | PurchaseBill['status']>('all');
 
-  // ✅ Flat default so period.from / period.to always exist
+  // âœ… Flat default so period.from / period.to always exist
   const [period, setPeriod] = useState<PeriodValue>(() => computeRange('month'));
 
   // demo data
@@ -184,7 +184,7 @@ export default function PurchasesLedgerPage() {
               <Input
                 value={q}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQ(e.target.value)}
-                placeholder="Search id, supplier, ref…"
+                placeholder="Search id, supplier, refâ€¦"
               />
               <select
                 value={status}
@@ -225,7 +225,7 @@ export default function PurchasesLedgerPage() {
                     <div className="flex flex-col">
                       <div className="font-mono font-semibold">{r.id}</div>
                       <div className="text-xs text-muted">
-                        {r.supplier} • Ref {r.ref ?? '—'} • Dated {r.date_iso} • Due {r.due_iso}
+                        {r.supplier} â€¢ Ref {r.ref ?? 'â€”'} â€¢ Dated {r.date_iso} â€¢ Due {r.due_iso}
                       </div>
                     </div>
                     <div className="text-right">
@@ -233,7 +233,7 @@ export default function PurchasesLedgerPage() {
                         Gross: <span className="font-medium">{money(gross)}</span>
                       </div>
                       <div className="text-xs text-muted">
-                        Paid {money(r.paid_minor)} • Due {money(outstanding)}
+                        Paid {money(r.paid_minor)} â€¢ Due {money(outstanding)}
                       </div>
                     </div>
                   </div>
@@ -253,7 +253,7 @@ export default function PurchasesLedgerPage() {
                         ].join(' ')}
                       >
                         {r.status.toUpperCase()}
-                        {overdueDays ? ` • ${overdueDays}d` : ''}
+                        {overdueDays ? ` â€¢ ${overdueDays}d` : ''}
                       </span>
                     </div>
                     <div className="flex gap-2">
@@ -292,11 +292,11 @@ export default function PurchasesLedgerPage() {
       </Card>
 
       <ArrowNav
-        backHref="/ship/business/oms/finance"
-        nextHref="/ship/business/oms/finance/vat"
+        backHref="/business/oms/finance"
+        nextHref="/business/oms/finance/vat"
         nextLabel="VAT"
       >
-        Finance · Purchases Ledger
+        Finance Â· Purchases Ledger
       </ArrowNav>
     </main>
   );

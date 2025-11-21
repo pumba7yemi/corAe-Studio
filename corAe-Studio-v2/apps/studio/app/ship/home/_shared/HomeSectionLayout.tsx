@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import React from "react";
@@ -17,9 +17,9 @@ export default function HomeSectionLayout({
         </div>
         <nav className="flex gap-2 text-xs">
           <Link className="rounded-lg px-3 py-2 bg-zinc-800 hover:bg-zinc-700"
-                href="/ship/home">← Home</Link>
+                href="/home">â† Home</Link>
           <Link className="rounded-lg px-3 py-2 bg-zinc-800 hover:bg-zinc-700"
-                href="/ship/home/onboarding/wizard/homefocus">Open Wizard</Link>
+                href="/home/onboarding/wizard/homefocus">Open Wizard</Link>
         </nav>
       </header>
       <main className="mx-auto max-w-4xl px-3 pb-24 pt-6">{children}</main>
@@ -63,5 +63,6 @@ export const Textarea = (p: React.TextareaHTMLAttributes<HTMLTextAreaElement>) =
 export const Chip = ({ children, onRemove }: { children: React.ReactNode; onRemove?: () => void }) =>
   <span className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/50 px-3 py-1 text-xs">
     {children}
-    {onRemove && <button onClick={onRemove} className="text-zinc-400 hover:text-zinc-200">✕</button>}
+    {onRemove && <button onClick={onRemove} className="text-zinc-400 hover:text-zinc-200">âœ•</button>}
   </span>;
+

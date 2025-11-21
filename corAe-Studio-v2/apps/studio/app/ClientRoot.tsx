@@ -1,20 +1,20 @@
-// apps/studio/app/ClientRoot.tsx
+﻿// apps/studio/app/ClientRoot.tsx
 "use client";
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-/* ───────────────────────────────
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    Types
-─────────────────────────────── */
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 type User = { id: string; name: string; role: string };
 type Tab = { path: string; title: string };
 type DropItem = { label: string; href: string };
 
-/* ───────────────────────────────
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    Utils
-─────────────────────────────── */
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function titleFor(path: string): string {
   const clean = path.replace(/\/+$/, "") || "/";
   if (clean === "/") return "Home";
@@ -22,7 +22,7 @@ function titleFor(path: string): string {
   return parts
     .map((p) =>
       p.toLowerCase() === "dtd"
-        ? "3³ DTD"
+        ? "3Â³ DTD"
         : p.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
     )
     .join(" / ");
@@ -46,9 +46,9 @@ function removeTab(
   setter((prev) => prev.filter((t) => t.path !== path));
 }
 
-/* ───────────────────────────────
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    Digital Clock (server-safe date, live time)
-─────────────────────────────── */
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function DigitalClock() {
   const dateStr = useMemo(() => {
     return new Intl.DateTimeFormat("en-GB", {
@@ -84,9 +84,9 @@ function DigitalClock() {
   );
 }
 
-/* ───────────────────────────────
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    Calm Click Dropdown
-─────────────────────────────── */
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function Dropdown({
   trigger,
   items,
@@ -125,7 +125,7 @@ function Dropdown({
         onClick={() => setOpen((o) => !o)}
       >
         {trigger}
-        <span className="text-xs text-slate-400">▾</span>
+        <span className="text-xs text-slate-400">â–¾</span>
       </button>
       {open && (
         <div
@@ -164,9 +164,9 @@ function Dropdown({
   );
 }
 
-/* ───────────────────────────────
-   ClientRoot — your original layout UI
-─────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+   ClientRoot â€” your original layout UI
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 export default function ClientRoot({
   children,
 }: {
@@ -253,12 +253,12 @@ export default function ClientRoot({
   const caiaMenu: DropItem[] = [
     { label: "Pulse", href: "/pulse" },
     { label: "CIMS", href: "/cims" },
-    { label: "3³ DTD", href: "/dtd" },
+    { label: "3Â³ DTD", href: "/dtd" },
   ];
   const lifeMenu: DropItem[] = [
-    { label: "Business", href: "/ship/business" },
-    { label: "Work", href: "/ship/work" },
-    { label: "Home", href: "/ship/home" },
+    { label: "Business", href: "/business" },
+    { label: "Work", href: "/work" },
+    { label: "Home", href: "/home" },
   ];
   const studioMenu: DropItem[] = [
     { label: "Ship", href: "/ship" },
@@ -273,7 +273,7 @@ export default function ClientRoot({
           {/* Left: Clock */}
           <DigitalClock />
 
-          {/* Center cluster — corAe   CAIA   Lifeᵒˢ™ */}
+          {/* Center cluster â€” corAe   CAIA   Lifeáµ’Ë¢â„¢ */}
           <div className="flex items-center justify-center gap-8 sm:gap-10">
             <Dropdown
               trigger={
@@ -314,7 +314,7 @@ export default function ClientRoot({
                   <sup className="ml-0.5 text-[0.6em] leading-none tracking-tight align-super">
                     os
                   </sup>
-                  <span className="ml-1">™</span>
+                  <span className="ml-1">â„¢</span>
                 </span>
               }
               items={lifeMenu}
@@ -343,7 +343,7 @@ export default function ClientRoot({
                 onClick={() => setUserMenuOpen((s) => !s)}
               >
                 {busy
-                  ? "Switching…"
+                  ? "Switchingâ€¦"
                   : activeUser
                   ? `${activeUser.name} (${activeUser.role})`
                   : "No Session"}
@@ -353,7 +353,7 @@ export default function ClientRoot({
                   <div className="px-3 py-2 border-b border-slate-700">
                     <div className="text-xs text-slate-400">CIMS Session</div>
                     <div className="text-sm text-slate-200">
-                      {activeUser ? activeUser.name : "—"}
+                      {activeUser ? activeUser.name : "â€”"}
                     </div>
                   </div>
                   <ul className="max-h-64 overflow-auto py-1">
@@ -410,9 +410,9 @@ export default function ClientRoot({
   );
 }
 
-/* ───────────────────────────────
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    Tabs strip (extracted for clarity)
-─────────────────────────────── */
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function TabsStrip({
   pathname,
   tabs,
@@ -455,7 +455,7 @@ function TabsStrip({
               }`}
               onClick={() => onClose(t.path)}
             >
-              ×
+              Ã—
             </button>
           </div>
         );

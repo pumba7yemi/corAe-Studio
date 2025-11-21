@@ -1,4 +1,4 @@
-// Advance TheDeal → return the next URL (e.g., SLA attach after Pricelock Confirmed)
+﻿// Advance TheDeal â†’ return the next URL (e.g., SLA attach after Pricelock Confirmed)
 import { NextResponse } from "next/server";
 
 type AdvanceBody = {
@@ -26,27 +26,27 @@ export async function POST(req: Request) {
 
     switch (event) {
       case "PRICELOCK_CONFIRMED":
-        // After Pricelock → attach SLA & escalation
-        nextUrl = `/ship/business/oms/obari/thedeal/sla-escalation?dealId=${encodeURIComponent(dealId)}`;
+        // After Pricelock â†’ attach SLA & escalation
+        nextUrl = `/business/oms/obari/thedeal/sla-escalation?dealId=${encodeURIComponent(dealId)}`;
         break;
 
       case "CONTRACT_SIGNED":
         // If you want to enforce Pricelock before SLA, keep users on thedeal hub
-        nextUrl = `/ship/business/oms/obari/thedeal?dealId=${encodeURIComponent(dealId)}&need=pricelock`;
+        nextUrl = `/business/oms/obari/thedeal?dealId=${encodeURIComponent(dealId)}&need=pricelock`;
         break;
 
       case "SLA_BOUND":
         // Once SLA is bound, you can take them to Active gating or summary
-        nextUrl = `/ship/business/oms/obari/thedeal?dealId=${encodeURIComponent(dealId)}&ok=sla`;
+        nextUrl = `/business/oms/obari/thedeal?dealId=${encodeURIComponent(dealId)}&ok=sla`;
         break;
 
       case "GO_ACTIVE":
         // Example of jumping to Active
-        nextUrl = `/ship/business/oms/active?dealId=${encodeURIComponent(dealId)}`;
+        nextUrl = `/business/oms/active?dealId=${encodeURIComponent(dealId)}`;
         break;
 
       default:
-        nextUrl = `/ship/business/oms/obari/thedeal?dealId=${encodeURIComponent(dealId)}`;
+        nextUrl = `/business/oms/obari/thedeal?dealId=${encodeURIComponent(dealId)}`;
     }
 
     return NextResponse.json({ ok: true, nextUrl });

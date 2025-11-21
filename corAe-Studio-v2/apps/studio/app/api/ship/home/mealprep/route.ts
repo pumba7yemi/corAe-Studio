@@ -1,4 +1,4 @@
-// apps/studio/app/api/ship/home/mealprep/route.ts
+﻿// apps/studio/app/api/home/mealprep/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
 type DayOfWeek="SUN"|"MON"|"TUE"|"WED"|"THU"|"FRI"|"SAT";

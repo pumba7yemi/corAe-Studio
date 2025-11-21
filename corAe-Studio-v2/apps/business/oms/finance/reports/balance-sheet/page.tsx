@@ -1,17 +1,17 @@
-'use client';
+﻿'use client';
 
 /**
- * Finance — Balance Sheet
+ * Finance â€” Balance Sheet
  * - Snapshot at end of period (demo calc)
  * - Assets: Bank/Cash, Accounts Receivable, Inventory
  * - Liabilities: Accounts Payable, VAT Control (net)
  * - Equity: Retained Earnings (Assets - Liabilities)
- * - Bottom arrows: back → P&L, next → Finance Hub
+ * - Bottom arrows: back â†’ P&L, next â†’ Finance Hub
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
 
-// One level deeper → extra "../"
+// One level deeper â†’ extra "../"
 import { Card, CardContent } from '@/ui/card';
 import { Separator } from '@/ui/separator';
 import ArrowNav from '@/components/navigation/ArrowNav';
@@ -22,7 +22,7 @@ import PeriodFilter, {
 } from '@/components/finance/PeriodFilter';
 
 type Money = number;
-const formatGBP = (m: number) => `£${(m / 100).toFixed(2)}`;
+const formatGBP = (m: number) => `Â£${(m / 100).toFixed(2)}`;
 
 type BankAcc = { id: string; name: string; opening_minor: Money; };
 type BankTx = { acc_id: string; date_iso: string; kind: 'deposit'|'withdrawal'|'fee'|'interest'|'pos-settle'|'transfer-in'|'transfer-out'; amount_minor: Money; };
@@ -109,7 +109,7 @@ export default function BalanceSheetPage() {
     <main className="p-6 space-y-6">
       <header className="stack">
         <h1 className="text-3xl font-bold">Balance Sheet</h1>
-        <p className="muted">Snapshot at end of period · {period.to}</p>
+        <p className="muted">Snapshot at end of period Â· {period.to}</p>
       </header>
 
       <Card>
@@ -216,11 +216,11 @@ export default function BalanceSheetPage() {
       </Card>
 
       <ArrowNav
-        backHref="/ship/business/oms/finance/reports/pnl"
-        nextHref="/ship/business/oms/finance"
+        backHref="/business/oms/finance/reports/pnl"
+        nextHref="/business/oms/finance"
         nextLabel="Finance Hub"
       >
-        Finance · Balance Sheet
+        Finance Â· Balance Sheet
       </ArrowNav>
     </main>
   );

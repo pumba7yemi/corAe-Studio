@@ -1,4 +1,4 @@
-// apps/studio/app/ship/business/oms/operations/page.tsx
+﻿// apps/studio/app/business/oms/operations/page.tsx
 import fs from "node:fs";
 import path from "node:path";
 
@@ -29,13 +29,13 @@ export default function Operations() {
           </p>
         </div>
         <div className="flex gap-2">
-          <a href="/ship/business/oms" className="rounded-lg border px-3 py-2 bg-white hover:bg-gray-50">← OMS</a>
-          <a href="/comms" className="rounded-lg border px-3 py-2 bg-white hover:bg-gray-50">corAe Comms™</a>
+          <a href="/business/oms" className="rounded-lg border px-3 py-2 bg-white hover:bg-gray-50">â† OMS</a>
+          <a href="/comms" className="rounded-lg border px-3 py-2 bg-white hover:bg-gray-50">corAe Commsâ„¢</a>
         </div>
       </header>
 
       {items.length === 0 ? (
-        <div className="text-gray-500">— no ops items —<br/>
+        <div className="text-gray-500">â€” no ops items â€”<br/>
           <span className="text-sm">
             Tip: drop any file (e.g. <code>daily_run_2025-09-06.md</code>) into <code>data/oms/operations</code> and refresh.
           </span>
@@ -65,3 +65,4 @@ export default function Operations() {
     </div>
   );
 }
+

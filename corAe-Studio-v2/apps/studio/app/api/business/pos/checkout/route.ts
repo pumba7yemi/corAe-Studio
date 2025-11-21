@@ -1,9 +1,9 @@
-// app/api/business/pos/checkout/route.ts
+﻿// app/api/business/pos/checkout/route.ts
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime/library";
-import { observeInventory } from "../../../../ship/business/oms/finance/pos/observers/inventory.observer";
+import { observeInventory } from "../../../../business/oms/finance/pos/observers/inventory.observer";
 
 type CheckoutItem = {
   id?: string;
@@ -157,3 +157,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: message }, { status: 500 });
   }
 }
+

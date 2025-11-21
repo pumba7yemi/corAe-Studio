@@ -1,6 +1,6 @@
-// apps/ship/business/oms/obari/thedeal/index.ts
-// OBARI · TheDeal (BDO) — Constitutional Stage Manifest & Guards
-// Canonical stage order (root): Prep → Schedule → OrderBooking → Active → Report → Invoice
+﻿// apps/business/oms/obari/thedeal/index.ts
+// OBARI Â· TheDeal (BDO) â€” Constitutional Stage Manifest & Guards
+// Canonical stage order (root): Prep â†’ Schedule â†’ OrderBooking â†’ Active â†’ Report â†’ Invoice
 // Use this as the single source of truth for stage sequencing & transition guards.
 
 export type Stage =
@@ -8,8 +8,8 @@ export type Stage =
   | "SCHEDULE"       // cadence + date window selection (CYCLE_28 / MONTHLY / HYBRID)
   | "ORDER_BOOKING"  // email booking + docs dispatch (RAMS/WTN/etc), slot reservation
   | "ACTIVE"         // execution window (collection/delivery/job/rental/service)
-  | "REPORT"         // vendor/customer reports → client reports (approved)
-  | "INVOICE";       // financial documents (SO/PO → AR/AP)
+  | "REPORT"         // vendor/customer reports â†’ client reports (approved)
+  | "INVOICE";       // financial documents (SO/PO â†’ AR/AP)
 
 export const STAGE_ORDER: readonly Stage[] = Object.freeze([
   "PREP",
@@ -48,19 +48,19 @@ export function canTransition(from: Stage, to: Stage): boolean {
 export function assertTransition(from: Stage, to: Stage): { ok: true } | { ok: false; error: string } {
   if (from === to) return { ok: false, error: `No-op transition: already at ${to}` };
   if (!canTransition(from, to)) {
-    return { ok: false, error: `Illegal transition ${from} → ${to}. Expected ${nextStage(from) ?? "end"}.` };
+    return { ok: false, error: `Illegal transition ${from} â†’ ${to}. Expected ${nextStage(from) ?? "end"}.` };
   }
   return { ok: true };
 }
 
 // Canonical paths for each stage namespace (kept here to avoid drift)
 export const THEDEAL_PATH = {
-  PREP:       "apps/ship/business/oms/obari/thedeal/prep",
-  SCHEDULE:   "apps/ship/business/oms/obari/thedeal/schedule",
-  BOOKING:    "apps/ship/business/oms/obari/thedeal/booking", // folder name is 'booking' while stage is ORDER_BOOKING
-  ACTIVE:     "apps/ship/business/oms/obari/thedeal/active",
-  REPORT:     "apps/ship/business/oms/obari/thedeal/report",
-  INVOICE:    "apps/ship/business/oms/obari/thedeal/invoice",
+  PREP:       "apps/business/oms/obari/thedeal/prep",
+  SCHEDULE:   "apps/business/oms/obari/thedeal/schedule",
+  BOOKING:    "apps/business/oms/obari/thedeal/booking", // folder name is 'booking' while stage is ORDER_BOOKING
+  ACTIVE:     "apps/business/oms/obari/thedeal/active",
+  REPORT:     "apps/business/oms/obari/thedeal/report",
+  INVOICE:    "apps/business/oms/obari/thedeal/invoice",
 } as const;
 
 // Simple stage breadcrumb for UIs
@@ -77,14 +77,14 @@ export function breadcrumb(current: Stage): { key: Stage; label: string; active:
 // Minimal BDO header (shared across stage payloads)
 export interface BdoHeader {
   bdo_id: string;
-  client_id: string;     // “our” client party (for outbound) or service client (for inbound execution context)
+  client_id: string;     // â€œourâ€ client party (for outbound) or service client (for inbound execution context)
   site_id: string;       // operational site (CDJRS place-of-business)
   direction: "outbound" | "inbound"; // SALES vs PURCHASE at the constitutional layer
   created_iso: string;
   stage: Stage;
 }
 
-// State envelope carried across the pipeline (opaque “data” by stage)
+// State envelope carried across the pipeline (opaque â€œdataâ€ by stage)
 export interface BdoEnvelope<T = unknown> extends BdoHeader {
   data: T;             // stage-specific payload (e.g., prep draft, schedule snapshot, booking email meta, etc.)
   lineage: string[];   // hash/ids of prior confirmations (PriceLock chain compatibility)
@@ -119,7 +119,7 @@ export function startBdo(init: Omit<BdoHeader, "created_iso" | "stage">, prepDat
   };
 }
 
-// —— Export convenience re-exports (each sub-stage should expose its own API under these files)
+// â€”â€” Export convenience re-exports (each sub-stage should expose its own API under these files)
 // export * as PrepAPI from "./prep";
 // export * as ScheduleAPI from "./schedule";
 // export * as BookingAPI from "./booking";

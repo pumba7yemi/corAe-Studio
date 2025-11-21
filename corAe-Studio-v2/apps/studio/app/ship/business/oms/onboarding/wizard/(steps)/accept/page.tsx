@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -30,13 +30,13 @@ export default function AcceptStepPage() {
   });
 
   useEffect(() => {
-    if (!dealId) setMsg("⚠️ Missing dealId in URL.");
+    if (!dealId) setMsg("âš ï¸ Missing dealId in URL.");
   }, [dealId]);
 
   async function runAccept() {
     setBusy(true); setMsg(null);
     try {
-      const res = await fetch("/api/ship/business/oms/onboarding/wizard", {
+      const res = await fetch("/api/business/oms/onboarding/wizard", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           step: "btdo.accept",
@@ -53,13 +53,13 @@ export default function AcceptStepPage() {
       const data = (await res.json()) as PostRes;
       if (!res.ok || "error" in data) {
         const e = "error" in data ? (Array.isArray(data.error) ? data.error.join(", ") : data.error) : "Failed";
-        setMsg(`❌ ${e}`); setBusy(false); return;
+        setMsg(`âŒ ${e}`); setBusy(false); return;
       }
-      setMsg("✅ Acceptance saved.");
+      setMsg("âœ… Acceptance saved.");
       // navigate to pricelock step
-      router.push(`/ship/business/oms/onboarding/wizard/(steps)/pricelock?dealId=${encodeURIComponent(dealId)}` as unknown as any);
+      router.push(`/business/oms/onboarding/wizard/(steps)/pricelock?dealId=${encodeURIComponent(dealId)}` as unknown as any);
     } catch (e: any) {
-      setMsg(`❌ ${e?.message ?? "Network error"}`);
+      setMsg(`âŒ ${e?.message ?? "Network error"}`);
     } finally { setBusy(false); }
   }
 
@@ -80,8 +80,8 @@ export default function AcceptStepPage() {
         <Field label="Acceptance Note"><input className="input" value={accept.note} onChange={(e)=>setAccept({...accept, note:e.target.value})} /></Field>
 
         <div className="end">
-          <button className="ghost" onClick={()=>router.push(`/ship/business/oms/onboarding/wizard/(steps)/intake` as unknown as any)}>← Back</button>
-          <button className="primary" disabled={!dealId || busy} onClick={runAccept}>Save & Continue →</button>
+          <button className="ghost" onClick={()=>router.push(`/business/oms/onboarding/wizard/(steps)/intake` as unknown as any)}>â† Back</button>
+          <button className="primary" disabled={!dealId || busy} onClick={runAccept}>Save & Continue â†’</button>
         </div>
       </section>
 

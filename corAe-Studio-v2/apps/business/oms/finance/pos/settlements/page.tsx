@@ -1,16 +1,16 @@
-// apps/studio/app/ship/business/oms/finance/pos/settlements/page.tsx
+﻿// apps/studio/app/business/oms/finance/pos/settlements/page.tsx
 'use client';
 
 /**
- * Finance — POS Settlements
+ * Finance â€” POS Settlements
  * - Lists daily POS settlement batches (cash & card) in a period
- * - Batch-level “Post to Bank” actions (demo only)
- * - Bottom arrows: back → Finance Hub, next → Bank Accounts
+ * - Batch-level â€œPost to Bankâ€ actions (demo only)
+ * - Bottom arrows: back â†’ Finance Hub, next â†’ Bank Accounts
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
 
-// ✅ Use the long relative imports that work in your workspace
+// âœ… Use the long relative imports that work in your workspace
 import { Card, CardContent } from '@/ui/card';
 import { Button } from '@/ui/button';
 import { Input } from '@/ui/input';
@@ -37,7 +37,7 @@ type Settlement = {
   posted_bank_acc?: string; // which bank account
 };
 
-const formatGBP = (m: number) => `£${(m / 100).toFixed(2)}`;
+const formatGBP = (m: number) => `Â£${(m / 100).toFixed(2)}`;
 
 export default function PosSettlementsPage() {
   // Flat period so period.from & period.to always exist
@@ -154,7 +154,7 @@ export default function PosSettlementsPage() {
           {/* Controls */}
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
-              <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search id, location, ref…" />
+              <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search id, location, refâ€¦" />
               <select
                 value={method}
                 onChange={(e) => setMethod(e.target.value as any)}
@@ -168,10 +168,10 @@ export default function PosSettlementsPage() {
 
             <div className="flex items-center gap-2">
               <Button variant="outline" onClick={() => postAllVisible('HSBC Current')}>
-                Post Visible → HSBC Current
+                Post Visible â†’ HSBC Current
               </Button>
               <Button variant="outline" onClick={() => postAllVisible('Cash Till')}>
-                Post Visible → Cash Till
+                Post Visible â†’ Cash Till
               </Button>
             </div>
           </div>
@@ -191,8 +191,8 @@ export default function PosSettlementsPage() {
                   <div className="flex flex-col">
                     <div className="font-mono font-semibold">{s.id}</div>
                     <div className="text-xs text-muted">
-                      {s.location} • {s.method.toUpperCase()} • {s.date_iso}
-                      {s.batch_ref ? ` • Batch ${s.batch_ref}` : ''}
+                      {s.location} â€¢ {s.method.toUpperCase()} â€¢ {s.date_iso}
+                      {s.batch_ref ? ` â€¢ Batch ${s.batch_ref}` : ''}
                     </div>
                   </div>
                   <div className="text-right">
@@ -201,7 +201,7 @@ export default function PosSettlementsPage() {
                     </div>
                     <div className="text-xs text-muted">
                       Gross {formatGBP(s.gross_minor)}
-                      {s.fees_minor ? ` • Fees ${formatGBP(s.fees_minor)}` : ''}
+                      {s.fees_minor ? ` â€¢ Fees ${formatGBP(s.fees_minor)}` : ''}
                     </div>
                   </div>
                 </div>
@@ -216,17 +216,17 @@ export default function PosSettlementsPage() {
                           : 'text-slate-300 border-slate-600/40',
                       ].join(' ')}
                     >
-                      {s.posted ? `POSTED → ${s.posted_bank_acc}` : 'UNPOSTED'}
+                      {s.posted ? `POSTED â†’ ${s.posted_bank_acc}` : 'UNPOSTED'}
                     </span>
                   </div>
                   <div className="flex gap-2">
                     {!s.posted && (
                       <>
                         <Button variant="outline" onClick={() => postBatch(s.id, 'HSBC Current')}>
-                          Post → HSBC Current
+                          Post â†’ HSBC Current
                         </Button>
                         <Button variant="outline" onClick={() => postBatch(s.id, 'Cash Till')}>
-                          Post → Cash Till
+                          Post â†’ Cash Till
                         </Button>
                       </>
                     )}
@@ -252,11 +252,11 @@ export default function PosSettlementsPage() {
       </Card>
 
       <ArrowNav
-        backHref="/ship/business/oms/finance"
-        nextHref="/ship/business/oms/finance/bank"
+        backHref="/business/oms/finance"
+        nextHref="/business/oms/finance/bank"
         nextLabel="Bank Accounts"
       >
-        Finance · POS Settlements
+        Finance Â· POS Settlements
       </ArrowNav>
     </main>
   );

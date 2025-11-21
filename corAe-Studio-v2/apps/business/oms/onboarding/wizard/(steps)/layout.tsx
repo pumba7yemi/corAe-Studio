@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useMemo } from "react";
 import Link from "next/link";
@@ -60,21 +60,21 @@ export default function StepsLayout({ children }: { children: React.ReactNode })
         <div className="left">
           <button
             className="circle"
-            onClick={() => router.push(`/ship/business/oms/onboarding/wizard/signup${suffix}`)}
+            onClick={() => router.push(`/business/oms/onboarding/wizard/signup${suffix}`)}
             title="Signup"
-          >←</button>
+          >â†</button>
           <h1 className="title">Onboarding Wizard</h1>
         </div>
         <div className="right">
           {prev ? (
-            <Link className="circle" href={`/ship/business/oms/onboarding/wizard/${prev.slug}${suffix}`} title={`Back: ${prev.label}`}>←</Link>
+            <Link className="circle" href={`/business/oms/onboarding/wizard/${prev.slug}${suffix}`} title={`Back: ${prev.label}`}>â†</Link>
           ) : (
-            <button className="circle" disabled title="Start">←</button>
+            <button className="circle" disabled title="Start">â†</button>
           )}
           {next ? (
-            <Link className="circle" href={`/ship/business/oms/onboarding/wizard/${next.slug}${suffix}`} title={`Next: ${next.label}`}>→</Link>
+            <Link className="circle" href={`/business/oms/onboarding/wizard/${next.slug}${suffix}`} title={`Next: ${next.label}`}>â†’</Link>
           ) : (
-            <button className="circle" disabled title="End">→</button>
+            <button className="circle" disabled title="End">â†’</button>
           )}
         </div>
       </header>
@@ -91,7 +91,7 @@ export default function StepsLayout({ children }: { children: React.ReactNode })
             return (
               <li key={s.slug}>
                 <Link
-                  href={`/ship/business/oms/onboarding/wizard/${s.slug}${suffix}`}
+                  href={`/business/oms/onboarding/wizard/${s.slug}${suffix}`}
                   className={`pill ${active ? "active" : ""} ${done ? "done" : ""}`}
                 >
                   {s.label}

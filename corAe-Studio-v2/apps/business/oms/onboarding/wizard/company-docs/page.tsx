@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -41,14 +41,14 @@ export default function CompanyDocsPage() {
         if (!res.ok || !data?.ok) throw new Error(data?.error || "Failed to load");
         setDocs(data.documents || []);
       } catch (e: any) {
-        setMsg(`⚠️ Load failed: ${e?.message}`);
+        setMsg(`âš ï¸ Load failed: ${e?.message}`);
       }
     })();
   }, [companyId]);
 
   async function save() {
     if (!companyId) {
-      setMsg("❌ companyId missing in URL");
+      setMsg("âŒ companyId missing in URL");
       return;
     }
     setBusy(true);
@@ -65,9 +65,9 @@ export default function CompanyDocsPage() {
       });
       const data = await res.json();
       if (!res.ok || !data?.ok) throw new Error(data?.error || "Save failed");
-      setMsg(`✅ Saved ${data.upserted} docs.`);
+      setMsg(`âœ… Saved ${data.upserted} docs.`);
     } catch (e: any) {
-      setMsg(`❌ ${e?.message}`);
+      setMsg(`âŒ ${e?.message}`);
     } finally {
       setBusy(false);
     }
@@ -77,7 +77,7 @@ export default function CompanyDocsPage() {
     <div className={`${inter.variable} max-w-3xl mx-auto p-6 space-y-6`}>
       <header className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Company Documentation</h1>
-        <button className="btnGhost" onClick={() => router.push("/ship/business/oms/onboarding/wizard")}>← Back to Wizard</button>
+        <button className="btnGhost" onClick={() => router.push("/business/oms/onboarding/wizard")}>â† Back to Wizard</button>
       </header>
 
       {msg && <p className="text-sm">{msg}</p>}

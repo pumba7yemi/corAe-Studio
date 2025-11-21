@@ -1,4 +1,4 @@
-// app/ship/business/pos/till/page.tsx
+﻿// app/business/pos/till/page.tsx
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -63,7 +63,7 @@ export default function POSTill() {
       <div className="c-card p-4">
         <h2 className="text-lg font-semibold mb-2">Sale Items</h2>
         {items.length === 0 ? (
-          <p className="muted">No items yet — start scanning.</p>
+          <p className="muted">No items yet â€” start scanning.</p>
         ) : (
           <table className="w-full text-sm">
             <thead>
@@ -96,8 +96,9 @@ export default function POSTill() {
       </div>
 
       <div className="row justify-end">
-        <button className="btn btn-primary">🧾 Checkout</button>
+        <button className="btn btn-primary">ðŸ§¾ Checkout</button>
       </div>
     </main>
   );
 }
+

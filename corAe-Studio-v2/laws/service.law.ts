@@ -1,5 +1,5 @@
-// /laws/service.law.ts
-// corAe Constitutional Law — Service & Delivery (Operations)
+﻿// /laws/service.law.ts
+// corAe Constitutional Law â€” Service & Delivery (Operations)
 
 type ServiceSubdomain = {
   path: string;
@@ -26,23 +26,23 @@ export const ServiceLaw: ServiceLawT = {
     "Service & Delivery turns orders into outcomes. It includes PMO, Delivery Ops, R&D, and QA. Execution aligns to OBARI stages for traceability.",
   subdomains: [
     {
-      path: "/apps/ship/business/service/projects",
+      path: "/apps/business/service/projects",
       purpose: "PMO: programs, projects, milestones, RAID logs.",
       requiredFolders: ["portfolio", "projects", "milestones", "raids"],
     },
     {
-      path: "/apps/ship/business/service/delivery",
+      path: "/apps/business/service/delivery",
       purpose: "Operational delivery workflows and SOPs.",
       requiredFolders: ["workflows", "sops", "runbooks"],
     },
     {
-      path: "/apps/ship/business/service/r_and_d",
+      path: "/apps/business/service/r_and_d",
       purpose: "Research & development, prototypes, experiments.",
       requiredFolders: ["experiments", "prototypes"],
       constraints: ["No production data; masked datasets only."],
     },
     {
-      path: "/apps/ship/business/service/qa",
+      path: "/apps/business/service/qa",
       purpose: "Quality control, acceptance criteria, test evidence.",
       requiredFolders: ["checklists", "evidence", "nonconformities"],
       constraints: ["Nonconformities must raise Middle-Office quality events."],

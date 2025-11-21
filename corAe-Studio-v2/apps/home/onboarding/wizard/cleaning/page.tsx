@@ -1,9 +1,9 @@
-// apps/studio/app/ship/home/onboarding/wizard/cleaning/page.tsx
+﻿// apps/studio/app/home/onboarding/wizard/cleaning/page.tsx
 "use client";
 /**
- * corAe • Home • Onboarding • Cleaning
+ * corAe â€¢ Home â€¢ Onboarding â€¢ Cleaning
  * 28-day cleaning rhythm with zones & rotations.
- * Seeds: /api/ship/home/cleaning (+Have-You prompts)
+ * Seeds: /api/home/cleaning (+Have-You prompts)
  */
 import React, { useEffect, useMemo, useState } from "react";
 type Step="WELCOME"|"ZONES"|"TASKS"|"ROTATION"|"BLUEPRINT"|"SUCCESS";
@@ -21,7 +21,7 @@ export default function CleaningWizard(){
   const [s,setS]=useState<State>({step:"WELCOME",householdName:"",anchorDay:"THU",zones:[],tasks:[],rotation:DAYS.map(d=>({day:d})),blueprintJson:""});
   const set=(p:Partial<State>)=>setS(x=>({...x,...p})); const go=(step:Step)=>set({step});
   const Welcome=()=>(
-    <Card title="Welcome — Cleaning Rhythm">
+    <Card title="Welcome â€” Cleaning Rhythm">
       <div className="grid gap-3 sm:grid-cols-2">
         <Input placeholder="Household name" value={s.householdName} onChange={e=>set({householdName:(e.target as HTMLInputElement).value})}/>
         <div className="flex flex-wrap gap-2">{DAYS.map(d=><button key={d} onClick={()=>set({anchorDay:d})} className={`rounded-xl border px-3 py-1 text-sm ${s.anchorDay===d?"border-zinc-200 bg-zinc-100 text-zinc-950":"border-zinc-800 bg-zinc-900/60 hover:bg-zinc-900"}`}>{d}</button>)}</div>
@@ -38,7 +38,7 @@ export default function CleaningWizard(){
           <Input placeholder="e.g., Kitchen" value={name} onChange={e=>setName(e.target.value)} />
           <Button onClick={add}>+ Add Zone</Button>
         </div>
-        <div className="flex flex-wrap gap-2">{s.zones.map(z=><span key={z.id} className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/60 px-3 py-1 text-xs">{z.name}<button onClick={()=>remove(z.id)} className="text-zinc-400 hover:text-zinc-100">✕</button></span>)}</div>
+        <div className="flex flex-wrap gap-2">{s.zones.map(z=><span key={z.id} className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/60 px-3 py-1 text-xs">{z.name}<button onClick={()=>remove(z.id)} className="text-zinc-400 hover:text-zinc-100">âœ•</button></span>)}</div>
         <div className="flex gap-2"><Button onClick={()=>go("WELCOME")}>Back</Button><Button onClick={()=>go("TASKS")}>Continue</Button></div>
       </Card>
     );
@@ -58,7 +58,7 @@ export default function CleaningWizard(){
           </select>
           <div className="sm:col-span-2"><Button onClick={add}>+ Add Task</Button></div>
         </div>
-        {s.tasks.length>0 && <div className="space-y-2 pt-2">{s.tasks.map(t=><div key={t.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm">{t.title} • {s.zones.find(z=>z.id===t.zoneId)?.name} • {t.freq} <button onClick={()=>remove(t.id)} className="ml-2 text-zinc-400 hover:text-zinc-100">✕</button></div>)}</div>}
+        {s.tasks.length>0 && <div className="space-y-2 pt-2">{s.tasks.map(t=><div key={t.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm">{t.title} â€¢ {s.zones.find(z=>z.id===t.zoneId)?.name} â€¢ {t.freq} <button onClick={()=>remove(t.id)} className="ml-2 text-zinc-400 hover:text-zinc-100">âœ•</button></div>)}</div>}
         <div className="flex gap-2"><Button onClick={()=>go("ZONES")}>Back</Button><Button onClick={()=>go("ROTATION")} >Continue</Button></div>
       </Card>
     );
@@ -73,7 +73,7 @@ export default function CleaningWizard(){
               <div className="text-sm font-semibold mb-2">{slt.day}</div>
               <select className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm"
                 value={slt.zoneId ?? ""} onChange={e=>setZoneForDay(slt.day, e.target.value)}>
-                <option value="">— Zone —</option>
+                <option value="">â€” Zone â€”</option>
                 {s.zones.map(z=><option key={z.id} value={z.id}>{z.name}</option>)}
               </select>
             </div>
@@ -85,8 +85,8 @@ export default function CleaningWizard(){
   };
   const Blueprint=()=> {
     const bp=useMemo(()=>({scope:"HOME", module:"CLEANING", household:s.householdName, anchorDay:s.anchorDay, zones:s.zones, tasks:s.tasks, rotation:s.rotation, generatedAt:new Date().toISOString(), version:1}),[s]);
-    async function seedApis(){ try{ await fetch("/api/ship/home/cleaning",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"seedFromBlueprint",blueprint:bp})}); }catch{} try{ await fetch("/api/ship/home/haveyou",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"bulkUpsert",items:[
-      { text:`Have you done today’s cleaning zone?`, schedule:`DAILY 10:00` },
+    async function seedApis(){ try{ await fetch("/api/home/cleaning",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"seedFromBlueprint",blueprint:bp})}); }catch{} try{ await fetch("/api/home/haveyou",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"bulkUpsert",items:[
+      { text:`Have you done todayâ€™s cleaning zone?`, schedule:`DAILY 10:00` },
       { text:`Have you planned weekly deep-clean for ${s.anchorDay}?`, schedule:`${s.anchorDay} 11:00` },
     ]})}); }catch{} }
     function download(){ const blob=new Blob([JSON.stringify(bp,null,2)],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=`${s.householdName||"home-cleaning"}-blueprint.json`; a.click(); URL.revokeObjectURL(url); }
@@ -104,7 +104,7 @@ export default function CleaningWizard(){
       {s.step==="TASKS"&&<Tasks/>}
       {s.step==="ROTATION"&&<Rotation/>}
       {s.step==="BLUEPRINT"&&<Blueprint/>}
-      {s.step==="SUCCESS"&&<Card title="Cleaning Rhythm Ready 🎉"><p className="text-sm text-zinc-300">Prompts and weekly rotation are live.</p></Card>}
+      {s.step==="SUCCESS"&&<Card title="Cleaning Rhythm Ready ðŸŽ‰"><p className="text-sm text-zinc-300">Prompts and weekly rotation are live.</p></Card>}
     </div>
   );
 }

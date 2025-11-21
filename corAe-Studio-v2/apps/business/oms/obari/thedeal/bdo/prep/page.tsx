@@ -1,13 +1,13 @@
-"use client";
+﻿"use client";
 export const dynamic = "force-dynamic";
 
 /**
- * OBARI — TheDeal › BDO › Prep · 150.logic
- * Flow: BDO Ready → BDO Prep → Order (OBARI core)
+ * OBARI â€” TheDeal â€º BDO â€º Prep Â· 150.logic
+ * Flow: BDO Ready â†’ BDO Prep â†’ Order (OBARI core)
  * - Reads saved schedule snapshot from sessionStorage ("bdo.schedule.selection")
  * - Optional preset auto-fills direction, parties, and item details
  * - Issues a BDO Draft via /api/business/oms/obari/bdo/order/issue
- * - Back → BDO Ready (thedeal) | Next → Order (obari core)
+ * - Back â†’ BDO Ready (thedeal) | Next â†’ Order (obari core)
  */
 
 import { useEffect, useMemo, useState } from "react";
@@ -64,7 +64,7 @@ export default function BdoPrepPage() {
   const [issuing, setIssuing] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
-  /* ── Load schedule (from BDO Ready) ── */
+  /* â”€â”€ Load schedule (from BDO Ready) â”€â”€ */
   useEffect(() => {
     try {
       const raw = sessionStorage.getItem("bdo.schedule.selection");
@@ -72,7 +72,7 @@ export default function BdoPrepPage() {
     } catch { /* ignore */ }
   }, []);
 
-  /* ── Load presets (thedeal) ── */
+  /* â”€â”€ Load presets (thedeal) â”€â”€ */
   useEffect(() => {
     (async () => {
       try {
@@ -83,7 +83,7 @@ export default function BdoPrepPage() {
     })();
   }, []);
 
-  /* ── Apply preset ── */
+  /* â”€â”€ Apply preset â”€â”€ */
   useEffect(() => {
     const p = bdoList.find((x) => x.id === bdoId);
     if (!p) return;
@@ -104,14 +104,14 @@ export default function BdoPrepPage() {
     if (p.taxCode) setTaxCode(p.taxCode);
   }, [bdoId, bdoList]);
 
-  /* ── Validation ── */
+  /* â”€â”€ Validation â”€â”€ */
   const canIssue = useMemo(() => {
     const q = Number(qty);
     const p = Number(unitPrice);
     return itemCode.trim().length > 0 && Number.isFinite(q) && q > 0 && Number.isFinite(p) && p >= 0;
   }, [itemCode, qty, unitPrice]);
 
-  /* ── Issue BDO Draft ── */
+  /* â”€â”€ Issue BDO Draft â”€â”€ */
   async function issueOrder() {
     if (!canIssue) return;
     setIssuing(true);
@@ -140,15 +140,15 @@ export default function BdoPrepPage() {
       const data: IssueResponse = await res.json();
       if (!data.ok) throw new Error(data.error || "Issue failed.");
 
-      setMessage("✅ BDO Draft issued.");
+      setMessage("âœ… BDO Draft issued.");
     } catch (e: any) {
-      setMessage(`❌ ${e.message || "Failed to issue BDO Draft."}`);
+      setMessage(`âŒ ${e.message || "Failed to issue BDO Draft."}`);
     } finally {
       setIssuing(false);
     }
   }
 
-  /* ── Schedule banner ── */
+  /* â”€â”€ Schedule banner â”€â”€ */
   const schedLine = sched
     ? (() => {
         const s = new Date(sched.startDate);
@@ -158,17 +158,17 @@ export default function BdoPrepPage() {
         const bits = [
           `Mode: ${sched.mode}`,
           sched.weekRef ? `Week: ${sched.weekRef}` : null,
-          `Window: ${fmt(s)} → ${fmt(e)}`,
+          `Window: ${fmt(s)} â†’ ${fmt(e)}`,
           sched.label ? `Label: ${sched.label}` : null,
         ].filter(Boolean);
-        return bits.join(" · ");
+        return bits.join(" Â· ");
       })()
     : null;
 
   return (
     <main className="p-6 space-y-6">
       <header className="stack">
-        <h1 className="text-3xl font-bold">OBARI — BDO Prep</h1>
+        <h1 className="text-3xl font-bold">OBARI â€” BDO Prep</h1>
         <p className="muted">Prepare commercial details from your BDO Ready window, then issue a BDO draft.</p>
       </header>
 
@@ -192,7 +192,7 @@ export default function BdoPrepPage() {
             className="border border-ring rounded-lg p-2 bg-card flex-1"
             disabled={bdoList.length === 0}
           >
-            <option value="">{bdoList.length ? "Select a preset…" : "No presets"}</option>
+            <option value="">{bdoList.length ? "Select a presetâ€¦" : "No presets"}</option>
             {bdoList.map((b) => (
               <option key={b.id} value={b.id}>
                 {b.name}
@@ -238,7 +238,7 @@ export default function BdoPrepPage() {
               onChange={(e) => setExpectedWeek(e.target.value as WeekRef | "")}
               className="border border-ring rounded-lg p-2 bg-card"
             >
-              <option value="">— Auto —</option>
+              <option value="">â€” Auto â€”</option>
               <option value="W1">W1</option>
               <option value="W2">W2</option>
               <option value="W3">W3</option>
@@ -340,7 +340,7 @@ export default function BdoPrepPage() {
 
         <div className="row justify-end gap-2">
           <button className="btn btn-primary" onClick={issueOrder} disabled={!canIssue || issuing}>
-            {issuing ? "Issuing…" : "Issue BDO Draft"}
+            {issuing ? "Issuingâ€¦" : "Issue BDO Draft"}
           </button>
         </div>
 
@@ -348,11 +348,11 @@ export default function BdoPrepPage() {
       </section>
 
       <ArrowNav
-        backHref="/ship/business/oms/obari/thedeal/bdo/schedule"
-        nextHref="/ship/business/oms/obari/order"
+        backHref="/business/oms/obari/thedeal/bdo/schedule"
+        nextHref="/business/oms/obari/order"
         nextLabel="To Order"
       >
-        Step 3 of 3 — BDO Prep
+        Step 3 of 3 â€” BDO Prep
       </ArrowNav>
     </main>
   );

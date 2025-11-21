@@ -1,12 +1,12 @@
-"use client";
+﻿"use client";
 
 /**
- * OBARI — Reporting (Stage 5)
- * Displays reports generated from Active stage (ACT_* → REP_*).
+ * OBARI â€” Reporting (Stage 5)
+ * Displays reports generated from Active stage (ACT_* â†’ REP_*).
  */
 
 import { useEffect, useState } from "react";
-import ArrowNav from "@/components/navigation/ArrowNav"; // ✅ alias (never breaks)
+import ArrowNav from "@/components/navigation/ArrowNav"; // âœ… alias (never breaks)
 
 type ReportRecord = {
   report_id: string;
@@ -30,12 +30,12 @@ export default function ObariReportPage() {
 
   async function load() {
     try {
-      const r = await fetch("/api/ship/business/oms/obari/report", { cache: "no-store" });
+      const r = await fetch("/api/business/oms/obari/report", { cache: "no-store" });
       const j = await r.json();
       if (j.ok) setReports(j.items || []);
       else throw new Error(j.error || "Load failed");
     } catch (e: any) {
-      setMsg(`❌ ${e?.message || "Failed to load reports"}`);
+      setMsg(`âŒ ${e?.message || "Failed to load reports"}`);
     } finally {
       setLoading(false);
     }
@@ -47,18 +47,18 @@ export default function ObariReportPage() {
 
   return (
     <main className="p-6 space-y-6 flex flex-col min-h-screen">
-      {/* ───────────── HEADER ───────────── */}
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ HEADER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <header className="stack">
-        <h1 className="text-3xl font-bold">OBARI — Reporting</h1>
+        <h1 className="text-3xl font-bold">OBARI â€” Reporting</h1>
         <p className="muted">
           Variance, compliance, GRV, expiry, and notes summary for completed jobs.
         </p>
       </header>
 
-      {/* ───────────── LIST ───────────── */}
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ LIST â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="c-card p-4 flex-1">
         {loading ? (
-          <div className="small text-slate-400">Loading reports…</div>
+          <div className="small text-slate-400">Loading reportsâ€¦</div>
         ) : reports.length === 0 ? (
           <div className="small text-slate-500">No reports generated yet.</div>
         ) : (
@@ -69,10 +69,10 @@ export default function ObariReportPage() {
                 className="border border-slate-700 rounded-xl p-3 bg-slate-900/40"
               >
                 <div className="font-mono text-slate-200">
-                  {r.order_numbers.so_no || r.order_numbers.po_no || "—"}
+                  {r.order_numbers.so_no || r.order_numbers.po_no || "â€”"}
                 </div>
                 <div className="text-slate-400 text-xs">
-                  {r.direction.toUpperCase()} • {r.status.toUpperCase()} •{" "}
+                  {r.direction.toUpperCase()} â€¢ {r.status.toUpperCase()} â€¢{" "}
                   {new Date(r.generated_at_iso).toLocaleString()}
                 </div>
                 <div className="text-xs text-slate-400 mt-1">
@@ -82,18 +82,18 @@ export default function ObariReportPage() {
                   Variance:{" "}
                   {r.variance?.delta_minor
                     ? `${r.variance.delta_minor / 100} (${r.variance.reason ?? ""})`
-                    : "—"}
+                    : "â€”"}
                 </div>
                 <div className="text-xs text-slate-400">
                   Compliance:{" "}
                   {r.compliance
                     ? r.compliance.ok
-                      ? "✅ OK"
-                      : `⚠ Missing: ${r.compliance.missing?.join(", ")}`
-                    : "—"}
+                      ? "âœ… OK"
+                      : `âš  Missing: ${r.compliance.missing?.join(", ")}`
+                    : "â€”"}
                 </div>
                 <div className="text-xs text-slate-500">
-                  Notes: {r.notes ?? "—"}
+                  Notes: {r.notes ?? "â€”"}
                 </div>
               </div>
             ))}
@@ -103,13 +103,13 @@ export default function ObariReportPage() {
 
       {msg && <div className="small text-red-500">{msg}</div>}
 
-      {/* ───────────── NAVIGATION ARROWS ───────────── */}
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ NAVIGATION ARROWS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <footer className="pt-4 mt-auto">
         <ArrowNav
-          backHref="/ship/business/oms/obari/active"
-          nextHref="/ship/business/oms/obari/invoice"
+          backHref="/business/oms/obari/active"
+          nextHref="/business/oms/obari/invoice"
         >
-          Stage 5 — Reporting
+          Stage 5 â€” Reporting
         </ArrowNav>
       </footer>
     </main>

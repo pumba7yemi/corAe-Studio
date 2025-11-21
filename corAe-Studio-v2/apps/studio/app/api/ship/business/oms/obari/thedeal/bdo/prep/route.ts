@@ -1,5 +1,5 @@
-// OBARI — BDO Prep Engine (unified SO/PO)
-// apps/ship/business/oms/obari/thedeal/orders/bdo/prep/route.ts
+﻿// OBARI â€” BDO Prep Engine (unified SO/PO)
+// apps/business/oms/obari/thedeal/orders/bdo/prep/route.ts
 
 export type Minor = number;
 export type Cadence =

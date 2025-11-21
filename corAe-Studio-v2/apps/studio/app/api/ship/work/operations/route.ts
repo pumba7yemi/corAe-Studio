@@ -1,4 +1,4 @@
-// apps/studio/app/api/ship/work/operations/route.ts
+﻿// apps/studio/app/api/work/operations/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import {
   createObariEngine,
@@ -21,9 +21,9 @@ function engine() {
 
 /**
  * POST actions:
- * - { action:"seedFromBlueprint", blueprint:{...} } → sets up queues/routes
- * - { action:"assign", workItem:{...}, partnerId, slaHours } → creates acceptance task
- * - { action:"acknowledge", workId } → marks accepted, cancels escalation
+ * - { action:"seedFromBlueprint", blueprint:{...} } â†’ sets up queues/routes
+ * - { action:"assign", workItem:{...}, partnerId, slaHours } â†’ creates acceptance task
+ * - { action:"acknowledge", workId } â†’ marks accepted, cancels escalation
  */
 export async function POST(req: NextRequest) {
   try {

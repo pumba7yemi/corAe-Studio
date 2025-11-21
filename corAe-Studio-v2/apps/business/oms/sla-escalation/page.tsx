@@ -1,16 +1,16 @@
-// apps/studio/app/ship/business/oms/sla-escalation/page.tsx
+﻿// apps/studio/app/business/oms/sla-escalation/page.tsx
 "use client"; // remove if you want this to be a server component (no hooks)
 
 import React, { useState } from "react";
 
 export default function SlaEscalationPage() {
-  // Example local state to prove it’s a valid React component
+  // Example local state to prove itâ€™s a valid React component
   const [hours, setHours] = useState<number>(24);
   const [roles, setRoles] = useState<string>("Manager, Duty Lead");
 
   return (
     <main className="mx-auto max-w-3xl p-6">
-      <h1 className="text-2xl font-semibold">SLA • Escalation Policy</h1>
+      <h1 className="text-2xl font-semibold">SLA â€¢ Escalation Policy</h1>
       <p className="text-sm text-zinc-500">
         Configure acceptance window and escalation roles.
       </p>
@@ -46,7 +46,7 @@ export default function SlaEscalationPage() {
             .split(",")
             .map((s) => s.trim())
             .filter(Boolean)
-            .join(" • ")}
+            .join(" â€¢ ")}
           ] after {hours}h
         </div>
       </section>

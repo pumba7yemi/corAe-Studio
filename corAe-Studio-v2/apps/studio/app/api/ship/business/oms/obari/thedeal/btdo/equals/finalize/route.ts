@@ -1,5 +1,5 @@
-// apps/studio/app/api/ship/business/oms/btdo/equals/finalize/route.ts
-// Studio API — BTDO Equals Finalize (immutable baton snapshot) + sourceOfDemand
+﻿// apps/studio/app/api/business/oms/btdo/equals/finalize/route.ts
+// Studio API â€” BTDO Equals Finalize (immutable baton snapshot) + sourceOfDemand
 // Role: Create an idempotent "BTDO" stage "=" snapshot to pass forward into BDO/OBARI.
 
 import { NextResponse } from "next/server";
@@ -26,7 +26,7 @@ type EqualsInput = {
   vendorId?: string | null;
   currency: string;
 
-  // NEW — demand source
+  // NEW â€” demand source
   sourceOfDemand: SourceOfDemand;
 
   lines: Array<{
@@ -56,7 +56,7 @@ type EqualsSnapshot = {
   version: number;        // schema version for "="
 };
 
-// ── Canonicalization & hashing
+// â”€â”€ Canonicalization & hashing
 function sortKeysDeep(value: any): any {
   if (Array.isArray(value)) return value.map(sortKeysDeep);
   if (value && typeof value === "object") {
@@ -89,7 +89,7 @@ function validateSourceOfDemand(s: any): asserts s is SourceOfDemand {
   if (s.refId != null && typeof s.refId !== "string") throw new Error("sourceOfDemand.refId must be a string if provided");
 }
 
-// ── Business rules
+// â”€â”€ Business rules
 function makeEqualsSnapshot(input: EqualsInput, now: Date = new Date()): EqualsSnapshot {
   if (input.stage !== "BTDO") throw new Error('BTDO equals finalize requires stage="BTDO"');
 
@@ -157,7 +157,7 @@ function makeEqualsSnapshot(input: EqualsInput, now: Date = new Date()): EqualsS
   };
 }
 
-// ── Route: POST /api/.../btdo/equals/finalize
+// â”€â”€ Route: POST /api/.../btdo/equals/finalize
 export async function POST(req: Request) {
   try {
     const raw = await req.json();
@@ -201,3 +201,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
+

@@ -1,5 +1,5 @@
-// apps/studio/apps/ship/app/api/ship/business/oms/obari/active/route.ts
-// OBARI — Active API (Stage 4)
+﻿// apps/studio/apps/ship/app/api/business/oms/obari/active/route.ts
+// OBARI â€” Active API (Stage 4)
 
 import { NextRequest, NextResponse } from "next/server";
 
@@ -122,8 +122,8 @@ function fromBooking(b: BookingRecordLight, snapshot?: OrderStagingSnapshot): Ac
 }
 
 /* --------------------------------- GET --------------------------------- */
-// GET /api/ship/business/oms/obari/active
-// GET /api/ship/business/oms/obari/active?id=ACT_xxx
+// GET /api/business/oms/obari/active
+// GET /api/business/oms/obari/active?id=ACT_xxx
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");

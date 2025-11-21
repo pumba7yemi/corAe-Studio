@@ -1,11 +1,12 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 
 export default function Page(){
   return (
     <div style={{padding:24}}>
       <h1>Meals / Kitchen</h1>
-      <p>Home OS — Meals and kitchen placeholder</p>
-      <p><Link href="/ship/home/core/meals">Open</Link></p>
+      <p>Home OS â€” Meals and kitchen placeholder</p>
+      <p><Link href="/home/core/meals">Open</Link></p>
     </div>
   )
 }
+

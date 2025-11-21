@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -29,9 +29,9 @@ export default function PricelockStepPage() {
     setBusy(true); setMsg(null);
     try {
       const priceNumber = Number(total);
-      if (!priceNumber || priceNumber <= 0) { setMsg("❌ Enter a valid total."); setBusy(false); return; }
+      if (!priceNumber || priceNumber <= 0) { setMsg("âŒ Enter a valid total."); setBusy(false); return; }
 
-      await fetch("/api/ship/business/oms/onboarding/wizard/pricelock", {
+      await fetch("/api/business/oms/onboarding/wizard/pricelock", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           dealId,
@@ -42,16 +42,16 @@ export default function PricelockStepPage() {
           confirmedBy: signerName || signerEmail || null,
         }),
       });
-      setMsg("🔒 Pricelock Chain created.");
-      router.push(`/ship/business/oms/onboarding/wizard/(steps)/booking-sheet?dealId=${encodeURIComponent(dealId)}`);
+      setMsg("ðŸ”’ Pricelock Chain created.");
+      router.push(`/business/oms/onboarding/wizard/(steps)/booking-sheet?dealId=${encodeURIComponent(dealId)}`);
     } catch (e: any) {
-      setMsg(`❌ ${e?.message ?? "Network error"}`);
+      setMsg(`âŒ ${e?.message ?? "Network error"}`);
     } finally { setBusy(false); }
   }
 
   return (
     <div className="page">
-      <header className="top"><h1 className="title">corAe Pricelock Chain™</h1></header>
+      <header className="top"><h1 className="title">corAe Pricelock Chainâ„¢</h1></header>
       {msg && <p className="muted" style={{margin:"8px 2px"}}>{msg}</p>}
 
       <section className="panel">
@@ -70,8 +70,8 @@ export default function PricelockStepPage() {
         <Field label="Signer (Name)"><input className="input" value={signerName} onChange={(e)=>setSignerName(e.target.value)} placeholder="e.g., Jane Smith" /></Field>
 
         <div className="end">
-          <button className="ghost" onClick={()=>router.push(`/ship/business/oms/onboarding/wizard/(steps)/accept?dealId=${encodeURIComponent(dealId)}`)}>← Back</button>
-          <button className="primary" disabled={!dealId || busy || !total} onClick={createPricelock}>Create Pricelock & Continue →</button>
+          <button className="ghost" onClick={()=>router.push(`/business/oms/onboarding/wizard/(steps)/accept?dealId=${encodeURIComponent(dealId)}`)}>â† Back</button>
+          <button className="primary" disabled={!dealId || busy || !total} onClick={createPricelock}>Create Pricelock & Continue â†’</button>
         </div>
       </section>
 

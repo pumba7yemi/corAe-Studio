@@ -1,4 +1,4 @@
-# Marketing Appraisals (OMS → Commercial → Marketing)
+﻿# Marketing Appraisals (OMS â†’ Commercial â†’ Marketing)
 
 Generates three assets per prospect:
 1) Expanded Appraisal (Markdown)
@@ -7,7 +7,7 @@ Generates three assets per prospect:
 
 **Constitutional placement**
 - Domain: **Commercial / Marketing** (Front Office)
-- Path: `/apps/ship/business/oms/commercial/marketing/appraisals/`
+- Path: `/apps/business/oms/commercial/marketing/appraisals/`
 - Pre-OBARI (intelligence before `order`)
 - Optional Pulse feed: top-of-funnel KPIs (lead quality, conversion)
 

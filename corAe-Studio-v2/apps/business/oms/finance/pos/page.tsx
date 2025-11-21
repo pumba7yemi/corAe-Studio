@@ -1,4 +1,4 @@
-// app/ship/business/pos/page.tsx
+﻿// app/business/pos/page.tsx
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -90,9 +90,9 @@ export default function POSHome() {
     const data = await res.json();
     if (data.ok) {
       setCart([]);
-      alert("✅ Sale recorded and sent to OBARI/Finance");
+      alert("âœ… Sale recorded and sent to OBARI/Finance");
     } else {
-      alert(`❌ ${data.error || "Checkout failed"}`);
+      alert(`âŒ ${data.error || "Checkout failed"}`);
     }
     inputRef.current?.focus();
   }
@@ -106,41 +106,41 @@ export default function POSHome() {
           <div>
             <h1 className="text-3xl font-bold">Point of Sale</h1>
             <p className="text-sm text-muted mt-1">
-              Catalog · Stock · Sales — the heartbeat that feeds OBARI™ and Finance.
+              Catalog Â· Stock Â· Sales â€” the heartbeat that feeds OBARIâ„¢ and Finance.
             </p>
           </div>
-          <span className="pill text-xs">POS · Register</span>
+          <span className="pill text-xs">POS Â· Register</span>
         </div>
 
         {/* Hub quick links (sticky inside hero) */}
         <div className="mt-4 flex flex-wrap gap-3">
           <button
             className="btn"
-            onClick={() => router.push("/ship/business/oms/finance/pos/catalog")}
+            onClick={() => router.push("/business/oms/finance/pos/catalog")}
             title="Products, pricing, barcodes"
           >
-            📦 Catalog
+            ðŸ“¦ Catalog
           </button>
           <button
             className="btn"
-            onClick={() => router.push("/ship/business/oms/finance/pos/stock")}
+            onClick={() => router.push("/business/oms/finance/pos/stock")}
             title="Live levels, movements, adjustments"
           >
-            📊 Stock
+            ðŸ“Š Stock
           </button>
           <button
             className="btn"
-            onClick={() => router.push("/ship/business/oms/finance/pos/sales" as unknown as any)}
+            onClick={() => router.push("/business/oms/finance/pos/sales" as unknown as any)}
             title="Receipts, refunds, Z report"
           >
-            🧾 Sales
+            ðŸ§¾ Sales
           </button>
           <button
             className="btn"
-            onClick={() => router.push("/ship/business/oms/finance/pos/settings" as unknown as any)}
+            onClick={() => router.push("/business/oms/finance/pos/settings" as unknown as any)}
             title="Locations, taxes, devices"
           >
-            ⚙️ Settings
+            âš™ï¸ Settings
           </button>
         </div>
       </header>
@@ -157,7 +157,7 @@ export default function POSHome() {
               value={barcode}
               onChange={(e) => setBarcode(e.target.value)}
               onKeyDown={onScanKeyDown}
-              placeholder="Scan barcode or type code and press Enter…"
+              placeholder="Scan barcode or type code and press Enterâ€¦"
               className="w-full border border-ring rounded-lg p-3 text-lg bg-surface"
             />
           </div>
@@ -188,7 +188,7 @@ export default function POSHome() {
                         <td className="px-3 text-right">
                           <div className="inline-flex gap-1">
                             <button className="btn" onClick={() => dec(i.code)} title="Decrease">
-                              −
+                              âˆ’
                             </button>
                             <button className="btn" onClick={() => inc(i.code)} title="Increase">
                               +
@@ -198,7 +198,7 @@ export default function POSHome() {
                               onClick={() => removeLine(i.code)}
                               title="Remove line"
                             >
-                              ✕
+                              âœ•
                             </button>
                           </div>
                         </td>
@@ -207,7 +207,7 @@ export default function POSHome() {
                   ) : (
                     <tr>
                       <td className="p-4 text-muted" colSpan={6}>
-                        No items — scan to add.
+                        No items â€” scan to add.
                       </td>
                     </tr>
                   )}
@@ -218,7 +218,7 @@ export default function POSHome() {
             {/* Cart actions */}
             <div className="mt-3 flex items-center justify-between">
               <div className="text-xs text-muted">
-                Tip: your USB/Bluetooth scanner will “type + Enter” here automatically.
+                Tip: your USB/Bluetooth scanner will â€œtype + Enterâ€ here automatically.
               </div>
               <div className="flex gap-2">
                 <button className="btn" onClick={clearCart}>
@@ -264,7 +264,7 @@ export default function POSHome() {
 
           <div className="grid gap-2">
             <button className="btn btn-primary" disabled={!cart.length} onClick={checkout}>
-              🧾 Complete Sale
+              ðŸ§¾ Complete Sale
             </button>
             <button
               className="btn"
@@ -273,7 +273,7 @@ export default function POSHome() {
                 window.print();
               }}
             >
-              🖨 Print Receipt
+              ðŸ–¨ Print Receipt
             </button>
           </div>
 
@@ -285,10 +285,10 @@ export default function POSHome() {
                 ? cart
                     .map(
                       (i) =>
-                        `${i.qty}× ${i.name} @ ${i.price.toFixed(2)}  = ${(i.qty * i.price).toFixed(2)}`
+                        `${i.qty}Ã— ${i.name} @ ${i.price.toFixed(2)}  = ${(i.qty * i.price).toFixed(2)}`
                     )
                     .join("\n")
-                : "—"}
+                : "â€”"}
               {cart.length ? `\n\nTotal: ${total.toFixed(2)}` : ""}
             </div>
           </div>

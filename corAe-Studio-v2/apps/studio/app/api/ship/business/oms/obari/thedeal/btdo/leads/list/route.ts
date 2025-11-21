@@ -1,5 +1,5 @@
-// apps/studio/app/api/ship/business/oms/obari/thedeal/btdo/leads/list/route.ts
-// BTDO — Leads : List
+﻿// apps/studio/app/api/business/oms/obari/thedeal/btdo/leads/list/route.ts
+// BTDO â€” Leads : List
 // GET /api/btdo/leads/list?limit=20&q=Inbound&stage=NEW&source=WEBSITE&cursor=<token>
 //
 // Response:
@@ -35,7 +35,7 @@ function parseLimit(v: string | null, def = 20, max = 50) {
 
 type CursorDecoded = { createdAt: Date; id: string };
 function encodeCursor(c: CursorDecoded): string {
-  // createdAt ISO (ms precision) + "|" + id → base64
+  // createdAt ISO (ms precision) + "|" + id â†’ base64
   const raw = `${c.createdAt.toISOString()}|${c.id}`;
   return Buffer.from(raw, "utf8").toString("base64url");
 }
@@ -170,3 +170,4 @@ export async function OPTIONS() {
     },
   });
 }
+

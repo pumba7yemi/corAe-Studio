@@ -1,4 +1,4 @@
-// apps/studio/app/ship/business/layout.tsx
+﻿// apps/studio/app/business/layout.tsx
 import Link from 'next/link';
 import { buildNav } from '../../../src/caia/nav-builder';
 
@@ -19,3 +19,4 @@ export default function BusinessLayout({ children }: { children: React.ReactNode
     </div>
   );
 }
+

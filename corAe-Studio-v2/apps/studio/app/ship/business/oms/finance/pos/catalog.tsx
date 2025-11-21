@@ -1,4 +1,4 @@
-// app/ship/business/pos/catalog/page.tsx
+﻿// app/business/pos/catalog/page.tsx
 "use client";
 
 import { useMemo, useState } from "react";
@@ -61,7 +61,7 @@ export default function CatalogPage() {
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search by SKU, name, or barcode…"
+            placeholder="Search by SKU, name, or barcodeâ€¦"
             className="flex-1 border border-ring rounded-lg p-3"
           />
           <div className="badge">{filtered.length} items</div>
@@ -117,7 +117,7 @@ export default function CatalogPage() {
         </div>
 
         <div className="row justify-end mt-3">
-          <button className="btn btn-primary" onClick={addItem}>➕ Add</button>
+          <button className="btn btn-primary" onClick={addItem}>âž• Add</button>
         </div>
       </section>
 
@@ -139,7 +139,7 @@ export default function CatalogPage() {
               <tr key={i.sku} className="border-b border-ring">
                 <td className="py-2 px-3 font-mono">{i.sku}</td>
                 <td className="px-3">{i.name}</td>
-                <td className="px-3">{i.barcode || <span className="muted">—</span>}</td>
+                <td className="px-3">{i.barcode || <span className="muted">â€”</span>}</td>
                 <td className="px-3">{i.price.toFixed(2)}</td>
                 <td className="px-3">{(i.vat ?? 0).toFixed(2)}</td>
                 <td className="px-3">
@@ -158,3 +158,4 @@ export default function CatalogPage() {
     </main>
   );
 }
+

@@ -1,5 +1,5 @@
-// apps/studio/app/api/ship/business/oms/obari/bookings/from-equals/route.ts
-// Studio API — Booking-from-Equals (derives a booking DTO from the immutable "=" snapshot)
+﻿// apps/studio/app/api/business/oms/obari/bookings/from-equals/route.ts
+// Studio API â€” Booking-from-Equals (derives a booking DTO from the immutable "=" snapshot)
 // No DB writes in this slice; returns a proposed booking JSON for downstream creation.
 
 import { NextResponse } from "next/server";
@@ -171,3 +171,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
+

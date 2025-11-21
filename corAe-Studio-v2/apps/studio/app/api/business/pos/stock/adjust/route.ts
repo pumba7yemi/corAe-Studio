@@ -1,12 +1,12 @@
-/// apps/studio/app/api/business/POS/stock/adjust/route.ts
-// POS Stock Adjust API — 150.logic
+﻿/// apps/studio/app/api/business/POS/stock/adjust/route.ts
+// POS Stock Adjust API â€” 150.logic
 // Records an ADJUST_IN / ADJUST_OUT, updates StockState, logs FlowEvent,
 // and (for OUT) calls the inventory observer to consider auto-replenishment.
 
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
-import { observeInventory } from "@/app/ship/business/oms/finance/pos/observers/inventory.observer";
+import { observeInventory } from "@/app/business/oms/finance/pos/observers/inventory.observer";
 
 export const runtime = "nodejs";
 
@@ -94,3 +94,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: msg }, { status: 500 });
   }
 }
+

@@ -1,7 +1,7 @@
-// apps/studio/app/api/ship/business/oms/obari/thedeal/btdo/survey/submit/route.ts
-// BTDO ▸ Survey Submit — merge responses into file-backed draft
-// POST { token, responses:{...} } → { ok, surveyId, stored:{quote,siteSurvey} }
-// GET  ?surveyId=SVY-XXXX                → { ok, draft }
+﻿// apps/studio/app/api/business/oms/obari/thedeal/btdo/survey/submit/route.ts
+// BTDO â–¸ Survey Submit â€” merge responses into file-backed draft
+// POST { token, responses:{...} } â†’ { ok, surveyId, stored:{quote,siteSurvey} }
+// GET  ?surveyId=SVY-XXXX                â†’ { ok, draft }
 
 import { NextRequest, NextResponse } from "next/server";
 import { timingSafeEqual, createHmac } from "node:crypto";
@@ -15,7 +15,7 @@ const SECRET =
   process.env.NEXTAUTH_SECRET ||
   "DEV_ONLY_CHANGE_ME_FOR_PROD";
 
-/* ───────────────────────── types ───────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 type PartyType = "vendor" | "client";
 type SurveyDraft = {
   surveyId: string;
@@ -59,7 +59,7 @@ type PostBody = {
   responses: Record<string, unknown>;
 };
 
-/* ───────────────────── token helpers (match /init) ───────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ token helpers (match /init) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function sign(payload: string): string {
   return createHmac("sha256", Buffer.from(SECRET, "utf8")).update(payload).digest("hex");
 }
@@ -80,7 +80,7 @@ function verifyToken(token: string): { ok: true; surveyId: string; dtdId: string
   return { ok: true, surveyId: data.surveyId, dtdId: data.dtdId };
 }
 
-/* ───────────────────────── io ───────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ io â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 async function loadDraft(surveyId: string): Promise<SurveyDraft | null> {
   try {
     const raw = await readFile(joinPath(STORE_DIR, `${surveyId}.json`), "utf8");
@@ -93,7 +93,7 @@ async function saveDraft(draft: SurveyDraft) {
   await writeFile(joinPath(STORE_DIR, `${draft.surveyId}.json`), JSON.stringify(draft, null, 2), "utf8");
 }
 
-/* ─────────── normalize known fields into quote/siteSurvey ─────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ normalize known fields into quote/siteSurvey â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function normalizeResponses(draft: SurveyDraft, raw: Record<string, unknown>) {
   const currency = String(raw["currency"] ?? draft.commercial.currency ?? "USD");
   const price = raw["basePrice"] != null ? String(raw["basePrice"]) : undefined;
@@ -138,7 +138,7 @@ function normalizeResponses(draft: SurveyDraft, raw: Record<string, unknown>) {
   return { quote, siteSurvey };
 }
 
-/* ───────────────────────── POST ───────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ POST â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 export async function POST(req: NextRequest) {
   try {
     const body = (await req.json()) as PostBody;
@@ -193,7 +193,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-/* ───────────────────────── GET (dev aid) ───────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ GET (dev aid) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 export async function GET(req: NextRequest) {
   const surveyId = req.nextUrl.searchParams.get("surveyId");
   if (!surveyId) return NextResponse.json({ ok: false, error: "surveyId required" }, { status: 400 });
@@ -201,3 +201,4 @@ export async function GET(req: NextRequest) {
   if (!draft) return NextResponse.json({ ok: false, error: "not found" }, { status: 404 });
   return NextResponse.json({ ok: true, draft });
 }
+

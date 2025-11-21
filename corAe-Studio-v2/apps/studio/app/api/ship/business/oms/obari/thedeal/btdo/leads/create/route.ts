@@ -1,5 +1,5 @@
-// apps/studio/app/api/ship/business/oms/obari/thedeal/btdo/leads/create/route.ts
-// BTDO — Leads : Create
+﻿// apps/studio/app/api/business/oms/obari/thedeal/btdo/leads/create/route.ts
+// BTDO â€” Leads : Create
 // POST JSON:
 // {
 //   "title": "Inbound enquiry",
@@ -96,7 +96,7 @@ export async function POST(req: Request) {
   }
 }
 
-// Optional GET → describes contract for quick dev checks
+// Optional GET â†’ describes contract for quick dev checks
 export async function GET() {
   return NextResponse.json({
     ok: true,
@@ -111,3 +111,4 @@ export async function GET() {
     },
   });
 }
+

@@ -1,27 +1,27 @@
-/* eslint-disable */
+﻿/* eslint-disable */
 // apps/studio/app/work/onboarding/wizard/operations/page.tsx
 "use client";
 
 /**
- * corAe • Work • Onboarding • Operations Wizard (White-Label, Worker/HR aware)
+ * corAe â€¢ Work â€¢ Onboarding â€¢ Operations Wizard (White-Label, Worker/HR aware)
  * Path: apps/studio/app/work/onboarding/wizard/operations/page.tsx
  *
  * Purpose:
  *  - During WORK onboarding, define the operational blueprint with awareness of WHO is setting it up:
- *      • Owner / HR: sets company-wide departments, partners, policies, routes
- *      • Individual Worker: confirms personal role, contact, department, and accepts the “Have You…” loops
- *  - Archetype → Identity (Owner/HR/Worker) → Departments → Partners/Roles → Work Items → SLA → Checklists → QA/Reporting → Blueprint
+ *      â€¢ Owner / HR: sets company-wide departments, partners, policies, routes
+ *      â€¢ Individual Worker: confirms personal role, contact, department, and accepts the â€œHave Youâ€¦â€ loops
+ *  - Archetype â†’ Identity (Owner/HR/Worker) â†’ Departments â†’ Partners/Roles â†’ Work Items â†’ SLA â†’ Checklists â†’ QA/Reporting â†’ Blueprint
  *  - Save & Continue (localStorage). On finish: seeds ship/work APIs.
  *
  * Integrations (optional, safe to comment):
- *  - POST /api/ship/work/partners (bulkUpsert)
- *  - POST /api/ship/work/operations (seedFromBlueprint)
+ *  - POST /api/work/partners (bulkUpsert)
+ *  - POST /api/work/operations (seedFromBlueprint)
  */
 
 import React, { useEffect, useMemo, useState } from "react";
 import EthosCard from "../../../../../components/EthosCard";
 
-/* ───────────────────── Types ───────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 type StepKey =
   | "WELCOME"
   | "IDENTITY"
@@ -121,7 +121,7 @@ interface OpsState {
   savedAt?: string | null;
 }
 
-/* ───────────────────── Defaults / Packs ───────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Defaults / Packs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 const LOCAL_KEY = "corAeOpsWizard/work-onboarding";
 
 const initialState: OpsState = {
@@ -280,7 +280,7 @@ function rid() {
   return "id-" + Math.random().toString(36).slice(2, 9);
 }
 
-/* ───────────────────── Persistence (local) ───────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Persistence (local) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function saveLocal(state: OpsState) {
   const payload = { ...state, savedAt: new Date().toISOString() };
   localStorage.setItem(LOCAL_KEY, JSON.stringify(payload));
@@ -299,14 +299,14 @@ function clearLocal() {
   localStorage.removeItem(LOCAL_KEY);
 }
 
-/* ───────────────────── UI atoms ───────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ UI atoms â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function Shell({ children, headerRight }: { children: React.ReactNode; headerRight?: React.ReactNode }) {
   return (
     <div className="min-h-dvh bg-zinc-950 text-zinc-100">
       <header className="mx-auto flex max-w-4xl items-center justify-between px-3 pt-8">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Work Onboarding • Operations Wizard</h1>
-          <p className="text-xs text-zinc-400">Owner/HR sets the structure; Workers confirm their role and “Have You…” loops.</p>
+          <h1 className="text-2xl font-semibold tracking-tight">Work Onboarding â€¢ Operations Wizard</h1>
+          <p className="text-xs text-zinc-400">Owner/HR sets the structure; Workers confirm their role and â€œHave Youâ€¦â€ loops.</p>
         </div>
         {headerRight}
       </header>
@@ -349,14 +349,14 @@ function Chip({ children, onRemove }: { children: React.ReactNode; onRemove?: ()
   return (
     <span className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/50 px-3 py-1 text-xs">
       {children}
-      {onRemove && <button onClick={onRemove} className="text-zinc-400 hover:text-zinc-200">✕</button>}
+      {onRemove && <button onClick={onRemove} className="text-zinc-400 hover:text-zinc-200">âœ•</button>}
     </span>
   );
 }
 function SaveBar({ onSave, savedAt, saving }: { onSave: () => void; savedAt: string | null | undefined; saving: boolean }) {
   return (
     <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900/70 px-3 py-2 text-xs backdrop-blur">
-      <Button variant="secondary" onClick={onSave} disabled={saving}>{saving ? "Saving…" : "Save & Continue Later"}</Button>
+      <Button variant="secondary" onClick={onSave} disabled={saving}>{saving ? "Savingâ€¦" : "Save & Continue Later"}</Button>
       <span className="text-zinc-400">{savedAt ? `Last saved ${timeAgo(savedAt)}` : "Not saved yet"}</span>
     </div>
   );
@@ -372,10 +372,10 @@ function timeAgo(iso: string) {
   return `${d}d ago`;
 }
 
-/* ───────────────────── Steps ───────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Steps â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function Welcome({ s, set, next }: { s: OpsState; set: (p: Partial<OpsState>) => void; next: () => void }) {
   return (
-    <Card title="Welcome" hint="Configure Work operations for your business. Owners/HR build the structure; workers confirm role and ‘Have You…’ loops.">
+    <Card title="Welcome" hint="Configure Work operations for your business. Owners/HR build the structure; workers confirm role and â€˜Have Youâ€¦â€™ loops.">
       <div className="grid gap-3 sm:grid-cols-2">
         <div>
           <Label>Business name</Label>
@@ -503,7 +503,7 @@ function DepartmentsStep({ s, set, next, back }: { s: OpsState; set: (p: Partial
     set({ departments: s.departments.filter((d) => d.id !== id) });
   }
   return (
-    <Card title="Departments / Units" hint={isEditor ? "Add or edit units that handle operations." : "Review your organization’s departments."}>
+    <Card title="Departments / Units" hint={isEditor ? "Add or edit units that handle operations." : "Review your organizationâ€™s departments."}>
       {isEditor && (
         <div className="grid gap-3 sm:grid-cols-2">
           <div>
@@ -512,7 +512,7 @@ function DepartmentsStep({ s, set, next, back }: { s: OpsState; set: (p: Partial
           </div>
           <div>
             <Label>Description (optional)</Label>
-            <Input value={desc} onChange={(e) => setDesc((e.target as HTMLInputElement).value)} placeholder="What it does…" />
+            <Input value={desc} onChange={(e) => setDesc((e.target as HTMLInputElement).value)} placeholder="What it doesâ€¦" />
           </div>
         </div>
       )}
@@ -572,7 +572,7 @@ function PartnersStep({ s, set, next, back }: { s: OpsState; set: (p: Partial<Op
             <div>
               <Label>Department (optional)</Label>
               <select className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm" value={dept} onChange={(e) => setDept((e.target as HTMLSelectElement).value)}>
-                <option value="">—</option>
+                <option value="">â€”</option>
                 {s.departments.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
               </select>
             </div>
@@ -590,7 +590,7 @@ function PartnersStep({ s, set, next, back }: { s: OpsState; set: (p: Partial<Op
         <div className="flex flex-wrap gap-2">
           {s.partners.map((p) => (
             <Chip key={p.id} onRemove={isEditor ? () => remove(p.id) : undefined}>
-              {p.role}{p.departmentId ? ` • ${deptName(s, p.departmentId)}` : ""}{p.isExternal ? " (external)" : ""}
+              {p.role}{p.departmentId ? ` â€¢ ${deptName(s, p.departmentId)}` : ""}{p.isExternal ? " (external)" : ""}
             </Chip>
           ))}
         </div>
@@ -639,13 +639,13 @@ function WorkerRoleStep({ s, set, next, back }: { s: OpsState; set: (p: Partial<
         <div>
           <Label>Department</Label>
           <select className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm" value={dept} onChange={(e) => setDept((e.target as HTMLSelectElement).value)}>
-            <option value="">—</option>
+            <option value="">â€”</option>
             {s.departments.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
           </select>
         </div>
         <div className="flex items-end">
           <label className="inline-flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={acceptHY} onChange={(e) => setAcceptHY(e.target.checked)} /> Accept “Have You…” reminders
+            <input type="checkbox" checked={acceptHY} onChange={(e) => setAcceptHY(e.target.checked)} /> Accept â€œHave Youâ€¦â€ reminders
           </label>
         </div>
       </div>
@@ -721,7 +721,7 @@ function SLAStep({ s, set, next, back }: { s: OpsState; set: (p: Partial<OpsStat
   }
 
   return (
-    <Card title="Acceptance SLA" hint={isEditor ? "Define how long partners have to accept, and who gets alerted if they don’t." : "Review the acceptance policy for your team."}>
+    <Card title="Acceptance SLA" hint={isEditor ? "Define how long partners have to accept, and who gets alerted if they donâ€™t." : "Review the acceptance policy for your team."}>
       <div className="grid gap-3 sm:grid-cols-3">
         <div>
           <Label>Acceptance window (hours)</Label>
@@ -773,7 +773,7 @@ function ChecklistsStep({ s, set, next, back }: { s: OpsState; set: (p: Partial<
               value={selectedWork}
               onChange={(e) => setSelectedWork((e.target as HTMLSelectElement).value)}
             >
-              <option value="">Select…</option>
+              <option value="">Selectâ€¦</option>
               {s.workItems.map((w) => (
                 <option value={w.id} key={w.id}>{w.name}</option>
               ))}
@@ -799,7 +799,7 @@ function ChecklistsStep({ s, set, next, back }: { s: OpsState; set: (p: Partial<
         <div className="space-y-3">
           {s.checklists.map((tpl, i) => (
             <div key={i} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
-              <div className="mb-1 text-sm font-semibold">{tpl.title} <span className="text-zinc-400">• {wiName(s, tpl.workItemId)}</span></div>
+              <div className="mb-1 text-sm font-semibold">{tpl.title} <span className="text-zinc-400">â€¢ {wiName(s, tpl.workItemId)}</span></div>
               <ul className="list-disc pl-5 text-sm text-zinc-300">
                 {tpl.items.map((it, j) => <li key={j}>{it}</li>)}
               </ul>
@@ -883,14 +883,14 @@ function BlueprintStep({ s, set, finish, back }: { s: OpsState; set: (p: Partial
     // Seed partners (Owner/HR only)
     if (s.identity === "OWNER" || s.identity === "HR") {
       try {
-        await fetch("/api/ship/work/partners", {
+        await fetch("/api/work/partners", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ action: "bulkUpsert", items: s.partners }),
         });
       } catch {}
       try {
-        await fetch("/api/ship/work/operations", {
+        await fetch("/api/work/operations", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ action: "seedFromBlueprint", blueprint }),
@@ -916,17 +916,17 @@ function BlueprintStep({ s, set, finish, back }: { s: OpsState; set: (p: Partial
 
 function Success({ identity }: { identity: IdentityKey | null }) {
   return (
-    <Card title="All set 🎉" hint="Your Work operations blueprint is ready.">
+    <Card title="All set ðŸŽ‰" hint="Your Work operations blueprint is ready.">
       <p className="text-sm text-zinc-300">
         {identity === "WORKER"
-          ? "You’re linked to your department, role, and Have-You prompts. Watch your WorkFocus for today’s tasks."
+          ? "Youâ€™re linked to your department, role, and Have-You prompts. Watch your WorkFocus for todayâ€™s tasks."
           : "Use this to seed OBARI task bins, role routing, and dashboards. Workers can now onboard to their roles."}
       </p>
     </Card>
   );
 }
 
-/* ───────────────────── Page ───────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 export default function OperationsOnboardingWizardPage() {
   const [s, setS] = useState<OpsState>(initialState);
   const [saving, setSaving] = useState(false);
@@ -963,7 +963,7 @@ export default function OperationsOnboardingWizardPage() {
   );
 
   // Step flow:
-  // WELCOME → IDENTITY → ARCHETYPE → DEPARTMENTS → PARTNERS → (WORKER_ROLE if identity=WORKER) → WORK_ITEMS → SLA → CHECKLISTS → QA_REPORT → BLUEPRINT → SUCCESS
+  // WELCOME â†’ IDENTITY â†’ ARCHETYPE â†’ DEPARTMENTS â†’ PARTNERS â†’ (WORKER_ROLE if identity=WORKER) â†’ WORK_ITEMS â†’ SLA â†’ CHECKLISTS â†’ QA_REPORT â†’ BLUEPRINT â†’ SUCCESS
   return (
     <Shell headerRight={headerRight}>
       <div className="mb-6">
@@ -1014,7 +1014,7 @@ export default function OperationsOnboardingWizardPage() {
   );
 }
 
-/* ───────────────────── Helpers ───────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function Badge({ ok, label }: { ok: boolean; label: string }) {
   return (
     <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs ${ok ? "bg-emerald-900/40 text-emerald-300" : "bg-amber-900/40 text-amber-300"}`}>

@@ -1,5 +1,5 @@
-// apps/studio/app/api/ship/business/oms/obari/deal/btdo/survey/[surveyId]/route.ts
-// BTDO ▸ Survey Detail — GET view, POST refresh token, DELETE revoke
+﻿// apps/studio/app/api/business/oms/obari/deal/btdo/survey/[surveyId]/route.ts
+// BTDO â–¸ Survey Detail â€” GET view, POST refresh token, DELETE revoke
 // File-backed store: .data/btdo-surveys/SVY-*.json
 
 import { NextRequest, NextResponse } from "next/server";
@@ -14,7 +14,7 @@ const SECRET =
   process.env.NEXTAUTH_SECRET ||
   "DEV_ONLY_CHANGE_ME_FOR_PROD";
 
-// ───────────────── types ─────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 type PartyType = "vendor" | "client";
 type SurveyDraft = {
   surveyId: string;
@@ -42,7 +42,7 @@ type PostBody =
   | { action: "renameParty"; name: string }
   | { action: "updateContact"; contact: any };
 
-// ─────────────── helpers ───────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function loadDraft(surveyId: string): Promise<SurveyDraft | null> {
   try {
     const raw = await readFile(joinPath(STORE_DIR, `${surveyId}.json`), "utf8");
@@ -69,10 +69,10 @@ function mintToken(surveyId: string, dtdId: string, ttlMinutes: number) {
 }
 function redactToken(t: string) {
   const [p, m] = String(t || "").split(".");
-  return p ? `${p.slice(0, 8)}….${(m || "").slice(0, 8)}…` : "—";
+  return p ? `${p.slice(0, 8)}â€¦.${(m || "").slice(0, 8)}â€¦` : "â€”";
 }
 
-// ─────────────── GET ───────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ GET â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export async function GET(_req: NextRequest, ctx: { params: Promise<{ surveyid: string }> }) {
   const { surveyid } = await ctx.params;
   const surveyId = surveyid;
@@ -101,7 +101,7 @@ export async function GET(_req: NextRequest, ctx: { params: Promise<{ surveyid: 
   });
 }
 
-// ─────────────── POST ───────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ POST â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export async function POST(req: NextRequest, ctx: { params: Promise<{ surveyid: string }> }) {
   const { surveyid } = await ctx.params;
   const surveyId = surveyid;
@@ -143,7 +143,7 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ surveyid: 
   return NextResponse.json({ ok: false, error: "unknown_action" }, { status: 400 });
 }
 
-// ─────────────── DELETE ───────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ DELETE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export async function DELETE(_req: NextRequest, ctx: { params: Promise<{ surveyid: string }> }) {
   const { surveyid } = await ctx.params;
   const surveyId = surveyid;

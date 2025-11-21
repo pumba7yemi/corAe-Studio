@@ -1,7 +1,7 @@
-'use client';
+﻿'use client';
 
 /**
- * Finance — Vendors (AP index)
+ * Finance â€” Vendors (AP index)
  * Lightweight demo page used in local builds.
  */
 
@@ -41,7 +41,7 @@ type Doc = {
   status?: string;
 };
 
-const money = (m: number) => `£${(m / 100).toFixed(2)}`;
+const money = (m: number) => `Â£${(m / 100).toFixed(2)}`;
 
 export default function VendorsPage() {
   const [vendors, setVendors] = useState<Vendor[]>([]);
@@ -102,7 +102,7 @@ export default function VendorsPage() {
         <CardContent className="p-4 space-y-3">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-              <Input value={q} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQ(e.target.value)} placeholder="Search vendors…" />
+              <Input value={q} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQ(e.target.value)} placeholder="Search vendorsâ€¦" />
             </div>
             <div className="row">
               <Button onClick={() => alert('Add Vendor (demo)')}>+ Add Vendor</Button>
@@ -117,18 +117,18 @@ export default function VendorsPage() {
 
           <div className="grid gap-2">
             {summaries.map(({ vendor, balance, openCount, overdueCount }) => (
-              <Link key={vendor.id} href={`/ship/business/oms/finance/vendors/${encodeURIComponent(vendor.id)}`}>
+              <Link key={vendor.id} href={`/business/oms/finance/vendors/${encodeURIComponent(vendor.id)}`}>
                 <div className="rounded-xl border p-3 bg-card hover:bg-surface transition">
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="font-semibold">{vendor.name}</div>
-                      <div className="text-xs text-muted">ID {vendor.id} • Terms {vendor.terms ?? '—'}</div>
+                      <div className="text-xs text-muted">ID {vendor.id} â€¢ Terms {vendor.terms ?? 'â€”'}</div>
                     </div>
                     <div className="text-right">
                       <div className="text-sm">
                         Balance: <span className="font-semibold">{money(balance)}</span>
                       </div>
-                      <div className="text-xs text-muted">Open {openCount} • Overdue {overdueCount}</div>
+                      <div className="text-xs text-muted">Open {openCount} â€¢ Overdue {overdueCount}</div>
                     </div>
                   </div>
                 </div>
@@ -140,9 +140,10 @@ export default function VendorsPage() {
         </CardContent>
       </Card>
 
-      <ArrowNav backHref="/ship/business/oms/finance" nextHref="/ship/business/oms/finance/purchase" nextLabel="Purchase Ledger">
-        Finance · Vendors
+      <ArrowNav backHref="/business/oms/finance" nextHref="/business/oms/finance/purchase" nextLabel="Purchase Ledger">
+        Finance Â· Vendors
       </ArrowNav>
     </main>
   );
 }
+

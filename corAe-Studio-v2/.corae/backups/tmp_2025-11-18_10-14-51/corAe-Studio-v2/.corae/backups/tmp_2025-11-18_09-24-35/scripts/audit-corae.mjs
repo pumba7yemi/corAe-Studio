@@ -1,12 +1,12 @@
-import { readdirSync, statSync } from "fs";
+﻿import { readdirSync, statSync } from "fs";
 import { join } from "path";
 const root = process.cwd();
 
 // 1) Rogue faith/discern anywhere outside allowed roots
 const ALLOWED = [
-  "apps/studio/app/ship/home/faith",
-  "apps/studio/app/ship/work/faith",
-  "apps/studio/app/ship/business/faith",
+  "apps/studio/app/home/faith",
+  "apps/studio/app/work/faith",
+  "apps/studio/app/business/faith",
 ].map((p) => join(root, p));
 const startsWithAny = (p, roots) =>
   roots.some((r) => p.startsWith(r + "\\") || p.startsWith(r + "/") || p === r);
@@ -51,9 +51,10 @@ try {
 
 // 4) Summarize
 console.log("=== corAe Audit ===");
-console.log("Rogue faith/discern:", rogue.length ? "\n - " + rogue.join("\n - ") : "None ✅");
-console.log("Duplicate nested 'apps' dirs:", dupApps.length ? "\n - " + dupApps.join("\n - ") : "None ✅");
+console.log("Rogue faith/discern:", rogue.length ? "\n - " + rogue.join("\n - ") : "None âœ…");
+console.log("Duplicate nested 'apps' dirs:", dupApps.length ? "\n - " + dupApps.join("\n - ") : "None âœ…");
 console.log("CAIA packages:", { hasShip, hasCore });
 console.log("Tip: run scripts/tidy-corae.mjs to generate a safe fix plan.");
 
 // exit 0
+

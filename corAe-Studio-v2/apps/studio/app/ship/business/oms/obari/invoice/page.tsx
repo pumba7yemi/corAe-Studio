@@ -1,23 +1,23 @@
-"use client";
+﻿"use client";
 
 /**
- * OBARI — Invoicing (Stage 6)
+ * OBARI â€” Invoicing (Stage 6)
  * Generates and manages invoices following Reporting stage.
  */
 import { Card, CardContent } from "@/ui/card";
 import { Button } from "@/components/ui/button";
-import ArrowNav from "@/components/navigation/ArrowNav"; // ✅ alias (never breaks)
+import ArrowNav from "@/components/navigation/ArrowNav"; // âœ… alias (never breaks)
 
 export default function ObariInvoicingPage() {
   return (
     <main className="p-6 space-y-6 flex flex-col min-h-screen">
-      {/* ───────────── HEADER ───────────── */}
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ HEADER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <header className="stack">
-        <h1 className="text-3xl font-bold">OBARI — Invoicing</h1>
+        <h1 className="text-3xl font-bold">OBARI â€” Invoicing</h1>
         <p className="muted">Invoice generation and financial reconciliation module.</p>
       </header>
 
-      {/* ───────────── BODY / CONTENT ───────────── */}
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ BODY / CONTENT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <section className="grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}>
         <Card className="c-card">
           <CardContent className="space-y-4">
@@ -32,13 +32,13 @@ export default function ObariInvoicingPage() {
         </Card>
       </section>
 
-      {/* ───────────── NAVIGATION ARROWS ───────────── */}
+      {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ NAVIGATION ARROWS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <footer className="pt-4 mt-auto">
         <ArrowNav
-          backHref="/ship/business/oms/obari/report"
-          nextHref="/ship/business/oms/obari/finalized"
+          backHref="/business/oms/obari/report"
+          nextHref="/business/oms/obari/finalized"
         >
-          ← Back to Reporting · Stage 6 — Invoice · To Finalized →
+          â† Back to Reporting Â· Stage 6 â€” Invoice Â· To Finalized â†’
         </ArrowNav>
       </footer>
     </main>

@@ -1,5 +1,5 @@
-// /apps/ship/business/oms/commercial/marketing/performance/pulse-export.ts
-// corAe OMS — Marketing Performance → Pulse Export
+﻿// /apps/business/oms/commercial/marketing/performance/pulse-export.ts
+// corAe OMS â€” Marketing Performance â†’ Pulse Export
 // Purpose: relay key KPI metrics from Appraisals to the Pulse dashboard.
 // Pure TypeScript; no external imports; plain JSON payloads.
 
@@ -8,16 +8,16 @@ type PulseMetric = {
   company: string;
   sector: string;
   generatedAt: string;       // ISO timestamp
-  leadScore: number;         // 0–100
+  leadScore: number;         // 0â€“100
   conversionStage: "new" | "contacted" | "intro" | "pilot" | "won" | "archived";
   summary: string;           // one-line insight
   benchmarks: Record<string, number>;
 };
 
 /**
- * Very light scoring logic — replace with your analytics later.
- *  - text length → maturity
- *  - sector benchmarks → difficulty
+ * Very light scoring logic â€” replace with your analytics later.
+ *  - text length â†’ maturity
+ *  - sector benchmarks â†’ difficulty
  *  - random jitter for demo realism
  */
 export function scoreLead(
@@ -62,7 +62,7 @@ export function scoreLead(
 }
 
 /**
- * Simulated export → Pulse.
+ * Simulated export â†’ Pulse.
  * In production, this will post to the Pulse API or append to a queue.
  */
 export async function exportToPulse(metric: PulseMetric) {
@@ -87,3 +87,4 @@ export async function pushAppraisalToPulse(
 
 // Example (manual test)
 // pushAppraisalToPulse("VS Property Group", "property", "lettings, management, investment");
+

@@ -1,14 +1,14 @@
-// apps/ship/business/oms/obari/order/staging/contract.ts
-// OBARI — Order Staging (Static Snapshot of a BDO)
+﻿// apps/business/oms/obari/order/staging/contract.ts
+// OBARI â€” Order Staging (Static Snapshot of a BDO)
 // Purpose:
-// - Treat Order as the immutable, static “staging post” created from a BDO.
-// - Locks: parties, schedule, transport, lines, totals — all copied from BDO.
+// - Treat Order as the immutable, static â€œstaging postâ€ created from a BDO.
+// - Locks: parties, schedule, transport, lines, totals â€” all copied from BDO.
 // - Assigns the commercial order number (PO for inbound / SO for outbound).
-// - Downstream OBARI stages consume this snapshot: booking → active → report → invoice.
+// - Downstream OBARI stages consume this snapshot: booking â†’ active â†’ report â†’ invoice.
 //
 // Notes:
 // - Money is minor units (pence/cents).
-// - This module is side-effect free; persistence is the caller’s job.
+// - This module is side-effect free; persistence is the callerâ€™s job.
 
 export type Minor = number;
 export type Direction = "inbound" | "outbound";
@@ -173,7 +173,7 @@ export function lockFromBDO(
 /* ======================= Guard: Static Snapshot ======================= */
 /**
  * forbidMutation:
- * - Enforces the “static set of parameters” discipline.
+ * - Enforces the â€œstatic set of parametersâ€ discipline.
  * - Allows only cosmetic notes changes while in staging.
  * - Any attempt to change locked fields is rejected.
  */

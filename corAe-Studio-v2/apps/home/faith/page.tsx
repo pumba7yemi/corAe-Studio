@@ -1,12 +1,12 @@
-"use client";
+﻿"use client";
 
-/* ──────────────────────────────────────────────────────────────
-   corAe — Ship/Home/Faith (Overview)
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+   corAe â€” Ship/Home/Faith (Overview)
    Inclusive directory of faith traditions living *inside* Home.
    - Local, no external deps
    - Search + filter
-   - Links into /ship/home/faith/discern (works even if params are ignored)
-────────────────────────────────────────────────────────────── */
+   - Links into /home/faith/discern (works even if params are ignored)
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 import { useMemo, useState } from "react";
 
@@ -23,7 +23,7 @@ const TRADITIONS: Tradition[] = [
     summary: "Following Jesus Christ; Scripture, prayer, sacraments, love of God and neighbour.",
     aliases: ["Catholic", "Orthodox", "Protestant"] },
   { id: "islam", name: "Islam", family: "Abrahamic",
-    summary: "Submission to God (Allah); Qur’an, prayer (salat), fasting, charity, pilgrimage.",
+    summary: "Submission to God (Allah); Qurâ€™an, prayer (salat), fasting, charity, pilgrimage.",
     aliases: ["Sunni", "Shia", "Sufi"] },
   { id: "judaism", name: "Judaism", family: "Abrahamic",
     summary: "Covenant with the God of Israel; Torah, prayer, mitzvot, community and remembrance." },
@@ -33,7 +33,7 @@ const TRADITIONS: Tradition[] = [
     summary: "Four Noble Truths, Noble Eightfold Path; mindfulness, compassion, liberation (nirvana)." },
   { id: "sikhism", name: "Sikhism", family: "Dharmic",
     summary: "One God, equality, seva (service), the Guru Granth Sahib; disciplined daily remembrance." },
-  { id: "bahai", name: "Bahá’í Faith", family: "Abrahamic (post-Islamic)",
+  { id: "bahai", name: "BahÃ¡â€™Ã­ Faith", family: "Abrahamic (post-Islamic)",
     summary: "Unity of God, religion, and humanity; progressive revelation and global community." },
   { id: "jainism", name: "Jainism", family: "Dharmic",
     summary: "Ahimsa (non-violence), truth, self-discipline; liberation through non-attachment." },
@@ -41,7 +41,7 @@ const TRADITIONS: Tradition[] = [
     summary: "Harmony with the Tao (Way); simplicity, wu-wei (non-forcing), inner cultivation." },
   { id: "confucianism", name: "Confucianism", family: "Chinese",
     summary: "Virtue, ritual, family reverence; moral cultivation for social harmony." },
-  { id: "shinto", name: "Shintō", family: "Japanese",
+  { id: "shinto", name: "ShintÅ", family: "Japanese",
     summary: "Way of the kami; purity, gratitude, seasonal rites and reverence for place." },
   { id: "indigenous", name: "Indigenous / Traditional", family: "Various",
     summary: "Ancestral lifeways, land-based wisdom, ceremony, kinship with creation." },
@@ -74,7 +74,7 @@ export default function FaithHomePage() {
   return (
     <main className="mx-auto max-w-5xl p-6 space-y-6">
       <header className="space-y-1">
-        <h1 className="text-2xl font-semibold">🙏 Faith inside Home</h1>
+        <h1 className="text-2xl font-semibold">ðŸ™ Faith inside Home</h1>
         <p className="text-sm text-neutral-600">
           corAe welcomes your path to peace. Explore different traditions below.
           Choose one to enter Discernment with your lens in mind.
@@ -89,7 +89,7 @@ export default function FaithHomePage() {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Name, family, or alias…"
+              placeholder="Name, family, or aliasâ€¦"
               className="w-full md:w-80 rounded-lg border px-3 py-2 text-sm"
             />
           </label>
@@ -106,7 +106,7 @@ export default function FaithHomePage() {
             </select>
           </label>
           <a
-            href="/ship/home"
+            href="/home"
             className="ml-auto rounded-lg border px-3 py-2 text-sm hover:bg-neutral-50"
           >
             Back to Home
@@ -125,7 +125,7 @@ export default function FaithHomePage() {
               </div>
               <div className="flex gap-2">
                 <a
-                  href={`/ship/home/faith/discern?tradition=${encodeURIComponent(t.id)}`}
+                  href={`/home/faith/discern?tradition=${encodeURIComponent(t.id)}`}
                   className="rounded-lg border px-3 py-2 text-sm hover:bg-neutral-50"
                   title="Enter Discernment with this lens"
                 >
@@ -158,3 +158,4 @@ export default function FaithHomePage() {
     </main>
   );
 }
+

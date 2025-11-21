@@ -1,5 +1,5 @@
-// apps/studio/app/api/ship/business/oms/obari/thedeal/btdo/survey/list/route.ts
-// BTDO ▸ Survey List — list all initialized BTDO surveys in .data/btdo-surveys
+﻿// apps/studio/app/api/business/oms/obari/thedeal/btdo/survey/list/route.ts
+// BTDO â–¸ Survey List â€” list all initialized BTDO surveys in .data/btdo-surveys
 // Supports optional query params: ?status=pending|accepted, ?party=vendor|client
 // Returns: { ok, total, results:[...] }
 
@@ -80,3 +80,4 @@ export async function GET(req: Request) {
     results,
   });
 }
+

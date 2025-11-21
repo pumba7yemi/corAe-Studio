@@ -1,9 +1,9 @@
-// apps/studio/app/ship/home/onboarding/wizard/wardrobe/page.tsx
+﻿// apps/studio/app/home/onboarding/wizard/wardrobe/page.tsx
 "use client";
 /**
- * corAe • Home • Onboarding • Wardrobe
+ * corAe â€¢ Home â€¢ Onboarding â€¢ Wardrobe
  * Inventory, laundry cycle, outfit planning.
- * Seeds: /api/ship/home/wardrobe (+Have-You prompts)
+ * Seeds: /api/home/wardrobe (+Have-You prompts)
  */
 import React, { useMemo, useState } from "react";
 type Step="WELCOME"|"INVENTORY"|"LAUNDRY"|"OUTFITS"|"BLUEPRINT"|"SUCCESS";
@@ -19,7 +19,7 @@ export default function WardrobeWizard(){
   const [s,setS]=useState<State>({step:"WELCOME",householdName:"",inventory:[],laundry:[{day:"THU",cutoff:"20:00"} as any],outfits:[],blueprintJson:""});
   const set=(p:Partial<State>)=>setS(x=>({...x,...p})); const go=(step:Step)=>set({step});
   const Welcome=()=>(
-    <Card title="Welcome — Wardrobe">
+    <Card title="Welcome â€” Wardrobe">
       <Input placeholder="Household name" value={s.householdName} onChange={e=>set({householdName:(e.target as HTMLInputElement).value})}/>
       <Button onClick={()=>go("INVENTORY")} >Start</Button>
     </Card>
@@ -32,12 +32,12 @@ export default function WardrobeWizard(){
       <Card title="Inventory">
         <div className="grid gap-3 sm:grid-cols-5">
           <Input placeholder="Name" value={name} onChange={e=>setName(e.target.value)} />
-          <Input placeholder="Type (shirt, dress…)" value={type} onChange={e=>setType(e.target.value)} />
+          <Input placeholder="Type (shirt, dressâ€¦)" value={type} onChange={e=>setType(e.target.value)} />
           <Input placeholder="Color" value={color} onChange={e=>setColor(e.target.value)} />
-          <Input placeholder="Tags (summer, formal…)" value={tags} onChange={e=>setTags(e.target.value)} />
+          <Input placeholder="Tags (summer, formalâ€¦)" value={tags} onChange={e=>setTags(e.target.value)} />
           <Button onClick={add}>+ Add</Button>
         </div>
-        <div className="flex flex-wrap gap-2 pt-2">{s.inventory.map(g=><span key={g.id} className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/60 px-3 py-1 text-xs">{g.name} • {g.type}<button onClick={()=>remove(g.id)} className="text-zinc-400 hover:text-zinc-100">✕</button></span>)}</div>
+        <div className="flex flex-wrap gap-2 pt-2">{s.inventory.map(g=><span key={g.id} className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/60 px-3 py-1 text-xs">{g.name} â€¢ {g.type}<button onClick={()=>remove(g.id)} className="text-zinc-400 hover:text-zinc-100">âœ•</button></span>)}</div>
         <div className="flex gap-2"><Button onClick={()=>go("WELCOME")}>Back</Button><Button onClick={()=>go("LAUNDRY")}>Continue</Button></div>
       </Card>
     );
@@ -54,7 +54,7 @@ export default function WardrobeWizard(){
           <Input placeholder="Cutoff (HH:MM)" value={cutoff} onChange={e=>setCutoff(e.target.value)} />
           <div className="sm:col-span-2"><Button onClick={add}>+ Add Laundry Day</Button></div>
         </div>
-        <div className="flex flex-wrap gap-2 pt-2">{s.laundry.map((l,i)=><span key={i} className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/60 px-3 py-1 text-xs">{l.day} • {l.cutoff}<button onClick={()=>remove(i)} className="text-zinc-400 hover:text-zinc-100">✕</button></span>)}</div>
+        <div className="flex flex-wrap gap-2 pt-2">{s.laundry.map((l,i)=><span key={i} className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/60 px-3 py-1 text-xs">{l.day} â€¢ {l.cutoff}<button onClick={()=>remove(i)} className="text-zinc-400 hover:text-zinc-100">âœ•</button></span>)}</div>
         <div className="flex gap-2"><Button onClick={()=>go("INVENTORY")}>Back</Button><Button onClick={()=>go("OUTFITS")}>Continue</Button></div>
       </Card>
     );
@@ -69,16 +69,16 @@ export default function WardrobeWizard(){
         <Input placeholder="Outfit name" value={name} onChange={e=>setName(e.target.value)} />
         <div className="flex flex-wrap gap-2">{s.inventory.map(g=><button key={g.id} onClick={()=>toggle(g.id)} className={`rounded-full border px-3 py-1 text-xs ${selected.includes(g.id)?"border-zinc-200 bg-zinc-100 text-zinc-950":"border-zinc-800 bg-zinc-900/60 hover:bg-zinc-900"}`}>{g.name}</button>)}</div>
         <Button onClick={add}>+ Save Outfit</Button>
-        <div className="space-y-2 pt-2">{s.outfits.map(o=><div key={o.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm">{o.name} • {o.items.length} items<button onClick={()=>remove(o.id)} className="ml-2 text-zinc-400 hover:text-zinc-100">✕</button></div>)}</div>
+        <div className="space-y-2 pt-2">{s.outfits.map(o=><div key={o.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm">{o.name} â€¢ {o.items.length} items<button onClick={()=>remove(o.id)} className="ml-2 text-zinc-400 hover:text-zinc-100">âœ•</button></div>)}</div>
         <div className="flex gap-2"><Button onClick={()=>go("LAUNDRY")}>Back</Button><Button onClick={()=>go("BLUEPRINT")}>Continue</Button></div>
       </Card>
     );
   };
   const Blueprint=()=> {
     const bp=useMemo(()=>({scope:"HOME", module:"WARDROBE", household:s.householdName, inventory:s.inventory, laundry:s.laundry, outfits:s.outfits, generatedAt:new Date().toISOString(), version:1}),[s]);
-    async function seedApis(){ try{ await fetch("/api/ship/home/wardrobe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"seedFromBlueprint",blueprint:bp})}); }catch{} try{ await fetch("/api/ship/home/haveyou",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"bulkUpsert",items:[
-      { text:`Have you prepped tomorrow’s outfit?`, schedule:`DAILY 21:00` },
-      { text:`Have you started laundry for today’s slot?`, schedule:`DAILY 19:00` },
+    async function seedApis(){ try{ await fetch("/api/home/wardrobe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"seedFromBlueprint",blueprint:bp})}); }catch{} try{ await fetch("/api/home/haveyou",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"bulkUpsert",items:[
+      { text:`Have you prepped tomorrowâ€™s outfit?`, schedule:`DAILY 21:00` },
+      { text:`Have you started laundry for todayâ€™s slot?`, schedule:`DAILY 19:00` },
     ]})}); }catch{} }
     return (
       <Card title="Wardrobe Blueprint">
@@ -94,7 +94,7 @@ export default function WardrobeWizard(){
       {s.step==="LAUNDRY"&&<LaundryStep/>}
       {s.step==="OUTFITS"&&<Outfits/>}
       {s.step==="BLUEPRINT"&&<Blueprint/>}
-      {s.step==="SUCCESS"&&<Card title="Wardrobe Setup Complete 🎉"><p className="text-sm text-zinc-300">Prompts are live.</p></Card>}
+      {s.step==="SUCCESS"&&<Card title="Wardrobe Setup Complete ðŸŽ‰"><p className="text-sm text-zinc-300">Prompts are live.</p></Card>}
     </div>
   );
 }

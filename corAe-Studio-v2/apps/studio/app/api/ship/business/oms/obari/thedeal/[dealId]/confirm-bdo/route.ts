@@ -1,5 +1,5 @@
-// apps/studio/app/api/ship/business/oms/obari/deal/[dealId]/confirm-bdo/route.ts
-// Studio API — Confirm BDO: set a BDO-stage deal's status to CONFIRMED.
+﻿// apps/studio/app/api/business/oms/obari/deal/[dealId]/confirm-bdo/route.ts
+// Studio API â€” Confirm BDO: set a BDO-stage deal's status to CONFIRMED.
 // No external aliases; only uses fields that exist in our Prisma schema.
 
 import { NextResponse } from "next/server";
@@ -28,7 +28,7 @@ function isBodyValid(b: unknown): b is Body {
   return true;
 }
 
-// POST /api/ship/business/oms/obari/deal/[dealId]/confirm-bdo
+// POST /api/business/oms/obari/deal/[dealId]/confirm-bdo
 export async function POST(req: Request, ctx: { params: Promise<{ dealId: string }> }) {
   try {
     const { dealId } = await ctx.params;

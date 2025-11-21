@@ -1,5 +1,5 @@
-// apps/studio/app/api/ship/business/oms/obari/thedeal/btdo/requirements/templates/create/route.ts
-// BTDO — Requirement Templates (Create)
+﻿// apps/studio/app/api/business/oms/obari/thedeal/btdo/requirements/templates/create/route.ts
+// BTDO â€” Requirement Templates (Create)
 // POST: create a template with one or more lines (e.g., POD, WTN)
 
 import { NextResponse } from "next/server";
@@ -97,7 +97,7 @@ export async function GET() {
       name: "string (unique, required)",
       lines: [
         {
-          kind: "string (e.g., POD | WTN | INV | OTHER) — required",
+          kind: "string (e.g., POD | WTN | INV | OTHER) â€” required",
           required: "boolean (default true)",
           notes: "string (optional)",
           idx: "number (optional ordering; default array index)",
@@ -106,3 +106,4 @@ export async function GET() {
     },
   });
 }
+

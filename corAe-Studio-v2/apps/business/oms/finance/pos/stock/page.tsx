@@ -1,4 +1,4 @@
-// app/ship/business/pos/stock/page.tsx
+﻿// app/business/pos/stock/page.tsx
 "use client";
 
 import { useMemo, useState } from "react";
@@ -67,7 +67,7 @@ export default function StockPage() {
     setMessage(null);
 
     try {
-      // Real API call → posts a FlowEvent and runs the inventory observer
+      // Real API call â†’ posts a FlowEvent and runs the inventory observer
       const res = await fetch("/api/business/pos/stock/adjust", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -82,7 +82,7 @@ export default function StockPage() {
       const data = await res.json();
 
       if (!data?.ok) {
-        setMessage(`❌ ${data?.error || "Adjustment failed."}`);
+        setMessage(`âŒ ${data?.error || "Adjustment failed."}`);
         return;
       }
 
@@ -97,10 +97,10 @@ export default function StockPage() {
         })
       );
 
-      setMessage("✅ Adjustment recorded and observer triggered.");
+      setMessage("âœ… Adjustment recorded and observer triggered.");
       setShowAdjust(false);
     } catch (e: any) {
-      setMessage(`⚠️ ${e.message}`);
+      setMessage(`âš ï¸ ${e.message}`);
     } finally {
       setSubmitting(false);
     }
@@ -122,7 +122,7 @@ export default function StockPage() {
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search by SKU, name, or location…"
+            placeholder="Search by SKU, name, or locationâ€¦"
             className="flex-1 border border-ring rounded-lg p-3 bg-surface text-text"
           />
           <div className="badge">On hand: {totalOnHand}</div>
@@ -237,7 +237,7 @@ export default function StockPage() {
                 disabled={submitting}
                 title="Record adjustment and trigger observers"
               >
-                {submitting ? "Saving…" : "Apply"}
+                {submitting ? "Savingâ€¦" : "Apply"}
               </button>
             </div>
           </div>
@@ -246,3 +246,4 @@ export default function StockPage() {
     </main>
   );
 }
+

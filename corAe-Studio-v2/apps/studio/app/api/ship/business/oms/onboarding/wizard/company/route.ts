@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
 import type { Prisma } from "@prisma/client";
 
@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
       ok: true,
       companyId: result.companyId,
       tenantId: result.tenantId,
-      next: "/ship/business/oms/onboarding/wizard/hr",
+      next: "/business/oms/onboarding/wizard/hr",
     });
   } catch (err: any) {
     const msg = typeof err?.message === "string" ? err.message : "Server error";

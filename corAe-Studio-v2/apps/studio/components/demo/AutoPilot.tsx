@@ -1,19 +1,19 @@
-"use client";
+﻿"use client";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 type Step = { url: string; pauseMs?: number; action?: () => Promise<void> | void; label?: string; };
 
 const STEPS: Step[] = [
-  { url: "/ship/home", label: "Home Overview", pauseMs: 1000 },
-  { url: "/ship/home/faith", label: "Home • Faith", pauseMs: 1000 },
-  { url: "/ship/home/tasks", label: "Home • Tasks", pauseMs: 1000, action: async () => {
-      await fetch("/api/ship/home/demo/tasks", { method: "POST", body: JSON.stringify({ title: "Greet customers (Demo)" }) });
+  { url: "/home", label: "Home Overview", pauseMs: 1000 },
+  { url: "/home/faith", label: "Home â€¢ Faith", pauseMs: 1000 },
+  { url: "/home/tasks", label: "Home â€¢ Tasks", pauseMs: 1000, action: async () => {
+      await fetch("/api/home/demo/tasks", { method: "POST", body: JSON.stringify({ title: "Greet customers (Demo)" }) });
     } },
-  { url: "/ship/work/diary", label: "Work • 3³ Diary", pauseMs: 1000 },
-  { url: "/ship/work/cims", label: "Work • CIMS", pauseMs: 1000 },
-  { url: "/ship/business/obari", label: "Business • OBARI", pauseMs: 1000 },
-  { url: "/ship/business/pos", label: "Business • POS", pauseMs: 1000 },
+  { url: "/work/diary", label: "Work â€¢ 3Â³ Diary", pauseMs: 1000 },
+  { url: "/work/cims", label: "Work â€¢ CIMS", pauseMs: 1000 },
+  { url: "/business/obari", label: "Business â€¢ OBARI", pauseMs: 1000 },
+  { url: "/business/pos", label: "Business â€¢ POS", pauseMs: 1000 },
 ];
 
 export default function AutoPilot() {
@@ -44,3 +44,4 @@ export default function AutoPilot() {
     </div>
   );
 }
+

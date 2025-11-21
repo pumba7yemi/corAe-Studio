@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
 
 /**
- * GET /api/ship/business/oms/onboarding/leads/:id
+ * GET /api/business/oms/onboarding/leads/:id
  * Returns a lean view of a lead so the signup page can prefill.
  *
  * Response:

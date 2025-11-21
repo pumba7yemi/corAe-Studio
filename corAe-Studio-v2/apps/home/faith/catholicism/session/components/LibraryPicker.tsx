@@ -1,11 +1,11 @@
-'use client';
+﻿'use client';
 import React, { useEffect, useState } from 'react';
 
 export default function LibraryPicker({ onInsert }: { onInsert: (doc: any) => void }) {
   const [items, setItems] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('/api/ship/home/faith/library').then((r) => r.json()).then((j) => setItems(j.items || []));
+    fetch('/api/home/faith/library').then((r) => r.json()).then((j) => setItems(j.items || []));
   }, []);
 
   return (
@@ -22,3 +22,4 @@ export default function LibraryPicker({ onInsert }: { onInsert: (doc: any) => vo
     </div>
   );
 }
+

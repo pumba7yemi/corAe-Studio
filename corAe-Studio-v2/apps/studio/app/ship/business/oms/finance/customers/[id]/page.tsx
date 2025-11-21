@@ -1,18 +1,18 @@
-'use client';
+﻿'use client';
 
 /**
- * Finance — Customer Statement (AR)
+ * Finance â€” Customer Statement (AR)
  * - Shows one customer's AR documents within a period
  * - Running balance (in/out), quick ageing, search
  * - Demo "Add Payment" action updates local state
- * - Bottom arrows: back → Customers, next → Sales Ledger
+ * - Bottom arrows: back â†’ Customers, next â†’ Sales Ledger
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 
-// ✅ Long relative paths (as per your working setup)
+// âœ… Long relative paths (as per your working setup)
 // Fallback local Card / CardContent definitions to avoid a missing '@/ui/card' module.
 // These are minimal presentational wrappers matching the original usage in this file.
 function Card({ children, className }: { children: React.ReactNode; className?: string }) {
@@ -55,7 +55,7 @@ type Customer = {
   terms?: string;
 };
 
-const money = (m: number) => `£${(m / 100).toFixed(2)}`;
+const money = (m: number) => `Â£${(m / 100).toFixed(2)}`;
 const daysBetween = (a: string, b: string) =>
   Math.round((new Date(b).getTime() - new Date(a).getTime()) / (1000 * 60 * 60 * 24));
 
@@ -212,7 +212,7 @@ export default function CustomerStatementPage() {
   }, [inPeriod]);
 
   function addPayment() {
-    const amt = 50000; // £500.00 demo
+    const amt = 50000; // Â£500.00 demo
     const today = new Date().toISOString().slice(0, 10);
     setDocs((cur) => [
       ...cur,
@@ -231,7 +231,7 @@ export default function CustomerStatementPage() {
   if (!customer) {
     return (
       <main className="p-6">
-        <div className="text-sm text-muted">Loading…</div>
+        <div className="text-sm text-muted">Loadingâ€¦</div>
       </main>
     );
   }
@@ -239,9 +239,9 @@ export default function CustomerStatementPage() {
   return (
     <main className="p-6 space-y-6">
       <header className="stack">
-        <h1 className="text-3xl font-bold">Customer · {customer.name}</h1>
+        <h1 className="text-3xl font-bold">Customer Â· {customer.name}</h1>
         <p className="muted">
-          Statement & activity — Terms: {customer.terms ?? '—'} · ID: {customer.id}
+          Statement & activity â€” Terms: {customer.terms ?? 'â€”'} Â· ID: {customer.id}
         </p>
       </header>
 
@@ -253,12 +253,12 @@ export default function CustomerStatementPage() {
               <Input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Search ref/description…"
+                placeholder="Search ref/descriptionâ€¦"
               />
               <div className="text-xs text-muted">
                 Period:&nbsp;
                 <span className="font-mono">
-                  {period.from} → {period.to}
+                  {period.from} â†’ {period.to}
                 </span>
               </div>
             </div>
@@ -296,10 +296,10 @@ export default function CustomerStatementPage() {
                   <div className="flex flex-col">
                     <div className="font-mono font-semibold">{l.id}</div>
                     <div className="text-xs text-muted">
-                      {l.type.toUpperCase()} • {l.date_iso}
-                      {l.ref ? ` • Ref ${l.ref}` : ''}
-                      {l.description ? ` • ${l.description}` : ''}
-                      {l.due_iso ? ` • Due ${l.due_iso}` : ''}
+                      {l.type.toUpperCase()} â€¢ {l.date_iso}
+                      {l.ref ? ` â€¢ Ref ${l.ref}` : ''}
+                      {l.description ? ` â€¢ ${l.description}` : ''}
+                      {l.due_iso ? ` â€¢ Due ${l.due_iso}` : ''}
                     </div>
                   </div>
                   <div className="text-right">
@@ -310,7 +310,7 @@ export default function CustomerStatementPage() {
                       </span>
                     </div>
                     <div className="text-xs text-muted">
-                      Balance → <span className="font-mono">{money(l.balance)}</span>
+                      Balance â†’ <span className="font-mono">{money(l.balance)}</span>
                     </div>
                   </div>
                 </div>
@@ -331,7 +331,7 @@ export default function CustomerStatementPage() {
                         ].join(' ')}
                       >
                         {(l.status ?? 'issued').toUpperCase()}
-                        {l.overdueDays ? ` • ${l.overdueDays}d` : ''}
+                        {l.overdueDays ? ` â€¢ ${l.overdueDays}d` : ''}
                       </span>
                     </div>
                     {!!l.outstanding && (
@@ -354,11 +354,11 @@ export default function CustomerStatementPage() {
           {/* Quick links */}
           <div className="text-xs text-muted">
             Back to{' '}
-            <Link href="/ship/business/oms/finance/customers" className="underline">
+            <Link href="/business/oms/finance/customers" className="underline">
               Customers
             </Link>{' '}
-            · View{' '}
-            <Link href="/ship/business/oms/finance/sales" className="underline">
+            Â· View{' '}
+            <Link href="/business/oms/finance/sales" className="underline">
               Sales Ledger
             </Link>
           </div>
@@ -366,11 +366,11 @@ export default function CustomerStatementPage() {
       </Card>
 
       <ArrowNav
-        backHref="/ship/business/oms/finance/customers"
-        nextHref="/ship/business/oms/finance/sales"
+        backHref="/business/oms/finance/customers"
+        nextHref="/business/oms/finance/sales"
         nextLabel="Sales Ledger"
       >
-        Finance · Customer Statement
+        Finance Â· Customer Statement
       </ArrowNav>
     </main>
   );

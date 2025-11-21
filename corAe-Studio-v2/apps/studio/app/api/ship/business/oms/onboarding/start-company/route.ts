@@ -1,6 +1,6 @@
-// apps/studio/app/api/ship/business/onboarding/start-company/route.ts
+﻿// apps/studio/app/api/business/onboarding/start-company/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { bootstrapCompany } from "@/app/lib/ship/business/bootstrap";
+import { bootstrapCompany } from "@/app/lib/business/bootstrap";
 
 export async function POST(req: NextRequest) {
   try {

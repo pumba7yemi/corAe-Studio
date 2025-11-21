@@ -1,15 +1,15 @@
-// apps/ship/business/oms/obari/thedeal/schedule/index.ts
-// OBARI — TheDeal · Stage 2: Schedule
+﻿// apps/business/oms/obari/thedeal/schedule/index.ts
+// OBARI â€” TheDeal Â· Stage 2: Schedule
 // Purpose:
 // - Provide a constitutional scheduler that produces a schedule snapshot
 //   {mode, weekRef?, month?, year?, startDate, endDate, label}
 // - Persist/restore that snapshot to the canonical sessionStorage key
-//   "obari.schedule.selection" (used by Order › Prep 150.logic)
+//   "obari.schedule.selection" (used by Order â€º Prep 150.logic)
 // - Keep math deterministic, simple, and business-friendly.
 // Notes:
 // - All dates are ISO (YYYY-MM-DD) in local time (no TZ juggling).
-// - “CYCLE_28” uses a fixed anchor and 4×7d blocks (W1..W4).
-// - “MONTHLY” and “HYBRID” are month-aware; HYBRID = rolling 4-week window
+// - â€œCYCLE_28â€ uses a fixed anchor and 4Ã—7d blocks (W1..W4).
+// - â€œMONTHLYâ€ and â€œHYBRIDâ€ are month-aware; HYBRID = rolling 4-week window
 //   but we still include (month, year) for reporting coherence.
 
 export type ScheduleMode = "CYCLE_28" | "MONTHLY" | "HYBRID";
@@ -25,9 +25,9 @@ export type SavedSchedule = {
   label?: string | null;
 };
 
-// ────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Public API
-// ────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
  * Compute a schedule window for OBARI TheDeal.
@@ -35,8 +35,8 @@ export type SavedSchedule = {
  * @param mode         "CYCLE_28" | "MONTHLY" | "HYBRID"
  * @param opts.date    reference date (default: today)
  * @param opts.weekRef optional W1..W4 (used by CYCLE_28; optional for MONTHLY/HYBRID)
- * @param opts.month   explicit month (1..12) for MONTHLY; default uses today’s month
- * @param opts.year    explicit year for MONTHLY; default uses today’s year
+ * @param opts.month   explicit month (1..12) for MONTHLY; default uses todayâ€™s month
+ * @param opts.year    explicit year for MONTHLY; default uses todayâ€™s year
  */
 export function computeScheduleWindow(
   mode: ScheduleMode,
@@ -54,7 +54,7 @@ export function computeScheduleWindow(
       year: null,
       startDate: toISO(start),
       endDate: toISO(end),
-      label: `28-day cycle · ${week} · ${fmtRange(start, end)}`,
+      label: `28-day cycle Â· ${week} Â· ${fmtRange(start, end)}`,
     };
   }
 
@@ -69,12 +69,12 @@ export function computeScheduleWindow(
       year: y,
       startDate: toISO(start),
       endDate: toISO(end),
-      label: `Monthly · ${yyyyMm(y, m)} · ${fmtRange(start, end)}`,
+      label: `Monthly Â· ${yyyyMm(y, m)} Â· ${fmtRange(start, end)}`,
     };
   }
 
-  // HYBRID: rolling 4-week window (28d) starting at the beginning of the current “monthly band”
-  // Bands: 1–7 (W1), 8–14 (W2), 15–21 (W3), 22–end (W4). Start at band’s day 1, extend 27 days.
+  // HYBRID: rolling 4-week window (28d) starting at the beginning of the current â€œmonthly bandâ€
+  // Bands: 1â€“7 (W1), 8â€“14 (W2), 15â€“21 (W3), 22â€“end (W4). Start at bandâ€™s day 1, extend 27 days.
   if (mode === "HYBRID") {
     const bandStart = monthlyBandStart(now);
     const start = bandStart;
@@ -86,7 +86,7 @@ export function computeScheduleWindow(
       year: now.getFullYear(),
       startDate: toISO(start),
       endDate: toISO(end),
-      label: `Hybrid (rolling 4-week) · ${fmtRange(start, end)}`,
+      label: `Hybrid (rolling 4-week) Â· ${fmtRange(start, end)}`,
     };
   }
 
@@ -134,22 +134,22 @@ export function makeAndSaveSchedule(
   return s;
 }
 
-// Canonical sessionStorage key used by Order › Prep 150.logic
+// Canonical sessionStorage key used by Order â€º Prep 150.logic
 export const SCHEDULE_KEY = "obari.schedule.selection";
 
-// ────────────────────────────────────────────────────────────────────────────
-// Internals — CYCLE_28
-// ────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Internals â€” CYCLE_28
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
- * For a deterministic 28-day cycle, we fix an anchor date and split into 4×7 blocks.
+ * For a deterministic 28-day cycle, we fix an anchor date and split into 4Ã—7 blocks.
  * Anchor: 2024-01-01 (local). You can move this to your fiscal anchor if needed.
  */
 const CYCLE_ANCHOR = new Date(2024, 0, 1); // Jan 1, 2024
 
 function cycle28Window(ref: Date, week: WeekRef): { start: Date; end: Date } {
   const daysFromAnchor = diffDays(CYCLE_ANCHOR, ref);
-  const cycleIndex = Math.floor(daysFromAnchor / 28); // which 28-day cycle we’re in
+  const cycleIndex = Math.floor(daysFromAnchor / 28); // which 28-day cycle weâ€™re in
   const cycleStart = addDays(CYCLE_ANCHOR, cycleIndex * 28);
 
   const offsetMap: Record<WeekRef, number> = { W1: 0, W2: 7, W3: 14, W4: 21 };
@@ -159,7 +159,7 @@ function cycle28Window(ref: Date, week: WeekRef): { start: Date; end: Date } {
 }
 
 /**
- * If a week isn’t explicitly chosen, infer it from the anchor cycle position.
+ * If a week isnâ€™t explicitly chosen, infer it from the anchor cycle position.
  */
 function inferCycleWeekRef(ref: Date): WeekRef {
   const daysFromAnchor = diffDays(CYCLE_ANCHOR, ref);
@@ -170,9 +170,9 @@ function inferCycleWeekRef(ref: Date): WeekRef {
   return "W4";
 }
 
-// ────────────────────────────────────────────────────────────────────────────
-/* Internals — MONTHLY & HYBRID */
-// ────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* Internals â€” MONTHLY & HYBRID */
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function monthWindow(year: number, month1to12: number): { start: Date; end: Date } {
   const m = clampMonth(month1to12);
@@ -195,9 +195,9 @@ function monthlyBandStart(ref: Date): Date {
   return new Date(ref.getFullYear(), ref.getMonth(), dayStart);
 }
 
-// ────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Date helpers
-// ────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function stripTime(d: Date): Date {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate());
@@ -231,12 +231,12 @@ function yyyyMm(y: number, m: number): string {
   return `${y}-${String(m).padStart(2, "0")}`;
 }
 function fmtRange(s: Date, e: Date): string {
-  return `${toISO(s)} → ${toISO(e)}`;
+  return `${toISO(s)} â†’ ${toISO(e)}`;
 }
 
-// ────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Example (commented):
 // const snap = computeScheduleWindow("CYCLE_28", { weekRef: "W2" });
 // saveScheduleToSession(snap);
 // const again = loadScheduleFromSession();
-// ────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

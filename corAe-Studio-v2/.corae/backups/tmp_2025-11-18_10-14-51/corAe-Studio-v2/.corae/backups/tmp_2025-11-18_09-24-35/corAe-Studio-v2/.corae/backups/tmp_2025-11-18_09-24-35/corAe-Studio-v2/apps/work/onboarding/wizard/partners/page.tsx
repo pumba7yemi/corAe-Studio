@@ -1,11 +1,11 @@
-// apps/studio/app/ship/work/onboarding/wizard/partners/page.tsx
+﻿// apps/studio/app/work/onboarding/wizard/partners/page.tsx
 "use client";
 
 /**
- * corAe • Work • Onboarding • Workflow Partners Wizard
+ * corAe â€¢ Work â€¢ Onboarding â€¢ Workflow Partners Wizard
  * Purpose:
- *   - Quickly add or edit Workflow Partners™ during onboarding.
- *   - Writes directly to /api/ship/work/partners (bulkUpsert)
+ *   - Quickly add or edit Workflow Partnersâ„¢ during onboarding.
+ *   - Writes directly to /api/work/partners (bulkUpsert)
  */
 
 import React, { useState } from "react";
@@ -41,7 +41,7 @@ export default function PartnersOnboardingWizardPage() {
   }
 
   async function savePartners() {
-    await fetch("/api/ship/work/partners", {
+    await fetch("/api/work/partners", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "bulkUpsert", items: partners }),
@@ -52,7 +52,7 @@ export default function PartnersOnboardingWizardPage() {
   return (
   <div className="min-h-dvh bg-zinc-950 text-zinc-100 p-8">
       <h1 className="text-2xl font-semibold">Workflow Partners Wizard</h1>
-      <p className="text-sm text-zinc-400 mb-6">Define or import your Workflow Partners™</p>
+      <p className="text-sm text-zinc-400 mb-6">Define or import your Workflow Partnersâ„¢</p>
 
       <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 space-y-4">
         <div className="grid gap-3 sm:grid-cols-3">

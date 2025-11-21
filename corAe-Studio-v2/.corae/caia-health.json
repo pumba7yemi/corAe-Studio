@@ -1,4 +1,4 @@
-{
+﻿{
   "status": "AMBER",
   "score150": 102.68,
   "lastNightly": {
@@ -71,17 +71,17 @@
                 {
                   "id": "obari",
                   "title": "OBARI Order Lifecycle",
-                  "path": "/ship/business/oms"
+                  "path": "/business/oms"
                 },
                 {
                   "id": "3dtd",
-                  "title": "3³DTD Task Engine",
+                  "title": "3Â³DTD Task Engine",
                   "path": "/ship/common/diary"
                 },
                 {
                   "id": "filelogic",
                   "title": "FileLogic Numbered System",
-                  "path": "/ship/business/filelogic"
+                  "path": "/business/filelogic"
                 },
                 {
                   "id": "haveyou",
@@ -107,9 +107,9 @@
               "messages": {
                 "modulePrompt": "Which corAe module does this belong to? (home, work, business, system, dev)",
                 "pathPrompt": "Confirm the EXACT folder path where this file should live.",
-                "architecturePrompt": "How does this fit the final architecture (CAIA → Story → Atlas → 3³DTD → FileLogic → OBARI)?",
+                "architecturePrompt": "How does this fit the final architecture (CAIA â†’ Story â†’ Atlas â†’ 3Â³DTD â†’ FileLogic â†’ OBARI)?",
                 "fileLogicPrompt": "Confirm this folder code+title matches FileLogic rules.",
-                "wipPrompt": "WIP=1 — what change is currently in flight?",
+                "wipPrompt": "WIP=1 â€” what change is currently in flight?",
                 "confPrompt": "Are you sure you want Copilot to generate this now? (yes/no)"
               }
             },
@@ -119,38 +119,38 @@
                 {
                   "id": "home-faith",
                   "label": "Faith",
-                  "path": "/ship/home/core/faith"
+                  "path": "/home/core/faith"
                 },
                 {
                   "id": "home-cleaning",
                   "label": "Home Cleaning",
-                  "path": "/ship/home/core/cleaning"
+                  "path": "/home/core/cleaning"
                 }
               ],
               "workCore": [
                 {
                   "id": "work-dashboard",
                   "label": "Work Dashboard",
-                  "path": "/ship/work/core/dashboard"
+                  "path": "/work/core/dashboard"
                 }
               ],
               "businessCore": [
                 {
                   "id": "biz-obari",
                   "label": "OBARI",
-                  "path": "/ship/business/core/obari"
+                  "path": "/business/core/obari"
                 }
               ],
               "businessFront": [
                 {
                   "id": "front-cleaning",
                   "label": "Cleaning",
-                  "path": "/ship/business/front/cleaning"
+                  "path": "/business/front/cleaning"
                 },
                 {
                   "id": "front-glam",
                   "label": "Glam & Glow",
-                  "path": "/ship/business/front/glam"
+                  "path": "/business/front/glam"
                 }
               ]
             },
@@ -353,17 +353,17 @@
           {
             "id": "obari",
             "title": "OBARI Order Lifecycle",
-            "path": "/ship/business/oms"
+            "path": "/business/oms"
           },
           {
             "id": "3dtd",
-            "title": "3³DTD Task Engine",
+            "title": "3Â³DTD Task Engine",
             "path": "/ship/common/diary"
           },
           {
             "id": "filelogic",
             "title": "FileLogic Numbered System",
-            "path": "/ship/business/filelogic"
+            "path": "/business/filelogic"
           },
           {
             "id": "haveyou",
@@ -389,9 +389,9 @@
         "messages": {
           "modulePrompt": "Which corAe module does this belong to? (home, work, business, system, dev)",
           "pathPrompt": "Confirm the EXACT folder path where this file should live.",
-          "architecturePrompt": "How does this fit the final architecture (CAIA → Story → Atlas → 3³DTD → FileLogic → OBARI)?",
+          "architecturePrompt": "How does this fit the final architecture (CAIA â†’ Story â†’ Atlas â†’ 3Â³DTD â†’ FileLogic â†’ OBARI)?",
           "fileLogicPrompt": "Confirm this folder code+title matches FileLogic rules.",
-          "wipPrompt": "WIP=1 — what change is currently in flight?",
+          "wipPrompt": "WIP=1 â€” what change is currently in flight?",
           "confPrompt": "Are you sure you want Copilot to generate this now? (yes/no)"
         }
       },
@@ -401,38 +401,38 @@
           {
             "id": "home-faith",
             "label": "Faith",
-            "path": "/ship/home/core/faith"
+            "path": "/home/core/faith"
           },
           {
             "id": "home-cleaning",
             "label": "Home Cleaning",
-            "path": "/ship/home/core/cleaning"
+            "path": "/home/core/cleaning"
           }
         ],
         "workCore": [
           {
             "id": "work-dashboard",
             "label": "Work Dashboard",
-            "path": "/ship/work/core/dashboard"
+            "path": "/work/core/dashboard"
           }
         ],
         "businessCore": [
           {
             "id": "biz-obari",
             "label": "OBARI",
-            "path": "/ship/business/core/obari"
+            "path": "/business/core/obari"
           }
         ],
         "businessFront": [
           {
             "id": "front-cleaning",
             "label": "Cleaning",
-            "path": "/ship/business/front/cleaning"
+            "path": "/business/front/cleaning"
           },
           {
             "id": "front-glam",
             "label": "Glam & Glow",
-            "path": "/ship/business/front/glam"
+            "path": "/business/front/glam"
           }
         ]
       },

@@ -1,4 +1,4 @@
-// apps/studio/app/ship/business/oms/hr/page.tsx
+﻿// apps/studio/app/business/oms/hr/page.tsx
 import fs from "node:fs"; import path from "node:path";
 const P=(...a:string[])=>path.join(process.cwd(),...a);
 export default function HR() {
@@ -10,8 +10,9 @@ export default function HR() {
       <p className="text-gray-600">People, vendors, access, training.</p>
       <ul className="space-y-2">
         {items.map(x=> <li key={x} className="border rounded-md p-2 bg-white">{x}</li>)}
-        {items.length===0 && <li className="text-gray-500">— no HR items —</li>}
+        {items.length===0 && <li className="text-gray-500">â€” no HR items â€”</li>}
       </ul>
     </div>
   );
 }
+

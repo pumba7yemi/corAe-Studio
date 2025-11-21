@@ -1,5 +1,5 @@
-// /laws/filelogic.law.ts
-// corAe Constitutional Law — FileLogic (meta-law)
+﻿// /laws/filelogic.law.ts
+// corAe Constitutional Law â€” FileLogic (meta-law)
 
 type Enforcement = {
   immutability: boolean;
@@ -65,24 +65,24 @@ export const FileLogicLaw: FileLogicLawT = {
       statement:
         "Use singular for category roots that represent a concept (e.g., 'deal', 'order'); use plural only when the path semantically lists many items.",
       examples: [
-        "✅ /apps/ship/business/oms/obari/deal/bdo",
-        "❌ /apps/ship/business/oms/obari/deals/bdo",
+        "âœ… /apps/business/oms/obari/deal/bdo",
+        "âŒ /apps/business/oms/obari/deals/bdo",
       ],
     },
     {
       name: "OBARI stage-first",
       statement:
-        "Inside OBARI, stage folders are canonical: order → booking → active → reporting → invoicing.",
+        "Inside OBARI, stage folders are canonical: order â†’ booking â†’ active â†’ reporting â†’ invoicing.",
       examples: [
-        "✅ /apps/ship/business/oms/obari/booking/create",
-        "✅ /apps/ship/business/oms/obari/reporting/finalize",
-        "✅ /apps/ship/business/oms/obari/invoicing/issue",
+        "âœ… /apps/business/oms/obari/booking/create",
+        "âœ… /apps/business/oms/obari/reporting/finalize",
+        "âœ… /apps/business/oms/obari/invoicing/issue",
       ],
     },
     {
       name: "No aliases in constitutional files",
       statement:
-        "Law files and path-critical endpoints must not import via path aliases (e.g., '@/…'). Prefer local types or direct packages.",
+        "Law files and path-critical endpoints must not import via path aliases (e.g., '@/â€¦'). Prefer local types or direct packages.",
     },
   ],
   paths: [
@@ -134,12 +134,12 @@ export const FileLogicLaw: FileLogicLawT = {
     namingLinter:
       "Ensure stage-first naming in domain paths; reject alias-based imports in constitutional files.",
     batonChecker:
-      "Verify that equals snapshots form a forward-only chain: base '=' → REPORT_ADJUSTED → FINAL; no rewrites permitted.",
+      "Verify that equals snapshots form a forward-only chain: base '=' â†’ REPORT_ADJUSTED â†’ FINAL; no rewrites permitted.",
   },
   notes: [
-    "FileLogic is the constitution — it governs everything but is not a folder itself.",
+    "FileLogic is the constitution â€” it governs everything but is not a folder itself.",
     "Laws define boundaries; rules define procedures; flows encode human sequence; contexts scope variables.",
-    "OBARI stage names are canonical: order → booking → active → reporting → invoicing.",
+    "OBARI stage names are canonical: order â†’ booking â†’ active â†’ reporting â†’ invoicing.",
   ],
 };
 

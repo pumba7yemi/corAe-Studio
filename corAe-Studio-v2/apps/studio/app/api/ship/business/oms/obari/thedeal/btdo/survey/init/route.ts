@@ -1,5 +1,5 @@
-// apps/studio/app/api/ship/business/oms/obari/thedeal/btdo/survey/init/route.ts
-// BTDO ▸ Survey Init — create a new BTDO survey draft and mint token
+﻿// apps/studio/app/api/business/oms/obari/thedeal/btdo/survey/init/route.ts
+// BTDO â–¸ Survey Init â€” create a new BTDO survey draft and mint token
 // POST { dtdId, partyType, partyName?, contact?, schedule?, currency?, items?:[...] }
 // Returns: { ok, surveyId, token, expAt, file }
 
@@ -87,3 +87,4 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: e?.message ?? "init_failed" }, { status: 500 });
   }
 }
+

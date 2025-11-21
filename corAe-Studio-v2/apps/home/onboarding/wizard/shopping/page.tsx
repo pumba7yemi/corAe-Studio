@@ -1,24 +1,24 @@
-// apps/studio/app/ship/home/onboarding/wizard/shopping/page.tsx
+﻿// apps/studio/app/home/onboarding/wizard/shopping/page.tsx
 "use client";
 
 /**
- * corAe • Home • Onboarding • Shopping Wizard (HomeGro™)
+ * corAe â€¢ Home â€¢ Onboarding â€¢ Shopping Wizard (HomeGroâ„¢)
  * Mirrors Business Vendor Ordering but for household supply.
  *
  * Flow:
- *   WELCOME → VENDORS → CATALOG → CYCLE(28d) → LISTS → ORDERS → BLUEPRINT → SUCCESS
+ *   WELCOME â†’ VENDORS â†’ CATALOG â†’ CYCLE(28d) â†’ LISTS â†’ ORDERS â†’ BLUEPRINT â†’ SUCCESS
  * Features:
  *   - Save & Continue (localStorage)
  *   - 28-day cycle with anchor day + top-ups
- *   - Vendor → Items → Reorder logic (par levels, min/max)
+ *   - Vendor â†’ Items â†’ Reorder logic (par levels, min/max)
  *   - Auto-generated weekly order lists
- *   - Seeds /api/ship/home/shopping with blueprint
+ *   - Seeds /api/home/shopping with blueprint
  *   - Emits Have-You reminders for order days
  */
 
 import React, { useEffect, useMemo, useState } from "react";
 
-/* ───────────────── Types ───────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 type Step =
   | "WELCOME"
   | "VENDORS"
@@ -105,7 +105,7 @@ interface ShoppingState {
 
 const LOCAL_KEY = "corAeHomeWizard/shopping";
 
-/* ───────────────── Defaults ───────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Defaults â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 const initial: ShoppingState = {
   step: "WELCOME",
   householdName: "",
@@ -118,7 +118,7 @@ const initial: ShoppingState = {
   savedAt: null,
 };
 
-/* ───────────────── Utils ───────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Utils â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function rid(prefix = "id") {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
     // @ts-ignore
@@ -154,13 +154,13 @@ function timeAgo(iso?: string | null) {
 }
 const DAYS: DayOfWeek[] = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
-/* ───────────────── UI atoms ───────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ UI atoms â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function Shell({ children, right }: { children: React.ReactNode; right?: React.ReactNode }) {
   return (
   <div className="min-h-dvh bg-zinc-950 text-zinc-100">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-4 pt-8">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Home Onboarding • HomeGro™ Shopping</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Home Onboarding â€¢ HomeGroâ„¢ Shopping</h1>
           <p className="text-xs text-zinc-400">28-day household purchasing cycle, vendor-mirrored.</p>
         </div>
         {right}
@@ -201,14 +201,14 @@ function Chip({ children, onRemove }: { children: React.ReactNode; onRemove?: ()
   return (
     <span className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/60 px-3 py-1 text-xs">
       {children}
-      {onRemove && <button onClick={onRemove} className="text-zinc-400 hover:text-zinc-200">✕</button>}
+      {onRemove && <button onClick={onRemove} className="text-zinc-400 hover:text-zinc-200">âœ•</button>}
     </span>
   );
 }
 function SaveBar({ onSave, savedAt, saving }: { onSave: () => void; savedAt?: string | null; saving: boolean }) {
   return (
     <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900/70 px-3 py-2 text-xs backdrop-blur">
-      <Button variant="secondary" onClick={onSave} disabled={saving}>{saving ? "Saving…" : "Save & Continue Later"}</Button>
+      <Button variant="secondary" onClick={onSave} disabled={saving}>{saving ? "Savingâ€¦" : "Save & Continue Later"}</Button>
       <span className="text-zinc-400">{savedAt ? `Last saved ${timeAgo(savedAt)}` : "Not saved yet"}</span>
     </div>
   );
@@ -222,7 +222,7 @@ function Badge({ ok, label }: { ok: boolean; label: string }) {
   );
 }
 
-/* ───────────────── Steps ───────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Steps â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function Welcome({ s, set, next }: { s: ShoppingState; set: (p: Partial<ShoppingState>) => void; next: () => void }) {
   return (
     <Card title="Welcome" hint="Mirror your home shopping to vendor-style ordering with a simple 28-day rhythm.">
@@ -273,7 +273,7 @@ function Vendors({ s, set, next, back }: { s: ShoppingState; set: (p: Partial<Sh
       {s.vendors.length > 0 && (
         <div className="flex flex-wrap gap-2 pt-2">
           {s.vendors.map(v => (
-            <Chip key={v.id} onRemove={() => remove(v.id)}>{v.name} {v.channel ? `• ${v.channel}` : ""}</Chip>
+            <Chip key={v.id} onRemove={() => remove(v.id)}>{v.name} {v.channel ? `â€¢ ${v.channel}` : ""}</Chip>
           ))}
         </div>
       )}
@@ -325,7 +325,7 @@ function Catalog({ s, set, next, back }: { s: ShoppingState; set: (p: Partial<Sh
     <Card title="Catalog" hint="Add regular items with reorder logic (par/min/max) per vendor.">
       <div className="grid gap-3 sm:grid-cols-7">
         <select className="rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm sm:col-span-2" value={vendorId} onChange={(e) => setVendorId(e.target.value)}>
-          <option value="">— Vendor —</option>
+          <option value="">â€” Vendor â€”</option>
           {s.vendors.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
         </select>
         <Input placeholder="Item name" value={name} onChange={(e) => setName(e.target.value)} />
@@ -347,7 +347,7 @@ function Catalog({ s, set, next, back }: { s: ShoppingState; set: (p: Partial<Sh
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <span className="font-medium">{ci.name}</span>
-                  <span className="text-zinc-400"> • {s.vendors.find(v => v.id === ci.vendorId)?.name}</span>
+                  <span className="text-zinc-400"> â€¢ {s.vendors.find(v => v.id === ci.vendorId)?.name}</span>
                   {ci.tags && ci.tags.length > 0 && <span className="ml-2 text-xs text-zinc-400">[{ci.tags.join(", ")}]</span>}
                 </div>
                 <div className="flex items-center gap-3 text-xs text-zinc-400">
@@ -459,7 +459,7 @@ function Lists({ s, set, next, back }: { s: ShoppingState; set: (p: Partial<Shop
           <option value="ADHOC">ADHOC</option>
         </select>
         <select className="rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm" value={day} onChange={(e) => setDay(e.target.value as DayOfWeek | "")}>
-          <option value="">— Day —</option>
+          <option value="">â€” Day â€”</option>
           {DAYS.map(d => <option key={d} value={d}>{d}</option>)}
         </select>
         <Input placeholder="Include tags (comma)" value={include} onChange={(e) => setInclude(e.target.value)} />
@@ -474,9 +474,9 @@ function Lists({ s, set, next, back }: { s: ShoppingState; set: (p: Partial<Shop
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <span className="font-medium">{l.title}</span>
-                  <span className="text-zinc-400"> • {l.kind}</span>
-                  {l.vendorId && <span className="text-zinc-400"> • {s.vendors.find(v => v.id === l.vendorId)?.name}</span>}
-                  {l.day && <span className="text-zinc-400"> • {l.day}</span>}
+                  <span className="text-zinc-400"> â€¢ {l.kind}</span>
+                  {l.vendorId && <span className="text-zinc-400"> â€¢ {s.vendors.find(v => v.id === l.vendorId)?.name}</span>}
+                  {l.day && <span className="text-zinc-400"> â€¢ {l.day}</span>}
                   {(l.includeTags.length>0 || l.excludeTags.length>0) && (
                     <span className="ml-2 text-xs text-zinc-400">[{l.includeTags.join(", ")}{l.excludeTags.length>0?" | -"+l.excludeTags.join(", "):""}]</span>
                   )}
@@ -514,7 +514,7 @@ function Orders({ s, set, next, back }: { s: ShoppingState; set: (p: Partial<Sho
             <div key={ord.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
               <div className="mb-2 text-sm">
                 <span className="font-medium">{s.vendors.find(v => v.id === ord.vendorId)?.name}</span>
-                <span className="text-zinc-400"> • {ord.kind} • {ord.dueDay}</span>
+                <span className="text-zinc-400"> â€¢ {ord.kind} â€¢ {ord.dueDay}</span>
               </div>
               {ord.lines.length > 0 ? (
                 <table className="w-full text-left text-xs">
@@ -560,7 +560,7 @@ function Blueprint({ s, set, finish, back }: { s: ShoppingState; set: (p: Partia
 
   async function seedApis() {
     try {
-      await fetch("/api/ship/home/shopping", {
+      await fetch("/api/home/shopping", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "seedFromBlueprint", blueprint }),
       });
@@ -568,7 +568,7 @@ function Blueprint({ s, set, finish, back }: { s: ShoppingState; set: (p: Partia
     // Seed Have-You reminders for anchor + top-ups:
     try {
       const reminders = makeHaveYouReminders(s);
-      await fetch("/api/ship/home/haveyou", {
+      await fetch("/api/home/haveyou", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "bulkUpsert", items: reminders }),
       });
@@ -598,13 +598,13 @@ function Blueprint({ s, set, finish, back }: { s: ShoppingState; set: (p: Partia
 
 function Success() {
   return (
-    <Card title="Shopping Rhythm Ready 🎉" hint="Your 28-day HomeGro™ schedule is now live.">
-      <p className="text-sm text-zinc-300">You’ll receive prompts on anchor/top-up days to confirm or edit orders before sending.</p>
+    <Card title="Shopping Rhythm Ready ðŸŽ‰" hint="Your 28-day HomeGroâ„¢ schedule is now live.">
+      <p className="text-sm text-zinc-300">Youâ€™ll receive prompts on anchor/top-up days to confirm or edit orders before sending.</p>
     </Card>
   );
 }
 
-/* ───────────────── Page ───────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 export default function HomeShoppingWizardPage() {
   const [s, setS] = useState<ShoppingState>(initial);
   const [saving, setSaving] = useState(false);
@@ -656,7 +656,7 @@ export default function HomeShoppingWizardPage() {
   );
 }
 
-/* ───────────────── Generators ───────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Generators â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 function generateOrders(s: ShoppingState): GeneratedOrder[] {
   const out: GeneratedOrder[] = [];
@@ -729,13 +729,13 @@ function makeHaveYouReminders(s: ShoppingState) {
   const anchor = s.cycle.anchorDay;
   if (anchor) {
     out.push({
-      text: `Have you confirmed this week’s ANCHOR order for ${anchor}?`,
+      text: `Have you confirmed this weekâ€™s ANCHOR order for ${anchor}?`,
       schedule: `${anchor} 09:00`,
     });
   }
   for (const d of s.cycle.topupDays) {
     out.push({
-      text: `Have you prepped today’s TOP-UP list for ${d}?`,
+      text: `Have you prepped todayâ€™s TOP-UP list for ${d}?`,
       schedule: `${d} 09:00`,
     });
   }

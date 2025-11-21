@@ -1,4 +1,4 @@
-// apps/studio/app/api/ship/business/oms/onboarding/wizard/pricelock/route.ts
+﻿// apps/studio/app/api/business/oms/onboarding/wizard/pricelock/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 

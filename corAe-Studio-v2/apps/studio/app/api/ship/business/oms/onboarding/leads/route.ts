@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
 
 /**
- * POST /api/ship/business/oms/onboarding/leads
+ * POST /api/business/oms/onboarding/leads
  * Capture a marketing lead (first contact).
  *
  * Body:
@@ -71,14 +71,14 @@ export async function POST(req: NextRequest) {
     // Chrono log
     await safeChrono({
       scope: "MARKETING",
-      message: `New lead captured — ${fullName}${product ? ` (Product: ${product})` : ""}${source ? ` [Source: ${source}]` : ""}.`,
+      message: `New lead captured â€” ${fullName}${product ? ` (Product: ${product})` : ""}${source ? ` [Source: ${source}]` : ""}.`,
       refType: "Lead",
       refId: lead.id,
       contactId: contact?.id,
     });
 
     // Return a signup URL that can be used to collect full details right away
-    const signupUrl = `/ship/business/oms/onboarding/wizard/signup?leadId=${encodeURIComponent(lead.id)}`;
+    const signupUrl = `/business/oms/onboarding/wizard/signup?leadId=${encodeURIComponent(lead.id)}`;
 
     return NextResponse.json({ ok: true, leadId: lead.id, contactId: contact?.id, signupUrl });
   } catch (err: any) {
@@ -86,7 +86,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-/** ───────────────────────────── Helpers ───────────────────────────── */
+/** â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 async function upsertContact(c: { fullName: string; email: string | null; phone: string | null }) {
   // prefer email match, then phone match

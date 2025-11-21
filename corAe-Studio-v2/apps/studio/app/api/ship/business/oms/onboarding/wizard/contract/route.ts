@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db/prisma";
 
 /**
- * POST /api/ship/business/oms/onboarding/wizard/contract
+ * POST /api/business/oms/onboarding/wizard/contract
  *
  * Handles Contract / Booking phase.
  *
@@ -105,7 +105,7 @@ export async function POST(req: NextRequest) {
 
         await safeChrono(tx, {
           scope: "OPERATIONS",
-          message: `Booking sheet recorded for deal ${dealId} (PO: ${b.poNumber || "—"} | SO: ${b.soNumber || "—"}).`,
+          message: `Booking sheet recorded for deal ${dealId} (PO: ${b.poNumber || "â€”"} | SO: ${b.soNumber || "â€”"}).`,
           refType: "Booking",
           refId: booking.id,
           dealId,
@@ -139,7 +139,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-/* ───────────────────────────── Helpers ───────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 async function safeChrono(
   tx: Prisma.TransactionClient,
   data: {

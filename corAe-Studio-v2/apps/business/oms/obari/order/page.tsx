@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 /**
- * OBARI — Orders (UI) · 150.logic
- * Step 3 of 7 — after Schedule & Prep.
+ * OBARI â€” Orders (UI) Â· 150.logic
+ * Step 3 of 7 â€” after Schedule & Prep.
  * - Lists recent orders via /api/obari/order/list
  * - Quick-create via /api/obari/order/issue
  * - Reads schedule snapshot from sessionStorage for continuity
@@ -170,16 +170,16 @@ export default function ObariOrdersPage() {
           `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
             d.getDate()
           ).padStart(2, "0")}`;
-        return `Mode: ${sched.mode} · Week: ${sched.weekRef ?? "—"} · Window: ${fmt(
+        return `Mode: ${sched.mode} Â· Week: ${sched.weekRef ?? "â€”"} Â· Window: ${fmt(
           s
-        )} → ${fmt(e)}`;
+        )} â†’ ${fmt(e)}`;
       })()
     : null;
 
   return (
     <main className="p-6 space-y-6">
       <header className="stack">
-        <h1 className="text-3xl font-bold">OBARI — Orders</h1>
+        <h1 className="text-3xl font-bold">OBARI â€” Orders</h1>
         <p className="muted">Create and review orders (PURCHASE / SALES) aligned to cadence.</p>
       </header>
 
@@ -195,7 +195,7 @@ export default function ObariOrdersPage() {
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search by code, item, vendor/customer…"
+            placeholder="Search by code, item, vendor/customerâ€¦"
             className="border border-ring rounded-lg p-2"
           />
           <select
@@ -211,7 +211,7 @@ export default function ObariOrdersPage() {
             Refresh
           </button>
         </div>
-        {err && <div className="small text-red-500 mt-2">⚠ {err}</div>}
+        {err && <div className="small text-red-500 mt-2">âš  {err}</div>}
       </section>
 
       {/* Quick Create */}
@@ -257,7 +257,7 @@ export default function ObariOrdersPage() {
             onClick={createOrder}
             disabled={!canCreate || creating}
           >
-            {creating ? "Issuing…" : "Issue Order"}
+            {creating ? "Issuingâ€¦" : "Issue Order"}
           </button>
         </div>
       </section>
@@ -288,10 +288,10 @@ export default function ObariOrdersPage() {
                 <td className="px-3">
                   {r.unitPrice} {r.currency}
                 </td>
-                <td className="px-3">{r.expectedWeek ?? "—"}</td>
+                <td className="px-3">{r.expectedWeek ?? "â€”"}</td>
                 <td className="px-3">{r.scheduleMode}</td>
                 <td className="px-3">
-                  {r.direction === "PURCHASE" ? r.vendorCode ?? "—" : r.customerCode ?? "—"}
+                  {r.direction === "PURCHASE" ? r.vendorCode ?? "â€”" : r.customerCode ?? "â€”"}
                 </td>
                 <td className="px-3">{new Date(r.createdAt).toLocaleString()}</td>
               </tr>
@@ -306,13 +306,14 @@ export default function ObariOrdersPage() {
           </tbody>
         </table>
         {loading && (
-          <div className="p-3 small muted text-center">Loading orders…</div>
+          <div className="p-3 small muted text-center">Loading ordersâ€¦</div>
         )}
       </section>
 
-      <ArrowNav backHref="/ship/business/oms/obari/thedeal/bdo/prep" nextHref="/ship/business/oms/obari/booking" nextLabel="To Bookings">
-        Stage 1 — Order
+      <ArrowNav backHref="/business/oms/obari/thedeal/bdo/prep" nextHref="/business/oms/obari/booking" nextLabel="To Bookings">
+        Stage 1 â€” Order
       </ArrowNav>
     </main>
   );
 }
+

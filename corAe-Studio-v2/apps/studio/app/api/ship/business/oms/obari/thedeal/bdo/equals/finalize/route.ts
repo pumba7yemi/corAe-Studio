@@ -1,5 +1,5 @@
-// apps/studio/app/api/ship/business/oms/bdo/equals/finalize/route.ts
-// BDO — Equals Finalize (Birth of the executable order) with sourceOfDemand
+﻿// apps/studio/app/api/business/oms/bdo/equals/finalize/route.ts
+// BDO â€” Equals Finalize (Birth of the executable order) with sourceOfDemand
 // Role: Take the final BTDO output (now a BDO order), canonize, and emit the BDO BASE "=" snapshot.
 // Notes: Filesystem-only; immutable write; idempotent on same payload.
 
@@ -210,3 +210,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: msg }, { status: 400 });
   }
 }
+

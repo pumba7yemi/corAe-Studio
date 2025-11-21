@@ -1,4 +1,4 @@
-// apps/studio/app/ship/business/onboarding/page.tsx
+﻿// apps/studio/app/business/onboarding/page.tsx
 "use client";
 
 import Link from "next/link";
@@ -6,34 +6,34 @@ import Link from "next/link";
 export default function BusinessOnboardingIndexPage() {
   const cards = [
     {
-      t: "🏁 Start Company",
+      t: "ðŸ Start Company",
       d: "Create company, enable core modules, kick OBARI.",
-      h: "/ship/business/onboarding/start-company",
+      h: "/business/onboarding/start-company",
     },
     {
-      t: "🧾 Tax & VAT",
+      t: "ðŸ§¾ Tax & VAT",
       d: "Register tax/VAT; store IDs and filing cadence.",
-      h: "/ship/business/onboarding/tax",
+      h: "/business/onboarding/tax",
     },
     {
-      t: "💳 Finance",
+      t: "ðŸ’³ Finance",
       d: "Chart of Accounts, bank links, payment rails.",
-      h: "/ship/business/onboarding/finance",
+      h: "/business/onboarding/finance",
     },
     {
-      t: "⚙️ Operations",
-      d: "Order → Booking → Active → Reporting → Invoice.",
-      h: "/ship/business/onboarding/operations",
+      t: "âš™ï¸ Operations",
+      d: "Order â†’ Booking â†’ Active â†’ Reporting â†’ Invoice.",
+      h: "/business/onboarding/operations",
     },
     {
-      t: "👥 Roles & Partners",
+      t: "ðŸ‘¥ Roles & Partners",
       d: "Owners, Finance, Ops, Workflow Partners.",
-      h: "/ship/business/onboarding/partners",
+      h: "/business/onboarding/partners",
     },
     {
-      t: "🧠 OMS (OBARI)",
+      t: "ðŸ§  OMS (OBARI)",
       d: "SLA, escalation, messaging & finance hooks.",
-      h: "/ship/business/oms/onboarding",
+      h: "/business/oms/onboarding",
     },
   ];
 
@@ -43,10 +43,10 @@ export default function BusinessOnboardingIndexPage() {
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-semibold">Business Onboarding</h1>
           <Link
-            href="/ship/business/onboarding/flows"
+            href="/business/onboarding/flows"
             className="rounded-xl border border-indigo-700 bg-indigo-950/40 hover:bg-indigo-900/40 px-4 py-2 text-sm"
           >
-            Flows →
+            Flows â†’
           </Link>
         </div>
         <p className="mt-2 text-sm text-zinc-400">
@@ -68,10 +68,10 @@ export default function BusinessOnboardingIndexPage() {
 
         <div className="mt-10">
           <Link
-            href="/ship/business/oms"
+            href="/business/oms"
             className="inline-block rounded-xl border border-zinc-800 bg-zinc-900/40 hover:bg-zinc-900/60 px-4 py-2 text-sm"
           >
-            ← Back to OMS
+            â† Back to OMS
           </Link>
         </div>
       </div>

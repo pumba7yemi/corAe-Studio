@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import React, { useMemo, useState } from "react";
 
 /**
- * corAe Marketing Appraisal Generator — Mini Module
- * Path: /apps/ship/business/oms/commercial/marketing/appraisals/generator/page.tsx
+ * corAe Marketing Appraisal Generator â€” Mini Module
+ * Path: /apps/business/oms/commercial/marketing/appraisals/generator/page.tsx
  *
  * Input: company basics (name, site, sector, location, contact, highlights)
  * Output:
@@ -55,7 +55,7 @@ function buildOutputs(i: Inputs): Outputs {
     i.quickHighlights?.trim() ||
     "- (From website) Core services/products\n- (From website) Positioning or differentiator\n- (From website) Notable clients/partners or growth note";
 
-  const reportMd = `# corAe → ${COMPANY}
+  const reportMd = `# corAe â†’ ${COMPANY}
 ## Expanded Appraisal (Full)
 
 ### 1) Company Snapshot
@@ -71,40 +71,40 @@ ${HIGHLIGHTS
 
 ### 2) Potential & Identifiable Risk Factors (Sector-Common)
 - Many firms rely heavily on email/task lists, where follow-ups can get buried.
-- Portfolio/ops data spread across spreadsheets and shared drives → version drift.
-- Renewals, inspections, maintenance often tracked manually → chance of oversight.
+- Portfolio/ops data spread across spreadsheets and shared drives â†’ version drift.
+- Renewals, inspections, maintenance often tracked manually â†’ chance of oversight.
 - Directors typically receive reports after the fact, not in real time.
 
 ### 3) corAe Opportunity Map (Where We Plug In)
-- **3³DTD™ takeover:** convert every inbound (email/WhatsApp/call/form) into a numbered, trackable workflow.
-- **Pulse™ for directors:** live KPIs + exceptions; act in seconds, not weeks.
+- **3Â³DTDâ„¢ takeover:** convert every inbound (email/WhatsApp/call/form) into a numbered, trackable workflow.
+- **Pulseâ„¢ for directors:** live KPIs + exceptions; act in seconds, not weeks.
 - **Contained AI agents:** autonomous triage, routing, and document ops; humans handle edge cases.
-- **CIMS™ (comms):** structured channels (Tenants, Vendors, Deals) with full audit trail.
-- **OBARI™ spine:** Order → Booking → Active → Reporting → Invoicing across flows.
+- **CIMSâ„¢ (comms):** structured channels (Tenants, Vendors, Deals) with full audit trail.
+- **OBARIâ„¢ spine:** Order â†’ Booking â†’ Active â†’ Reporting â†’ Invoicing across flows.
 
 ### 4) AI-Driven Automation & Executive Insight (Contained AI)
-- **Maintenance triage:** parse issue → create WO → assign vendor → schedule → notify → chase → close → auto-invoice.
+- **Maintenance triage:** parse issue â†’ create WO â†’ assign vendor â†’ schedule â†’ notify â†’ chase â†’ close â†’ auto-invoice.
 - **Tenant comms:** FAQs, viewings, reminders, updates; escalate only exceptions to staff.
 - **Leases & docs:** auto-generate agreements/renewals/notices; clause logic; e-sign; file; recall.
 - **Financial cadence:** rent runs, arrears nudges, reconciliations; exception alerts.
 - **Director Pulse:** occupancy, renewals due, rent collection, maintenance backlog, avg TTR, NPS, cash position, variance vs target; drill to detail in 1 click.
 
 ### 5) Built on Real Business Experience, Realized by AI
-corAe was built on the back of real-world business operations — then **realized and supercharged by contained AI**.  
+corAe was built on the back of real-world business operations â€” then **realized and supercharged by contained AI**.  
 - **Human-first design:** workflows modeled from real operators.
 - **AI as engine:** executes proven logic with speed/consistency.
 - **Freedom for leaders:** Pulse replaces chase-work; decisions on live truth.
 
-### 6) 30–90 Day Deployment Plan
-- **Weeks 0–2 (Map & Quick Wins):**
+### 6) 30â€“90 Day Deployment Plan
+- **Weeks 0â€“2 (Map & Quick Wins):**
   - Intake: current flows, templates, SLAs, roles, compliance rules.
   - Prioritize quick wins: maintenance, renewals, tenant comms.
   - Define KPIs for Pulse; connect data sources.
-- **Weeks 3–6 (Script & Pilot):**
-  - Script 3³DTD pipelines; wire CIMS templates.
+- **Weeks 3â€“6 (Script & Pilot):**
+  - Script 3Â³DTD pipelines; wire CIMS templates.
   - Build lease/doc automations + e-sign; vendor rota + SLA timers.
   - Pilot on a portfolio slice; measure TTR, CSAT, ops hours saved.
-- **Weeks 7–12 (Scale & Harden):**
+- **Weeks 7â€“12 (Scale & Harden):**
   - Extend to full portfolio; add arrears workflows and reporting pack.
   - Finalize Pulse dashboards; permissions; audit; backup/retention.
   - Handover playbooks + training; go-live.
@@ -119,27 +119,27 @@ corAe was built on the back of real-world business operations — then **realize
 - **Cash position & 13-week forecast**
 - **Variance vs target (income/expense)**
 
-### 8) 3³DTD™ Takeover (How Inbox → Structured Flow)
-- **Intake:** every message/request → DTD entry with unique ID.
+### 8) 3Â³DTDâ„¢ Takeover (How Inbox â†’ Structured Flow)
+- **Intake:** every message/request â†’ DTD entry with unique ID.
 - **Classify:** Property / Tenant / Vendor / Finance / Legal.
 - **Script:** attach a standard workflow (checklist, owners, timers).
 - **Execute:** AI routes tasks, posts updates, generates docs.
 - **Close & learn:** auto-close on outcomes; log metrics; improve scripts.
 
-### 9) Security & “Contained AI” Controls
+### 9) Security & â€œContained AIâ€ Controls
 - **Boundaries:** AI runs inside corAe; no external data egress.
 - **Roles & permissions:** Director / Manager / Ops / Vendor / Read-only.
 - **Audit & retention:** immutable timeline; doc versions; legal holds.
 - **Compliance:** Data residency options; e-sign trails; access reviews.
 
 ### 10) ROI Model (Indicative, Sector Benchmarks)
-- **Ops hours reclaimed:** 25–45% of back-office time in the first 90 days.
-- **Maintenance TTR:** 30–50% faster → fewer escalations/voids.
-- **Arrears & leakage:** 10–20% improvement via nudges/visibility.
-- **Scale without headcount:** manage 1.5–3× units per ops FTE.
+- **Ops hours reclaimed:** 25â€“45% of back-office time in the first 90 days.
+- **Maintenance TTR:** 30â€“50% faster â†’ fewer escalations/voids.
+- **Arrears & leakage:** 10â€“20% improvement via nudges/visibility.
+- **Scale without headcount:** manage 1.5â€“3Ã— units per ops FTE.
 
-### 11) Director Perspective – A Polite Nudge
-“As directors, your success reflects the standards you set and the strength of your people. Yet there are only 24 hours in a day. If every task had your personal precision, results would excel even further. corAe’s contained AI ensures routine tasks are executed as if you checked them yourself — freeing your team to add value, and giving you the freedom to focus on growth.”
+### 11) Director Perspective â€“ A Polite Nudge
+â€œAs directors, your success reflects the standards you set and the strength of your people. Yet there are only 24 hours in a day. If every task had your personal precision, results would excel even further. corAeâ€™s contained AI ensures routine tasks are executed as if you checked them yourself â€” freeing your team to add value, and giving you the freedom to focus on growth.â€
 
 ### 12) Next Steps & CTA
 - **Step 1:** 45-min discovery (portfolio slice + priorities).
@@ -148,8 +148,8 @@ corAe was built on the back of real-world business operations — then **realize
 - **Call to action:** 10-minute intro this week to confirm pilot scope.
 `;
 
-  const onePagerMd = `# corAe × ${COMPANY}
-**From Potential Inefficiencies to AI-Run Operations (in 30–90 Days)**
+  const onePagerMd = `# corAe Ã— ${COMPANY}
+**From Potential Inefficiencies to AI-Run Operations (in 30â€“90 Days)**
 
 **What you do (from your website)**
 ${HIGHLIGHTS
@@ -158,48 +158,48 @@ ${HIGHLIGHTS
   .join("\n")}
 
 **Typical sector challenges (polite, non-presumptive)**
-- Tasks scattered across emails/spreadsheets → harder follow-ups.
-- Renewals/compliance sometimes tracked manually → risk of delay.
+- Tasks scattered across emails/spreadsheets â†’ harder follow-ups.
+- Renewals/compliance sometimes tracked manually â†’ risk of delay.
 - Directors often see lagging reports, not live KPIs.
 
 **What corAe offers**
-- **3³DTD™:** turns every inbound into a numbered, trackable workflow.
+- **3Â³DTDâ„¢:** turns every inbound into a numbered, trackable workflow.
 - **Contained AI:** auto-triage, assign, schedule, chase, and generate docs.
-- **Pulse™:** live KPIs for directors (occupancy, renewals, cash, maintenance).
-- **CIMS™:** structured comms; full audit trail.
-- **OBARI™:** Order → Booking → Active → Reporting → Invoicing.
+- **Pulseâ„¢:** live KPIs for directors (occupancy, renewals, cash, maintenance).
+- **CIMSâ„¢:** structured comms; full audit trail.
+- **OBARIâ„¢:** Order â†’ Booking â†’ Active â†’ Reporting â†’ Invoicing.
 
 **Built on real business experience, realized by AI**
 - Human-first workflows; AI executes with speed and consistency.
 
 **Results seen in the sector (benchmarks)**
-- 25–45% back-office time reclaimed.
-- 30–50% faster maintenance resolution.
-- 10–20% arrears/renewal improvement.
-- Manage 1.5–3× units per ops FTE.
+- 25â€“45% back-office time reclaimed.
+- 30â€“50% faster maintenance resolution.
+- 10â€“20% arrears/renewal improvement.
+- Manage 1.5â€“3Ã— units per ops FTE.
 
-**Deployment (30–90 days)**
-- **Weeks 0–2:** map flows, choose quick wins.
-- **Weeks 3–6:** script AI workflows, launch Pulse v1 pilot.
-- **Weeks 7–12:** scale across portfolio, finalize KPIs, train team.
+**Deployment (30â€“90 days)**
+- **Weeks 0â€“2:** map flows, choose quick wins.
+- **Weeks 3â€“6:** script AI workflows, launch Pulse v1 pilot.
+- **Weeks 7â€“12:** scale across portfolio, finalize KPIs, train team.
 
 **Next step**
 - 10-minute intro to explore fit and scope a 2-week pilot.
 `;
 
-  const whatsappText = `Hi ${CONTACT}, I’m David from corAe.
+  const whatsappText = `Hi ${CONTACT}, Iâ€™m David from corAe.
 
-We help ${SECTOR.toLowerCase()} firms move from email-and-task friction to AI-run, director-led operations in 30–90 days.
+We help ${SECTOR.toLowerCase()} firms move from email-and-task friction to AI-run, director-led operations in 30â€“90 days.
 
 Why this might matter for ${COMPANY}:
-• Sector-common challenges: tasks scattered across email, manual renewals/maintenance, and delayed reporting.
-• corAe automates the routine (maintenance triage, tenant replies, renewals, documents), so your team focuses on growth.
-• Pulse dashboard gives directors live KPIs (occupancy, renewals, cash, backlog) at a glance.
+â€¢ Sector-common challenges: tasks scattered across email, manual renewals/maintenance, and delayed reporting.
+â€¢ corAe automates the routine (maintenance triage, tenant replies, renewals, documents), so your team focuses on growth.
+â€¢ Pulse dashboard gives directors live KPIs (occupancy, renewals, cash, backlog) at a glance.
 
 Built on real business experience, realized with contained AI.
 Open to a 10-minute intro this week?
 
-— David
+â€” David
 (${WEBSITE || "corAe"})`;
 
   return { slug, reportMd, onePagerMd, whatsappText };
@@ -263,7 +263,7 @@ export default function AppraisalGeneratorPage() {
           corAe Marketing Appraisal Generator
         </h1>
         <div className="text-sm opacity-70">
-          Built on real business experience • Realized by contained AI
+          Built on real business experience â€¢ Realized by contained AI
         </div>
       </header>
 
@@ -283,7 +283,7 @@ export default function AppraisalGeneratorPage() {
           <label className="block text-sm font-medium mt-3">Website</label>
           <input
             className="w-full rounded-xl border p-2"
-            placeholder="https://…"
+            placeholder="https://â€¦"
             value={inputs.website}
             onChange={(e) =>
               setInputs((s) => ({ ...s, website: e.target.value }))
@@ -293,7 +293,7 @@ export default function AppraisalGeneratorPage() {
           <label className="block text-sm font-medium mt-3">Sector</label>
           <input
             className="w-full rounded-xl border p-2"
-            placeholder="Property investment, development, lettings…"
+            placeholder="Property investment, development, lettingsâ€¦"
             value={inputs.sector}
             onChange={(e) =>
               setInputs((s) => ({ ...s, sector: e.target.value }))
@@ -338,7 +338,7 @@ export default function AppraisalGeneratorPage() {
           />
 
           <div className="text-xs opacity-70">
-            Tip: paste 3–6 bullets from their About/Services pages. The generator
+            Tip: paste 3â€“6 bullets from their About/Services pages. The generator
             flows these into the appraisal automatically.
           </div>
         </div>
@@ -390,3 +390,4 @@ export default function AppraisalGeneratorPage() {
     </div>
   );
 }
+

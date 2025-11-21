@@ -1,9 +1,9 @@
-// apps/studio/app/api/ship/business/oms/obari/thedeal/bdo/launch/route.ts
-// OBARI ▸ BDO ▸ Launch (batch)
+﻿// apps/studio/app/api/business/oms/obari/thedeal/bdo/launch/route.ts
+// OBARI â–¸ BDO â–¸ Launch (batch)
 // POST { dateISO?, windowHours?, deals: string[], checkOnly? }
 // - Re-evaluates gates per deal (="; confirm; schedule/ad-hoc; retail purchase need)
-// - If checkOnly:true → no DB writes, returns previews
-// - Else → creates OBARI Order rows (Prisma) and writes audit files
+// - If checkOnly:true â†’ no DB writes, returns previews
+// - Else â†’ creates OBARI Order rows (Prisma) and writes audit files
 //
 // Files consulted (no aliases):
 //  .data/equals/{dealId}-*.json
@@ -21,12 +21,12 @@ import { PrismaClient } from "@prisma/client";
 import { readdir, readFile, writeFile, mkdir } from "node:fs/promises";
 import { resolve as pathResolve, join as pathJoin } from "node:path";
 
-/* ────────── Prisma singleton ────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Prisma singleton â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 declare global { var __studio_prisma__: PrismaClient | undefined; }
 const prisma: PrismaClient =
   global.__studio_prisma__ ?? (global.__studio_prisma__ = new PrismaClient());
 
-/* ────────── Types ────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 type DemandType = "SCHEDULED" | "AD_HOC" | "RETAIL_SALES" | "RENTAL" | "SERVICE";
 type Cadence = "28D" | "MONTHLY" | "HYBRID";
 
@@ -67,7 +67,7 @@ type SalesHint = { dealId: string; at: string; forecast?: Array<{ sku: string; m
 
 type PostBody = { dateISO?: string; windowHours?: number; deals: string[]; checkOnly?: boolean };
 
-/* ────────── FS helpers ────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ FS helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 async function listFiles(dir: string): Promise<string[]> {
   try { return (await readdir(dir)).map(n => pathJoin(dir, n)); } catch { return []; }
 }
@@ -83,7 +83,7 @@ function newestByAt<T extends { at?: string }>(files: Array<{ file: string; data
   return files[0];
 }
 
-/* ────────── date helpers ────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ date helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function toYMD(d: Date): string {
   const y=d.getUTCFullYear(), m=String(d.getUTCMonth()+1).padStart(2,"0"), da=String(d.getUTCDate()).padStart(2,"0");
   return `${y}-${m}-${da}`;
@@ -103,7 +103,7 @@ function withinWindow(now: Date, cutoffHHmm: string | undefined, windowHrs: numb
   return delta >= 0 && delta <= windowHrs*3600*1000;
 }
 
-/* ────────── cadence calculators ────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ cadence calculators â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function next28From(anchor: Date, fromDate: Date): Date {
   const ms=86400000, diffDays=Math.floor((fromDate.getTime()-anchor.getTime())/ms);
   const k = diffDays<=0 ? 0 : Math.ceil(diffDays/28);
@@ -132,7 +132,7 @@ function scheduleNeedOrder(schedule: ScheduleBaton | null, adHoc: AdHocBaton | n
   return { needOrder: inWindow, reason: inWindow ? "scheduled_and_within_window" : "scheduled_but_past_window", cutoff:schedule.dayCutoff ?? null };
 }
 
-/* ────────── POS helpers ────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ POS helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function toNum(x: unknown): number {
   if (typeof x === "number") return x;
   if (typeof x === "string") { const n=Number(x); return Number.isFinite(n)?n:NaN; }
@@ -209,7 +209,7 @@ function decidePoPlan(demandType: DemandType, bdo: BdoPayload, stock: Record<str
   return { needPurchase, items };
 }
 
-/* ────────── BDO loaders ────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ BDO loaders â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 async function loadLatestBdoEquals(dealId: string) {
   const dir = pathResolve(process.cwd(), ".data", "equals");
   const files = await listByPrefix(dir, `${dealId}-`);
@@ -247,7 +247,7 @@ async function loadAdHoc(dealId: string): Promise<AdHocBaton | null> {
   return newest?.data ?? null;
 }
 
-/* ────────── Audit saver ────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Audit saver â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 async function saveAudit(orderCode: string, payload: unknown) {
   const dir = pathResolve(process.cwd(), ".data", "obari-orders");
   await mkdir(dir, { recursive: true });
@@ -256,7 +256,7 @@ async function saveAudit(orderCode: string, payload: unknown) {
   return file;
 }
 
-/* ────────── core per-deal launch (reused by POST) ────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ core per-deal launch (reused by POST) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 async function launchOne(dealId: string, targetDate: Date, windowHours: number, checkOnly: boolean) {
   // 1) "="
   const bdo = await loadLatestBdoEquals(dealId);
@@ -369,7 +369,7 @@ async function launchOne(dealId: string, targetDate: Date, windowHours: number, 
   return { status:"created" as const, order: created, auditFile: auditFile.replace(process.cwd(), ".") };
 }
 
-/* ────────── GET: contract ────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ GET: contract â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 export async function GET() {
   return NextResponse.json({
     ok: true,
@@ -383,7 +383,7 @@ export async function GET() {
   });
 }
 
-/* ────────── POST: batch launch ────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ POST: batch launch â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 export async function POST(req: Request) {
   try {
     const body = (await req.json()) as PostBody;
@@ -431,3 +431,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: msg }, { status: 400 });
   }
 }
+

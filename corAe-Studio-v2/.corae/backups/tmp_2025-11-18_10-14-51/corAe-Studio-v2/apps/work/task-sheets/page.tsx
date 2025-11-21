@@ -1,4 +1,4 @@
-// apps/studio/app/ship/work/task-sheets/page.tsx
+﻿// apps/studio/app/work/task-sheets/page.tsx
 "use client";
 
 import { useEffect, useState } from 'react';
@@ -34,7 +34,7 @@ export default function TaskSheetsPage() {
     <main style={styles.page}>
       <header style={styles.header}>
         <h1 style={styles.h1}>Task Sheets</h1>
-        <p style={styles.sub}>Repeatable checklists that **feed your 3³DTD™ Diary** automatically.</p>
+        <p style={styles.sub}>Repeatable checklists that **feed your 3Â³DTDâ„¢ Diary** automatically.</p>
       </header>
 
       <section style={styles.scroller} className="no-scrollbar">

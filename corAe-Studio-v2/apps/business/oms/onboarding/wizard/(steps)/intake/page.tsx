@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -92,7 +92,7 @@ export default function IntakeStepPage() {
           surveyAccessNotes: seed.survey.accessNotes || v.surveyAccessNotes,
         }));
       }
-      setMsg("✨ Prefilled.");
+      setMsg("âœ¨ Prefilled.");
     } catch {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -102,14 +102,14 @@ export default function IntakeStepPage() {
     (async () => {
       if (!intake.sector || !intake.service) { setPredictions([]); setSelectedDocs([]); return; }
       try {
-        const url = `/api/ship/business/oms/onboarding/wizard/docs-required?sector=${encodeURIComponent(intake.sector)}&serviceType=${encodeURIComponent(intake.service)}&orderType=${intake.orderType}`;
+        const url = `/api/business/oms/onboarding/wizard/docs-required?sector=${encodeURIComponent(intake.sector)}&serviceType=${encodeURIComponent(intake.service)}&orderType=${intake.orderType}`;
         const res = await fetch(url, { cache: "no-store" });
         const data = await res.json();
         if (!res.ok || !data?.ok) throw new Error(data?.error || "Prediction failed");
         if (ignore) return;
         const preds: PredictedDoc[] = data.predictions || [];
         setPredictions(preds); setSelectedDocs(preds);
-      } catch (e: any) { if (!ignore) setMsg(`⚠️ Doc prediction: ${e?.message || "Error"}`); }
+      } catch (e: any) { if (!ignore) setMsg(`âš ï¸ Doc prediction: ${e?.message || "Error"}`); }
     })();
     return () => { ignore = true; };
   }, [intake.sector, intake.service, intake.orderType]);
@@ -117,7 +117,7 @@ export default function IntakeStepPage() {
   async function createIntakeAndProceed() {
     setBusy(true); setMsg(null);
     try {
-      const res1 = await fetch("/api/ship/business/oms/onboarding/wizard", {
+      const res1 = await fetch("/api/business/oms/onboarding/wizard", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           step: "btdo.intake",
@@ -166,7 +166,7 @@ export default function IntakeStepPage() {
       const data1 = (await res1.json()) as PostRes;
       if (!res1.ok || "error" in data1) {
         const e = "error" in data1 ? (Array.isArray(data1.error) ? data1.error.join(", ") : data1.error) : "Failed";
-        setMsg(`❌ ${e}`); setBusy(false); return;
+        setMsg(`âŒ ${e}`); setBusy(false); return;
       }
       const newDealId = data1.dealId;
 
@@ -179,7 +179,7 @@ export default function IntakeStepPage() {
         mandatory: d.mandatory,
       }));
       if (docsPayload.length) {
-        await fetch("/api/ship/business/oms/onboarding/wizard/docs-required", {
+        await fetch("/api/business/oms/onboarding/wizard/docs-required", {
           method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             dealId: newDealId,
@@ -191,10 +191,10 @@ export default function IntakeStepPage() {
         }).catch(() => {});
       }
 
-      setMsg("✅ Intake & required docs saved.");
-      router.push(`/ship/business/oms/onboarding/wizard/(steps)/accept?dealId=${encodeURIComponent(newDealId)}`);
+      setMsg("âœ… Intake & required docs saved.");
+      router.push(`/business/oms/onboarding/wizard/(steps)/accept?dealId=${encodeURIComponent(newDealId)}`);
     } catch (e: any) {
-      setMsg(`❌ ${e?.message ?? "Network error"}`);
+      setMsg(`âŒ ${e?.message ?? "Network error"}`);
     } finally { setBusy(false); }
   }
 
@@ -263,7 +263,7 @@ export default function IntakeStepPage() {
             <p className="muted">No predictions for this combination. You can proceed and add docs later.</p>
           ) : (
             selectedDocs.map((d,i)=>(
-              <button key={`${d.documentType}-${i}`} className="chip on" title={`${d.category} • ${d.requiredFrom}${d.mandatory?" • mandatory":""}`}
+              <button key={`${d.documentType}-${i}`} className="chip on" title={`${d.category} â€¢ ${d.requiredFrom}${d.mandatory?" â€¢ mandatory":""}`}
                 onClick={()=>setSelectedDocs(arr=>arr.some(x=>eqDoc(x,d))?arr.filter(x=>!eqDoc(x,d)):[...arr,d])}>
                 {d.documentType}
               </button>
@@ -273,8 +273,8 @@ export default function IntakeStepPage() {
       </section>
 
       <div className="end">
-        <button className="ghost" onClick={()=>router.push("/ship/business/oms/onboarding/wizard/(steps)/lead" as any)}>← Back</button>
-        <button className="primary" disabled={!canGo} onClick={createIntakeAndProceed}>Save Intake & Continue →</button>
+        <button className="ghost" onClick={()=>router.push("/business/oms/onboarding/wizard/(steps)/lead" as any)}>â† Back</button>
+        <button className="primary" disabled={!canGo} onClick={createIntakeAndProceed}>Save Intake & Continue â†’</button>
       </div>
 
       <style jsx global>{`

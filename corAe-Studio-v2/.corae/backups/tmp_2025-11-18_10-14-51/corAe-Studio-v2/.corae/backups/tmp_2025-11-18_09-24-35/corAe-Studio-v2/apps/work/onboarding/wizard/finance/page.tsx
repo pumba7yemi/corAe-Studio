@@ -1,8 +1,8 @@
-// apps/studio/app/ship/work/onboarding/wizard/finance/page.tsx
+﻿// apps/studio/app/work/onboarding/wizard/finance/page.tsx
 "use client";
 
 /**
- * corAe • Work • Onboarding • Finance Wizard
+ * corAe â€¢ Work â€¢ Onboarding â€¢ Finance Wizard
  * Purpose:
  *   - Configure finance basics during Work onboarding.
  *   - Owners/HR: define Chart of Accounts (CoA), connect bank feed, taxation options.
@@ -42,7 +42,7 @@ export default function FinanceOnboardingWizardPage() {
 
   async function seedCoA() {
     if (!s.industry) return;
-    await fetch("/api/ship/work/finance", {
+    await fetch("/api/work/finance", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "seedCoA", industry: s.industry }),
@@ -52,7 +52,7 @@ export default function FinanceOnboardingWizardPage() {
 
   async function connectBank() {
     if (!s.bankProvider) return;
-    await fetch("/api/ship/work/finance", {
+    await fetch("/api/work/finance", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "connectBankFeed", provider: s.bankProvider, auth: s.bankAuth }),
@@ -61,7 +61,7 @@ export default function FinanceOnboardingWizardPage() {
   }
 
   async function registerTax() {
-    await fetch("/api/ship/work/finance", {
+    await fetch("/api/work/finance", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "syncStatements", accountId: s.accountId ?? "default" }),
@@ -92,7 +92,7 @@ export default function FinanceOnboardingWizardPage() {
         <section className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
           <h2 className="text-lg font-semibold mb-3">Welcome</h2>
           <p className="text-sm mb-3">
-            Let’s connect your financial foundations. First, choose your business industry.
+            Letâ€™s connect your financial foundations. First, choose your business industry.
           </p>
           <select
             className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm"
@@ -173,7 +173,7 @@ export default function FinanceOnboardingWizardPage() {
 
       {s.step === "SUCCESS" && (
         <section className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
-          <h2 className="text-lg font-semibold mb-3">Finance Setup Complete 🎉</h2>
+          <h2 className="text-lg font-semibold mb-3">Finance Setup Complete ðŸŽ‰</h2>
           <pre className="text-xs bg-black/40 p-3 rounded-xl overflow-auto">{s.summaryJson}</pre>
         </section>
       )}

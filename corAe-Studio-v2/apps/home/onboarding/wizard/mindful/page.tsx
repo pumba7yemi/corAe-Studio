@@ -1,9 +1,9 @@
-// apps/studio/app/ship/home/onboarding/wizard/mindful/page.tsx
+﻿// apps/studio/app/home/onboarding/wizard/mindful/page.tsx
 "use client";
 /**
- * corAe • Home • Onboarding • Mindful
+ * corAe â€¢ Home â€¢ Onboarding â€¢ Mindful
  * Wellbeing, prayer/reflection, gratitude.
- * Seeds: /api/ship/home/mindful (+Have-You prompts)
+ * Seeds: /api/home/mindful (+Have-You prompts)
  */
 import React, { useMemo, useState } from "react";
 type Step="WELCOME"|"PILLARS"|"SCHEDULE"|"PROMPTS"|"BLUEPRINT"|"SUCCESS";
@@ -21,7 +21,7 @@ export default function MindfulWizard(){
   const [s,setS]=useState<State>({step:"WELCOME",householdName:"",pillars:[],schedule:[],prompts:[],blueprintJson:""});
   const set=(p:Partial<State>)=>setS(x=>({...x,...p})); const go=(step:Step)=>set({step});
   const Welcome=()=>(
-    <Card title="Welcome — Mindful">
+    <Card title="Welcome â€” Mindful">
       <Input placeholder="Household / Profile name" value={s.householdName} onChange={e=>set({householdName:(e.target as HTMLInputElement).value})} />
       <Button onClick={()=>go("PILLARS")}>Start</Button>
     </Card>
@@ -37,7 +37,7 @@ export default function MindfulWizard(){
           <textarea placeholder="Checklist (one per line)" value={list} onChange={e=>setList(e.target.value)} className="h-24 w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100" />
           <Button onClick={add}>+ Add</Button>
         </div>
-        <div className="space-y-2 pt-2">{s.pillars.map(p=><div key={p.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm">{p.name} • {p.checklist.length} steps <button onClick={()=>remove(p.id)} className="ml-2 text-zinc-400 hover:text-zinc-100">✕</button></div>)}</div>
+        <div className="space-y-2 pt-2">{s.pillars.map(p=><div key={p.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm">{p.name} â€¢ {p.checklist.length} steps <button onClick={()=>remove(p.id)} className="ml-2 text-zinc-400 hover:text-zinc-100">âœ•</button></div>)}</div>
         <div className="flex gap-2"><Button onClick={()=>go("WELCOME")}>Back</Button><Button onClick={()=>go("SCHEDULE")}>Continue</Button></div>
       </Card>
     );
@@ -52,12 +52,12 @@ export default function MindfulWizard(){
           <select className="rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm" value={day} onChange={e=>setDay(e.target.value as any)}>{DAYS.map(d=><option key={d} value={d}>{d}</option>)}</select>
           <Input placeholder="HH:MM" value={time} onChange={e=>setTime(e.target.value)} />
           <select className="rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm" value={pillarId} onChange={e=>setPillar(e.target.value)}>
-            <option value="">— Pillar —</option>
+            <option value="">â€” Pillar â€”</option>
             {s.pillars.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}
           </select>
           <div className="sm:col-span-2"><Button onClick={add}>+ Add Slot</Button></div>
         </div>
-        <div className="space-y-2 pt-2">{s.schedule.map((sl,i)=> <div key={i} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm">{sl.day} • {sl.time} • {s.pillars.find(p=>p.id===sl.pillarId)?.name}<button onClick={()=>remove(i)} className="ml-2 text-zinc-400 hover:text-zinc-100">✕</button></div>)}</div>
+        <div className="space-y-2 pt-2">{s.schedule.map((sl,i)=> <div key={i} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm">{sl.day} â€¢ {sl.time} â€¢ {s.pillars.find(p=>p.id===sl.pillarId)?.name}<button onClick={()=>remove(i)} className="ml-2 text-zinc-400 hover:text-zinc-100">âœ•</button></div>)}</div>
         <div className="flex gap-2"><Button onClick={()=>go("PILLARS")}>Back</Button><Button onClick={()=>go("PROMPTS")}>Continue</Button></div>
       </Card>
     );
@@ -73,14 +73,14 @@ export default function MindfulWizard(){
           <Input placeholder='Schedule (e.g., "DAILY 06:30")' value={schedule} onChange={e=>setSchedule(e.target.value)} />
           <Button onClick={add}>+ Add</Button>
         </div>
-        <div className="flex flex-wrap gap-2 pt-2">{s.prompts.map(p=><span key={p.id} className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/60 px-3 py-1 text-xs">{p.text} • {p.schedule}<button onClick={()=>remove(p.id)} className="text-zinc-400 hover:text-zinc-100">✕</button></span>)}</div>
+        <div className="flex flex-wrap gap-2 pt-2">{s.prompts.map(p=><span key={p.id} className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/60 px-3 py-1 text-xs">{p.text} â€¢ {p.schedule}<button onClick={()=>remove(p.id)} className="text-zinc-400 hover:text-zinc-100">âœ•</button></span>)}</div>
         <div className="flex gap-2"><Button onClick={()=>go("SCHEDULE")}>Back</Button><Button onClick={()=>go("BLUEPRINT")}>Continue</Button></div>
       </Card>
     );
   };
   const Blueprint=()=> {
     const bp=useMemo(()=>({scope:"HOME", module:"MINDFUL", household:s.householdName, pillars:s.pillars, schedule:s.schedule, prompts:s.prompts, generatedAt:new Date().toISOString(), version:1}),[s]);
-    async function seedApis(){ try{ await fetch("/api/ship/home/mindful",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"seedFromBlueprint",blueprint:bp})}); }catch{} try{ await fetch("/api/ship/home/haveyou",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"bulkUpsert",items:s.prompts})}); }catch{} }
+    async function seedApis(){ try{ await fetch("/api/home/mindful",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"seedFromBlueprint",blueprint:bp})}); }catch{} try{ await fetch("/api/home/haveyou",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"bulkUpsert",items:s.prompts})}); }catch{} }
     return (
       <Card title="Mindful Blueprint">
         <pre className="max-h-96 overflow-auto rounded-xl border border-zinc-800 bg-black/60 p-4 text-xs">{JSON.stringify(bp,null,2)}</pre>
@@ -95,7 +95,7 @@ export default function MindfulWizard(){
       {s.step==="SCHEDULE"&&<Schedule/>}
       {s.step==="PROMPTS"&&<Prompts/>}
       {s.step==="BLUEPRINT"&&<Blueprint/>}
-      {s.step==="SUCCESS"&&<Card title="Mindful Setup Complete 🎉"><p className="text-sm text-zinc-300">Prompts live.</p></Card>}
+      {s.step==="SUCCESS"&&<Card title="Mindful Setup Complete ðŸŽ‰"><p className="text-sm text-zinc-300">Prompts live.</p></Card>}
     </div>
   );
 }

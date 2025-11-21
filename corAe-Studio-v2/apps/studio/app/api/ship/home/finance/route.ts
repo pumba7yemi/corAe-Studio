@@ -1,4 +1,4 @@
-// apps/studio/app/api/ship/home/finance/route.ts
+﻿// apps/studio/app/api/home/finance/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
 type Frequency = "WEEKLY" | "MONTHLY" | "ADHOC";

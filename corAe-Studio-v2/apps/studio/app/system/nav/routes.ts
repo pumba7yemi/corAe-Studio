@@ -1,5 +1,5 @@
-/**
- * corAe Classic Routes Map™
+﻿/**
+ * corAe Classic Routes Mapâ„¢
  * Single flat ROUTES registry for Classic navigation (Home / Work / Business / System / Dev / Space)
  * Only modify paths here. Components should source labels/paths/icons from this file.
  */
@@ -7,9 +7,9 @@ import type { LucideIcon } from "lucide-react";
 // Export icon keys (strings) that map to the registry icon set (see registry.ts)
 
 export const ROUTES = {
-  home: "/ship/home",
-  work: "/ship/work",
-  business: "/ship/business",
+  home: "/home",
+  work: "/work",
+  business: "/business",
 
   system: "/system",
   dev: "/ship/dev/overview",
@@ -28,7 +28,7 @@ export const ROUTES = {
   finance: "/ship/accounts",
   cims: "/ship/cims",
   ascend: "/ascend",
-  socialContract: "/ship/home/social-contract",
+  socialContract: "/home/social-contract",
   automate: "/ship/automate",
   reserve: "/ship/reserve",
   oms: "/oms",
@@ -71,3 +71,4 @@ export const ROUTE_META = {
 
 export type RouteKey = keyof typeof ROUTES;
 export type RouteMetaKey = keyof typeof ROUTE_META;
+

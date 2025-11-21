@@ -1,5 +1,5 @@
-// /laws/governance.law.ts
-// corAe Constitutional Law — Governance & Strategy
+﻿// /laws/governance.law.ts
+// corAe Constitutional Law â€” Governance & Strategy
 
 type GovSection = {
   path: string;
@@ -25,17 +25,17 @@ export const GovernanceLaw: GovernanceLawT = {
     "Governance sets direction, policies, and oversight. It ensures the QMS works, risks are managed, and objectives align with customer focus.",
   sections: [
     {
-      path: "/apps/ship/business/governance/policies",
+      path: "/apps/business/governance/policies",
       purpose: "Corporate policies (security, data, ethics, quality objectives).",
       requiredFolders: ["quality", "security", "ethics", "data"],
     },
     {
-      path: "/apps/ship/business/governance/risk",
+      path: "/apps/business/governance/risk",
       purpose: "Enterprise risk register and mitigations.",
       requiredFolders: ["register", "mitigations"],
     },
     {
-      path: "/apps/ship/business/governance/audit",
+      path: "/apps/business/governance/audit",
       purpose: "Internal audits, management reviews, certification evidence.",
       requiredFolders: ["internal", "external", "reviews"],
     },

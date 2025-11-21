@@ -1,4 +1,4 @@
-/* eslint-disable */
+﻿/* eslint-disable */
 export const dynamic = "force-dynamic";
 
 import type { ReactNode } from "react";
@@ -54,11 +54,11 @@ export default async function Page() {
     { name: "App health", url: "/api/health" },
     { name: "DB (Prisma)", url: "/api/db/health" },
     { name: "CIMS", url: "/api/cims/version" },
-    { name: "Ship API", url: "/api/ship/home/mealprep" },
-    { name: "IWant API", url: "/api/ship/home/iwant" },
-    { name: "BestPrice API", url: "/api/ship/home/bestprice" },
-    { name: "Wish Share API", url: "/api/ship/home/wish/share" },
-    { name: "Affiliate Redirect", url: "/api/ship/home/redirect?u=https://example.com" },
+    { name: "Ship API", url: "/api/home/mealprep" },
+    { name: "IWant API", url: "/api/home/iwant" },
+    { name: "BestPrice API", url: "/api/home/bestprice" },
+    { name: "Wish Share API", url: "/api/home/wish/share" },
+    { name: "Affiliate Redirect", url: "/api/home/redirect?u=https://example.com" },
   ];
 
   const checks = await Promise.all(endpoints.map(async (e) => {
@@ -82,7 +82,7 @@ export default async function Page() {
   return (
     <div style={{ padding: 20 }}>
       <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 12 }}>corAe System Health</h1>
-      <p style={{ marginBottom: 12, color: "#6b7280" }}>Checked at {now} · dynamic</p>
+      <p style={{ marginBottom: 12, color: "#6b7280" }}>Checked at {now} Â· dynamic</p>
 
       <div>
         {checks.map((c) => (
@@ -111,7 +111,7 @@ export default async function Page() {
             </div>
           </CardHeader>
           <CardContent>
-            <p className={chunk.ok ? "text-emerald-400" : "text-amber-300"}>{chunk.ok ? "✅ OK" : "⚠️ Missing wrappers"}</p>
+            <p className={chunk.ok ? "text-emerald-400" : "text-amber-300"}>{chunk.ok ? "âœ… OK" : "âš ï¸ Missing wrappers"}</p>
             {chunk.details?.length > 0 && (
               <ul style={{ marginTop: 8, listStyleType: "disc", paddingLeft: 20, fontSize: 12, opacity: 0.85 }}>
                 {chunk.details.map((d: string, i: number) => (
@@ -126,3 +126,4 @@ export default async function Page() {
     </div>
   );
 }
+

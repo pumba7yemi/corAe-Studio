@@ -1,5 +1,5 @@
-// apps/studio/app/api/ship/business/oms/obari/invoice/list/route.ts
-// OBARI — Invoice List (from FINAL "=" snapshots)
+﻿// apps/studio/app/api/business/oms/obari/invoice/list/route.ts
+// OBARI â€” Invoice List (from FINAL "=" snapshots)
 // Lists invoice-ready items by scanning .data/equals-final, ordered by `at` desc.
 // Optional filters: dealId, bookingId. Simple stateless pagination via `cursor`.
 //
@@ -69,7 +69,7 @@ async function readJsonSafe<T>(p: string): Promise<T | null> {
   }
 }
 
-// GET /api/ship/business/oms/obari/invoice/list
+// GET /api/business/oms/obari/invoice/list
 export async function GET(req: Request) {
   try {
     const url = new URL(req.url);
@@ -133,3 +133,4 @@ export async function GET(req: Request) {
     return NextResponse.json({ ok: false, error: msg }, { status: 400 });
   }
 }
+

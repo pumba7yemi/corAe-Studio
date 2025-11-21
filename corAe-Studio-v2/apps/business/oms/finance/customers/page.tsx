@@ -1,7 +1,7 @@
-'use client';
+﻿'use client';
 
 /**
- * Finance — Customers (AR Index)
+ * Finance â€” Customers (AR Index)
  * - Lists customers with ageing buckets & totals
  * - PeriodFilter (day/week/month/quarter/FY/custom)
  * - Search by customer/ref
@@ -11,7 +11,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 
-// ✅ Use long relative paths (your current working style)
+// âœ… Use long relative paths (your current working style)
 import { Card, CardContent } from '@/ui/card';
 import { Button } from '@/ui/button';
 import { Input } from '@/ui/input';
@@ -54,7 +54,7 @@ type RowAgg = {
   ageing: { a0_30: number; a31_60: number; a61_90: number; a90p: number };
 };
 
-const money = (m: number) => `£${(m / 100).toFixed(2)}`;
+const money = (m: number) => `Â£${(m / 100).toFixed(2)}`;
 const daysBetween = (a: string, b: string) =>
   Math.round((new Date(b).getTime() - new Date(a).getTime()) / (1000 * 60 * 60 * 24));
 
@@ -117,7 +117,7 @@ export default function CustomersIndexPage() {
         paid_minor: 0,
         status: 'issued',
       },
-      // VS Property — overdue
+      // VS Property â€” overdue
       {
         id: 'INV-1004',
         customer_id: 'CUST-004',
@@ -130,7 +130,7 @@ export default function CustomersIndexPage() {
         paid_minor: 0,
         status: 'overdue',
       },
-      // Grace & Grit — draft
+      // Grace & Grit â€” draft
       {
         id: 'INV-1005',
         customer_id: 'CUST-005',
@@ -247,7 +247,7 @@ export default function CustomersIndexPage() {
     <main className="p-6 space-y-6">
       <header className="stack">
         <h1 className="text-3xl font-bold">Customers</h1>
-        <p className="muted">Accounts Receivable — balances & ageing per customer.</p>
+        <p className="muted">Accounts Receivable â€” balances & ageing per customer.</p>
       </header>
 
       <Card>
@@ -258,7 +258,7 @@ export default function CustomersIndexPage() {
               <Input
                 value={q}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQ(e.target.value)}
-                placeholder="Search customer…"
+                placeholder="Search customerâ€¦"
               />
             </div>
             {/* Export placeholder */}
@@ -279,14 +279,14 @@ export default function CustomersIndexPage() {
             {rows.map((r) => (
               <Link
                 key={r.customer.id}
-                href={`/ship/business/oms/finance/customers/${encodeURIComponent(r.customer.id)}`}
+                href={`/business/oms/finance/customers/${encodeURIComponent(r.customer.id)}`}
                 className="rounded-xl border p-3 bg-card hover:bg-surface transition"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col">
                     <div className="font-semibold">{r.customer.name}</div>
                     <div className="text-xs text-muted">
-                      {r.customer.id} • Terms: {r.customer.terms ?? '—'}
+                      {r.customer.id} â€¢ Terms: {r.customer.terms ?? 'â€”'}
                     </div>
                   </div>
                   <div className="text-right">
@@ -294,16 +294,16 @@ export default function CustomersIndexPage() {
                       Due: <span className="font-medium">{money(r.due_minor)}</span>
                     </div>
                     <div className="text-xs text-muted">
-                      Net {money(r.net_minor)} • VAT {money(r.vat_minor)} • Paid {money(r.paid_minor)}
+                      Net {money(r.net_minor)} â€¢ VAT {money(r.vat_minor)} â€¢ Paid {money(r.paid_minor)}
                     </div>
                   </div>
                 </div>
 
                 {/* Ageing bars */}
                 <div className="mt-2 grid grid-cols-4 gap-2 text-xs">
-                  <AgeCell label="0–30" value={r.ageing.a0_30} />
-                  <AgeCell label="31–60" value={r.ageing.a31_60} />
-                  <AgeCell label="61–90" value={r.ageing.a61_90} />
+                  <AgeCell label="0â€“30" value={r.ageing.a0_30} />
+                  <AgeCell label="31â€“60" value={r.ageing.a31_60} />
+                  <AgeCell label="61â€“90" value={r.ageing.a61_90} />
                   <AgeCell label="90+" value={r.ageing.a90p} />
                 </div>
               </Link>
@@ -326,7 +326,7 @@ export default function CustomersIndexPage() {
             <div className="rounded-xl border p-3 bg-card">
               <div className="text-xs text-muted">Ageing</div>
               <div className="text-xs">
-                0–30 {money(totals.a0_30)} • 31–60 {money(totals.a31_60)} • 61–90 {money(totals.a61_90)} • 90+ {money(totals.a90p)}
+                0â€“30 {money(totals.a0_30)} â€¢ 31â€“60 {money(totals.a31_60)} â€¢ 61â€“90 {money(totals.a61_90)} â€¢ 90+ {money(totals.a90p)}
               </div>
             </div>
           </div>
@@ -334,11 +334,11 @@ export default function CustomersIndexPage() {
       </Card>
 
       <ArrowNav
-        backHref="/ship/business/oms/finance"
-        nextHref="/ship/business/oms/finance/vendors"
+        backHref="/business/oms/finance"
+        nextHref="/business/oms/finance/vendors"
         nextLabel="Vendors"
       >
-        Finance · Customers
+        Finance Â· Customers
       </ArrowNav>
     </main>
   );

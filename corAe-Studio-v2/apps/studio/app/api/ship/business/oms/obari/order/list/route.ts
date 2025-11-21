@@ -1,6 +1,6 @@
-// apps/studio/app/api/ship/business/oms/obari/order/list/route.ts
-// OBARI — Orders List API (150.logic, reconciled path)
-// GET /api/ship/business/oms/obari/order/list?limit=20&cursor=<id>&direction=PURCHASE|SALES&q=...
+﻿// apps/studio/app/api/business/oms/obari/order/list/route.ts
+// OBARI â€” Orders List API (150.logic, reconciled path)
+// GET /api/business/oms/obari/order/list?limit=20&cursor=<id>&direction=PURCHASE|SALES&q=...
 
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
@@ -101,3 +101,4 @@ export async function GET(req: Request) {
     );
   }
 }
+

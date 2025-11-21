@@ -1,5 +1,5 @@
-// apps/studio/app/ship/business/oms/obari/deals/[dealId]/equals/page.tsx
-// ship ▸ business ▸ oms ▸ obari — "=" Snapshot Viewer (server-rendered)
+﻿// apps/studio/app/business/oms/obari/deals/[dealId]/equals/page.tsx
+// ship â–¸ business â–¸ oms â–¸ obari â€” "=" Snapshot Viewer (server-rendered)
 // Fetches immutable BDO snapshot from Studio API using STUDIO_BASE_URL.
 
 type EqualsOk = {
@@ -69,11 +69,11 @@ export default async function Page({ params }: Params) {
     return (
       <main style={{ padding: 24, fontFamily: "ui-sans-serif, system-ui" }}>
         <h1 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>
-          “=” Snapshot Not Found
+          â€œ=â€ Snapshot Not Found
         </h1>
         <p style={{ color: "#555" }}>
           No snapshot found for <code>{dealId}</code> at Studio base{" "}
-          <code>{base}</code>. Finalize BTDO→BDO in Studio, then reload.
+          <code>{base}</code>. Finalize BTDOâ†’BDO in Studio, then reload.
         </p>
       </main>
     );
@@ -84,7 +84,7 @@ export default async function Page({ params }: Params) {
   return (
     <main style={{ padding: 24, fontFamily: "ui-sans-serif, system-ui" }}>
       <h1 style={{ fontSize: 22, fontWeight: 700, marginBottom: 12 }}>
-        business ▸ oms ▸ obari &ldquo;=&rdquo; Snapshot
+        business â–¸ oms â–¸ obari &ldquo;=&rdquo; Snapshot
       </h1>
 
       <section

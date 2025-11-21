@@ -1,9 +1,9 @@
-// apps/studio/app/ship/home/onboarding/wizard/fitness/page.tsx
+﻿// apps/studio/app/home/onboarding/wizard/fitness/page.tsx
 "use client";
 /**
- * corAe • Home • Onboarding • Fitness
+ * corAe â€¢ Home â€¢ Onboarding â€¢ Fitness
  * Plans, targets, sessions & recovery.
- * Seeds: /api/ship/home/fitness (+Have-You prompts)
+ * Seeds: /api/home/fitness (+Have-You prompts)
  */
 import React, { useMemo, useState } from "react";
 type Step="WELCOME"|"GOALS"|"PLAN"|"SESSIONS"|"BLUEPRINT"|"SUCCESS";
@@ -21,7 +21,7 @@ export default function FitnessWizard(){
   const [s,setS]=useState<State>({step:"WELCOME",profileName:"",goals:[],plan:undefined,sessions:[],blueprintJson:""});
   const set=(p:Partial<State>)=>setS(x=>({...x,...p})); const go=(step:Step)=>set({step});
   const Welcome=()=>(
-    <Card title="Welcome — Fitness">
+    <Card title="Welcome â€” Fitness">
       <Input placeholder="Profile name" value={s.profileName} onChange={e=>set({profileName:(e.target as HTMLInputElement).value})}/>
       <Button onClick={()=>go("GOALS")}>Start</Button>
     </Card>
@@ -37,7 +37,7 @@ export default function FitnessWizard(){
           <Input placeholder="Target (e.g., 5km 3x/week)" value={target} onChange={e=>setTarget(e.target.value)} />
           <div className="sm:col-span-2"><Button onClick={add}>+ Add Goal</Button></div>
         </div>
-        <div className="space-y-2 pt-2">{s.goals.map(g=><div key={g.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm">{g.name} • {g.target}<button onClick={()=>remove(g.id)} className="ml-2 text-zinc-400 hover:text-zinc-100">✕</button></div>)}</div>
+        <div className="space-y-2 pt-2">{s.goals.map(g=><div key={g.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm">{g.name} â€¢ {g.target}<button onClick={()=>remove(g.id)} className="ml-2 text-zinc-400 hover:text-zinc-100">âœ•</button></div>)}</div>
         <div className="flex gap-2"><Button onClick={()=>go("WELCOME")}>Back</Button><Button onClick={()=>go("PLAN")} disabled={s.goals.length===0}>Continue</Button></div>
       </Card>
     );
@@ -73,9 +73,9 @@ export default function FitnessWizard(){
   };
   const Blueprint=()=> {
     const bp=useMemo(()=>({scope:"HOME", module:"FITNESS", profile:s.profileName, goals:s.goals, plan:s.plan, sessions:s.sessions, generatedAt:new Date().toISOString(), version:1}),[s]);
-    async function seedApis(){ try{ await fetch("/api/ship/home/fitness",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"seedFromBlueprint",blueprint:bp})}); }catch{} try{ await fetch("/api/ship/home/haveyou",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"bulkUpsert",items:[
-      { text:`Have you completed today’s workout?`, schedule:`DAILY 20:00` },
-      { text:`Have you planned this week’s sessions?`, schedule:`SUN 18:00` },
+    async function seedApis(){ try{ await fetch("/api/home/fitness",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"seedFromBlueprint",blueprint:bp})}); }catch{} try{ await fetch("/api/home/haveyou",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"bulkUpsert",items:[
+      { text:`Have you completed todayâ€™s workout?`, schedule:`DAILY 20:00` },
+      { text:`Have you planned this weekâ€™s sessions?`, schedule:`SUN 18:00` },
     ]})}); }catch{} }
     return (
       <Card title="Fitness Blueprint">
@@ -91,7 +91,7 @@ export default function FitnessWizard(){
       {s.step==="PLAN"&&<PlanStep/>}
       {s.step==="SESSIONS"&&<Sessions/>}
       {s.step==="BLUEPRINT"&&<Blueprint/>}
-      {s.step==="SUCCESS"&&<Card title="Fitness Setup Complete 🎉"><p className="text-sm text-zinc-300">Prompts are live.</p></Card>}
+      {s.step==="SUCCESS"&&<Card title="Fitness Setup Complete ðŸŽ‰"><p className="text-sm text-zinc-300">Prompts are live.</p></Card>}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-// apps/studio/app/api/ship/business/oms/obari/thedeal/bdo/create/route.ts
+﻿// apps/studio/app/api/business/oms/obari/thedeal/bdo/create/route.ts
 
 import { NextResponse } from "next/server";
 import { readdir, readFile, writeFile, mkdir } from "node:fs/promises";
@@ -242,7 +242,7 @@ export async function GET() {
       "BDO equals snapshot exists (stage:BDO)",
       "BDO confirm exists for equals hash",
       "Schedule/ad-hoc says needOrder within window",
-      "If demand=RETAIL_SALES → POS shortage required",
+      "If demand=RETAIL_SALES â†’ POS shortage required",
     ],
     files: {
       equals: ".data/equals/{dealId}-*.json",
@@ -375,3 +375,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: msg }, { status: 400 });
   }
 }
+

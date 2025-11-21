@@ -1,4 +1,4 @@
-// apps/studio/app/api/ship/home/wizard/route.ts
+﻿// apps/studio/app/api/home/wizard/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
 type FlowId =

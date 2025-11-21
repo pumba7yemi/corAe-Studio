@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -27,19 +27,19 @@ export default function ActivateStepPage() {
   async function activate() {
     setBusy(true); setMsg(null);
     try {
-      const res = await fetch("/api/ship/business/oms/onboarding/wizard", {
+      const res = await fetch("/api/business/oms/onboarding/wizard", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ step: "bdo.activate", payload: { dealId } }),
       });
       const data = (await res.json()) as PostRes;
       if (!res.ok || "error" in data) {
         const e = "error" in data ? (Array.isArray(data.error) ? data.error.join(", ") : data.error) : "Failed";
-        setMsg(`❌ ${e}`); setBusy(false); return;
+        setMsg(`âŒ ${e}`); setBusy(false); return;
       }
-      setMsg("🎉 Deal activated.");
-      router.push(`/ship/business/oms/deals/${encodeURIComponent(dealId)}` as any);
+      setMsg("ðŸŽ‰ Deal activated.");
+      router.push(`/business/oms/deals/${encodeURIComponent(dealId)}` as any);
     } catch (e: any) {
-      setMsg(`❌ ${e?.message ?? "Network error"}`);
+      setMsg(`âŒ ${e?.message ?? "Network error"}`);
     } finally { setBusy(false); }
   }
 
@@ -50,9 +50,9 @@ export default function ActivateStepPage() {
         <p className="muted">Mandatory docs outstanding: <b>{unmet}</b>.</p>
         {msg && <p className="muted" style={{marginTop:8}}>{msg}</p>}
         <div className="end">
-          <button className="ghost" onClick={()=>router.push(`/ship/business/oms/onboarding/wizard/(steps)/documentation?dealId=${encodeURIComponent(dealId)}` as any)}>← Back</button>
+          <button className="ghost" onClick={()=>router.push(`/business/oms/onboarding/wizard/(steps)/documentation?dealId=${encodeURIComponent(dealId)}` as any)}>â† Back</button>
           <button className="primary" disabled={!canActivate} onClick={activate} title={unmet > 0 ? "Upload all mandatory documents first" : "Activate"}>
-            Activate →
+            Activate â†’
           </button>
         </div>
       </section>

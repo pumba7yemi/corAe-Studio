@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+﻿import { NextRequest } from "next/server";
 import { json, CimsError } from "@/lib/cims/errors";
 import * as store from "@/app/lib/home/iwant/store";
 
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
 
     const slug = (title?.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || "wish") + "-" + Date.now().toString(36);
     const payload = await store.createShare(slug, ids, title);
-    return json({ ok: true, slug, url: `/ship/home/wish/${slug}`, share: payload });
+    return json({ ok: true, slug, url: `/home/wish/${slug}`, share: payload });
   } catch (e: any) {
     const err = e instanceof CimsError ? e : new CimsError("SHARE_CREATE_FAILED", 500, e?.message);
     return json({ ok: false, error: err.message }, err.status);
@@ -34,3 +34,4 @@ export async function GET(req: NextRequest) {
     return json({ ok: false, error: err.message }, err.status);
   }
 }
+

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -9,7 +9,7 @@ import { Card as SharedCard, Button as SharedButton } from "@/lib/ui/components"
 import ArrowNav from "@/components/navigation/ArrowNav";
 
 const Card: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className, ...props }) => (
-  // Shared Card accepts className and renders children — keep usage similar
+  // Shared Card accepts className and renders children â€” keep usage similar
   <SharedCard className={className ?? ""} {...(props as any)}>{children}</SharedCard>
 );
 
@@ -113,16 +113,16 @@ export default function FirstTradeWizardPage() {
     try {
       const snapshot = await submitFirstTrade(state);
       setMsg(
-        `✅ Staged successfully • ${
+        `âœ… Staged successfully â€¢ ${
           (snapshot as any).direction === "inbound"
             ? (snapshot as any).order_numbers.po_no
             : (snapshot as any).order_numbers.so_no
         }`
       );
       // Optionally navigate:
-      // router.push("/ship/business/oms/obari/thedeal/bdo/bdo-ready");
+      // router.push("/business/oms/obari/thedeal/bdo/bdo-ready");
     } catch (e: any) {
-      setMsg(`❌ ${e?.message || "Failed to stage order"}`);
+      setMsg(`âŒ ${e?.message || "Failed to stage order"}`);
     } finally {
       setBusy(false);
     }
@@ -131,7 +131,7 @@ export default function FirstTradeWizardPage() {
   return (
     <main className="p-6 space-y-6">
       <header className="space-y-1">
-        <h1 className="text-3xl font-bold">First Trade — Wizard</h1>
+        <h1 className="text-3xl font-bold">First Trade â€” Wizard</h1>
         <p className="text-slate-400">
           CAIA-guided setup that seeds OBARI Staging and kicks off your Brokered-Deal Order.
         </p>
@@ -170,13 +170,13 @@ export default function FirstTradeWizardPage() {
             <div className="text-xs text-slate-400">{msg ? msg : "Draft autosaves locally."}</div>
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => go(-1)} disabled={step === order[0]}>
-                ← Back
+                â† Back
               </Button>
               {step !== "review" ? (
-                <Button onClick={() => go(1)}>Next →</Button>
+                <Button onClick={() => go(1)}>Next â†’</Button>
               ) : (
                 <Button onClick={onSubmit} disabled={!canSubmit || busy}>
-                  {busy ? "Submitting…" : "Submit to OBARI"}
+                  {busy ? "Submittingâ€¦" : "Submit to OBARI"}
                 </Button>
               )}
             </div>
@@ -185,8 +185,8 @@ export default function FirstTradeWizardPage() {
       </Card>
 
       <ArrowNav
-        backHref="/ship/business/oms"
-        nextHref="/ship/business/oms/obari/thedeal/bdo/bdo-ready"
+        backHref="/business/oms"
+        nextHref="/business/oms/obari/thedeal/bdo/bdo-ready"
         nextLabel="BDO Ready"
       >
         Wizard
@@ -340,4 +340,5 @@ function ReviewStep({ state }: { state: any }) {
     </div>
   );
 }
+
 

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -14,7 +14,7 @@ const EthosCard: React.FC = () => {
   return (
     <div className="panel" role="article" aria-label="Ethos">
       <h3 className="subtle" style={{ marginBottom: 6 }}>corAe</h3>
-      <div className="muted">Welcome to the onboarding wizard — this is a lightweight placeholder Ethos card.</div>
+      <div className="muted">Welcome to the onboarding wizard â€” this is a lightweight placeholder Ethos card.</div>
     </div>
   );
 };
@@ -25,12 +25,12 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-/* ───────────────────────── Types ───────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 type StepName =
   | "lead"
   | "btdo.intake"
   | "btdo.accept"
-  | "bdo.pricelock"      // <— Contract gate replaced by Pricelock gate
+  | "bdo.pricelock"      // <â€” Contract gate replaced by Pricelock gate
   | "bdo.booking-sheet"
   | "bdo.documentation"
   | "bdo.activate";
@@ -40,7 +40,7 @@ type PostRes =
   | { error: string | string[] };
 
 async function postStep(step: StepName, payload: any): Promise<PostRes> {
-  const res = await fetch("/api/ship/business/oms/onboarding/wizard", {
+  const res = await fetch("/api/business/oms/onboarding/wizard", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ step, payload }),
@@ -94,7 +94,7 @@ function pretty(r: Relationship) {
          r === "VENDOR" ? "Vendor" : "Client";
 }
 
-/* ───────────────────────── Page ───────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 export default function WizardPage() {
   const router = useRouter();
 
@@ -159,7 +159,7 @@ export default function WizardPage() {
     note: "",
   });
 
-  // Pricelock Chain™
+  // Pricelock Chainâ„¢
   const [selectedCurrency, setSelectedCurrency] = useState("AED");
   const [contractTotal, setContractTotal] = useState<string>("");
   const [pricelockWindowDays, setPricelockWindowDays] = useState<number>(7);
@@ -181,7 +181,7 @@ export default function WizardPage() {
 
   const canGo = useMemo(() => !busy, [busy]);
 
-  /* ───────── Prefill from QS / session ───────── */
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€ Prefill from QS / session â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   useEffect(() => {
     try {
       // derive companyId from the client URL; avoids next/navigation hook requiring Suspense
@@ -228,12 +228,12 @@ export default function WizardPage() {
           surveyAccessNotes: seed.survey.accessNotes || v.surveyAccessNotes,
         }));
       }
-      setMsg("✨ Prefilled.");
+      setMsg("âœ¨ Prefilled.");
     } catch {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /* ───────── Predict docs ───────── */
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€ Predict docs â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   useEffect(() => {
     let ignore = false;
     (async () => {
@@ -243,7 +243,7 @@ export default function WizardPage() {
         return;
       }
       try {
-        const url = `/api/ship/business/oms/onboarding/wizard/docs-required?sector=${encodeURIComponent(
+        const url = `/api/business/oms/onboarding/wizard/docs-required?sector=${encodeURIComponent(
           intake.sector
         )}&serviceType=${encodeURIComponent(intake.service)}&orderType=${intake.orderType}`;
         const res = await fetch(url, { cache: "no-store" });
@@ -254,19 +254,19 @@ export default function WizardPage() {
         setPredictions(preds);
         setSelectedDocs(preds);
       } catch (e: any) {
-        if (!ignore) setMsg(`⚠️ Doc prediction: ${e?.message || "Error"}`);
+        if (!ignore) setMsg(`âš ï¸ Doc prediction: ${e?.message || "Error"}`);
       }
     })();
     return () => { ignore = true; };
   }, [intake.sector, intake.service, intake.orderType]);
 
-  /* ───────── Load BDO requirements ───────── */
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€ Load BDO requirements â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   useEffect(() => {
     if (!dealId) return;
     (async () => {
       try {
         const res = await fetch(
-          `/api/ship/business/oms/onboarding/wizard/docs-required/list?dealId=${encodeURIComponent(dealId)}`,
+          `/api/business/oms/onboarding/wizard/docs-required/list?dealId=${encodeURIComponent(dealId)}`,
           { cache: "no-store" }
         );
         const data = await res.json();
@@ -279,12 +279,12 @@ export default function WizardPage() {
         setDocInputs(init);
         setUnmetMandatory(reqs.filter((r) => r.mandatory).length);
       } catch (e: any) {
-        setMsg(`⚠️ Could not load requirements: ${e?.message || "Error"}`);
+        setMsg(`âš ï¸ Could not load requirements: ${e?.message || "Error"}`);
       }
     })();
   }, [dealId]);
 
-  /* ───────── Track docs completeness ───────── */
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€ Track docs completeness â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   useEffect(() => {
     if (!requirements.length) return;
     const unmet = requirements.filter((r) => r.mandatory && !docInputs[reqKey(r)]?.url?.trim()).length;
@@ -298,24 +298,24 @@ export default function WizardPage() {
       const res = await postStep(stepName, payload);
       if ("error" in res) {
         const e = Array.isArray(res.error) ? res.error.join(", ") : res.error;
-        setMsg(`❌ ${e}`);
+        setMsg(`âŒ ${e}`);
         return;
       }
       setDealId(res.dealId);
       if (res.nextStep) {
         setStep(res.nextStep);
-        setMsg("✅ Saved.");
+        setMsg("âœ… Saved.");
       } else {
-        setMsg("🎉 Done. Deal is ACTIVE.");
+        setMsg("ðŸŽ‰ Done. Deal is ACTIVE.");
       }
     } catch (e: any) {
-      setMsg(`❌ ${e?.message ?? "Network error"}`);
+      setMsg(`âŒ ${e?.message ?? "Network error"}`);
     } finally {
       setBusy(false);
     }
   }
 
-  /* ─────────────────────── Render ─────────────────────── */
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Render â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   const LegacyView = () => (
     <div className={`page ${inter.variable}`}>
       {/* Top bar */}
@@ -323,9 +323,9 @@ export default function WizardPage() {
         <div className="top-left">
           <button
             className="circle"
-            onClick={() => router.push("/ship/business/oms/onboarding/wizard/signup")}
+            onClick={() => router.push("/business/oms/onboarding/wizard/signup")}
             title="Signup"
-          >←</button>
+          >â†</button>
           <h1 className="title">Onboarding Wizard</h1>
         </div>
         <button
@@ -333,11 +333,11 @@ export default function WizardPage() {
           onClick={() => {
             if (!dealId) return;
             // cast to any to satisfy the router.push typing for dynamic route
-            router.push(`/ship/business/oms/deals/${dealId}` as any);
+            router.push(`/business/oms/deals/${dealId}` as any);
           }}
           disabled={!dealId}
           title="Go to Deal"
-        >→</button>
+        >â†’</button>
       </header>
 
       {/* Ethos intro */}
@@ -345,10 +345,10 @@ export default function WizardPage() {
         <EthosCard />
       </div>
 
-      {/* Memory of corAe — quick reference panel */}
+      {/* Memory of corAe â€” quick reference panel */}
       <div role="region" aria-labelledby="memory-title" className="mb-4 rounded-md border p-3 bg-white/80 dark:bg-neutral-900/80">
-        <h3 id="memory-title" className="text-sm font-semibold">Memory of corAe — Quick Reference</h3>
-        <p className="text-xs mt-1">“We are corAe — the mother to the mother, the colleague to the worker, the silent partner to the owner.”</p>
+        <h3 id="memory-title" className="text-sm font-semibold">Memory of corAe â€” Quick Reference</h3>
+        <p className="text-xs mt-1">â€œWe are corAe â€” the mother to the mother, the colleague to the worker, the silent partner to the owner.â€</p>
 
         <div className="mt-2 text-xs">
           <strong>TOC</strong>
@@ -360,7 +360,7 @@ export default function WizardPage() {
         </div>
 
         <div className="mt-2">
-          <a href="apps/studio/docs/memory/BUSINESS.md#10-index" className="text-xs font-medium underline">Read the Business Memory →</a>
+          <a href="apps/studio/docs/memory/BUSINESS.md#10-index" className="text-xs font-medium underline">Read the Business Memory â†’</a>
         </div>
       </div>
 
@@ -388,7 +388,7 @@ export default function WizardPage() {
                   if (!val) return;
                   setCompanyId(val);
                   setIntake((s) => ({ ...s, companyId: val }));
-                  setMsg("🔗 Established account linked.");
+                  setMsg("ðŸ”— Established account linked.");
                 }}
               >Link</button>
             </div>
@@ -457,15 +457,15 @@ export default function WizardPage() {
               <input className="input" value={lead.surveySiteAddress} onChange={(e) => setLead({ ...lead, surveySiteAddress: e.target.value })} />
             </Field>
             <Field label={surveyMode === "SALE" ? "Preferred Window" : "Proposed Delivery Window"}>
-              <input className="input" value={lead.surveyPreferredWindow} placeholder={surveyMode === "SALE" ? "e.g., Tue AM next week" : "e.g., Thu 09:00–11:00"} onChange={(e) => setLead({ ...lead, surveyPreferredWindow: e.target.value })} />
+              <input className="input" value={lead.surveyPreferredWindow} placeholder={surveyMode === "SALE" ? "e.g., Tue AM next week" : "e.g., Thu 09:00â€“11:00"} onChange={(e) => setLead({ ...lead, surveyPreferredWindow: e.target.value })} />
             </Field>
           </Two>
           <Field label={surveyMode === "SALE" ? "Access / Notes" : "Offload / Access / Notes"}>
-            <input className="input" value={lead.surveyAccessNotes} placeholder={surveyMode === "SALE" ? "Gate code, key-holder, PPE…" : "Dock, forklift, packaging…"} onChange={(e) => setLead({ ...lead, surveyAccessNotes: e.target.value })} />
+            <input className="input" value={lead.surveyAccessNotes} placeholder={surveyMode === "SALE" ? "Gate code, key-holder, PPEâ€¦" : "Dock, forklift, packagingâ€¦"} onChange={(e) => setLead({ ...lead, surveyAccessNotes: e.target.value })} />
           </Field>
 
           <div className="end">
-            <button className="ghost" onClick={() => router.push("/ship/business/oms/onboarding/wizard/company")}>Company/Person setup</button>
+            <button className="ghost" onClick={() => router.push("/business/oms/onboarding/wizard/company")}>Company/Person setup</button>
             <button
               disabled={!canGo || !(lead.fullName && (lead.email || lead.phone) && lead.product)}
               className="primary"
@@ -475,7 +475,7 @@ export default function WizardPage() {
                 if (lead.surveySiteAddress) setIntake((s) => ({ ...s, siteAddress: lead.surveySiteAddress }));
                 setLead((v) => ({ ...v, roles: [relationship] }));
               }}
-            >Save Lead & Continue →</button>
+            >Save Lead & Continue â†’</button>
           </div>
         </Panel>
       )}
@@ -492,12 +492,12 @@ export default function WizardPage() {
             </Field>
           </Two>
           <div className="end">
-            <button className="ghost" onClick={() => setMode("NEW")}>← Switch to New Lead</button>
+            <button className="ghost" onClick={() => setMode("NEW")}>â† Switch to New Lead</button>
             <button className="primary" disabled={!companyId} onClick={() => {
               setLead((v) => ({ ...v, roles: [relationship] }));
               setStep("btdo.intake");
-              setMsg("🔗 Established account linked. Proceed to Intake.");
-            }}>Continue to Intake →</button>
+              setMsg("ðŸ”— Established account linked. Proceed to Intake.");
+            }}>Continue to Intake â†’</button>
           </div>
         </Panel>
       )}
@@ -540,7 +540,7 @@ export default function WizardPage() {
           </div>
 
           <div className="end">
-            <button className="ghost" onClick={() => setStep("lead")}>← Back</button>
+            <button className="ghost" onClick={() => setStep("lead")}>â† Back</button>
             <button
               disabled={!canGo}
               className="primary"
@@ -601,7 +601,7 @@ export default function WizardPage() {
                   mandatory: d.mandatory,
                 }));
                 if (docsPayload.length && dealId) {
-                  await fetch("/api/ship/business/oms/onboarding/wizard/docs-required", {
+                  await fetch("/api/business/oms/onboarding/wizard/docs-required", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -614,9 +614,9 @@ export default function WizardPage() {
                   });
                 }
                 setStep("btdo.accept");
-                setMsg(`✅ Intake & required docs saved (${surveyMode.toLowerCase()} route).`);
+                setMsg(`âœ… Intake & required docs saved (${surveyMode.toLowerCase()} route).`);
               }}
-            >Save Intake & Continue →</button>
+            >Save Intake & Continue â†’</button>
           </div>
         </Panel>
       )}
@@ -635,7 +635,7 @@ export default function WizardPage() {
           <Field label="Acceptance Note"><input className="input" value={accept.note} onChange={(e) => setAccept({ ...accept, note: e.target.value })} /></Field>
 
           <div className="end">
-            <button className="ghost" onClick={() => setStep("btdo.intake")}>← Back</button>
+            <button className="ghost" onClick={() => setStep("btdo.intake")}>â† Back</button>
             <button
               disabled={!canGo || !dealId}
               className="primary"
@@ -649,14 +649,14 @@ export default function WizardPage() {
                   note: nullIfEmpty(accept.note),
                 })
               }
-            >Save & Continue →</button>
+            >Save & Continue â†’</button>
           </div>
         </Panel>
       )}
 
       {/* PRICELOCK CHAIN (new gate replacing Contract) */}
       {step === "bdo.pricelock" && (
-        <Panel title="corAe Pricelock Chain™">
+        <Panel title="corAe Pricelock Chainâ„¢">
           <Two>
             <Field label="Total">
               <input className="input" type="number" value={contractTotal} onChange={(e) => setContractTotal(e.target.value)} placeholder="e.g., 1250" />
@@ -680,16 +680,16 @@ export default function WizardPage() {
           </Field>
 
           <div className="end">
-            <button className="ghost" onClick={() => setStep("btdo.accept")}>← Back</button>
+            <button className="ghost" onClick={() => setStep("btdo.accept")}>â† Back</button>
             <button
               disabled={!canGo || !dealId || !contractTotal}
               className="primary"
               onClick={async () => {
                 const priceNumber = Number(contractTotal);
-                if (!priceNumber || priceNumber <= 0) { setMsg("❌ Enter a valid total."); return; }
+                if (!priceNumber || priceNumber <= 0) { setMsg("âŒ Enter a valid total."); return; }
 
                 // (optional) create PricelockChain before booking confirmation
-                await fetch("/api/ship/business/oms/onboarding/wizard/pricelock", {
+                await fetch("/api/business/oms/onboarding/wizard/pricelock", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
@@ -702,10 +702,10 @@ export default function WizardPage() {
                   }),
                 });
 
-                setMsg("🔒 Pricelock Chain created.");
+                setMsg("ðŸ”’ Pricelock Chain created.");
                 setStep("bdo.booking-sheet");
               }}
-            >Create Pricelock & Continue →</button>
+            >Create Pricelock & Continue â†’</button>
           </div>
         </Panel>
       )}
@@ -723,7 +723,7 @@ export default function WizardPage() {
           </Two>
 
           <div className="end">
-            <button className="ghost" onClick={() => setStep("bdo.pricelock")}>← Back</button>
+            <button className="ghost" onClick={() => setStep("bdo.pricelock")}>â† Back</button>
             <button
               disabled={!canGo || !dealId}
               className="primary"
@@ -736,7 +736,7 @@ export default function WizardPage() {
                   confirmedBy: booking.confirmedByEmail ? { email: booking.confirmedByEmail } : undefined,
                 })
               }
-            >Save & Continue →</button>
+            >Save & Continue â†’</button>
           </div>
         </Panel>
       )}
@@ -764,24 +764,24 @@ export default function WizardPage() {
           <div className="muted mt">Mandatory outstanding: <b>{unmetMandatory}</b></div>
 
           <div className="end">
-            <button className="ghost" onClick={() => setStep("bdo.booking-sheet")}>← Back</button>
+            <button className="ghost" onClick={() => setStep("bdo.booking-sheet")}>â† Back</button>
             <button
               disabled={!canGo || !dealId}
               className="primary"
               onClick={async () => {
                 const { commercial, operational } = collectDocs(requirements, docInputs);
-                if (!commercial.length && !operational.length) { setMsg("⚠️ Add at least one document URL before saving."); return; }
-                const res = await fetch("/api/ship/business/oms/onboarding/wizard/documentation", {
+                if (!commercial.length && !operational.length) { setMsg("âš ï¸ Add at least one document URL before saving."); return; }
+                const res = await fetch("/api/business/oms/onboarding/wizard/documentation", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ dealId, commercial, operational }),
                 });
                 const data = await res.json();
-                if (!res.ok || !data?.ok) { setMsg(`❌ Could not save docs: ${data?.error || "Error"}`); return; }
-                setMsg("✅ Documentation saved.");
+                if (!res.ok || !data?.ok) { setMsg(`âŒ Could not save docs: ${data?.error || "Error"}`); return; }
+                setMsg("âœ… Documentation saved.");
                 setStep("bdo.activate");
               }}
-            >Save Docs & Continue →</button>
+            >Save Docs & Continue â†’</button>
           </div>
         </Panel>
       )}
@@ -791,13 +791,13 @@ export default function WizardPage() {
         <Panel title="Activate Deal">
           <p className="muted">All gates passed. Mandatory docs outstanding: <b>{unmetMandatory}</b>.</p>
           <div className="end">
-            <button className="ghost" onClick={() => setStep("bdo.documentation")}>← Back</button>
+            <button className="ghost" onClick={() => setStep("bdo.documentation")}>â† Back</button>
             <button
               disabled={!canGo || !dealId || unmetMandatory > 0}
               className="primary"
               onClick={() => run("bdo.activate", { dealId })}
               title={unmetMandatory > 0 ? "Upload all mandatory documents first" : "Activate"}
-            >Activate →</button>
+            >Activate â†’</button>
           </div>
         </Panel>
       )}
@@ -910,7 +910,7 @@ export default function WizardPage() {
     );
 
   }
-/* ───────────────────── UI Bits ───────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ UI Bits â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function Panel({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="panel" role="region" aria-label={title}>
@@ -994,7 +994,7 @@ function ServiceMini({ sector, value, onPick }: { sector: string; value: string;
 }
 function DocChip({ doc, onToggle }: { doc: PredictedDoc; onToggle: () => void }) {
   return (
-    <button className="chip on" onClick={onToggle} title={`${doc.category} • ${doc.requiredFrom}${doc.mandatory ? " • mandatory" : ""}`}>
+    <button className="chip on" onClick={onToggle} title={`${doc.category} â€¢ ${doc.requiredFrom}${doc.mandatory ? " â€¢ mandatory" : ""}`}>
       {doc.documentType}
     </button>
   );
@@ -1020,7 +1020,7 @@ function DocColumn({
             <div key={key} className="req">
               <div className="req-h">{r.documentType}</div>
               <div className="muted small">
-                From: {r.requiredFrom} {r.mandatory ? "• Mandatory" : "• Optional"} {r.notes ? `• ${r.notes}` : ""}
+                From: {r.requiredFrom} {r.mandatory ? "â€¢ Mandatory" : "â€¢ Optional"} {r.notes ? `â€¢ ${r.notes}` : ""}
               </div>
               <div className="vspace">
                 <input className="input" placeholder="Document URL" value={v.url} onChange={(e) => onChange(key, { url: e.target.value })} />

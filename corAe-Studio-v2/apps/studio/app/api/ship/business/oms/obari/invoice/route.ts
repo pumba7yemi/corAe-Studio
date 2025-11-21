@@ -1,4 +1,4 @@
-// OBARI — Invoice API (Stage 6)
+﻿// OBARI â€” Invoice API (Stage 6)
 // - GET   : list all invoices or fetch one (?id=INV_*)
 // - POST  : create from Report (REP_*) or from Active (ACT_*)
 // - PATCH : update status / append notes / corrections (demo)
@@ -158,8 +158,8 @@ function buildInvoice(opts: {
 }
 
 /* --------------------------------- GET --------------------------------- */
-// GET /api/ship/business/oms/obari/invoice
-// GET /api/ship/business/oms/obari/invoice?id=INV_xxx
+// GET /api/business/oms/obari/invoice
+// GET /api/business/oms/obari/invoice?id=INV_xxx
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const qid = searchParams.get("id");

@@ -1,12 +1,12 @@
-// apps/studio/app/ship/business/oms/finance/bank/page.tsx
+﻿// apps/studio/app/business/oms/finance/bank/page.tsx
 'use client';
 
 /**
- * Finance — Bank Accounts
+ * Finance â€” Bank Accounts
  * - Multi-account balances + transaction list
  * - Period filter (day/week/month/quarter/year/custom)
  * - Per-account filter, search, simple "Reconcile" toggle (demo only)
- * - Bottom arrows: back → Finance Hub, next → P&L
+ * - Bottom arrows: back â†’ Finance Hub, next â†’ P&L
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
@@ -55,7 +55,7 @@ type BankTxn = {
   reconciled?: boolean;
 };
 
-const fmtGBP = (m: number) => `£${(m / 100).toFixed(2)}`;
+const fmtGBP = (m: number) => `Â£${(m / 100).toFixed(2)}`;
 
 export default function BankAccountsPage() {
   const [period, setPeriod] = useState<PeriodValue>(() => computeRange('month'));
@@ -70,15 +70,15 @@ export default function BankAccountsPage() {
   useEffect(() => {
     const demoAccounts: BankAccount[] = [
       { id: 'ACC-HSBC-001', name: 'HSBC Current', sort_code: '40-11-60', number: '12345678', currency: 'GBP', opening_minor: 250000 },
-      { id: 'ACC-TILL-CP', name: 'Cash Till — Choice Plus', currency: 'GBP', opening_minor: 31500 },
+      { id: 'ACC-TILL-CP', name: 'Cash Till â€” Choice Plus', currency: 'GBP', opening_minor: 31500 },
       { id: 'ACC-STRIPE', name: 'Stripe Payouts', currency: 'GBP', opening_minor: 120000 },
     ];
 
     const demoTx: BankTxn[] = [
-      { id: 'TX-1001', date_iso: '2025-03-01', account_id: 'ACC-STRIPE', type: 'in',  source: 'POS',      ref: 'STRP/0301/A',     description: 'Card takings (net) — Glam & Glow', amount_minor: 23443, reconciled: true },
+      { id: 'TX-1001', date_iso: '2025-03-01', account_id: 'ACC-STRIPE', type: 'in',  source: 'POS',      ref: 'STRP/0301/A',     description: 'Card takings (net) â€” Glam & Glow', amount_minor: 23443, reconciled: true },
       { id: 'TX-1002', date_iso: '2025-03-02', account_id: 'ACC-STRIPE', type: 'out', source: 'Transfer', ref: 'STRP-PAYOUT-0302', description: 'Stripe payout to HSBC',              amount_minor: 23000, reconciled: true },
       { id: 'TX-1003', date_iso: '2025-03-03', account_id: 'ACC-HSBC-001', type: 'in', source: 'Transfer', ref: 'STRP-PAYOUT-0302', description: 'Stripe payout received',            amount_minor: 23000, reconciled: true },
-      { id: 'TX-1010', date_iso: '2025-03-01', account_id: 'ACC-TILL-CP', type: 'in',  source: 'POS',      ref: 'TILL/CP/0301',     description: 'Cash takings — Choice Plus',        amount_minor: 18400, reconciled: false },
+      { id: 'TX-1010', date_iso: '2025-03-01', account_id: 'ACC-TILL-CP', type: 'in',  source: 'POS',      ref: 'TILL/CP/0301',     description: 'Cash takings â€” Choice Plus',        amount_minor: 18400, reconciled: false },
       { id: 'TX-1020', date_iso: '2025-03-12', account_id: 'ACC-HSBC-001', type: 'out', source: 'Supplier', ref: 'BILL-2002',         description: 'Fresh Farms Wholesale',            amount_minor: 20000, reconciled: false },
       { id: 'TX-1025', date_iso: '2025-03-13', account_id: 'ACC-HSBC-001', type: 'out', source: 'Bank Fee', ref: 'HSBC/FEES/MAR',     description: 'Monthly account charges',          amount_minor: 900,   reconciled: false },
     ];
@@ -139,7 +139,7 @@ export default function BankAccountsPage() {
       { id: newIdOut, date_iso: today, account_id: till.id, type: 'out', source: 'Transfer', ref: 'BANK/DEPOSIT', description: 'Till deposit to HSBC', amount_minor: total, reconciled: true },
       { id: newIdIn,  date_iso: today, account_id: hsbc.id, type: 'in',  source: 'Transfer', ref: 'BANK/DEPOSIT', description: 'Till deposit received', amount_minor: total, reconciled: false },
     ]);
-    alert(`Created transfer £${(total / 100).toFixed(2)} from Till → HSBC (demo).`);
+    alert(`Created transfer Â£${(total / 100).toFixed(2)} from Till â†’ HSBC (demo).`);
   }
 
   return (
@@ -153,7 +153,7 @@ export default function BankAccountsPage() {
         <CardContent className="p-4 space-y-4">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-              <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search ref, description…" />
+              <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search ref, descriptionâ€¦" />
               <select value={accountId} onChange={(e) => setAccountId(e.target.value as any)} className="rounded-md border px-3 py-2 bg-transparent">
                 <option value="all">All accounts</option>
                 {accounts.map((a) => (
@@ -168,7 +168,7 @@ export default function BankAccountsPage() {
             </div>
 
             <div className="flex items-center gap-2">
-              <Button variant="outline" onClick={importPosCashToHSBC}>Move Till Cash → HSBC (demo)</Button>
+              <Button variant="outline" onClick={importPosCashToHSBC}>Move Till Cash â†’ HSBC (demo)</Button>
             </div>
           </div>
 
@@ -184,7 +184,7 @@ export default function BankAccountsPage() {
               return (
                 <div key={a.id} className="rounded-xl border p-3 bg-card">
                   <div className="text-sm font-semibold">{a.name}</div>
-                  <div className="text-xs text-muted">Opening {fmtGBP(b.opening)} • In {fmtGBP(b.in)} • Out {fmtGBP(b.out)}</div>
+                  <div className="text-xs text-muted">Opening {fmtGBP(b.opening)} â€¢ In {fmtGBP(b.in)} â€¢ Out {fmtGBP(b.out)}</div>
                   <div className="mt-1 text-base">Closing: <span className="font-semibold">{fmtGBP(b.closing)}</span></div>
                 </div>
               );
@@ -200,14 +200,14 @@ export default function BankAccountsPage() {
                   <div className="flex flex-col">
                     <div className="font-mono text-sm">{t.id}</div>
                     <div className="text-xs text-muted">
-                      {t.date_iso} • {accounts.find((a) => a.id === t.account_id)?.name ?? t.account_id}
-                      {t.ref ? ` • Ref ${t.ref}` : ''} {t.source ? ` • ${t.source}` : ''}
+                      {t.date_iso} â€¢ {accounts.find((a) => a.id === t.account_id)?.name ?? t.account_id}
+                      {t.ref ? ` â€¢ Ref ${t.ref}` : ''} {t.source ? ` â€¢ ${t.source}` : ''}
                     </div>
                     <div className="text-sm">{t.description}</div>
                   </div>
                   <div className="text-right">
                     <div className={['text-base font-semibold', t.type === 'in' ? 'text-emerald-400' : 'text-red-300'].join(' ')}>
-                      {t.type === 'in' ? '+' : '−'}
+                      {t.type === 'in' ? '+' : 'âˆ’'}
                       {fmtGBP(t.amount_minor)}
                     </div>
                     <div className="text-xs">
@@ -231,8 +231,8 @@ export default function BankAccountsPage() {
         </CardContent>
       </Card>
 
-      <ArrowNav backHref="/ship/business/oms/finance" nextHref="/ship/business/oms/finance/pnl" nextLabel="Profit & Loss">
-        Finance · Bank
+      <ArrowNav backHref="/business/oms/finance" nextHref="/business/oms/finance/pnl" nextLabel="Profit & Loss">
+        Finance Â· Bank
       </ArrowNav>
     </main>
   );

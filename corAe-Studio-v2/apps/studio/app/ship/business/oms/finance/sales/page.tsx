@@ -1,22 +1,22 @@
-// apps/studio/app/ship/business/oms/finance/sales/page.tsx
+﻿// apps/studio/app/business/oms/finance/sales/page.tsx
 'use client';
 
 /**
- * Finance — Sales Ledger (AR)
+ * Finance â€” Sales Ledger (AR)
  * - Lists sales invoices with quick filters & totals
  * - Uses PeriodFilter that returns { kind, from, to } (flat)
- * - Bottom arrows: back → Finance Hub, next → Purchases Ledger
+ * - Bottom arrows: back â†’ Finance Hub, next â†’ Purchases Ledger
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
-// ✅ Use the long relative path you said works right now
+// âœ… Use the long relative path you said works right now
 import { Card, CardContent } from '@/ui/card';
 import { Button } from '@/ui/button';
 import { Input } from '@/ui/input';
 import { Separator } from '@/ui/separator';
 import ArrowNav from '@/components/navigation/ArrowNav';
 
-// ⬇️ Your PeriodFilter (flat shape)
+// â¬‡ï¸ Your PeriodFilter (flat shape)
 import PeriodFilter, { computeRange, type PeriodValue } from '../../../../../../../../src/components/finance/PeriodFilter';
 
 type SalesInvoice = {
@@ -31,7 +31,7 @@ type SalesInvoice = {
   status: 'draft' | 'issued' | 'overdue' | 'paid' | 'part-paid';
 };
 
-const money = (m: number) => `£${(m / 100).toFixed(2)}`;
+const money = (m: number) => `Â£${(m / 100).toFixed(2)}`;
 const daysBetween = (a: string, b: string) =>
   Math.round((new Date(b).getTime() - new Date(a).getTime()) / (1000 * 60 * 60 * 24));
 
@@ -40,7 +40,7 @@ export default function SalesLedgerPage() {
   const [q, setQ] = useState('');
   const [status, setStatus] = useState<'all' | SalesInvoice['status']>('all');
 
-  // ✅ Flat default so period.from / period.to always exist
+  // âœ… Flat default so period.from / period.to always exist
   const [period, setPeriod] = useState<PeriodValue>(() => computeRange('month'));
 
   // demo data
@@ -130,7 +130,7 @@ export default function SalesLedgerPage() {
               <Input
                 value={q}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQ(e.target.value)}
-                placeholder="Search id, customer, ref…"
+                placeholder="Search id, customer, refâ€¦"
               />
               <select
                 value={status}
@@ -171,7 +171,7 @@ export default function SalesLedgerPage() {
                     <div className="flex flex-col">
                       <div className="font-mono font-semibold">{r.id}</div>
                       <div className="text-xs text-muted">
-                        {r.customer} • Ref {r.ref ?? '—'} • Issued {r.date_iso} • Due {r.due_iso}
+                        {r.customer} â€¢ Ref {r.ref ?? 'â€”'} â€¢ Issued {r.date_iso} â€¢ Due {r.due_iso}
                       </div>
                     </div>
                     <div className="text-right">
@@ -179,7 +179,7 @@ export default function SalesLedgerPage() {
                         Gross: <span className="font-medium">{money(gross)}</span>
                       </div>
                       <div className="text-xs text-muted">
-                        Paid {money(r.paid_minor)} • Due {money(outstanding)}
+                        Paid {money(r.paid_minor)} â€¢ Due {money(outstanding)}
                       </div>
                     </div>
                   </div>
@@ -199,7 +199,7 @@ export default function SalesLedgerPage() {
                         ].join(' ')}
                       >
                         {r.status.toUpperCase()}
-                        {overdueDays ? ` • ${overdueDays}d` : ''}
+                        {overdueDays ? ` â€¢ ${overdueDays}d` : ''}
                       </span>
                     </div>
                     <div className="flex gap-2">
@@ -238,11 +238,11 @@ export default function SalesLedgerPage() {
       </Card>
 
       <ArrowNav
-        backHref="/ship/business/oms/finance"
-        nextHref="/ship/business/oms/finance/purchase"
+        backHref="/business/oms/finance"
+        nextHref="/business/oms/finance/purchase"
         nextLabel="Purchase Ledger"
       >
-        Finance · Sales Ledger
+        Finance Â· Sales Ledger
       </ArrowNav>
     </main>
   );

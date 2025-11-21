@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 export const dynamic = "force-dynamic";
 // apps/studio/apps/ship/app/business/oms/obari/thedeal/bdo/bdo-ready/page.tsx
 
@@ -38,7 +38,7 @@ export default function BdoReadySpreadsheetPage() {
     (async () => {
       setLoading(true);
       const r = await fetch(
-        "/api/ship/business/oms/obari/thedeal/bdo/bdo-ready/list",
+        "/api/business/oms/obari/thedeal/bdo/bdo-ready/list",
         { cache: "no-store" }
       );
       const j = (await r.json()) as ListPayload;
@@ -98,7 +98,7 @@ export default function BdoReadySpreadsheetPage() {
     // Send only visible + selected rows if grouped by a party; otherwise send all selected
     const ids = (activeParty ? grouped : filtered).map((r) => r.id).filter((id) => selected.has(id));
     if (!ids.length) return alert("Select at least one row.");
-    const r = await fetch("/api/ship/business/oms/obari/thedeal/bdo/booking/prepare", {
+    const r = await fetch("/api/business/oms/obari/thedeal/bdo/booking/prepare", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ ids }),
@@ -112,7 +112,7 @@ export default function BdoReadySpreadsheetPage() {
   return (
     <main className="p-6 space-y-6">
       <header className="stack">
-        <h1 className="text-3xl font-bold">OBARI — BDO Ready</h1>
+        <h1 className="text-3xl font-bold">OBARI â€” BDO Ready</h1>
         <p className="muted">
           Review brokered-deal orders ready to flow. Use arrows to jump between parties, select rows, and prepare booking packages.
         </p>
@@ -124,7 +124,7 @@ export default function BdoReadySpreadsheetPage() {
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Search…"
+              placeholder="Searchâ€¦"
               className="bg-slate-800 border border-slate-700 rounded-md px-3 py-1.5 text-sm w-64 focus:outline-none focus:ring-2 focus:ring-sky-500"
             />
             <div className="flex items-center gap-1">
@@ -134,7 +134,7 @@ export default function BdoReadySpreadsheetPage() {
                 onClick={prevGroup}
                 disabled={!parties.length}
               >
-                ←
+                â†
               </button>
               <div className="min-w-48 text-sm text-slate-300 text-center px-2 py-1 border border-slate-700 rounded-md bg-slate-900/50">
                 {activeParty ? activeParty : "All parties"}
@@ -145,7 +145,7 @@ export default function BdoReadySpreadsheetPage() {
                 onClick={nextGroup}
                 disabled={!parties.length}
               >
-                →
+                â†’
               </button>
             </div>
           </div>
@@ -185,7 +185,7 @@ export default function BdoReadySpreadsheetPage() {
               {loading && (
                 <tr>
                   <td colSpan={10} className="px-3 py-6 text-center text-slate-400">
-                    Loading…
+                    Loadingâ€¦
                   </td>
                 </tr>
               )}
@@ -204,12 +204,12 @@ export default function BdoReadySpreadsheetPage() {
                   <td className="px-3 py-2 font-medium text-slate-200">{r.code}</td>
                   <td className="px-3 py-2 text-slate-300">
                     <span className="uppercase text-xs text-slate-500 mr-1">{r.partyType === "vendor" ? "V" : "C"}</span>
-                    {r.partyName ?? "—"}
+                    {r.partyName ?? "â€”"}
                   </td>
                   <td className="px-3 py-2 text-center">{r.schedule}</td>
-                  <td className="px-3 py-2 text-center">{r.expectedWeek ?? "—"}</td>
+                  <td className="px-3 py-2 text-center">{r.expectedWeek ?? "â€”"}</td>
                   <td className="px-3 py-2 text-slate-200">{r.item}</td>
-                  <td className="px-3 py-2 text-right tabular-nums">{r.qty ?? "—"}</td>
+                  <td className="px-3 py-2 text-right tabular-nums">{r.qty ?? "â€”"}</td>
                   <td className="px-3 py-2 text-right tabular-nums">{r.unitPrice.toFixed(2)}</td>
                   <td className="px-3 py-2">{r.currency}</td>
                   <td className="px-3 py-2 text-slate-400">{r.notes ?? ""}</td>
@@ -220,16 +220,16 @@ export default function BdoReadySpreadsheetPage() {
         </div>
 
         <p className="text-xs text-slate-500">
-          Tip: Use the arrow buttons to jump between parties and “Select all” to prepare a single combined booking package per party.
+          Tip: Use the arrow buttons to jump between parties and â€œSelect allâ€ to prepare a single combined booking package per party.
         </p>
       </section>
 
       <ArrowNav
-        backHref="/ship/business/oms/obari"
-        nextHref="/ship/business/oms/obari/thedeal/bdo/schedule"
+        backHref="/business/oms/obari"
+        nextHref="/business/oms/obari/thedeal/bdo/schedule"
         nextLabel="To BDO Schedule"
       >
-        Step 1 of 3 — BDO Ready
+        Step 1 of 3 â€” BDO Ready
       </ArrowNav>
     </main>
   );

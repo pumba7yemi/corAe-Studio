@@ -1,14 +1,14 @@
-// apps/studio/app/api/ship/business/oms/obari/thedeal/[dealId]/finalize/route.ts
-// Studio API — OBARI Equals Finalize (BTDO→BDO)
+﻿// apps/studio/app/api/business/oms/obari/thedeal/[dealId]/finalize/route.ts
+// Studio API â€” OBARI Equals Finalize (BTDOâ†’BDO)
 // One-button snapshot of BDO handoff: immutable, idempotent, verifiable.
 
-// ── Imports (no aliases)
+// â”€â”€ Imports (no aliases)
 import { NextResponse } from "next/server";
 import { mkdir, writeFile } from "node:fs/promises";
 import { resolve as pathResolve, join as pathJoin } from "node:path";
 import { createHash } from "node:crypto";
 
-// ── Types (kept local to avoid missing imports)
+// â”€â”€ Types (kept local to avoid missing imports)
 type EqualsInput = {
   dealId: string;
   stage: "BTDO" | "BDO";
@@ -45,7 +45,7 @@ type EqualsSnapshot = {
   version: number;        // schema version
 };
 
-// ── Canonicalization & hashing
+// â”€â”€ Canonicalization & hashing
 function sortKeysDeep(value: any): any {
   if (Array.isArray(value)) return value.map(sortKeysDeep);
   if (value && typeof value === "object") {
@@ -62,13 +62,13 @@ function sha256(s: string): string {
   return createHash("sha256").update(s).digest("hex");
 }
 
-// ── Business rules
+// â”€â”€ Business rules
 function makeEqualsSnapshot(input: EqualsInput, now = new Date()): EqualsSnapshot {
   if (input.stage !== "BDO") {
     throw new Error("Equals finalize requires stage=BDO");
   }
   if (!["proposed", "approved", "confirmed"].includes(input.status)) {
-    throw new Error("Equals finalize requires status ∈ {proposed, approved, confirmed}");
+    throw new Error("Equals finalize requires status âˆˆ {proposed, approved, confirmed}");
   }
   if (!input.lines || input.lines.length === 0) {
     throw new Error("Equals finalize requires at least one line");
@@ -116,7 +116,7 @@ function makeEqualsSnapshot(input: EqualsInput, now = new Date()): EqualsSnapsho
   };
 }
 
-// ── Route: POST /api/obari/deals/:dealId/finalize
+// â”€â”€ Route: POST /api/obari/deals/:dealId/finalize
 export async function POST(req: Request, ctx: { params: Promise<any> }) {
   try {
     const { dealId } = (await ctx.params) as any;
@@ -165,7 +165,7 @@ export async function POST(req: Request, ctx: { params: Promise<any> }) {
       flag: "wx",
     }).catch((err: any) => {
       if (err?.code === "EEXIST") {
-        // already finalized with same payload → idempotent success
+        // already finalized with same payload â†’ idempotent success
         return;
       }
       throw err;
@@ -188,3 +188,4 @@ export async function POST(req: Request, ctx: { params: Promise<any> }) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
+

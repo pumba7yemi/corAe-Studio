@@ -1,4 +1,4 @@
-// apps/studio/app/ship/business/oms/onboarding/sla-escalation/page.tsx
+﻿// apps/studio/app/business/oms/onboarding/sla-escalation/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -33,7 +33,7 @@ export default function OmsSlaEscalationPage() {
   useEffect(() => {
     (async () => {
       try {
-        const r = await fetch("/api/ship/business/oms/sla");
+        const r = await fetch("/api/business/oms/sla");
         if (r.ok) {
           const data = await r.json();
           if (data?.sla) setSla(data.sla);
@@ -61,15 +61,15 @@ export default function OmsSlaEscalationPage() {
     setSaving(true);
     setMsg(null);
     try {
-      const r = await fetch("/api/ship/business/oms/sla", {
+      const r = await fetch("/api/business/oms/sla", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sla, escalation: { levels } }),
       });
       const data = await r.json();
       if (!r.ok) throw new Error(data?.error || "Failed to save");
-      setMsg("Saved ✓");
-      if (goNext) location.href = "/ship/business/oms/onboarding";
+      setMsg("Saved âœ“");
+      if (goNext) location.href = "/business/oms/onboarding";
     } catch (e: any) {
       setMsg(e.message || "Save failed");
     } finally {
@@ -80,7 +80,7 @@ export default function OmsSlaEscalationPage() {
   if (loading) {
     return (
   <div className="min-h-dvh bg-zinc-950 text-zinc-100 grid place-items-center">
-        <div className="text-sm opacity-70">Loading SLA & Escalation…</div>
+        <div className="text-sm opacity-70">Loading SLA & Escalationâ€¦</div>
       </div>
     );
   }
@@ -189,20 +189,20 @@ export default function OmsSlaEscalationPage() {
             disabled={saving}
             className="rounded-xl border border-zinc-700 bg-zinc-900/40 hover:bg-zinc-900/60 px-4 py-2 text-sm"
           >
-            {saving ? "Saving…" : "Save"}
+            {saving ? "Savingâ€¦" : "Save"}
           </button>
           <button
             onClick={() => save(true)}
             disabled={saving}
             className="rounded-xl border border-emerald-700 bg-emerald-950/30 hover:bg-emerald-900/30 px-4 py-2 text-sm"
           >
-            {saving ? "Saving…" : "Save & Continue"}
+            {saving ? "Savingâ€¦" : "Save & Continue"}
           </button>
           <a
-            href="/ship/business/oms/onboarding"
+            href="/business/oms/onboarding"
             className="rounded-xl border border-zinc-700 bg-zinc-900/40 hover:bg-zinc-900/60 px-4 py-2 text-sm"
           >
-            ← Back
+            â† Back
           </a>
         </div>
 

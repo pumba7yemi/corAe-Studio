@@ -1,4 +1,4 @@
-// apps/studio/app/api/ship/business/oms/onboarding/wizard/_orchestrator.ts
+﻿// apps/studio/app/api/business/oms/onboarding/wizard/_orchestrator.ts
 import { prisma } from "@/lib/prisma";
 
 export type ChronoScope = "GENERAL"|"WORKFLOWS"|"OPERATIONS"|"HR"|"FINANCE"|"MARKETING"|"SALES";

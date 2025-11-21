@@ -1,14 +1,14 @@
-// apps/studio/app/ship/home/onboarding/route-map.ts
+﻿// apps/studio/app/home/onboarding/route-map.ts
 export const HomeOnboardingRouteMap = {
-  homefocus: "/ship/home/onboarding/wizard/homefocus",
-  finance: "/ship/home/onboarding/wizard/finance",
-  shopping: "/ship/home/onboarding/wizard/shopping",
-  mealprep: "/ship/home/onboarding/wizard/mealprep",
-  cleaning: "/ship/home/onboarding/wizard/cleaning",
-  wardrobe: "/ship/home/onboarding/wizard/wardrobe",
-  mindful: "/ship/home/onboarding/wizard/mindful",
-  glamglow: "/ship/home/onboarding/wizard/glamglow",
-  fitness: "/ship/home/onboarding/wizard/fitness",
+  homefocus: "/home/onboarding/wizard/homefocus",
+  finance: "/home/onboarding/wizard/finance",
+  shopping: "/home/onboarding/wizard/shopping",
+  mealprep: "/home/onboarding/wizard/mealprep",
+  cleaning: "/home/onboarding/wizard/cleaning",
+  wardrobe: "/home/onboarding/wizard/wardrobe",
+  mindful: "/home/onboarding/wizard/mindful",
+  glamglow: "/home/onboarding/wizard/glamglow",
+  fitness: "/home/onboarding/wizard/fitness",
 };
 export type HomeOnboardingKey = keyof typeof HomeOnboardingRouteMap;
 export const getHomeOnboardingRoute = (k: HomeOnboardingKey) => HomeOnboardingRouteMap[k];

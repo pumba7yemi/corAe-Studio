@@ -1,5 +1,5 @@
-// apps/studio/app/api/ship/business/oms/obari/report/route.ts
-// OBARI — Report API (Stage 5)
+﻿// apps/studio/app/api/business/oms/obari/report/route.ts
+// OBARI â€” Report API (Stage 5)
 // - POST  : generate report from Active record (ACT_*)
 // - GET   : list or fetch reports (?id=REP_*)
 // - PATCH : append corrections/notes (demo)
@@ -87,8 +87,8 @@ function makeReportFromActive(a: ActiveLight): ReportRecord {
 }
 
 /* --------------------------------- GET --------------------------------- */
-// GET /api/ship/business/oms/obari/report
-// GET /api/ship/business/oms/obari/report?id=REP_xxx
+// GET /api/business/oms/obari/report
+// GET /api/business/oms/obari/report?id=REP_xxx
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");

@@ -1,4 +1,4 @@
-// /apps/ship/business/oms/commercial/marketing/performance/pulse-api/route.ts
+﻿// /apps/business/oms/commercial/marketing/performance/pulse-api/route.ts
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 
@@ -60,3 +60,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: e?.message || "Unknown error" }, { status: 500 });
   }
 }
+

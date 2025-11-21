@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { getAlignmentSummary, hasSignedSocialContract } from "@corae/core-ascend";
 import AscendDashboard from "@/components/ascend/AscendDashboard";
 
 export const metadata: Metadata = {
-  title: "Ascend — Work",
-  description: "Ascend through conduct — alignment first, then WorkFocus™.",
+  title: "Ascend â€” Work",
+  description: "Ascend through conduct â€” alignment first, then WorkFocusâ„¢.",
 };
 
 export default async function Page() {
@@ -24,15 +24,15 @@ export default async function Page() {
         </header>
 
         <div className="grid grid-cols-3 gap-3">
-          <GateCard label="Home" ok={summary.home} href="/ship/home/social-contract" />
-          <GateCard label="Work" ok={summary.work} href="/ship/work/social-contract" />
-          <GateCard label="Business" ok={summary.business} href="/ship/business/social-contract" />
+          <GateCard label="Home" ok={summary.home} href="/home/social-contract" />
+          <GateCard label="Work" ok={summary.work} href="/work/social-contract" />
+          <GateCard label="Business" ok={summary.business} href="/business/social-contract" />
         </div>
 
         <div className="rounded-xl border p-4 text-sm">
           <p className="font-medium mb-1">Why this gate?</p>
           <p className="opacity-80">
-            corAe prioritizes conduct and clarity. Alignment is a human-approved prerequisite — once complete, CAIA moves you forward.
+            corAe prioritizes conduct and clarity. Alignment is a human-approved prerequisite â€” once complete, CAIA moves you forward.
           </p>
         </div>
       </main>
@@ -50,8 +50,9 @@ function GateCard({ label, ok, href }: { label: string; ok: boolean; href: strin
   return (
     <a className="rounded-xl border p-4 focus:outline-none focus:ring" href={href}>
       <div className="text-sm opacity-70">{label}</div>
-      <div className="text-lg font-semibold mt-1">{ok ? "Aligned ✓" : "Pending •"}</div>
+      <div className="text-lg font-semibold mt-1">{ok ? "Aligned âœ“" : "Pending â€¢"}</div>
       <div className="text-xs underline mt-2 block">Review / complete</div>
     </a>
   );
 }
+

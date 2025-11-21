@@ -1,4 +1,4 @@
-// apps/studio/app/api/ship/home/haveyou/route.ts
+﻿// apps/studio/app/api/home/haveyou/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
 interface HaveYou { id?:string; text:string; schedule:string; scope?: "HOME"|"WORK"|"BUSINESS"; enabled?:boolean }

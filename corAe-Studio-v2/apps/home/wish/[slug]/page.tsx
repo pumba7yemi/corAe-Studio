@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 
@@ -29,7 +29,7 @@ async function baseUrl(): Promise<string> {
 
 async function fetchShare(slug: string): Promise<ShareDoc | null> {
   const base = await baseUrl();
-  const r = await fetch(`${base}/api/ship/home/wish/share?slug=${encodeURIComponent(slug)}`, {
+  const r = await fetch(`${base}/api/home/wish/share?slug=${encodeURIComponent(slug)}`, {
     cache: "no-store",
   });
   if (!r.ok) return null;
@@ -40,7 +40,7 @@ async function fetchShare(slug: string): Promise<ShareDoc | null> {
 
 async function fetchItems(): Promise<WantItem[]> {
   const base = await baseUrl();
-  const r = await fetch(`${base}/api/ship/home/iwant`, { cache: "no-store" });
+  const r = await fetch(`${base}/api/home/iwant`, { cache: "no-store" });
   if (!r.ok) return [];
   return (await r.json()) as WantItem[];
 }
@@ -60,12 +60,12 @@ export default async function Page(props: { params?: Promise<{ slug: string }>; 
       <div className="text-center">
         <h1 className="text-3xl font-bold">{share.title ?? "Wishlist"}</h1>
         <p className="mt-1 text-zinc-400 text-sm">
-          Buy directly from this list — affiliate & cashback tracking via corAe.
+          Buy directly from this list â€” affiliate & cashback tracking via corAe.
         </p>
       </div>
 
       <div className="mt-6 text-center">
-        <Link href="/ship/home/iwant" className="text-sm underline">
+        <Link href="/home/iwant" className="text-sm underline">
           Create your own list
         </Link>
       </div>
@@ -83,7 +83,7 @@ export default async function Page(props: { params?: Promise<{ slug: string }>; 
               AED {i.estimate ?? 0}
             </div>
             <a
-              href={`/api/ship/home/redirect?m=generic&itemId=${encodeURIComponent(
+              href={`/api/home/redirect?m=generic&itemId=${encodeURIComponent(
                 i.id
               )}&u=${encodeURIComponent(i.link ?? "https://example.com")}&share=${encodeURIComponent(
                 share.slug
@@ -104,3 +104,4 @@ export default async function Page(props: { params?: Promise<{ slug: string }>; 
     </div>
   );
 }
+

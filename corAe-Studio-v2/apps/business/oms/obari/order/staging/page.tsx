@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
 /**
- * OBARI — Order › Staging (UI)
+ * OBARI â€” Order â€º Staging (UI)
  * Purpose:
  * - Take a BDO draft (pasted JSON or loaded from session/local storage)
  * - POST to /api/obari/order/staging to create the immutable Order Staging Snapshot
@@ -123,7 +123,7 @@ export default function OrderStagingPage() {
     setMsg(null);
     setFlag(null);
     try {
-      const res = await fetch("/api/ship/business/oms/obari/order/staging", {
+      const res = await fetch("/api/business/oms/obari/order/staging", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(parsedDraft),
@@ -132,9 +132,9 @@ export default function OrderStagingPage() {
       if (!data.ok) throw new Error(data.error);
       setSnapshot(data.snapshot);
       setNotes(data.snapshot.notes ?? "");
-      setMsg("✅ Staged snapshot created.");
+      setMsg("âœ… Staged snapshot created.");
     } catch (e: any) {
-      setMsg(`❌ ${e?.message || "Stage failed"}`);
+      setMsg(`âŒ ${e?.message || "Stage failed"}`);
     } finally {
       setBusy(false);
     }
@@ -154,9 +154,9 @@ export default function OrderStagingPage() {
       if (!data.ok) throw new Error(data.error);
       setSnapshot(data.snapshot);
       setNotes(data.snapshot.notes ?? "");
-      setMsg("✅ Snapshot loaded.");
+      setMsg("âœ… Snapshot loaded.");
     } catch (e: any) {
-      setMsg(`❌ ${e?.message || "Fetch failed"}`);
+      setMsg(`âŒ ${e?.message || "Fetch failed"}`);
     } finally {
       setBusy(false);
     }
@@ -175,9 +175,9 @@ export default function OrderStagingPage() {
       const data = (await res.json()) as ApiOk<{ flag: "CDIQ" | "CDC" | "CDN" }> | ApiErr;
       if (!data.ok) throw new Error(data.error);
       setFlag(data.flag);
-      setMsg("✅ Transport flag resolved.");
+      setMsg("âœ… Transport flag resolved.");
     } catch (e: any) {
-      setMsg(`❌ ${e?.message || "Flag fetch failed"}`);
+      setMsg(`âŒ ${e?.message || "Flag fetch failed"}`);
     } finally {
       setBusy(false);
     }
@@ -196,9 +196,9 @@ export default function OrderStagingPage() {
       const data = (await res.json()) as ApiOk<{ snapshot: OrderStagingSnapshot }> | ApiErr;
       if (!data.ok) throw new Error(data.error);
       setSnapshot(data.snapshot);
-      setMsg("✅ Notes updated.");
+      setMsg("âœ… Notes updated.");
     } catch (e: any) {
-      setMsg(`❌ ${e?.message || "Notes update failed"}`);
+      setMsg(`âŒ ${e?.message || "Notes update failed"}`);
     } finally {
       setBusy(false);
     }
@@ -210,13 +210,13 @@ export default function OrderStagingPage() {
   return (
     <main className="p-6 space-y-6">
       <header className="stack">
-        <h1 className="text-3xl font-bold">OBARI — Order · Staging</h1>
+        <h1 className="text-3xl font-bold">OBARI â€” Order Â· Staging</h1>
         <p className="muted">
           Create the immutable staging snapshot from a BDO, view PO/SO numbers, and patch notes only.
         </p>
       </header>
 
-      {/* Left: Paste/Load BDO → Stage */}
+      {/* Left: Paste/Load BDO â†’ Stage */}
       <section className="c-card p-4 space-y-3">
         <h2 className="text-lg font-semibold">Stage from BDO</h2>
         <div className="grid gap-3 md:grid-cols-2">
@@ -236,7 +236,7 @@ export default function OrderStagingPage() {
               onClick={stageNow}
               disabled={!parsedDraft || busy}
             >
-              {busy ? "Working…" : "Stage Snapshot"}
+              {busy ? "Workingâ€¦" : "Stage Snapshot"}
             </button>
             <button
               className="btn"
@@ -307,13 +307,13 @@ export default function OrderStagingPage() {
             <div className="stack">
               <div className="small muted">Counterparty</div>
               <div className="font-mono">
-                {snapshot.parties.counterparty_id} — {snapshot.parties.counterparty_name}
+                {snapshot.parties.counterparty_id} â€” {snapshot.parties.counterparty_name}
               </div>
             </div>
             <div className="stack">
               <div className="small muted">Our Party</div>
               <div className="font-mono">
-                {snapshot.parties.our_id} — {snapshot.parties.our_name}
+                {snapshot.parties.our_id} â€” {snapshot.parties.our_name}
               </div>
             </div>
 
@@ -322,8 +322,8 @@ export default function OrderStagingPage() {
               <div className="font-mono">
                 {snapshot.schedule.kind === "scheduled"
                   ? `${snapshot.schedule.rule}${
-                      snapshot.schedule.day ? " · " + snapshot.schedule.day : ""
-                    }${snapshot.schedule.window ? " · " + snapshot.schedule.window : ""}`
+                      snapshot.schedule.day ? " Â· " + snapshot.schedule.day : ""
+                    }${snapshot.schedule.window ? " Â· " + snapshot.schedule.window : ""}`
                   : "AD_HOC"}
               </div>
             </div>
@@ -332,13 +332,13 @@ export default function OrderStagingPage() {
               <div className="small muted">Transport</div>
               <div className="font-mono">
                 in_quote={String(snapshot.transport.in_quote)}
-                {snapshot.transport.mode ? ` · mode=${snapshot.transport.mode}` : ""}
+                {snapshot.transport.mode ? ` Â· mode=${snapshot.transport.mode}` : ""}
               </div>
             </div>
 
             <div className="stack">
               <div className="small muted">Totals (ex VAT)</div>
-              <div className="font-mono">£{subtotalFmt(snapshot.totals.subtotal)}</div>
+              <div className="font-mono">Â£{subtotalFmt(snapshot.totals.subtotal)}</div>
             </div>
           </div>
 
@@ -362,7 +362,7 @@ export default function OrderStagingPage() {
                       <td className="p-2">{ln.title}</td>
                       <td className="p-2 text-right">{ln.qty}</td>
                       <td className="p-2">{ln.uom || "-"}</td>
-                      <td className="p-2 text-right">£{subtotalFmt(ln.unit_price)}</td>
+                      <td className="p-2 text-right">Â£{subtotalFmt(ln.unit_price)}</td>
                     </tr>
                   ))}
                 </tbody>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -41,7 +41,7 @@ export default function SLAEscalationPage() {
       });
       const j = await res.json();
       if (!j.ok) throw new Error(j.error || "Bind failed");
-  (router as any).replace(j.next || `/ship/business/oms/obari/active?dealId=${dealId}`);
+  (router as any).replace(j.next || `/business/oms/obari/active?dealId=${dealId}`);
     } catch (e: any) {
       setMsg(e?.message || "Failed");
     } finally {
@@ -53,7 +53,7 @@ export default function SLAEscalationPage() {
     <main className="mx-auto max-w-3xl p-6 text-zinc-100">
       <h1 className="mb-2 text-2xl font-semibold">SLA & Escalation</h1>
       <p className="mb-6 text-sm text-zinc-400">
-        Define how quickly partners must accept and who gets notified if they don’t.
+        Define how quickly partners must accept and who gets notified if they donâ€™t.
       </p>
 
       <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-5">
@@ -84,7 +84,7 @@ export default function SLAEscalationPage() {
             disabled={busy || !dealId}
             className="inline-flex items-center rounded-xl bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-white disabled:opacity-50"
           >
-            {busy ? "Binding…" : "Bind SLA & Continue"}
+            {busy ? "Bindingâ€¦" : "Bind SLA & Continue"}
           </button>
           {msg && <span className="text-sm text-red-400">{msg}</span>}
         </div>

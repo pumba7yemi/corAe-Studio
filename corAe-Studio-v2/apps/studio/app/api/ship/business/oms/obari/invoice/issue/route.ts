@@ -1,5 +1,5 @@
-// apps/studio/app/api/ship/business/oms/obari/invoice/issue/route.ts
-// OBARI — Invoice Issue (from FINAL "=")
+﻿// apps/studio/app/api/business/oms/obari/invoice/issue/route.ts
+// OBARI â€” Invoice Issue (from FINAL "=")
 // Re-validates gates, renders a PDF invoice, and returns a public URL.
 // Filesystem-only. No Prisma. No aliases.
 
@@ -180,13 +180,13 @@ async function renderInvoicePdf(dto: InvoiceDTO, provenance: { baseHash: string;
     page.drawText(t, { x, y, size, font: b ? bold : font, color: rgb(0.1, 0.1, 0.1) });
 
   // Header
-  draw("corAe — Invoice", 40, 800, true, 18);
+  draw("corAe â€” Invoice", 40, 800, true, 18);
   draw(`Invoice No: ${dto.number}`, 40, 778, true);
   draw(`Currency: ${dto.currency}`, 300, 778);
 
   // Meta
   draw(`Deal ID: ${dto.dealId}`, 40, 756);
-  draw(`Booking ID: ${dto.bookingId || "—"}`, 300, 756);
+  draw(`Booking ID: ${dto.bookingId || "â€”"}`, 300, 756);
   draw(`Finalized At: ${new Date(provenance.finalizedAt).toLocaleString()}`, 40, 736);
 
   // Table header
@@ -217,9 +217,9 @@ async function renderInvoicePdf(dto: InvoiceDTO, provenance: { baseHash: string;
   // Provenance footer
   y = 120;
   draw("Provenance (hashes):", 40, y, true); y -= 16;
-  draw(`Base: ${provenance.baseHash.slice(0, 12)}…`, 40, y); y -= 16;
-  draw(`Adjusted: ${provenance.adjustedHash.slice(0, 12)}…`, 40, y); y -= 16;
-  draw(`Final: ${provenance.finalHash.slice(0, 12)}…`, 40, y);
+  draw(`Base: ${provenance.baseHash.slice(0, 12)}â€¦`, 40, y); y -= 16;
+  draw(`Adjusted: ${provenance.adjustedHash.slice(0, 12)}â€¦`, 40, y); y -= 16;
+  draw(`Final: ${provenance.finalHash.slice(0, 12)}â€¦`, 40, y);
 
   return await pdf.save();
 }
@@ -286,3 +286,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: msg }, { status: 400 });
   }
 }
+

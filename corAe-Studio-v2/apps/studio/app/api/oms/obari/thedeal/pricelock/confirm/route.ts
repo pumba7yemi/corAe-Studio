@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { setDealFlags } from "../../_store";
 
 export async function POST(req: Request) {
@@ -8,5 +8,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "dealId required" }, { status: 400 });
   }
   const updated = setDealFlags(dealId, { pricelockConfirmed: true });
-  return NextResponse.json({ ok: true, status: updated, next: `/ship/business/oms/obari/thedeal/sla-escalation?dealId=${dealId}` });
+  return NextResponse.json({ ok: true, status: updated, next: `/business/oms/obari/thedeal/sla-escalation?dealId=${dealId}` });
 }

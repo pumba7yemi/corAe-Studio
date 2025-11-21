@@ -1,4 +1,4 @@
-// apps/studio/app/api/ship/business/oms/onboarding/wizard/route.ts
+﻿// apps/studio/app/api/business/oms/onboarding/wizard/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-/* ── Steps ───────────────────────────────────────────── */
+/* â”€â”€ Steps â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 async function handleIntake(p: {
   sector?: string | null; service?: string | null; workKind?: string | null;
@@ -109,7 +109,7 @@ async function handleActivate(p: { dealId: string }) {
   return NextResponse.json({ ok: true, dealId: updated.id, nextStep: null });
 }
 
-/* ── Utils ───────────────────────────────────────────── */
+/* â”€â”€ Utils â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 async function mustFindDeal(dealId: string) {
   const deal = await prisma.deal.findUnique({ where: { id: dealId } });

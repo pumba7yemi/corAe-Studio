@@ -1,8 +1,8 @@
-// apps/studio/app/ship/business/oms/finance/page.tsx
+﻿// apps/studio/app/business/oms/finance/page.tsx
 'use client';
 
 /**
- * corAe — Finance Hub
+ * corAe â€” Finance Hub
  * - Date range filter (day/week/month/quarter/year/custom)
  * - Tiles deep-link with ?from=YYYY-MM-DD&to=YYYY-MM-DD&kind=*
  */
@@ -37,7 +37,7 @@ export default function FinanceHubPage() {
   const [ledgers, setLedgers] = useState<LedgerSummary[]>([]);
 
   useEffect(() => {
-    // demo data — replace with /api/finance/summary?from=&to= later
+    // demo data â€” replace with /api/finance/summary?from=&to= later
     setLedgers([
       { id: 'sales',     name: 'Sales Invoices',     count: 12, balance: 18650.25, path: '/business/oms/finance/sales' },
       { id: 'purchases', name: 'Purchase Invoices',  count:  8, balance:  -9540.00, path: '/business/oms/finance/purchases' },
@@ -70,7 +70,7 @@ export default function FinanceHubPage() {
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <PeriodFilter value={period} onChange={setPeriod} />
           <div className="text-sm text-muted">
-            Showing: <span className="font-mono">{period.from}</span> → <span className="font-mono">{period.to}</span>
+            Showing: <span className="font-mono">{period.from}</span> â†’ <span className="font-mono">{period.to}</span>
           </div>
         </div>
       </section>
@@ -92,12 +92,12 @@ export default function FinanceHubPage() {
                       l.balance < 0 ? 'text-red-500' : 'text-emerald-400'
                     }`}
                   >
-                    {l.balance < 0 ? '-' : '+'}£{Math.abs(l.balance).toLocaleString()}
+                    {l.balance < 0 ? '-' : '+'}Â£{Math.abs(l.balance).toLocaleString()}
                   </span>
                 </div>
                 <div className="text-sm text-slate-400">Entries: {l.count}</div>
                 <div className="text-xs text-slate-500">
-                  Range: {period.from} → {period.to}
+                  Range: {period.from} â†’ {period.to}
                 </div>
               </CardContent>
             </Card>
@@ -108,8 +108,8 @@ export default function FinanceHubPage() {
       <Separator />
 
       <ArrowNav
-        backHref="/ship/business/oms"
-        nextHref={`/ship/business/oms/finance/sales?from=${period.from}&to=${period.to}&kind=${period.kind}`}
+        backHref="/business/oms"
+        nextHref={`/business/oms/finance/sales?from=${period.from}&to=${period.to}&kind=${period.kind}`}
         nextLabel="Sales Ledger"
       >
         Finance Module Entry Point

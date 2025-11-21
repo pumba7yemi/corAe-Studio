@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { getDeal, setDealFlags } from "../../_store";
 
 export async function POST(req: Request) {
@@ -18,5 +18,5 @@ export async function POST(req: Request) {
   }
 
   const updated = setDealFlags(dealId, { slaBound: true });
-  return NextResponse.json({ ok: true, status: updated, next: `/ship/business/oms/obari/active?dealId=${dealId}` });
+  return NextResponse.json({ ok: true, status: updated, next: `/business/oms/obari/active?dealId=${dealId}` });
 }

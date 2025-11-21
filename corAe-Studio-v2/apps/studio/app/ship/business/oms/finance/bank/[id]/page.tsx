@@ -1,16 +1,16 @@
-'use client';
+﻿'use client';
 
 /**
- * Finance — Bank Account Ledger
+ * Finance â€” Bank Account Ledger
  * - Statement-style list with running balance & reconcile toggle (demo)
  * - Period + search; quick actions: Deposit / Withdrawal / Fee / Interest
  * - Shows POS settlements distinctly (to be fed by POS module next)
- * - Bottom arrows: back → Bank index, next → POS
+ * - Bottom arrows: back â†’ Bank index, next â†’ POS
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
-// ✅ Long relative paths
+// âœ… Long relative paths
 import { Card, CardContent } from '@/ui/card';
 import { Button } from '@/ui/button';
 import { Input } from '@/ui/input';
@@ -34,7 +34,7 @@ type BankTx = {
   reconciled?: boolean;
 };
 
-const money = (m: number) => `£${(m / 100).toFixed(2)}`;
+const money = (m: number) => `Â£${(m / 100).toFixed(2)}`;
 
 export default function BankAccountPage() {
   const params = useParams<{ id: string }>() ?? { id: '' };
@@ -142,9 +142,9 @@ export default function BankAccountPage() {
   return (
     <main className="p-6 space-y-6">
       <header className="stack">
-        <h1 className="text-3xl font-bold">Bank · {name}</h1>
+        <h1 className="text-3xl font-bold">Bank Â· {name}</h1>
         <p className="muted">
-          Account ID: {accId} • Opening balance: {money(opening)} • Period {period.from} → {period.to}
+          Account ID: {accId} â€¢ Opening balance: {money(opening)} â€¢ Period {period.from} â†’ {period.to}
         </p>
       </header>
 
@@ -153,7 +153,7 @@ export default function BankAccountPage() {
           {/* Controls */}
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div className="row">
-              <Input value={q} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQ(e.target.value)} placeholder="Search ref/payee…" />
+              <Input value={q} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQ(e.target.value)} placeholder="Search ref/payeeâ€¦" />
             </div>
             <div className="row">
               <Button variant="outline" onClick={() => addTx('deposit')}>Deposit</Button>
@@ -189,15 +189,15 @@ export default function BankAccountPage() {
                   <div>
                     <div className="font-mono font-semibold">{l.id}</div>
                     <div className="text-xs text-muted">
-                      {l.date_iso} • {l.kind.toUpperCase()}
-                      {l.payee ? ` • ${l.payee}` : ''}{l.ref ? ` • Ref ${l.ref}` : ''}
+                      {l.date_iso} â€¢ {l.kind.toUpperCase()}
+                      {l.payee ? ` â€¢ ${l.payee}` : ''}{l.ref ? ` â€¢ Ref ${l.ref}` : ''}
                     </div>
                   </div>
                   <div className="text-right text-sm">
                     <div className={l.signed_minor >= 0 ? 'text-emerald-400' : 'text-red-400'}>
                       {l.signed_minor >= 0 ? '+' : '-'}{money(Math.abs(l.signed_minor))}
                     </div>
-                    <div className="text-xs text-muted">Balance → {money(l.running_minor)}</div>
+                    <div className="text-xs text-muted">Balance â†’ {money(l.running_minor)}</div>
                   </div>
                 </div>
                 <div className="mt-2 flex items-center justify-between">
@@ -231,11 +231,11 @@ export default function BankAccountPage() {
       </Card>
 
       <ArrowNav
-        backHref="/ship/business/oms/finance/bank"
-        nextHref="/ship/business/oms/finance/pos"
+        backHref="/business/oms/finance/bank"
+        nextHref="/business/oms/finance/pos"
         nextLabel="POS"
       >
-        Finance · Bank Ledger
+        Finance Â· Bank Ledger
       </ArrowNav>
     </main>
   );

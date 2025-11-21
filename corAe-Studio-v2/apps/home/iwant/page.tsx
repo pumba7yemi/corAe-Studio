@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
@@ -50,7 +50,7 @@ export default function IWantManagePage() {
     let cancel = false;
     (async () => {
       try {
-        const r = await fetch("/api/ship/home/iwant");
+        const r = await fetch("/api/home/iwant");
         if (r.ok) {
           const list = await r.json();
           const parsed = WantList.safeParse(list);
@@ -97,7 +97,7 @@ export default function IWantManagePage() {
     setItems((prev) => [optimistic, ...prev]);
     setDraft({ title: "", priority: "MEDIUM" });
     try {
-      const r = await fetch("/api/ship/home/iwant", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+      const r = await fetch("/api/home/iwant", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
       if (r.ok) {
         const j = await r.json();
         if (j?.item) setItems((prev) => [j.item as WantItem, ...prev.filter((i) => i.id !== optimistic.id)]);
@@ -106,11 +106,11 @@ export default function IWantManagePage() {
   };
 
   const findBestPrice = async (item: WantItem) => {
-    const r = await fetch("/api/ship/home/bestprice", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title: item.title, link: item.link }) });
+    const r = await fetch("/api/home/bestprice", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title: item.title, link: item.link }) });
     const j = await r.json();
     if (j?.ok && j.options?.length) {
       const best = j.options[0];
-      const tracked = `/api/ship/home/redirect?m=${encodeURIComponent(best.merchant)}&itemId=${encodeURIComponent(item.id)}&u=${encodeURIComponent(best.affiliateUrl)}`;
+      const tracked = `/api/home/redirect?m=${encodeURIComponent(best.merchant)}&itemId=${encodeURIComponent(item.id)}&u=${encodeURIComponent(best.affiliateUrl)}`;
       window.open(tracked, "_blank");
       return;
     }
@@ -122,7 +122,7 @@ export default function IWantManagePage() {
   const createShare = async () => {
     const ids = Object.entries(selected).filter(([, v]) => v).map(([k]) => k);
     if (!ids.length) return alert("Select at least one item to share.");
-    const r = await fetch("/api/ship/home/wish/share", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ itemIds: ids, title: "My Wishlist" }) });
+    const r = await fetch("/api/home/wish/share", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ itemIds: ids, title: "My Wishlist" }) });
     const j = await r.json();
     if (j?.ok && j.url) {
       const url = j.url;
@@ -140,7 +140,7 @@ export default function IWantManagePage() {
     if (!ids.length) return alert("Select at least one item to compare.");
     const itemsToCompare = items.filter((i) => ids.includes(i.id)).map(i => ({ title: i.title, url: i.link, desiredPrice: i.estimate }));
     try {
-      const r = await fetch("/api/ship/home/want/compare", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ items: itemsToCompare }) });
+      const r = await fetch("/api/home/want/compare", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ items: itemsToCompare }) });
       if (!r.ok) throw new Error(`status ${r.status}`);
       const j = await r.json();
       setCompareResults(j.results ?? null);
@@ -154,7 +154,7 @@ export default function IWantManagePage() {
     <div className="mx-auto max-w-5xl p-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">I Want</h1>
-        <Link href="/ship/home" className="text-sm underline">← Home</Link>
+        <Link href="/home" className="text-sm underline">â† Home</Link>
       </div>
       <p className="text-sm text-zinc-400">Create your wishlist, find the best price, then share a public link.</p>
 
@@ -194,8 +194,8 @@ export default function IWantManagePage() {
               <div className="flex-1">
                 <div className="font-medium">{item.title}</div>
                 <div className="text-xs text-zinc-400">
-                  {item.category} • {item.priority} • AED {item.estimate?.toLocaleString?.() ?? 0}
-                  {item.targetDate ? <> • target {item.targetDate}</> : null}
+                  {item.category} â€¢ {item.priority} â€¢ AED {item.estimate?.toLocaleString?.() ?? 0}
+                  {item.targetDate ? <> â€¢ target {item.targetDate}</> : null}
                 </div>
                 {item.link && <a className="text-xs underline" href={item.link} target="_blank" rel="noreferrer">Open link</a>}
                 {item.notes && <div className="mt-1 text-sm">{item.notes}</div>}
@@ -219,7 +219,7 @@ export default function IWantManagePage() {
                 <div className="mt-2 grid gap-2">
                   {res.offers?.map((o: any, i: number) => (
                     <div key={i} className="flex items-center justify-between">
-                      <div className="text-sm">{o.vendor} — {o.currency ?? ''} {o.price}</div>
+                      <div className="text-sm">{o.vendor} â€” {o.currency ?? ''} {o.price}</div>
                       {o.affiliateUrl ? <a className="text-xs underline" href={o.affiliateUrl} target="_blank" rel="noreferrer">Buy</a> : null}
                     </div>
                   ))}
@@ -234,3 +234,4 @@ export default function IWantManagePage() {
     </div>
   );
 }
+

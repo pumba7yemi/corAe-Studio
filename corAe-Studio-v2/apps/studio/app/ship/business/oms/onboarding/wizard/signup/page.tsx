@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -51,7 +51,7 @@ export default function SignupPage() {
 
   // lead prefill comes from URL via getParam (shared helper)
 
-  // ───────── BUSINESS (GS sheet-style) ─────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€ BUSINESS (GS sheet-style) â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const [biz, setBiz] = useState({
     legalName: "",
     tradingName: "",
@@ -89,7 +89,7 @@ export default function SignupPage() {
     surveyNotes: "",
   });
 
-  // ───────── PERSONAL / SUBSCRIBE ─────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€ PERSONAL / SUBSCRIBE â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const [per, setPer] = useState({
     fullName: "",
     email: "",
@@ -117,13 +117,13 @@ export default function SignupPage() {
     return Boolean(per.fullName && per.jurisdiction);
   }, [busy, tab, biz.legalName, biz.jurisdiction, per.fullName, per.jurisdiction]);
 
-  /** ───────────────────── Prefill from leadId ───────────────────── */
+  /** â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Prefill from leadId â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   useEffect(() => {
   const leadId = getParam("leadId");
     if (!leadId) return;
     (async () => {
       try {
-        const res = await fetch(`/api/ship/business/oms/onboarding/leads/${encodeURIComponent(leadId)}`);
+        const res = await fetch(`/api/business/oms/onboarding/leads/${encodeURIComponent(leadId)}`);
         const data = await res.json();
         if (!res.ok || !data?.ok) throw new Error(data?.error || "Failed to fetch lead");
 
@@ -161,9 +161,9 @@ export default function SignupPage() {
           }));
         }
 
-        setMsg("✨ Prefilled from lead.");
+        setMsg("âœ¨ Prefilled from lead.");
       } catch (e: any) {
-        setMsg(`⚠️ Could not prefill lead: ${e?.message || "Error"}`);
+        setMsg(`âš ï¸ Could not prefill lead: ${e?.message || "Error"}`);
       }
     })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -239,8 +239,8 @@ export default function SignupPage() {
           });
         }
 
-        setMsg("✅ Business account created.");
-        router.push(`/ship/business/oms/onboarding/wizard?companyId=${res.companyId}`);
+        setMsg("âœ… Business account created.");
+        router.push(`/business/oms/onboarding/wizard?companyId=${res.companyId}`);
         return;
       } else {
         const payload = {
@@ -296,12 +296,12 @@ export default function SignupPage() {
           });
         }
 
-        setMsg("✅ Personal/Subscribe account created.");
-        router.push(`/ship/business/oms/onboarding/wizard?companyId=${res.companyId}`);
+        setMsg("âœ… Personal/Subscribe account created.");
+        router.push(`/business/oms/onboarding/wizard?companyId=${res.companyId}`);
         return;
       }
     } catch (e: any) {
-      setMsg(`❌ ${e?.message || "Error"}`);
+      setMsg(`âŒ ${e?.message || "Error"}`);
     } finally {
       setBusy(false);
     }
@@ -420,7 +420,7 @@ export default function SignupPage() {
               <input type="checkbox" checked={startWizardNow} onChange={(e) => setStartWizardNow(e.target.checked)} />
               Start wizard after signup
             </label>
-            <button className="btn" disabled={!canSave} onClick={save}>Create Business Account →</button>
+            <button className="btn" disabled={!canSave} onClick={save}>Create Business Account â†’</button>
           </div>
         </Card>
       ) : (
@@ -483,7 +483,7 @@ export default function SignupPage() {
               <input type="checkbox" checked={startWizardNow} onChange={(e) => setStartWizardNow(e.target.checked)} />
               Start wizard after signup
             </label>
-            <button className="btn" disabled={!canSave} onClick={save}>Create Personal Account →</button>
+            <button className="btn" disabled={!canSave} onClick={save}>Create Personal Account â†’</button>
           </div>
         </Card>
       )}

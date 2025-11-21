@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -47,7 +47,7 @@ export default function CompanyDocsListPage() {
         setDocs(data.documents || []);
         setMsg(null);
       } catch (e: any) {
-        setMsg(`⚠️ ${e?.message || "Error fetching docs"}`);
+        setMsg(`âš ï¸ ${e?.message || "Error fetching docs"}`);
       } finally {
         setLoading(false);
       }
@@ -119,8 +119,8 @@ export default function CompanyDocsListPage() {
       <header className="flex items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold">Company Documents</h1>
         <div className="flex flex-wrap gap-2 items-center">
-          <button className="btnGhost" onClick={() => router.push(`/ship/business/oms/onboarding/wizard/company-docs?companyId=${companyId}`)}>Edit</button>
-          <button className="btnGhost" onClick={() => router.push("/ship/business/oms/onboarding/wizard")}>← Back to Wizard</button>
+          <button className="btnGhost" onClick={() => router.push(`/business/oms/onboarding/wizard/company-docs?companyId=${companyId}`)}>Edit</button>
+          <button className="btnGhost" onClick={() => router.push("/business/oms/onboarding/wizard")}>â† Back to Wizard</button>
         </div>
       </header>
 
@@ -131,7 +131,7 @@ export default function CompanyDocsListPage() {
             All <small className="ml-1 opacity-70">({counts.total})</small>
           </button>
           <button className={`chip ${filter === "expiring" ? "on" : ""}`} onClick={() => setFilter("expiring")}>
-            Expiring ≤ {threshold}d <small className="ml-1 opacity-70">({counts.expiring})</small>
+            Expiring â‰¤ {threshold}d <small className="ml-1 opacity-70">({counts.expiring})</small>
           </button>
           <button className={`chip ${filter === "expired" ? "on" : ""}`} onClick={() => setFilter("expired")}>
             Expired <small className="ml-1 opacity-70">({counts.expired})</small>
@@ -212,7 +212,7 @@ export default function CompanyDocsListPage() {
     </div>
   );
 
-  /* ───────── helpers ───────── */
+  /* â”€â”€â”€â”€â”€â”€â”€â”€â”€ helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
   function statusOf(d: CompanyDoc, today: Date, threshDays: number) {
     const exp = toDate(d.expiresAt);

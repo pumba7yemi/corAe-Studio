@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
 /**
- * OMS — Office Management System (150% logic)
+ * OMS â€” Office Management System (150% logic)
  * - Hydration-safe stream, deterministic UTC timestamps
  * - Live tile for SLA & Escalation (new)
  * - Onboarding shortcuts retained at bottom
@@ -22,8 +22,8 @@ type TileCfg = { href: string; title: string; desc: string; cta?: string };
 
 /* ----------------------------- Section Tiles ----------------------------- */
 const TILES: TileCfg[] = [
-  { href: "reserve", title: "Reserve™", desc: "Bookings, inventory, and live marketplace flows", cta: "Open Reserve™" },
-  { href: "obari", title: "OBARI", desc: "Order → Booking → Active → Reporting → Invoice", cta: "Open OBARI" },
+  { href: "reserve", title: "Reserveâ„¢", desc: "Bookings, inventory, and live marketplace flows", cta: "Open Reserveâ„¢" },
+  { href: "obari", title: "OBARI", desc: "Order â†’ Booking â†’ Active â†’ Reporting â†’ Invoice", cta: "Open OBARI" },
   { href: "sla-escalation", title: "SLA & Escalation", desc: "Set live thresholds & notifications", cta: "Manage SLA" },
   { href: "operations", title: "Operations", desc: "Workflows, SOPs, daily checklists", cta: "Open Operations" },
   { href: "finance", title: "Finance", desc: "POS, AR/AP, Vendors, Purchase Orders, GRVs", cta: "Open Finance" },
@@ -43,12 +43,12 @@ function useWorkflowTicks() {
   const seed: Tick[] = useMemo(() => {
     const now = new Date().toISOString();
     return [
-      { id: "t1", ts: now, scope: "OBARI", text: "3 new Orders awaiting Pricelock check", href: "/ship/business/oms/obari/orders" },
-      { id: "t2", ts: now, scope: "Finance", text: "PO draft pending approval", href: "/ship/business/oms/finance/purchase-orders" },
-      { id: "t3", ts: now, scope: "Ops", text: "SOP: Freezer temp check overdue by 30m", href: "/ship/business/oms/operations/sop" },
-      { id: "t4", ts: now, scope: "Mgmt", text: "CAIA: 2 follow-ups due today", href: "/ship/business/oms/management/caia/diary" },
-      { id: "t5", ts: now, scope: "HR", text: "Rota change: Friday coverage updated", href: "/ship/business/oms/management/hr" },
-      { id: "t6", ts: now, scope: "Compliance", text: "Health cards expiring soon: 2 staff", href: "/ship/business/oms/management/compliance" },
+      { id: "t1", ts: now, scope: "OBARI", text: "3 new Orders awaiting Pricelock check", href: "/business/oms/obari/orders" },
+      { id: "t2", ts: now, scope: "Finance", text: "PO draft pending approval", href: "/business/oms/finance/purchase-orders" },
+      { id: "t3", ts: now, scope: "Ops", text: "SOP: Freezer temp check overdue by 30m", href: "/business/oms/operations/sop" },
+      { id: "t4", ts: now, scope: "Mgmt", text: "CAIA: 2 follow-ups due today", href: "/business/oms/management/caia/diary" },
+      { id: "t5", ts: now, scope: "HR", text: "Rota change: Friday coverage updated", href: "/business/oms/management/hr" },
+      { id: "t6", ts: now, scope: "Compliance", text: "Health cards expiring soon: 2 staff", href: "/business/oms/management/compliance" },
     ];
   }, []);
   const [ticks] = useState(seed);
@@ -107,7 +107,7 @@ function WorkflowTicker({ ticks }: { ticks: Tick[] }) {
     <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 overflow-hidden">
       <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-800">
         <div className="font-semibold">Workflows Stream</div>
-        <div className="text-xs text-zinc-400">Auto-rotate • scrollable</div>
+        <div className="text-xs text-zinc-400">Auto-rotate â€¢ scrollable</div>
       </div>
 
       <div className="px-4 py-3">{ticks.length > 0 && <TickRow tick={ticks[index]} big />}</div>
@@ -125,13 +125,13 @@ function WorkflowTicker({ ticks }: { ticks: Tick[] }) {
           onClick={() => setIndex((i) => (i - 1 + ticks.length) % ticks.length)}
           className="rounded-xl px-3 py-2 text-sm border border-zinc-800 bg-zinc-950 hover:bg-zinc-900"
         >
-          ‹ Prev
+          â€¹ Prev
         </button>
         <button
           onClick={() => setIndex((i) => (i + 1) % ticks.length)}
           className="rounded-xl px-3 py-2 text-sm border border-zinc-800 bg-zinc-950 hover:bg-zinc-900"
         >
-          Next ›
+          Next â€º
         </button>
       </div>
     </div>
@@ -146,9 +146,9 @@ export default function OMSHome() {
   <div className="min-h-dvh bg-zinc-950 text-zinc-100">
       <div className="mx-auto max-w-6xl px-6 pt-16 pb-32">
         <header className="space-y-1 mb-6">
-          <h1 className="text-3xl font-semibold">OMS — Office Management System</h1>
+          <h1 className="text-3xl font-semibold">OMS â€” Office Management System</h1>
           <p className="text-sm text-zinc-400">
-            Workflows for management & finance + Reserve™ + electronic OBARI hub.
+            Workflows for management & finance + Reserveâ„¢ + electronic OBARI hub.
           </p>
         </header>
 
@@ -159,11 +159,11 @@ export default function OMSHome() {
           <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 overflow-hidden">
             <div className="px-4 py-3 border-b border-zinc-800 font-semibold">Work</div>
             <div className="p-4 space-y-3">
-              <Link href={{ pathname: "/ship/business/oms/operations/workflows" }} className="block rounded-xl p-3 border border-zinc-800 bg-zinc-950 hover:bg-zinc-900">
-                3cDTD Tasks • Checklists
+              <Link href={{ pathname: "/business/oms/operations/workflows" }} className="block rounded-xl p-3 border border-zinc-800 bg-zinc-950 hover:bg-zinc-900">
+                3cDTD Tasks â€¢ Checklists
                 <div className="text-xs text-zinc-400">Daily priorities, escalations, completion tracking</div>
               </Link>
-              <Link href="/ship/business/oms/obari/active" className="block rounded-xl p-3 border border-zinc-800 bg-zinc-950 hover:bg-zinc-900">
+              <Link href="/business/oms/obari/active" className="block rounded-xl p-3 border border-zinc-800 bg-zinc-950 hover:bg-zinc-900">
                 Active Jobs
                 <div className="text-xs text-zinc-400">Execution view with notes and handover</div>
               </Link>
@@ -173,8 +173,8 @@ export default function OMSHome() {
           <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 overflow-hidden">
             <div className="px-4 py-3 border-b border-zinc-800 font-semibold">Senior Management</div>
             <div className="p-4 space-y-3">
-              <Link href="/ship/business/oms/management/caia" className="block rounded-xl p-3 border border-zinc-800 bg-zinc-950 hover:bg-zinc-900">
-                CAIA — Executive Assistant
+              <Link href="/business/oms/management/caia" className="block rounded-xl p-3 border border-zinc-800 bg-zinc-950 hover:bg-zinc-900">
+                CAIA â€” Executive Assistant
                 <div className="text-xs text-zinc-400">Inbox, diary, follow-ups (CIMS-ready)</div>
               </Link>
             </div>
@@ -194,7 +194,7 @@ export default function OMSHome() {
               </div>
               <div className="mt-3">
                 <Link
-                  href={`/ship/business/oms/${t.href}` as unknown as any}
+                  href={`/business/oms/${t.href}` as unknown as any}
                   className="inline-block rounded-xl px-3 py-2 border border-zinc-700 bg-zinc-950 hover:bg-zinc-900 text-sm"
                 >
                   {t.cta}
@@ -207,22 +207,22 @@ export default function OMSHome() {
         {/* Onboarding Shortcuts */}
         <div className="mt-8 flex flex-wrap items-center gap-3">
           <Link
-            href="/ship/business/oms/onboarding/start-company"
+            href="/business/oms/onboarding/start-company"
             className="inline-block rounded-xl px-4 py-2 border border-emerald-700 bg-emerald-950/30 hover:bg-emerald-900/30 text-sm"
           >
-            Start Business →
+            Start Business â†’
           </Link>
           <Link
-            href="/ship/business/oms/onboarding/flows"
+            href="/business/oms/onboarding/flows"
             className="inline-block rounded-xl px-4 py-2 border border-indigo-700 bg-indigo-950/40 hover:bg-indigo-900/40 text-sm"
           >
-            Edit Onboarding →
+            Edit Onboarding â†’
           </Link>
           <Link
-            href="/ship/business/oms/onboarding"
+            href="/business/oms/onboarding"
             className="inline-block rounded-xl px-4 py-2 border border-zinc-800 bg-zinc-900/40 hover:bg-zinc-900/60 text-sm"
           >
-            OMS Onboarding →
+            OMS Onboarding â†’
           </Link>
         </div>
       </div>

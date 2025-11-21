@@ -1,7 +1,7 @@
-// apps/studio/app/api/ship/home/shopping/route.ts
+﻿// apps/studio/app/api/home/shopping/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
-// Mirror of Business vendors, simplified for HomeGro™
+// Mirror of Business vendors, simplified for HomeGroâ„¢
 type DayOfWeek="SUN"|"MON"|"TUE"|"WED"|"THU"|"FRI"|"SAT";
 interface Vendor { id:string; name:string; contact?:string; cycle?:{ anchor:DayOfWeek; days:number }; priority?:number; note?:string }
 interface ListItem { id:string; name:string; qty:number; unit?:string; vendorId?:string; urgent?:boolean }

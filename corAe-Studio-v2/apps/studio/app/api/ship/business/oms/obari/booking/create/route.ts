@@ -1,5 +1,5 @@
-// apps/studio/app/api/ship/business/oms/obari/bookings/create/route.ts
-// Studio API — Booking Create (Prisma persistence, one-spine Deal→Booking)
+﻿// apps/studio/app/api/business/oms/obari/bookings/create/route.ts
+// Studio API â€” Booking Create (Prisma persistence, one-spine Dealâ†’Booking)
 
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
@@ -84,3 +84,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: msg }, { status });
   }
 }
+

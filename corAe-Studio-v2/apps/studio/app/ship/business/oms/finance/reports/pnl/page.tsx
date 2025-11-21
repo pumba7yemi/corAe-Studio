@@ -1,15 +1,15 @@
-'use client';
+﻿'use client';
 
 /**
- * Finance — Profit & Loss (P&L)
+ * Finance â€” Profit & Loss (P&L)
  * - Periodised summary using demo data
  * - Sections: Revenue, COGS, Gross Profit, Expenses, Operating Profit, Net
- * - Bottom arrows: back → Finance Hub, next → Balance Sheet
+ * - Bottom arrows: back â†’ Finance Hub, next â†’ Balance Sheet
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
 
-// NOTE: one level deeper than Purchases → add one extra "../"
+// NOTE: one level deeper than Purchases â†’ add one extra "../"
 import { Card, CardContent } from '@/ui/card';
 import { Separator } from '@/ui/separator';
 import { Button } from '@/ui/button';
@@ -20,13 +20,13 @@ import PeriodFilter, {
   type PeriodValue,
 } from '../../../../../../../../../src/components/finance/PeriodFilter';
 
-type Money = number; // minor (£ * 100)
+type Money = number; // minor (Â£ * 100)
 
 type Sale = { date_iso: string; net_minor: Money; vat_minor: Money; };
 type Purchase = { date_iso: string; net_minor: Money; vat_minor: Money; kind: 'cogs' | 'expense'; category?: string; };
 type Other = { date_iso: string; net_minor: Money; label: string; sign: 1 | -1 }; // e.g., misc income/charges
 
-const formatGBP = (m: number) => `£${(m / 100).toFixed(2)}`;
+const formatGBP = (m: number) => `Â£${(m / 100).toFixed(2)}`;
 
 export default function PnLPage() {
   const [period, setPeriod] = useState<PeriodValue>(() => computeRange('month'));
@@ -102,7 +102,7 @@ export default function PnLPage() {
     <main className="p-6 space-y-6">
       <header className="stack">
         <h1 className="text-3xl font-bold">Profit &amp; Loss</h1>
-        <p className="muted">Period {period.from} → {period.to}</p>
+        <p className="muted">Period {period.from} â†’ {period.to}</p>
       </header>
 
       <Card>
@@ -166,11 +166,11 @@ export default function PnLPage() {
       </Card>
 
       <ArrowNav
-        backHref="/ship/business/oms/finance"
-        nextHref="/ship/business/oms/finance/reports/balance-sheet"
+        backHref="/business/oms/finance"
+        nextHref="/business/oms/finance/reports/balance-sheet"
         nextLabel="Balance Sheet"
       >
-        Finance · Profit &amp; Loss
+        Finance Â· Profit &amp; Loss
       </ArrowNav>
     </main>
   );

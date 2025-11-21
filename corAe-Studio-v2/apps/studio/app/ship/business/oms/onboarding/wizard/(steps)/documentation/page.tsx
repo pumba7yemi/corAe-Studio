@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
-/** Documentation (Order) — loads requirements and captures document URLs */
+/** Documentation (Order) â€” loads requirements and captures document URLs */
 
 type Requirement = {
   id: string;
@@ -33,10 +33,10 @@ export default function DocumentationStepPage() {
   const [unmetMandatory, setUnmetMandatory] = useState<number>(0);
 
   useEffect(() => {
-    if (!dealId) { setMsg("⚠️ Missing dealId."); return; }
+    if (!dealId) { setMsg("âš ï¸ Missing dealId."); return; }
     (async () => {
       try {
-        const res = await fetch(`/api/ship/business/oms/onboarding/wizard/docs-required/list?dealId=${encodeURIComponent(dealId)}`, { cache: "no-store" });
+        const res = await fetch(`/api/business/oms/onboarding/wizard/docs-required/list?dealId=${encodeURIComponent(dealId)}`, { cache: "no-store" });
         const data = await res.json();
         if (!res.ok || !data?.ok) throw new Error(data?.error || "Failed to load requirements");
         const reqs: Requirement[] = data.requirements || [];
@@ -46,7 +46,7 @@ export default function DocumentationStepPage() {
         setDocInputs(init);
         setUnmetMandatory(reqs.filter(r => r.mandatory).length);
       } catch (e: any) {
-        setMsg(`⚠️ Could not load requirements: ${e?.message || "Error"}`);
+        setMsg(`âš ï¸ Could not load requirements: ${e?.message || "Error"}`);
       }
     })();
   }, [dealId]);
@@ -64,24 +64,24 @@ export default function DocumentationStepPage() {
     try {
       const { commercial, operational } = collectDocs(requirements, docInputs);
       if (!commercial.length && !operational.length) {
-        setMsg("⚠️ Add at least one document URL before saving."); setBusy(false); return;
+        setMsg("âš ï¸ Add at least one document URL before saving."); setBusy(false); return;
       }
-      const res = await fetch("/api/ship/business/oms/onboarding/wizard/documentation", {
+      const res = await fetch("/api/business/oms/onboarding/wizard/documentation", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ dealId, commercial, operational }),
       });
       const data = await res.json();
-      if (!res.ok || !data?.ok) { setMsg(`❌ Could not save docs: ${data?.error || "Error"}`); setBusy(false); return; }
-      setMsg("✅ Documentation saved.");
+      if (!res.ok || !data?.ok) { setMsg(`âŒ Could not save docs: ${data?.error || "Error"}`); setBusy(false); return; }
+      setMsg("âœ… Documentation saved.");
       if (typeof window !== "undefined") {
         const target =
-          `/ship/business/oms/onboarding/wizard/(steps)/activate` +
+          `/business/oms/onboarding/wizard/(steps)/activate` +
           `?dealId=${encodeURIComponent(dealId)}&unmet=${unmetMandatory}`;
 
         router.push(target);
       }
     } catch (e: any) {
-      setMsg(`❌ ${e?.message ?? "Network error"}`);
+      setMsg(`âŒ ${e?.message ?? "Network error"}`);
     } finally { setBusy(false); }
   }
 
@@ -111,8 +111,8 @@ export default function DocumentationStepPage() {
         <div className="muted" style={{marginTop:8}}>Mandatory outstanding: <b>{unmetMandatory}</b></div>
 
         <div className="end">
-          <button className="ghost" onClick={()=>router.push(`/ship/business/oms/onboarding/wizard/(steps)/booking-sheet?dealId=${encodeURIComponent(dealId)}`)}>← Back</button>
-          <button className="primary" disabled={!dealId || !canGo} onClick={saveDocs}>Save Docs & Continue →</button>
+          <button className="ghost" onClick={()=>router.push(`/business/oms/onboarding/wizard/(steps)/booking-sheet?dealId=${encodeURIComponent(dealId)}`)}>â† Back</button>
+          <button className="primary" disabled={!dealId || !canGo} onClick={saveDocs}>Save Docs & Continue â†’</button>
         </div>
       </section>
 
@@ -154,7 +154,7 @@ function DocColumn({
             <div key={key} className="req">
               <div className="req-h">{r.documentType}</div>
               <div className="muted" style={{fontSize:".8rem"}}>
-                From: {r.requiredFrom} {r.mandatory ? "• Mandatory" : "• Optional"} {r.notes ? `• ${r.notes}` : ""}
+                From: {r.requiredFrom} {r.mandatory ? "â€¢ Mandatory" : "â€¢ Optional"} {r.notes ? `â€¢ ${r.notes}` : ""}
               </div>
               <div style={{ display:"grid", gap:8, marginTop:8 }}>
                 <input className="input" placeholder="Document URL" value={v.url} onChange={(e)=>onChange(key, { url: e.target.value })} />

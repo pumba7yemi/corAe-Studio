@@ -1,5 +1,5 @@
-// Public Survey Page — BTDO ▸ site survey + quote
-// Route: /ship/business/oms/obari/deal/btdo/survey/[token]
+﻿// Public Survey Page â€” BTDO â–¸ site survey + quote
+// Route: /business/oms/obari/deal/btdo/survey/[token]
 //
 // - Reads token from the URL
 // - Submits responses to /api/.../survey/submit
@@ -18,7 +18,7 @@ export default async function Page({ params }: PageParams) {
     <main className="min-h-[80vh] p-6 bg-slate-900 text-slate-100">
       <header className="mb-4 flex items-center justify-between">
         <h1 className="text-xl font-semibold">
-          BTDO Survey & Quote <span className="text-slate-400 text-sm">({token.slice(0, 10)}…)</span>
+          BTDO Survey & Quote <span className="text-slate-400 text-sm">({token.slice(0, 10)}â€¦)</span>
         </h1>
         <span className="text-sm text-slate-400">
           {new Date().toLocaleString()}
@@ -46,3 +46,4 @@ export default async function Page({ params }: PageParams) {
   );
 
 }
+

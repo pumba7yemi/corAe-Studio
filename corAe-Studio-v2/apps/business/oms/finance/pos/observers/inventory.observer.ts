@@ -1,5 +1,5 @@
-// apps/studio/app/ship/business/pos/observers/inventory.observer.ts
-// corAe Inventory Observer — 150.logic
+﻿// apps/studio/app/business/pos/observers/inventory.observer.ts
+// corAe Inventory Observer â€” 150.logic
 // Watches OUT FlowEvents and, if below threshold, issues an OBARI Purchase Order
 // for the upcoming 28-day slot. No dependency on item.price.
 
@@ -75,6 +75,7 @@ export async function observeInventory(flowEventId: string) {
   });
 
   console.log(
-    `✅ Inventory observer: PO ${po.code} raised for ${item.code} (qty ${reorderQty.toString()})`
+    `âœ… Inventory observer: PO ${po.code} raised for ${item.code} (qty ${reorderQty.toString()})`
   );
 }
+

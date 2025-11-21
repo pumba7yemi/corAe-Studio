@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -31,7 +31,7 @@ export default function BookingSheetStepPage() {
   async function runBooking() {
     setBusy(true); setMsg(null);
     try {
-      const res = await fetch("/api/ship/business/oms/onboarding/wizard", {
+      const res = await fetch("/api/business/oms/onboarding/wizard", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           step: "bdo.booking-sheet",
@@ -47,12 +47,12 @@ export default function BookingSheetStepPage() {
       const data = (await res.json()) as PostRes;
       if (!res.ok || "error" in data) {
         const e = "error" in data ? (Array.isArray(data.error) ? data.error.join(", ") : data.error) : "Failed";
-        setMsg(`❌ ${e}`); setBusy(false); return;
+        setMsg(`âŒ ${e}`); setBusy(false); return;
       }
-      setMsg("✅ Booking sheet saved.");
-      router.push(`/ship/business/oms/onboarding/wizard/(steps)/documentation?dealId=${encodeURIComponent(dealId)}` as any);
+      setMsg("âœ… Booking sheet saved.");
+      router.push(`/business/oms/onboarding/wizard/(steps)/documentation?dealId=${encodeURIComponent(dealId)}` as any);
     } catch (e: any) {
-      setMsg(`❌ ${e?.message ?? "Network error"}`);
+      setMsg(`âŒ ${e?.message ?? "Network error"}`);
     } finally { setBusy(false); }
   }
 
@@ -72,8 +72,8 @@ export default function BookingSheetStepPage() {
         </Two>
 
           <div className="end">
-          <button className="ghost" onClick={()=>router.push(`/ship/business/oms/onboarding/wizard/(steps)/pricelock?dealId=${encodeURIComponent(dealId)}` as any)}>← Back</button>
-          <button className="primary" disabled={!dealId || busy} onClick={runBooking}>Save & Continue →</button>
+          <button className="ghost" onClick={()=>router.push(`/business/oms/onboarding/wizard/(steps)/pricelock?dealId=${encodeURIComponent(dealId)}` as any)}>â† Back</button>
+          <button className="primary" disabled={!dealId || busy} onClick={runBooking}>Save & Continue â†’</button>
         </div>
       </section>
 

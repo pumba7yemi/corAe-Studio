@@ -1,18 +1,18 @@
-// apps/studio/app/ship/business/oms/finance/vat/page.tsx
+﻿// apps/studio/app/business/oms/finance/vat/page.tsx
 'use client';
 
 /**
- * Finance — VAT
+ * Finance â€” VAT
  * - Period-aware VAT dashboard (day, week, month, quarter, FY, custom)
  * - Summarises Output VAT (Sales) and Input VAT (Purchases)
  * - Shows Net VAT due (or reclaimable if negative)
- * - Bottom arrows: back → Purchases, next → Bank (cashbook)
+ * - Bottom arrows: back â†’ Purchases, next â†’ Bank (cashbook)
  *
- * NOTE: Demo data only — replace with API fetch when ready.
+ * NOTE: Demo data only â€” replace with API fetch when ready.
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
-// ✅ Use the long relative UI imports you confirmed work
+// âœ… Use the long relative UI imports you confirmed work
 import { Card, CardContent } from '@/ui/card';
 import { Button } from '@/ui/button';
 import { Separator } from '@/ui/separator';
@@ -33,7 +33,7 @@ type VatLine = {
   kind: 'output' | 'input'; // output = sales VAT, input = purchases VAT
 };
 
-const money = (m: number) => `£${(m / 100).toFixed(2)}`;
+const money = (m: number) => `Â£${(m / 100).toFixed(2)}`;
 
 export default function VatPage() {
   // Flat period value (so period.from / period.to always exist)
@@ -42,7 +42,7 @@ export default function VatPage() {
   const [rows, setRows] = useState<VatLine[]>([]);
   const [q, setQ] = useState('');
 
-  // Seed demo VAT lines (mirror your ledgers’ style)
+  // Seed demo VAT lines (mirror your ledgersâ€™ style)
   useEffect(() => {
     const demo: VatLine[] = [
       // Output VAT (Sales)
@@ -99,7 +99,7 @@ export default function VatPage() {
               <input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Search party, ref, id…"
+                placeholder="Search party, ref, idâ€¦"
                 className="rounded-md border px-3 py-2 bg-transparent"
               />
             </div>
@@ -133,7 +133,7 @@ export default function VatPage() {
                   <div>
                     <div className="font-mono font-semibold">{r.id}</div>
                     <div className="text-xs text-muted">
-                      {r.kind.toUpperCase()} • {r.party} • {r.ref ?? '—'} • {r.date_iso}
+                      {r.kind.toUpperCase()} â€¢ {r.party} â€¢ {r.ref ?? 'â€”'} â€¢ {r.date_iso}
                     </div>
                   </div>
                   <div className="text-right text-sm">
@@ -151,11 +151,11 @@ export default function VatPage() {
       </Card>
 
       <ArrowNav
-        backHref="/ship/business/oms/finance/purchases"
-        nextHref="/ship/business/oms/finance/bank"
+        backHref="/business/oms/finance/purchases"
+        nextHref="/business/oms/finance/bank"
         nextLabel="Bank / Cashbook"
       >
-        Finance · VAT
+        Finance Â· VAT
       </ArrowNav>
     </main>
   );

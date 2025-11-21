@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import React, { useState } from 'react';
 
 export default function Page() {
@@ -16,7 +16,7 @@ export default function Page() {
     const blocks = parsePreview(paste);
     const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     const payload = { slug, title, category, blocks };
-    await fetch('/api/ship/home/faith/library', { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'application/json' } });
+    await fetch('/api/home/faith/library', { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'application/json' } });
     alert('Saved');
   }
 
@@ -42,3 +42,4 @@ export default function Page() {
     </div>
   );
 }
+

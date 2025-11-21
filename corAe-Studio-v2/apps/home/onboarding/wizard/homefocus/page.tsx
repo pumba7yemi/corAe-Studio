@@ -1,17 +1,17 @@
-// apps/studio/app/ship/home/onboarding/wizard/homefocus/page.tsx
+﻿// apps/studio/app/home/onboarding/wizard/homefocus/page.tsx
 "use client";
 
 /**
- * corAe • Home • Onboarding • HomeFocus™ Wizard
- * White-label, Owner/Resident aware. Saves progress locally. Seeds /api/ship/home endpoints.
+ * corAe â€¢ Home â€¢ Onboarding â€¢ HomeFocusâ„¢ Wizard
+ * White-label, Owner/Resident aware. Saves progress locally. Seeds /api/home endpoints.
  *
  * Flow:
- *   WELCOME → IDENTITY → HOUSEHOLD → SPACES → ROUTINES → REMINDERS → NOTIFICATIONS → BLUEPRINT → SUCCESS
+ *   WELCOME â†’ IDENTITY â†’ HOUSEHOLD â†’ SPACES â†’ ROUTINES â†’ REMINDERS â†’ NOTIFICATIONS â†’ BLUEPRINT â†’ SUCCESS
  */
 
 import React, { useEffect, useMemo, useState } from "react";
 
-/* ───────────────── Types ───────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 type Step =
   | "WELCOME" | "IDENTITY" | "HOUSEHOLD" | "SPACES"
   | "ROUTINES" | "REMINDERS" | "FAITH" | "NOTIFICATIONS" | "SECURITY" | "ENERGY" | "MAINTENANCE" | "GUESTS" | "BLUEPRINT" | "SUCCESS";
@@ -81,7 +81,7 @@ interface NotificationPrefs {
   viaCIMS: boolean;
   viaEmail: boolean;
   viaPush: boolean;
-  quietHours?: { from: string; to: string }; // "22:00" → "07:00"
+  quietHours?: { from: string; to: string }; // "22:00" â†’ "07:00"
 }
 
 interface HomeState {
@@ -108,7 +108,7 @@ interface HomeState {
 
 const LOCAL_KEY = "corAeHomeWizard/homefocus";
 
-/* ───────────────── Defaults ───────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Defaults â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 const initial: HomeState = {
   step: "WELCOME",
   homeName: "",
@@ -128,7 +128,7 @@ const initial: HomeState = {
   savedAt: null,
 };
 
-/* ───────────────── Util ───────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Util â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function rid() {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) { /* @ts-ignore */ return crypto.randomUUID(); }
   return "id_" + Math.random().toString(36).slice(2, 10);
@@ -160,13 +160,13 @@ function clearLocal() {
   localStorage.removeItem(LOCAL_KEY);
 }
 
-/* ───────────────── UI atoms ───────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ UI atoms â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function Shell({ children, right }: { children: React.ReactNode; right?: React.ReactNode }) {
   return (
   <div className="min-h-dvh bg-zinc-950 text-zinc-100">
       <header className="mx-auto flex max-w-4xl items-center justify-between px-3 pt-8">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Home Onboarding • HomeFocus™</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Home Onboarding â€¢ HomeFocusâ„¢</h1>
           <p className="text-xs text-zinc-400">Set your household, spaces, routines and Have-You prompts.</p>
         </div>
         {right}
@@ -207,14 +207,14 @@ function Chip({ children, onRemove }: { children: React.ReactNode; onRemove?: ()
   return (
     <span className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/50 px-3 py-1 text-xs">
       {children}
-      {onRemove && <button onClick={onRemove} className="text-zinc-400 hover:text-zinc-200">✕</button>}
+      {onRemove && <button onClick={onRemove} className="text-zinc-400 hover:text-zinc-200">âœ•</button>}
     </span>
   );
 }
 function SaveBar({ onSave, savedAt, saving }: { onSave: () => void; savedAt?: string | null; saving: boolean }) {
   return (
     <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900/70 px-3 py-2 text-xs backdrop-blur">
-      <Button variant="secondary" onClick={onSave} disabled={saving}>{saving ? "Saving…" : "Save & Continue Later"}</Button>
+      <Button variant="secondary" onClick={onSave} disabled={saving}>{saving ? "Savingâ€¦" : "Save & Continue Later"}</Button>
       <span className="text-zinc-400">{savedAt ? `Last saved ${timeAgo(savedAt)}` : "Not saved yet"}</span>
     </div>
   );
@@ -228,10 +228,10 @@ function Badge({ ok, label }: { ok: boolean; label: string }) {
   );
 }
 
-/* ───────────────── Steps ───────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Steps â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function Welcome({ s, set, next }: { s: HomeState; set: (p: Partial<HomeState>) => void; next: () => void }) {
   return (
-    <Card title="Welcome" hint="Let’s set up your HomeFocus™ so corAe can buy back your time.">
+    <Card title="Welcome" hint="Letâ€™s set up your HomeFocusâ„¢ so corAe can buy back your time.">
       <div className="grid gap-3 sm:grid-cols-2">
         <div>
           <label className="text-sm font-medium text-zinc-200">Home / Household name</label>
@@ -280,7 +280,7 @@ function Household({ s, set, next, back }: { s: HomeState; set: (p: Partial<Home
       )}
       {s.members.length>0 && (
         <div className="flex flex-wrap gap-2">
-          {s.members.map(m => <Chip key={m.id} onRemove={isOwner?()=>remove(m.id):undefined}>{m.name}{m.relation?` • ${m.relation}`:""}</Chip>)}
+          {s.members.map(m => <Chip key={m.id} onRemove={isOwner?()=>remove(m.id):undefined}>{m.name}{m.relation?` â€¢ ${m.relation}`:""}</Chip>)}
         </div>
       )}
       <Row><Button variant="ghost" onClick={back}>Back</Button><Button onClick={next}>Continue</Button></Row>
@@ -327,7 +327,7 @@ function Routines({ s, set, next, back }: { s: HomeState; set: (p: Partial<HomeS
             </select>
             <Input placeholder='When (e.g., "07:00" or "Sat 10:00")' value={when} onChange={(e)=>setWhen(e.target.value)} />
             <select className="rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm" value={space} onChange={(e)=>setSpace(e.target.value)}>
-              <option value="">— space —</option>
+              <option value="">â€” space â€”</option>
               {s.spaces.map(sp => <option key={sp.id} value={sp.id}>{sp.name}</option>)}
             </select>
           </div>
@@ -343,7 +343,7 @@ function Routines({ s, set, next, back }: { s: HomeState; set: (p: Partial<HomeS
           {s.routines.map(r => (
             <div key={r.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
               <div className="mb-1 text-sm font-semibold">{r.title}
-                <span className="text-zinc-400"> • {r.frequency}{r.when?` @ ${r.when}`:""}{r.spaceId?` • ${s.spaces.find(sp=>sp.id===r.spaceId)?.name}`:""}</span>
+                <span className="text-zinc-400"> â€¢ {r.frequency}{r.when?` @ ${r.when}`:""}{r.spaceId?` â€¢ ${s.spaces.find(sp=>sp.id===r.spaceId)?.name}`:""}</span>
               </div>
               {r.checklist.length>0 && <ul className="list-disc pl-5 text-sm text-zinc-300">{r.checklist.map((it,i)=><li key={i}>{it}</li>)}</ul>}
               {isOwner && <div className="mt-2"><Button variant="danger" onClick={()=>remove(r.id)}>Remove</Button></div>}
@@ -361,17 +361,17 @@ function Reminders({ s, set, next, back }: { s: HomeState; set: (p: Partial<Home
   function add(){ if(!isOwner||!text.trim()||!schedule.trim())return; set({ reminders:[...s.reminders,{id:rid(), text:text.trim(), schedule:schedule.trim()}]}); setText(""); setSchedule(""); }
   function remove(id:string){ if(!isOwner)return; set({ reminders: s.reminders.filter(x=>x.id!==id) }); }
   return (
-    <Card title="Have-You Reminders" hint={isOwner ? "Define your prompts. These feed the Have-You Engine™ & Pulse." : "Review the prompts that will appear to you."}>
+    <Card title="Have-You Reminders" hint={isOwner ? "Define your prompts. These feed the Have-You Engineâ„¢ & Pulse." : "Review the prompts that will appear to you."}>
       {isOwner && (
         <div className="grid gap-3 sm:grid-cols-3">
-          <Input placeholder='Reminder text (e.g., "Have you planned today’s meals?")' value={text} onChange={(e)=>setText(e.target.value)} />
+          <Input placeholder='Reminder text (e.g., "Have you planned todayâ€™s meals?")' value={text} onChange={(e)=>setText(e.target.value)} />
           <Input placeholder='Schedule (e.g., "07:00 DAILY")' value={schedule} onChange={(e)=>setSchedule(e.target.value)} />
           <Button variant="secondary" onClick={add}>+ Add</Button>
         </div>
       )}
       {s.reminders.length>0 && (
         <div className="flex flex-wrap gap-2">
-          {s.reminders.map(r => <Chip key={r.id} onRemove={isOwner?()=>remove(r.id):undefined}>{r.text} • {r.schedule}</Chip>)}
+          {s.reminders.map(r => <Chip key={r.id} onRemove={isOwner?()=>remove(r.id):undefined}>{r.text} â€¢ {r.schedule}</Chip>)}
         </div>
       )}
       <Row><Button variant="ghost" onClick={back}>Back</Button><Button onClick={next}>Continue</Button></Row>
@@ -397,11 +397,11 @@ function Notifications({ s, set, next, back }: { s: HomeState; set: (p: Partial<
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
         <div>
-          <label className="text-sm font-medium text-zinc-200">Quiet hours — From</label>
+          <label className="text-sm font-medium text-zinc-200">Quiet hours â€” From</label>
           <Input value={qhFrom} onChange={(e)=>setQFrom(e.target.value)} placeholder="22:00" />
         </div>
         <div>
-          <label className="text-sm font-medium text-zinc-200">Quiet hours — To</label>
+          <label className="text-sm font-medium text-zinc-200">Quiet hours â€” To</label>
           <Input value={qhTo} onChange={(e)=>setQTo(e.target.value)} placeholder="07:00" />
         </div>
       </div>
@@ -424,7 +424,7 @@ function SecurityStep({ s, set, next, back }: { s: HomeState; set: (p: Partial<H
           <div><Button variant="secondary" onClick={add}>+ Add</Button></div>
         </div>
       )}
-      {(s.securitySettings||[]).length>0 && <div className="flex flex-wrap gap-2 mt-3">{(s.securitySettings||[]).map(ss=> <Chip key={ss.id} onRemove={isOwner?()=>remove(ss.id):undefined}>{ss.name}{ss.note?` • ${ss.note}`:''}{!ss.enabled?` • disabled`:''}</Chip>)}</div>}
+      {(s.securitySettings||[]).length>0 && <div className="flex flex-wrap gap-2 mt-3">{(s.securitySettings||[]).map(ss=> <Chip key={ss.id} onRemove={isOwner?()=>remove(ss.id):undefined}>{ss.name}{ss.note?` â€¢ ${ss.note}`:''}{!ss.enabled?` â€¢ disabled`:''}</Chip>)}</div>}
       <Row><Button variant="ghost" onClick={back}>Back</Button><Button onClick={next}>Continue</Button></Row>
     </Card>
   );
@@ -444,7 +444,7 @@ function EnergyStep({ s, set, next, back }: { s: HomeState; set: (p: Partial<Hom
           <div><Button variant="secondary" onClick={add}>+ Add</Button></div>
         </div>
       )}
-      {(s.energyPreferences||[]).length>0 && <div className="flex flex-wrap gap-2 mt-3">{(s.energyPreferences||[]).map(ep=> <Chip key={ep.id} onRemove={isOwner?()=>remove(ep.id):undefined}>{ep.name}{ep.targetKwh?` • ${ep.targetKwh} kWh`:''}{ep.note?` • ${ep.note}`:''}</Chip>)}</div>}
+      {(s.energyPreferences||[]).length>0 && <div className="flex flex-wrap gap-2 mt-3">{(s.energyPreferences||[]).map(ep=> <Chip key={ep.id} onRemove={isOwner?()=>remove(ep.id):undefined}>{ep.name}{ep.targetKwh?` â€¢ ${ep.targetKwh} kWh`:''}{ep.note?` â€¢ ${ep.note}`:''}</Chip>)}</div>}
       <Row><Button variant="ghost" onClick={back}>Back</Button><Button onClick={next}>Continue</Button></Row>
     </Card>
   );
@@ -463,7 +463,7 @@ function MaintenanceStep({ s, set, next, back }: { s: HomeState; set: (p: Partia
           <div><Button variant="secondary" onClick={add}>+ Add</Button></div>
         </div>
       )}
-      {(s.maintenance||[]).length>0 && <div className="space-y-2 mt-3">{(s.maintenance||[]).map(m=> <div key={m.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3"><div className="text-sm font-semibold">{m.title}<span className="text-zinc-400">{m.schedule?` • ${m.schedule}`:''}</span></div>{isOwner && <div className="mt-2"><Button variant="danger" onClick={()=>remove(m.id)}>Remove</Button></div>}</div>)}</div>}
+      {(s.maintenance||[]).length>0 && <div className="space-y-2 mt-3">{(s.maintenance||[]).map(m=> <div key={m.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3"><div className="text-sm font-semibold">{m.title}<span className="text-zinc-400">{m.schedule?` â€¢ ${m.schedule}`:''}</span></div>{isOwner && <div className="mt-2"><Button variant="danger" onClick={()=>remove(m.id)}>Remove</Button></div>}</div>)}</div>}
       <Row><Button variant="ghost" onClick={back}>Back</Button><Button onClick={next}>Continue</Button></Row>
     </Card>
   );
@@ -484,7 +484,7 @@ function GuestsStep({ s, set, next, back }: { s: HomeState; set: (p: Partial<Hom
           <div><Button variant="secondary" onClick={add}>+ Add</Button></div>
         </div>
       )}
-      {(s.guests||[]).length>0 && <div className="flex flex-wrap gap-2 mt-3">{(s.guests||[]).map(g=> <Chip key={g.id} onRemove={isOwner?()=>remove(g.id):undefined}>{g.name} • {g.accessLevel}</Chip>)}</div>}
+      {(s.guests||[]).length>0 && <div className="flex flex-wrap gap-2 mt-3">{(s.guests||[]).map(g=> <Chip key={g.id} onRemove={isOwner?()=>remove(g.id):undefined}>{g.name} â€¢ {g.accessLevel}</Chip>)}</div>}
       <Row><Button variant="ghost" onClick={back}>Back</Button><Button onClick={next}>Continue</Button></Row>
     </Card>
   );
@@ -495,13 +495,13 @@ function Blueprint({ s, set, finish, back }: { s: HomeState; set: (p: Partial<Ho
 
   async function seedApis() {
     try {
-      await fetch("/api/ship/home/routines", {
+      await fetch("/api/home/routines", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "seedFromBlueprint", blueprint }),
       });
     } catch {}
     try {
-      await fetch("/api/ship/home/haveyou", {
+      await fetch("/api/home/haveyou", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "bulkUpsert", items: s.reminders }),
       });
@@ -517,7 +517,7 @@ function Blueprint({ s, set, finish, back }: { s: HomeState; set: (p: Partial<Ho
   }
 
   return (
-    <Card title="HomeFocus™ Blueprint" hint="This JSON seeds Home routines, Have-You prompts, and notification rails.">
+    <Card title="HomeFocusâ„¢ Blueprint" hint="This JSON seeds Home routines, Have-You prompts, and notification rails.">
       <pre className="max-h-96 overflow-auto rounded-xl border border-zinc-800 bg-black/60 p-4 text-xs">{s.blueprintJson}</pre>
       <Row>
         <Button variant="secondary" onClick={download}>Download JSON</Button>
@@ -530,13 +530,13 @@ function Blueprint({ s, set, finish, back }: { s: HomeState; set: (p: Partial<Ho
 }
 function Success() {
   return (
-    <Card title="HomeFocus™ Ready 🎉" hint="Your daily and weekly flows are now structured.">
-      <p className="text-sm text-zinc-300">You’ll start receiving Have-You prompts and routine nudges per your notification settings.</p>
+    <Card title="HomeFocusâ„¢ Ready ðŸŽ‰" hint="Your daily and weekly flows are now structured.">
+      <p className="text-sm text-zinc-300">Youâ€™ll start receiving Have-You prompts and routine nudges per your notification settings.</p>
     </Card>
   );
 }
 
-/* ───────────────── Page ───────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 export default function HomeFocusWizardPage() {
   const [s, setS] = useState<HomeState>(initial);
   const [saving, setSaving] = useState(false);
@@ -600,7 +600,7 @@ export default function HomeFocusWizardPage() {
   );
 }
 
-/* ───────────────── Helpers ───────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function makeBlueprint(s: HomeState) {
   return {
     scope: "HOME",
@@ -642,7 +642,7 @@ function Faith({ s, set, next, back }: { s: HomeState; set: (p: Partial<HomeStat
         </div>
       )}
       {(s.faiths || []).length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-3">{(s.faiths || []).map(f => <Chip key={f.id} onRemove={isOwner?()=>remove(f.id):undefined}>{f.title}{f.cadence?` • ${f.cadence}`:''}{f.note?` • ${f.note}`:''}</Chip>)}</div>
+        <div className="flex flex-wrap gap-2 mt-3">{(s.faiths || []).map(f => <Chip key={f.id} onRemove={isOwner?()=>remove(f.id):undefined}>{f.title}{f.cadence?` â€¢ ${f.cadence}`:''}{f.note?` â€¢ ${f.note}`:''}</Chip>)}</div>
       )}
       <Row><Button variant="ghost" onClick={back}>Back</Button><Button onClick={next}>Continue</Button></Row>
     </Card>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useRef, useState } from "react";
 
@@ -15,7 +15,7 @@ export default function CaiaClientShell() {
   const [log, setLog] = useState<string[]>([]);
   const intervalRef = useRef<number | null>(null);
 
-  const append = (msg: string) => setLog((s) => [new Date().toLocaleTimeString() + " — " + msg, ...s].slice(0, 10));
+  const append = (msg: string) => setLog((s) => [new Date().toLocaleTimeString() + " â€” " + msg, ...s].slice(0, 10));
 
   const speak = (text: string) => {
     try {
@@ -188,7 +188,7 @@ export default function CaiaClientShell() {
 }
 
 /**
- * GuideControls — small client component embedded in CAIA panel.
+ * GuideControls â€” small client component embedded in CAIA panel.
  * Props: speak(text) and append(log) are functions from the parent.
  */
 function GuideControls({
@@ -206,9 +206,9 @@ function GuideControls({
   function scopeFromPath() {
     try {
       const p = typeof window !== "undefined" ? window.location.pathname : "/";
-      if (p.includes("/ship/business")) return "business";
-      if (p.includes("/ship/work")) return "work";
-      if (p.includes("/ship/home")) return "home";
+      if (p.includes("/business")) return "business";
+      if (p.includes("/work")) return "work";
+      if (p.includes("/home")) return "home";
       return "home";
     } catch (_) {
       return "home";
@@ -327,12 +327,12 @@ function GuideControls({
         {running ? "Stop Guide" : "Guide me"}
       </button>
       <button className="btn" onClick={prev} disabled={steps.length === 0} title="Previous">
-        ◀
+        â—€
       </button>
       <button className="btn" onClick={next} disabled={steps.length === 0} title="Next">
-        ▶
+        â–¶
       </button>
-      <div style={{ fontSize: 12, color: "#cbd5e1" }}>{steps.length > 0 ? `${Math.max(0, index + 1)}/${steps.length}` : "—"}</div>
+      <div style={{ fontSize: 12, color: "#cbd5e1" }}>{steps.length > 0 ? `${Math.max(0, index + 1)}/${steps.length}` : "â€”"}</div>
       {/* Current step quick actions: Do Now, Snooze, Reschedule */}
       {steps.length > 0 && (
         <div style={{ marginLeft: 8, display: 'flex', gap: 6, alignItems: 'center' }}>
@@ -359,3 +359,4 @@ function GuideControls({
     </div>
   );
 }
+

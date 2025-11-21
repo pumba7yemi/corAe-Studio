@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 /**
- * OBARI — Order (Engine View)
+ * OBARI â€” Order (Engine View)
  * - Wraps the dynamic Orders engine in the OBARI flow frame.
- * - Back: Booking · Next: Active
+ * - Back: Booking Â· Next: Active
  *
  * NOTE:
  *  - No external aliases besides "@/components/obari/EventsStore" and ArrowNav.
@@ -73,7 +73,7 @@ function load(): Store | null {
   }
 }
 
-/* --------------- “CAIA” parser --------------- */
+/* --------------- â€œCAIAâ€ parser --------------- */
 function parseScript(raw: string): Script {
   const lines = raw
     .split("\n")
@@ -188,8 +188,8 @@ export default function ObariOrderPage() {
       if (nextGate === "stop") stockShift = +prev.script.orderQty;
 
       const logEntry =
-        `${fmt(today)} • Day ${String(dayInCycle + 1).padStart(2, "0")}/${cycleDays} • ${stage}` +
-        (nextGate ? ` • gate:${nextGate}` : "");
+        `${fmt(today)} â€¢ Day ${String(dayInCycle + 1).padStart(2, "0")}/${cycleDays} â€¢ ${stage}` +
+        (nextGate ? ` â€¢ gate:${nextGate}` : "");
 
       const cycles = [...prev.cycles];
       let current = cycles[cycles.length - 1];
@@ -221,7 +221,7 @@ export default function ObariOrderPage() {
         if (canStart && !activeOrder) {
           activeOrder = current.orderId;
           current.log.push(
-            `→ START ok • order ${activeOrder} placed (${prev.script.orderQty})`
+            `â†’ START ok â€¢ order ${activeOrder} placed (${prev.script.orderQty})`
           );
 
           publish(
@@ -246,7 +246,7 @@ export default function ObariOrderPage() {
             })
           );
         } else {
-          current.log.push(`→ START blocked • conditions not met`);
+          current.log.push(`â†’ START blocked â€¢ conditions not met`);
         }
       }
 
@@ -268,7 +268,7 @@ export default function ObariOrderPage() {
         const canStop = evaluateGate("stop", { stock, priceOK: true });
         if (canStop && activeOrder) {
           current.log.push(
-            `→ STOP ok • order ${activeOrder} received (+${prev.script.orderQty})`
+            `â†’ STOP ok â€¢ order ${activeOrder} received (+${prev.script.orderQty})`
           );
 
           publish(
@@ -292,7 +292,7 @@ export default function ObariOrderPage() {
 
           activeOrder = null;
         } else {
-          current.log.push(`→ STOP skipped • no active order`);
+          current.log.push(`â†’ STOP skipped â€¢ no active order`);
         }
       }
 
@@ -330,7 +330,7 @@ export default function ObariOrderPage() {
   return (
     <main className="p-6 space-y-6">
       <header className="stack">
-        <h1 className="text-3xl font-bold">OBARI — Order</h1>
+        <h1 className="text-3xl font-bold">OBARI â€” Order</h1>
         <p className="muted">Dynamic engine that advances a 28-day cycle and emits lifecycle events.</p>
       </header>
 
@@ -360,7 +360,7 @@ export default function ObariOrderPage() {
           <h3 className="text-base font-semibold">Live</h3>
           {store.script && (
             <span className="text-xs px-2 py-0.5 rounded-full border bg-slate-50">
-              {store.script.name} • {store.script.vendor} • {store.script.sku}
+              {store.script.name} â€¢ {store.script.vendor} â€¢ {store.script.sku}
             </span>
           )}
           <span className="text-xs text-slate-500 ml-auto">
@@ -374,13 +374,13 @@ export default function ObariOrderPage() {
               <div className="text-sm font-medium">Status</div>
               <div className="mt-1 text-[15px]">
                 {store.cycles.length
-                  ? `${store.cycles[store.cycles.length - 1].stage} • Day ${
+                  ? `${store.cycles[store.cycles.length - 1].stage} â€¢ Day ${
                       store.cycles[store.cycles.length - 1].day + 1
                     }/${store.script.cycleDays}`
                   : "Pending"}
               </div>
               <div className="mt-2 text-xs text-slate-500">
-                Active order: {store.activeOrder ? store.activeOrder : "—"}
+                Active order: {store.activeOrder ? store.activeOrder : "â€”"}
               </div>
             </div>
 
@@ -421,7 +421,7 @@ export default function ObariOrderPage() {
                 ))}
                 {!store.cycles.length && (
                   <div className="text-slate-500">
-                    No activity yet. Click ▶️ Start Loop.
+                    No activity yet. Click â–¶ï¸ Start Loop.
                   </div>
                 )}
               </div>
@@ -438,7 +438,7 @@ export default function ObariOrderPage() {
             className="px-3 py-1.5 rounded-full border border-slate-200 hover:bg-slate-50"
             onClick={activateFromScript}
           >
-            📜 Activate Script
+            ðŸ“œ Activate Script
           </button>
           {!running ? (
             <button
@@ -446,21 +446,21 @@ export default function ObariOrderPage() {
               onClick={start}
               disabled={!store.script}
             >
-              ▶️ Start Loop
+              â–¶ï¸ Start Loop
             </button>
           ) : (
             <button
               className="px-3 py-1.5 rounded-full border border-slate-200 hover:bg-slate-50"
               onClick={stop}
             >
-              ⏸️ Pause
+              â¸ï¸ Pause
             </button>
           )}
         </div>
 
         <ArrowNav
-          backHref="/ship/business"
-          nextHref="/ship/business/oms/obari/thedeal/bdo/bdo-ready"
+          backHref="/business"
+          nextHref="/business/oms/obari/thedeal/bdo/bdo-ready"
           nextLabel="To BDO-Ready"
         >
           Order Hub
@@ -470,7 +470,7 @@ export default function ObariOrderPage() {
   );
 }
 
-/* --------------- “Order Form” (was Wizard) --------------- */
+/* --------------- â€œOrder Formâ€ (was Wizard) --------------- */
 function Wizard({
   raw,
   onChange,
@@ -544,7 +544,7 @@ function Wizard({
       </div>
       <div className="grid grid-cols-2 gap-2">
         <Field
-          label="Guard • start"
+          label="Guard â€¢ start"
           value={
             s.guards.find((g) => g.gate === "start")?.rule ??
             "withinCeiling && budgetOk"
@@ -564,7 +564,7 @@ function Wizard({
           }
         />
         <Field
-          label="Guard • stop"
+          label="Guard â€¢ stop"
           value={
             s.guards.find((g) => g.gate === "stop")?.rule ??
             "overCeiling || riskAlert"

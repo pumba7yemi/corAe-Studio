@@ -1,18 +1,18 @@
-'use client';
+﻿'use client';
 
 /**
- * Finance — Vendor Statement (AP)
- * - Shows one supplier’s AP documents within a period
+ * Finance â€” Vendor Statement (AP)
+ * - Shows one supplierâ€™s AP documents within a period
  * - Running balance (bills add, payments/credits subtract)
  * - Quick search, actions: Add Payment / Post Bill (demo)
- * - Bottom arrows: back → Vendors, next → Purchases Ledger
+ * - Bottom arrows: back â†’ Vendors, next â†’ Purchases Ledger
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 
-// ✅ Long relative paths
+// âœ… Long relative paths
 import { Card, CardContent } from '@/ui/card';
 import { Button } from '@/ui/button';
 import { Input } from '@/ui/input';
@@ -46,7 +46,7 @@ type APDoc = {
   status?: 'draft' | 'posted' | 'overdue' | 'paid' | 'part-paid';
 };
 
-const money = (m: number) => `£${(m / 100).toFixed(2)}`;
+const money = (m: number) => `Â£${(m / 100).toFixed(2)}`;
 const daysBetween = (a: string, b: string) =>
   Math.round((new Date(b).getTime() - new Date(a).getTime()) / (1000 * 60 * 60 * 24));
 
@@ -193,7 +193,7 @@ export default function VendorStatementPage() {
   }, [inPeriod]);
 
   function addPayment() {
-    const amt = 30000; // £300 demo
+    const amt = 30000; // Â£300 demo
     const today = new Date().toISOString().slice(0, 10);
     setDocs((cur) => [
       ...cur,
@@ -232,7 +232,7 @@ export default function VendorStatementPage() {
   if (!vendor) {
     return (
       <main className="p-6">
-        <div className="text-sm text-muted">Loading…</div>
+        <div className="text-sm text-muted">Loadingâ€¦</div>
       </main>
     );
   }
@@ -240,8 +240,8 @@ export default function VendorStatementPage() {
   return (
     <main className="p-6 space-y-6">
       <header className="stack">
-        <h1 className="text-3xl font-bold">Vendor · {vendor.name}</h1>
-        <p className="muted">Statement & activity — Terms: {vendor.terms ?? '—'} · ID: {vendor.id}</p>
+        <h1 className="text-3xl font-bold">Vendor Â· {vendor.name}</h1>
+        <p className="muted">Statement & activity â€” Terms: {vendor.terms ?? 'â€”'} Â· ID: {vendor.id}</p>
       </header>
 
       <Card>
@@ -252,10 +252,10 @@ export default function VendorStatementPage() {
               <Input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Search ref/description…"
+                placeholder="Search ref/descriptionâ€¦"
               />
               <div className="text-xs text-muted">
-                Period:&nbsp;<span className="font-mono">{period.from} → {period.to}</span>
+                Period:&nbsp;<span className="font-mono">{period.from} â†’ {period.to}</span>
               </div>
             </div>
             <div className="row">
@@ -290,10 +290,10 @@ export default function VendorStatementPage() {
                   <div className="flex flex-col">
                     <div className="font-mono font-semibold">{l.id}</div>
                     <div className="text-xs text-muted">
-                      {l.type.toUpperCase()} • {l.date_iso}
-                      {l.ref ? ` • Ref ${l.ref}` : ''}
-                      {l.description ? ` • ${l.description}` : ''}
-                      {l.due_iso ? ` • Due ${l.due_iso}` : ''}
+                      {l.type.toUpperCase()} â€¢ {l.date_iso}
+                      {l.ref ? ` â€¢ Ref ${l.ref}` : ''}
+                      {l.description ? ` â€¢ ${l.description}` : ''}
+                      {l.due_iso ? ` â€¢ Due ${l.due_iso}` : ''}
                     </div>
                   </div>
                   <div className="text-right">
@@ -302,7 +302,7 @@ export default function VendorStatementPage() {
                       <span className="font-semibold">{money(Math.abs(l.delta))}</span>
                     </div>
                     <div className="text-xs text-muted">
-                      Balance → <span className="font-mono">{money(l.balance)}</span>
+                      Balance â†’ <span className="font-mono">{money(l.balance)}</span>
                     </div>
                   </div>
                 </div>
@@ -323,7 +323,7 @@ export default function VendorStatementPage() {
                         ].join(' ')}
                       >
                         {(l.status ?? 'posted').toUpperCase()}
-                        {l.overdueDays ? ` • ${l.overdueDays}d` : ''}
+                        {l.overdueDays ? ` â€¢ ${l.overdueDays}d` : ''}
                       </span>
                     </div>
                     {!!l.outstanding && (
@@ -346,11 +346,11 @@ export default function VendorStatementPage() {
           {/* Links */}
           <div className="text-xs text-muted">
             Back to{' '}
-            <Link href="/ship/business/oms/finance/vendors" className="underline">
+            <Link href="/business/oms/finance/vendors" className="underline">
               Vendors
             </Link>{' '}
-            · View{' '}
-            <Link href="/ship/business/oms/finance/purchase" className="underline">
+            Â· View{' '}
+            <Link href="/business/oms/finance/purchase" className="underline">
               Purchases Ledger
             </Link>
           </div>
@@ -358,11 +358,11 @@ export default function VendorStatementPage() {
       </Card>
 
       <ArrowNav
-        backHref="/ship/business/oms/finance/vendors"
-        nextHref="/ship/business/oms/finance/purchases"
+        backHref="/business/oms/finance/vendors"
+        nextHref="/business/oms/finance/purchases"
         nextLabel="Purchases Ledger"
       >
-        Finance · Vendor Statement
+        Finance Â· Vendor Statement
       </ArrowNav>
     </main>
   );

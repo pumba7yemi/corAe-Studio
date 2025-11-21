@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -25,7 +25,7 @@ function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
 }
 import ArrowNav from '@/components/navigation/ArrowNav';
 
-// Bridge (single source of truth) — named-only imports
+// Bridge (single source of truth) â€” named-only imports
 // Minimal local Button component (fallback when '@/ui/button' is not available)
 function Button(props: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'outline' | 'default' }) {
   const { variant, className, children, ...rest } = props;
@@ -38,7 +38,7 @@ function Button(props: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant
   );
 }
 
-// Bridge (single source of truth) — named-only imports
+// Bridge (single source of truth) â€” named-only imports
 import {
   initialState as makeInitial,
   persistDraft,
@@ -325,17 +325,17 @@ export default function FirstTradeDocumentPage() {
         const order = out.order_numbers
           ? (out.order_numbers.po_no ? `PO ${out.order_numbers.po_no}` : out.order_numbers.so_no ? `SO ${out.order_numbers.so_no}` : '')
           : '';
-        setMsg(`✅ Workflow started • ${id}${order ? ' • ' + order : ''}`);
+        setMsg(`âœ… Workflow started â€¢ ${id}${order ? ' â€¢ ' + order : ''}`);
       } else if ('ok' in out) {
         // fallback for legacy shape
         const o = out as any;
-        setMsg(o.ok ? `✅ Workflow started • ${o.runId || ''}` : `❌ ${o.error || 'Submit failed'}`);
+        setMsg(o.ok ? `âœ… Workflow started â€¢ ${o.runId || ''}` : `âŒ ${o.error || 'Submit failed'}`);
       } else {
-        // unknown shape — show raw info
-        setMsg(`✅ Workflow started • ${JSON.stringify(out)}`);
+        // unknown shape â€” show raw info
+        setMsg(`âœ… Workflow started â€¢ ${JSON.stringify(out)}`);
       }
     } catch (e: any) {
-      setMsg(`❌ ${e?.message || 'Submit failed'}`);
+      setMsg(`âŒ ${e?.message || 'Submit failed'}`);
     } finally {
       setBusy(false);
     }
@@ -344,7 +344,7 @@ export default function FirstTradeDocumentPage() {
   return (
     <main className="p-6 space-y-6">
       <header className="stack">
-        <h1 className="text-3xl font-bold">First-Trade — CAIA Document</h1>
+        <h1 className="text-3xl font-bold">First-Trade â€” CAIA Document</h1>
         <p className="muted">Edit as a structured document. This syncs with the Wizard draft.</p>
       </header>
 
@@ -357,7 +357,7 @@ export default function FirstTradeDocumentPage() {
             <Button variant="outline" onClick={() => router.push('/wizard')}>Open Wizard</Button>
             <div className="ml-auto flex items-center gap-2">
               <Button variant="default" onClick={submit} disabled={busy || !!parseErr}>
-                {busy ? 'Submitting…' : 'Submit to OBARI'}
+                {busy ? 'Submittingâ€¦' : 'Submit to OBARI'}
               </Button>
             </div>
           </div>
@@ -382,24 +382,24 @@ export default function FirstTradeDocumentPage() {
               {preview ? (
                 <div className="grid gap-2 text-sm">
                   <Row k="Mode" v={(preview as any).companyMode === 'procurement' ? 'We Buy' : 'We Sell'} />
-                  <Row k="Counterparty" v={`${(preview as any).counterparty?.name ?? '—'}${(preview as any).counterparty?.siteName ? ' • ' + (preview as any).counterparty?.siteName : ''}`} />
+                  <Row k="Counterparty" v={`${(preview as any).counterparty?.name ?? 'â€”'}${(preview as any).counterparty?.siteName ? ' â€¢ ' + (preview as any).counterparty?.siteName : ''}`} />
                   <Row
                     k="Schedule"
                     v={
                       (preview as any).schedule?.kind === 'ad_hoc'
                         ? 'Ad-hoc'
-                        : `${(preview as any).schedule?.rule ?? 'EVERY_4_WEEKS'}${(preview as any).schedule?.day ? ' • ' + (preview as any).schedule.day : ''}`
+                        : `${(preview as any).schedule?.rule ?? 'EVERY_4_WEEKS'}${(preview as any).schedule?.day ? ' â€¢ ' + (preview as any).schedule.day : ''}`
                     }
                   />
                   <Row
                     k="Transport"
                     v={`${String((preview as any).transport?.mode || 'third_party')}${
-                      (preview as any).transport?.inQuote ? ' • in-quote' : ''
+                      (preview as any).transport?.inQuote ? ' â€¢ in-quote' : ''
                     }`}
                   />
                   <Row
                     k="Geography"
-                    v={`${(preview as any).geography?.country ?? 'UK'} • ${(preview as any).geography?.region ?? 'GEN'} • ${(preview as any).geography?.postcode ?? 'GEN1'}`}
+                    v={`${(preview as any).geography?.country ?? 'UK'} â€¢ ${(preview as any).geography?.region ?? 'GEN'} â€¢ ${(preview as any).geography?.postcode ?? 'GEN1'}`}
                   />
                   <div className="mt-2 rounded-xl border p-2">
                     <div className="text-xs text-muted mb-1">Lines</div>
@@ -409,7 +409,7 @@ export default function FirstTradeDocumentPage() {
                           <span className="font-mono">{l.sku}</span>
                           <span className="opacity-80">{l.title}</span>
                           <span className="opacity-80">
-                            {l.qty} × £{Number(l.unitPriceMajor ?? l.unitPrice ?? 0).toFixed(2)}
+                            {l.qty} Ã— Â£{Number(l.unitPriceMajor ?? l.unitPrice ?? 0).toFixed(2)}
                           </span>
                         </div>
                       ))}
@@ -436,7 +436,7 @@ export default function FirstTradeDocumentPage() {
 
       <ArrowNav
         backHref="/wizard"
-        nextHref="/ship/business/oms/obari/thedeal/bdo/bdo-ready"
+        nextHref="/business/oms/obari/thedeal/bdo/bdo-ready"
         nextLabel="BDO Ready"
       >
         CAIA Document

@@ -1,6 +1,6 @@
-// corAe — OBARI API (Stage 3: Booking)
-// GET  /api/business/oms/obari/booking  → list staged snapshots
-// POST /api/business/oms/obari/booking  → confirm booking
+﻿// corAe â€” OBARI API (Stage 3: Booking)
+// GET  /api/business/oms/obari/booking  â†’ list staged snapshots
+// POST /api/business/oms/obari/booking  â†’ confirm booking
 //
 // Notes:
 // - Works with repo singleton under _singletons
@@ -8,7 +8,7 @@
 // - Keeps immutable staging, returns mock booking record for demo
 
 import { NextRequest, NextResponse } from "next/server";
-import { repo } from "@/app/api/ship/business/oms/obari/_singletons";
+import { repo } from "@/app/api/business/oms/obari/_singletons";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -24,7 +24,7 @@ type BookingRecord = {
 
 const id = (prefix: string) => `${prefix}_${Math.random().toString(36).slice(2, 10)}`;
 
-/** GET — List staged orders for UI */
+/** GET â€” List staged orders for UI */
 export async function GET() {
   try {
     const all = await repo.list();
@@ -33,7 +33,7 @@ export async function GET() {
       .map((s: any) => ({
         snapshot_id: s.snapshot_id,
         direction: s.direction,
-        order_no: s.order_numbers.po_no || s.order_numbers.so_no || "—",
+        order_no: s.order_numbers.po_no || s.order_numbers.so_no || "â€”",
         schedule: s.schedule,
         transport: s.transport,
         lines: s.lines.map((l: any) => ({
@@ -51,7 +51,7 @@ export async function GET() {
   }
 }
 
-/** POST — Confirm booking (demo) */
+/** POST â€” Confirm booking (demo) */
 export async function POST(req: NextRequest) {
   try {
     const { snapshotId, whenISO } = (await req.json()) as {
@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
     if (!snap)
       return NextResponse.json({ ok: false, error: "snapshot not found" }, { status: 404 });
 
-    const orderNo = snap.order_numbers?.po_no || snap.order_numbers?.so_no || "—";
+    const orderNo = snap.order_numbers?.po_no || snap.order_numbers?.so_no || "â€”";
 
     const booking: BookingRecord = {
       booking_id: id("BOOK"),

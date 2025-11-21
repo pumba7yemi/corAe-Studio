@@ -1,5 +1,5 @@
-// /laws/commercial.law.ts
-// corAe Constitutional Law — Commercial (Front Office)
+﻿// /laws/commercial.law.ts
+// corAe Constitutional Law â€” Commercial (Front Office)
 
 type SubdomainRule = {
   path: string;
@@ -29,7 +29,7 @@ export const CommercialLaw: CommercialLawT = {
     "Commercial houses all revenue-facing functions: Sales, CRM, Marketing, Partnerships, and Customer Success. CRM is the system of record for customer entities and interactions.",
   subdomains: [
     {
-      path: "/apps/ship/business/commercial/crm",
+      path: "/apps/business/commercial/crm",
       purpose: "Customer system of record: Leads, Accounts, Contacts, Activities, Cases.",
       requiredFolders: ["leads", "accounts", "contacts", "activities", "service"],
       constraints: [
@@ -38,7 +38,7 @@ export const CommercialLaw: CommercialLawT = {
       ],
     },
     {
-      path: "/apps/ship/business/commercial/sales",
+      path: "/apps/business/commercial/sales",
       purpose: "Pipeline, opportunities, quotations, contracts (pre-OBARI order).",
       requiredFolders: ["pipeline", "quotes", "contracts"],
       constraints: [
@@ -46,7 +46,7 @@ export const CommercialLaw: CommercialLawT = {
       ],
     },
     {
-      path: "/apps/ship/business/commercial/marketing",
+      path: "/apps/business/commercial/marketing",
       purpose:
         "Brand (strategy, identity, PR) and Performance (campaigns, channels, attribution).",
       requiredFolders: ["brand", "performance", "content"],
@@ -56,19 +56,19 @@ export const CommercialLaw: CommercialLawT = {
       ],
     },
     {
-      path: "/apps/ship/business/commercial/partnerships",
+      path: "/apps/business/commercial/partnerships",
       purpose: "Alliances, channel partners, vendor marketing agreements.",
       requiredFolders: ["partners", "agreements"],
     },
     {
-      path: "/apps/ship/business/commercial/service",
+      path: "/apps/business/commercial/service",
       purpose: "Customer Success / Support (tickets) aligned with CRM Accounts.",
       requiredFolders: ["tickets", "sla", "runbooks"],
       constraints: ["Operational fixes execute via Service/Delivery or OBARI 'active' stage."],
     },
   ],
   interfaces: [
-    "OBARI: sales/contracts → order creation",
+    "OBARI: sales/contracts â†’ order creation",
     "Pulse: revenue KPIs, conversion, NPS",
     "Support/IT: CRM data security, backups, identity",
   ],

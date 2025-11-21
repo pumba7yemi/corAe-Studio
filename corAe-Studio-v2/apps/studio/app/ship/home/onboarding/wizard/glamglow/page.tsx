@@ -1,9 +1,9 @@
-// apps/studio/app/ship/home/onboarding/wizard/glamglow/page.tsx
+﻿// apps/studio/app/home/onboarding/wizard/glamglow/page.tsx
 "use client";
 /**
- * corAe • Home • Onboarding • Glam & Glow
+ * corAe â€¢ Home â€¢ Onboarding â€¢ Glam & Glow
  * Personal care routines: skincare, hair, salon cadence.
- * Seeds: /api/ship/home/glamglow (+Have-You prompts)
+ * Seeds: /api/home/glamglow (+Have-You prompts)
  */
 import React, { useMemo, useState } from "react";
 type Step="WELCOME"|"ROUTINES"|"SCHEDULE"|"PRODUCTS"|"BLUEPRINT"|"SUCCESS";
@@ -21,7 +21,7 @@ export default function GlamGlowWizard(){
   const [s,setS]=useState<State>({step:"WELCOME",profileName:"",routines:[],schedule:[],products:[],blueprintJson:""});
   const set=(p:Partial<State>)=>setS(x=>({...x,...p})); const go=(step:Step)=>set({step});
   const Welcome=()=>(
-    <Card title="Welcome — Glam & Glow">
+    <Card title="Welcome â€” Glam & Glow">
       <Input placeholder="Profile name" value={s.profileName} onChange={e=>set({profileName:(e.target as HTMLInputElement).value})}/>
       <Button onClick={()=>go("ROUTINES")}>Start</Button>
     </Card>
@@ -37,7 +37,7 @@ export default function GlamGlowWizard(){
           <textarea placeholder="Steps (one per line)" value={steps} onChange={e=>setSteps(e.target.value)} className="h-24 w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-100"/>
           <Button onClick={add}>+ Add</Button>
         </div>
-        <div className="space-y-2 pt-2">{s.routines.map(r=><div key={r.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm">{r.name} • {r.steps.length} steps<button onClick={()=>remove(r.id)} className="ml-2 text-zinc-400 hover:text-zinc-100">✕</button></div>)}</div>
+        <div className="space-y-2 pt-2">{s.routines.map(r=><div key={r.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm">{r.name} â€¢ {r.steps.length} steps<button onClick={()=>remove(r.id)} className="ml-2 text-zinc-400 hover:text-zinc-100">âœ•</button></div>)}</div>
         <div className="flex gap-2"><Button onClick={()=>go("WELCOME")}>Back</Button><Button onClick={()=>go("SCHEDULE")}>Continue</Button></div>
       </Card>
     );
@@ -52,12 +52,12 @@ export default function GlamGlowWizard(){
           <select className="rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm" value={day} onChange={e=>setDay(e.target.value as any)}>{DAYS.map(d=><option key={d} value={d}>{d}</option>)}</select>
           <Input placeholder="HH:MM" value={time} onChange={e=>setTime(e.target.value)} />
           <select className="rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm" value={ridSel} onChange={e=>setRid(e.target.value)}>
-            <option value="">— Routine —</option>
+            <option value="">â€” Routine â€”</option>
             {s.routines.map(r=><option key={r.id} value={r.id}>{r.name}</option>)}
           </select>
           <div className="sm:col-span-2"><Button onClick={add}>+ Add Slot</Button></div>
         </div>
-        <div className="space-y-2 pt-2">{s.schedule.map((sl,i)=><div key={i} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm">{sl.day} • {sl.time} • {s.routines.find(r=>r.id===sl.routineId)?.name}<button onClick={()=>remove(i)} className="ml-2 text-zinc-400 hover:text-zinc-100">✕</button></div>)}</div>
+        <div className="space-y-2 pt-2">{s.schedule.map((sl,i)=><div key={i} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm">{sl.day} â€¢ {sl.time} â€¢ {s.routines.find(r=>r.id===sl.routineId)?.name}<button onClick={()=>remove(i)} className="ml-2 text-zinc-400 hover:text-zinc-100">âœ•</button></div>)}</div>
         <div className="flex gap-2"><Button onClick={()=>go("ROUTINES")}>Back</Button><Button onClick={()=>go("PRODUCTS")}>Continue</Button></div>
       </Card>
     );
@@ -74,14 +74,14 @@ export default function GlamGlowWizard(){
           <Input placeholder="Reorder at (days left)" value={reorder} onChange={e=>setReorder(e.target.value)} />
           <Button onClick={add}>+ Add</Button>
         </div>
-        <div className="space-y-2 pt-2">{s.products.map(p=><div key={p.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm">{p.name}{p.vendor?` • ${p.vendor}`:""}{p.reorderAt?` • reorder at ${p.reorderAt}d`:""}<button onClick={()=>remove(p.id)} className="ml-2 text-zinc-400 hover:text-zinc-100">✕</button></div>)}</div>
+        <div className="space-y-2 pt-2">{s.products.map(p=><div key={p.id} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm">{p.name}{p.vendor?` â€¢ ${p.vendor}`:""}{p.reorderAt?` â€¢ reorder at ${p.reorderAt}d`:""}<button onClick={()=>remove(p.id)} className="ml-2 text-zinc-400 hover:text-zinc-100">âœ•</button></div>)}</div>
         <div className="flex gap-2"><Button onClick={()=>go("SCHEDULE")}>Back</Button><Button onClick={()=>go("BLUEPRINT")}>Continue</Button></div>
       </Card>
     );
   };
   const Blueprint=()=> {
     const bp=useMemo(()=>({scope:"HOME", module:"GLAMGLOW", profile:s.profileName, routines:s.routines, schedule:s.schedule, products:s.products, generatedAt:new Date().toISOString(), version:1}),[s]);
-    async function seedApis(){ try{ await fetch("/api/ship/home/glamglow",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"seedFromBlueprint",blueprint:bp})}); }catch{} try{ await fetch("/api/ship/home/haveyou",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"bulkUpsert",items:[
+    async function seedApis(){ try{ await fetch("/api/home/glamglow",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"seedFromBlueprint",blueprint:bp})}); }catch{} try{ await fetch("/api/home/haveyou",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"bulkUpsert",items:[
       { text:`Have you completed your routine?`, schedule:`DAILY 21:00` },
       { text:`Have you checked product stock?`, schedule:`WEEKLY MON 18:00` },
     ]})}); }catch{} }
@@ -99,7 +99,7 @@ export default function GlamGlowWizard(){
       {s.step==="SCHEDULE"&&<Schedule/>}
       {s.step==="PRODUCTS"&&<Products/>}
       {s.step==="BLUEPRINT"&&<Blueprint/>}
-      {s.step==="SUCCESS"&&<Card title="Glam & Glow Ready 🎉"><p className="text-sm text-zinc-300">Prompts are live.</p></Card>}
+      {s.step==="SUCCESS"&&<Card title="Glam & Glow Ready ðŸŽ‰"><p className="text-sm text-zinc-300">Prompts are live.</p></Card>}
     </div>
   );
 }

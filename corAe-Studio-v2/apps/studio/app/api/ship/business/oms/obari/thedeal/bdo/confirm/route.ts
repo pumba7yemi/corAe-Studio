@@ -1,13 +1,13 @@
-// apps/studio/app/api/ship/business/oms/obari/thedeal/bdo/confirm/route.ts
-// OBARI ▸ BDO ▸ Confirm — seal a BDO "=" snapshot with a price-lock baton
-// POST { dealId, equalsHash? } → { ok, confirm, file }
+﻿// apps/studio/app/api/business/oms/obari/thedeal/bdo/confirm/route.ts
+// OBARI â–¸ BDO â–¸ Confirm â€” seal a BDO "=" snapshot with a price-lock baton
+// POST { dealId, equalsHash? } â†’ { ok, confirm, file }
 
 import { NextResponse } from "next/server";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve as pathResolve, join as pathJoin } from "node:path";
 import { createHash } from "node:crypto";
 
-/* ───────────── Types (local) ───────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Types (local) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 type EqualsSnap = {
   dealId: string;
   at: string;
@@ -39,7 +39,7 @@ type PostBody = {
   approvedBy?: string;   // defaults to "caia"
 };
 
-/* ───────────── FS helpers ───────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ FS helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 async function listEquals(dealId: string) {
   const dir = pathResolve(process.cwd(), ".data", "equals");
   try {
@@ -62,12 +62,12 @@ function newestByAt<T extends { at?: string }>(rows: Array<{ file: string; data:
   return rows[0];
 }
 
-/* ───────────── crypto ───────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ crypto â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function sha256(s: string) {
   return createHash("sha256").update(s).digest("hex");
 }
 
-/* ───────────── Route ───────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Route â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 export async function POST(req: Request) {
   try {
     const body = (await req.json()) as PostBody;
@@ -139,3 +139,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: msg }, { status: 400 });
   }
 }
+

@@ -1,5 +1,5 @@
-// apps/studio/app/api/ship/business/oms/obari/deal/[dealId]/equals-adjusted/route.ts
-// Studio API — Equals Adjusted Reader (REPORT_ADJUSTED snapshots from .data/equals-adjusted)
+﻿// apps/studio/app/api/business/oms/obari/deal/[dealId]/equals-adjusted/route.ts
+// Studio API â€” Equals Adjusted Reader (REPORT_ADJUSTED snapshots from .data/equals-adjusted)
 
 import { NextResponse } from "next/server";
 import { readdir, readFile } from "node:fs/promises";
@@ -59,7 +59,7 @@ async function loadAdjusted(dealId: string): Promise<AdjustedSnap[]> {
   return snaps;
 }
 
-// GET /api/ship/business/oms/obari/deals/:dealId/equals-adjusted?bookingId=...
+// GET /api/business/oms/obari/deals/:dealId/equals-adjusted?bookingId=...
 export async function GET(req: Request, ctx: { params: Promise<{ dealId: string }> }) {
   try {
     const { dealId } = await ctx.params;

@@ -8,7 +8,6 @@ export default function LifeHome() {
         <li><a href="/home">Home</a></li>
         <li><a href="/work">Work</a></li>
         <li><a href="/business">Business</a></li>
-        <li><a href="/ship">Ship (onboarding)</a></li>
       </ul>
     </main>
   );
