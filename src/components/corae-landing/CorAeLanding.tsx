@@ -56,7 +56,7 @@ export default function CorAeLanding({ variant="business", ab="A" }: { variant?:
             <CardHeader className="pb-2"><CardTitle className="text-base">{titleByVariant(variant)}</CardTitle></CardHeader>
             <CardContent>
               <div className="text-sm text-gray-600">{heroLine(variant)}</div>
-              <div className="mt-4 h-48 rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200 grid place-items-center">
+              <div className="mt-4 h-48 rounded-2xl bg-linear-to-br from-gray-100 to-gray-200 grid place-items-center">
                 <div className="text-xs text-gray-500">(Preview — replace with Studio screenshots)</div>
               </div>
             </CardContent>

@@ -8,14 +8,16 @@ runtime smoke tests before allowing development/start steps to proceed.
 
 Usage
 -----
-From the repository root (Windows PowerShell):
+From the repository root (recommended, cross-platform Node wrappers):
 
     cd C:\corAe\corAe-Studio
-    # run checks (will NOT kill processes unless you pass -Force)
-    .\tools\ops\150-ensure.ps1 -Secret change-me
+    # run CAIA preflight (uses Node runner)
+    pnpm caia:preflight
 
-    # If you want the script to kill stale processes on required ports, add -Force
-    .\tools\ops\150-ensure.ps1 -Secret change-me -Force
+    # run the nightly green-sweep (uses Node runner)
+    pnpm caia:nightly
+
+If you need the original PowerShell helper for reference it is archived under `.zzzold/ps1/tools/ops/150-ensure.ps1`.
 
 What it does
 ------------
@@ -29,7 +31,7 @@ What it does
 Notes
 -----
 - The script is intentionally conservative. It is designed to avoid accidental kills and destructive operations unless you explicitly pass `-Force`.
-- It's Windows/PowerShell focused. For cross-platform automation we can add a Node wrapper later.
+- This repository now provides cross-platform Node runners for automation under `tools/*.mjs` and scripts/*.mjs. Use `pnpm caia:preflight` and `pnpm caia:nightly` for CI-friendly runs.
 - This is a first-safe iteration of "150 logic". We can extend it with stricter checks (lint, tests, unit test run, signed commit checks, etc.).
 
 Feedback

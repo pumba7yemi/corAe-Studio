@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "corAe I Want",
+  "version": "0.0.1",
+  "description": "Small scaffold to add 'I Want' quicksave and share features.",
+  "permissions": ["activeTab", "storage"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "corAe I Want"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}

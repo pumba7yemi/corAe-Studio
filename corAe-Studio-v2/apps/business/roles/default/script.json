@@ -1,0 +1,8 @@
+[
+  {
+    "id": "role-default-check-in",
+    "label": "Check messages and tasks for this role",
+    "nonNegotiable": true,
+    "basePriority": 2
+  }
+]

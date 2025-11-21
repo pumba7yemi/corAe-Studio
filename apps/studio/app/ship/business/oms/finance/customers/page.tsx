@@ -12,16 +12,16 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 
 // ✅ Use long relative paths (your current working style)
-import { Card, CardContent } from '../../../../../../../../src/components/ui/card';
-import { Button } from '../../../../../../../../src/components/ui/button';
-import { Input } from '../../../../../../../../src/components/ui/input';
-import { Separator } from '../../../../../../../../src/components/ui/separator';
+import { Card, CardContent } from '@/ui/card';
+import { Button } from '@/ui/button';
+import { Input } from '@/ui/input';
+import { Separator } from '@/ui/separator';
 
 import ArrowNav from '@/components/navigation/ArrowNav';
 import PeriodFilter, {
   computeRange,
   type PeriodValue,
-} from '../../../../../../../../src/components/finance/PeriodFilter';
+} from '@/components/finance/PeriodFilter';
 
 type MoneyMinor = number;
 
@@ -64,10 +64,7 @@ export default function CustomersIndexPage() {
   const [docs, setDocs] = useState<ARDoc[]>([]);
 
   const [q, setQ] = useState('');
-  const [period, setPeriod] = useState<PeriodValue>(() => ({
-    kind: 'month',
-    ...computeRange('month'),
-  }));
+  const [period, setPeriod] = useState<PeriodValue>(() => computeRange('month'));
 
   useEffect(() => {
     // seed customers
@@ -272,7 +269,6 @@ export default function CustomersIndexPage() {
 
           {/* Period Filter */}
           <div className="mt-1">
-            {/* @ts-expect-error — fyStartMonth is accepted at runtime but not declared on the PeriodFilter props type */}
             <PeriodFilter value={period} onChange={setPeriod} fyStartMonth={4} />
           </div>
 

@@ -30,20 +30,22 @@ function toISO(d: Date) {
   return copy.toISOString().slice(0, 10);
 }
 
-export function computeRange(kind: PeriodKind, base = new Date()) {
+export function computeRange(kind: PeriodKind, base = new Date()): PeriodValue {
   switch (kind) {
     case 'day': {
       const iso = toISO(base);
-      return { from: iso, to: iso };
+      return { kind, from: iso, to: iso };
     }
     case 'week': {
       return {
+        kind,
         from: toISO(startOfWeek(base, { weekStartsOn: 1 })),
         to: toISO(endOfWeek(base, { weekStartsOn: 1 })),
       };
     }
     case 'month': {
       return {
+        kind,
         from: toISO(startOfMonth(base)),
         to: toISO(endOfMonth(base)),
       };
@@ -53,15 +55,15 @@ export function computeRange(kind: PeriodKind, base = new Date()) {
       const startQ = month - (month % 3);
       const start = new Date(base.getFullYear(), startQ, 1);
       const end = new Date(base.getFullYear(), startQ + 3, 0);
-      return { from: toISO(start), to: toISO(end) };
+      return { kind, from: toISO(start), to: toISO(end) };
     }
     case 'year': {
       const start = new Date(base.getFullYear(), 0, 1);
       const end = new Date(base.getFullYear(), 11, 31);
-      return { from: toISO(start), to: toISO(end) };
+      return { kind, from: toISO(start), to: toISO(end) };
     }
     default:
-      return { from: toISO(startOfMonth(base)), to: toISO(endOfMonth(base)) };
+      return { kind, from: toISO(startOfMonth(base)), to: toISO(endOfMonth(base)) };
   }
 }
 
@@ -69,10 +71,12 @@ export default function PeriodFilter({
   initial = 'month',
   value,
   onChange,
+  fyStartMonth,
 }: {
   initial?: PeriodKind;
   value?: PeriodValue;
   onChange: (v: PeriodValue) => void;
+  fyStartMonth?: number;
 }) {
   const [kind, setKind] = useState<PeriodKind>(value?.kind ?? initial);
   const [from, setFrom] = useState(value?.from ?? computeRange(initial).from);

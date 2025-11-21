@@ -1,0 +1,8 @@
+{
+  "id": "cims_wn6tdrs",
+  "template_id": "invoice-reminder",
+  "channel": "whatsapp",
+  "to": "+971500000000",
+  "subject": "Invoice 8467 — status update",
+  "body": "Finance update: queued for payment, bank account on file."
+}

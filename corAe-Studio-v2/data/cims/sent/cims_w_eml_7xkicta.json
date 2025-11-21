@@ -1,0 +1,12 @@
+{
+  "id": "cims_w_eml_7xkicta",
+  "template_id": "invoice-reminder",
+  "channel": "email",
+  "to": "vendor@example.com",
+  "subject": "Invoice — status update",
+  "body": "Reminder: your invoice is under processing.",
+  "tags": [
+    "workbrain",
+    "auto"
+  ]
+}

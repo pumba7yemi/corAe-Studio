@@ -1,0 +1,22 @@
+{
+  "entries": [
+    {
+      "id": 1763440150532,
+      "subject": "v2-build",
+      "summary": "Recorded result: ok. Reason: v2 build succeeded for @corae/life",
+      "ts": "2025-11-18T04:29:10.532Z"
+    },
+    {
+      "id": 1763441062085,
+      "subject": "nightly-sweep",
+      "summary": "Recorded result: start. Reason: Nightly green sweep starting",
+      "ts": "2025-11-18T04:44:22.085Z"
+    },
+    {
+      "id": 1763451245126,
+      "subject": "v2-build-run",
+      "summary": "Recorded result: green. Reason: build-verify core checks passed",
+      "ts": "2025-11-18T07:34:05.126Z"
+    }
+  ]
+}

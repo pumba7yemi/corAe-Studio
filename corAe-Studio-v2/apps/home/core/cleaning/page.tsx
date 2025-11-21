@@ -1,0 +1,12 @@
+﻿import Link from 'next/link'
+
+export default function Page(){
+  return (
+    <div style={{padding:24}}>
+      <h1>Cleaning</h1>
+      <p>Home OS â€” Home cleaning placeholder</p>
+      <p><Link href="/home/core/cleaning">Open</Link></p>
+    </div>
+  )
+}
+

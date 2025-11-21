@@ -1,0 +1,11 @@
+﻿{
+	"name": "corAe-studio-v2",
+	"private": true,
+	"version": "0.0.0",
+	"workspaces": [
+		"apps/*",
+		"packages/*",
+		"services/*"
+	]
+}
+

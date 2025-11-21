@@ -1,0 +1,12 @@
+{
+  "id": "demo.hello",
+  "nodes": [
+    { "id": "n1", "type": "input",  "meta": { "ask": "Say hello to corAe" } },
+    { "id": "n2", "type": "ai",      "meta": { "adapter": "local", "prompt": "Say hello to corAe in one short line." } },
+    { "id": "n3", "type": "output",  "meta": { "format": "text" } }
+  ],
+  "edges": [
+    { "from": "n1", "to": "n2" },
+    { "from": "n2", "to": "n3" }
+  ]
+}

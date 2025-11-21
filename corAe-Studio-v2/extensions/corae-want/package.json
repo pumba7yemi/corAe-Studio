@@ -1,0 +1,9 @@
+{
+  "name": "corae-want-extension",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Minimal corAe 'I Want' extension scaffold (unpacked)",
+  "scripts": {
+    "build": "echo 'no build'"
+  }
+}

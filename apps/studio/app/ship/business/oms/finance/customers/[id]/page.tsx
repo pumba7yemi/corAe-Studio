@@ -13,16 +13,24 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 
 // ✅ Long relative paths (as per your working setup)
-import { Card, CardContent } from '../../../../../../../../../src/components/ui/card';
-import { Button } from '../../../../../../../../../src/components/ui/button';
-import { Input } from '../../../../../../../../../src/components/ui/input';
-import { Separator } from '../../../../../../../../../src/components/ui/separator';
+// Fallback local Card / CardContent definitions to avoid a missing '@/ui/card' module.
+// These are minimal presentational wrappers matching the original usage in this file.
+function Card({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <div className={['rounded-xl border p-0 bg-card', className ?? ''].join(' ')}>{children}</div>;
+}
+function CardContent({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <div className={className}>{children}</div>;
+}
+
+import { Button } from '@/ui/button';
+import { Input } from '@/ui/input';
+import { Separator } from '@/ui/separator';
 
 import ArrowNav from '@/components/navigation/ArrowNav';
 import PeriodFilter, {
   computeRange,
   type PeriodValue,
-} from '../../../../../../../../../src/components/finance/PeriodFilter';
+} from '@/components/finance/PeriodFilter';
 
 type MoneyMinor = number;
 
@@ -60,10 +68,7 @@ export default function CustomerStatementPage() {
   const [q, setQ] = useState('');
 
   // Flat PeriodValue: { kind, from, to }
-  const [period, setPeriod] = useState<PeriodValue>(() => ({
-    kind: 'month',
-    ...computeRange('month'),
-  }));
+  const [period, setPeriod] = useState<PeriodValue>(() => computeRange('month'));
 
   // Seed demo data (replace with API later)
   useEffect(() => {

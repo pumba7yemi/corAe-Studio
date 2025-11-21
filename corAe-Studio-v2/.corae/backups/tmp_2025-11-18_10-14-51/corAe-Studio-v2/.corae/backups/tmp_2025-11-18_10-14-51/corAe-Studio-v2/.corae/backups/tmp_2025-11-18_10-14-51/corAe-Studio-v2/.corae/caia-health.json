@@ -1,0 +1,15 @@
+{
+  "status": "AMBER",
+  "score150": 126.49,
+  "lastNightly": {
+    "lastStart": "2025-11-18T05:55:23.424Z",
+    "lastResult": "success",
+    "lastMessage": "Nightly sweep passed"
+  },
+  "cassandra": {
+    "forbiddenCount": 0,
+    "lastPatternId": 1763441062085,
+    "lastUpdated": "2025-11-18T04:44:22.085Z"
+  },
+  "generatedAt": "2025-11-18T05:58:36.454Z"
+}

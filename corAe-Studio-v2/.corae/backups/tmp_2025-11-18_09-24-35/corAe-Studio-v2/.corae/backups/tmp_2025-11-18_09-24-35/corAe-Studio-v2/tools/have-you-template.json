@@ -1,0 +1,9 @@
+{
+  "templateVersion": "1.0",
+  "questions": [
+    "Have you completed the task?",
+    "If no, what is the next action?",
+    "If yes, move to the next WorkFocus"
+  ],
+  "notes": "Use this template to generate per-sphere have-you scripts. Items must be idempotent and brief."
+}

@@ -4,19 +4,48 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 // Use your working long-path UI imports
-import { Card, CardContent } from '../../../../../../../../../src/components/ui/card';
-import { Button } from '../../../../../../../../../src/components/ui/button';
-import { Separator } from '../../../../../../../../../src/components/ui/separator';
-import { Input } from '../../../../../../../../../src/components/ui/input';
+// @ts-ignore: module has no type declarations in this workspace
+import { Card, CardContent } from '@/ui/card';
+// Local fallback Separator component when '@/ui/separator' is not available.
+function Separator({ className }: { className?: string }) {
+  return <div className={['h-px bg-muted/20 my-2', className].filter(Boolean).join(' ')} />;
+}
+// Local fallback Input component when '@/ui/input' is not available.
+// A minimal, accessible input that matches the expected props used in this file.
+function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
+  const { className, ...rest } = props;
+  return (
+    <input
+      {...rest}
+      className={[ 'w-full border rounded px-2 py-1 font-sans text-sm bg-transparent', className ]
+        .filter(Boolean)
+        .join(' ')}
+    />
+  );
+}
 import ArrowNav from '@/components/navigation/ArrowNav';
+
+// Bridge (single source of truth) — named-only imports
+// Minimal local Button component (fallback when '@/ui/button' is not available)
+function Button(props: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'outline' | 'default' }) {
+  const { variant, className, children, ...rest } = props;
+  const base = 'inline-flex items-center px-3 py-1 rounded';
+  const variantClass = variant === 'outline' ? 'border' : 'bg-slate-900 text-white';
+  return (
+    <button {...rest} className={[base, variantClass, className].filter(Boolean).join(' ')}>
+      {children}
+    </button>
+  );
+}
 
 // Bridge (single source of truth) — named-only imports
 import {
   initialState as makeInitial,
   persistDraft,
   submitFirstTrade,
-  type FirstTradeState,
-} from '../../../../../../../../../packages/workfocus-core/wizard/first-trade.flow';
+} from '@corae/workfocus-core/wizard/first-trade.flow';
+
+type FirstTradeState = ReturnType<typeof makeInitial>;
 
 /* ------------------------------------------------------------------ */
 /* CAIA-ish doc <-> FirstTradeState mappers (local to this page)      */

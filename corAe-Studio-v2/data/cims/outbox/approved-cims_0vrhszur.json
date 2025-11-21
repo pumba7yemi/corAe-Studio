@@ -1,0 +1,24 @@
+{
+  "id": "cims_0vrhszur",
+  "template_id": "po-ack",
+  "channel": "email",
+  "to": "vendor@example.com",
+  "subject": "PO PO-1234 acknowledged",
+  "body": "Hi PepsiCo,\nYour PO PO-1234 is acknowledged. Delivery 2025-09-06.\nOBARI link: /obari/ledger",
+  "created_at": "2025-09-05T17:55:42.027Z",
+  "tags": [
+    "ops",
+    "po",
+    "delivery"
+  ],
+  "policy": {
+    "risk_score": 25,
+    "requires_overseer": false
+  },
+  "status": "draft",
+  "evidence": {
+    "obari_link": "/obari/ledger",
+    "week_id": ""
+  },
+  "_integrity": "b385345d2ca4a82aff1a4a315caaac4e586a035c8a7002eaf2a061b2af9d6227"
+}

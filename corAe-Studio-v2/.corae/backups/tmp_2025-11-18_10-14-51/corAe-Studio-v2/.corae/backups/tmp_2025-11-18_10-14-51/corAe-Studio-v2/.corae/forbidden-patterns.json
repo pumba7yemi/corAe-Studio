@@ -1,0 +1,82 @@
+{
+  "entries": [
+    {
+      "id": 1763449990001,
+      "subject": "manual boost for gate",
+      "reason": "forbidden: bypass 150-logic",
+      "ts": "2025-11-18T06:30:00.000Z"
+    },
+    {
+      "id": 1763449990002,
+      "subject": "manual verification seed",
+      "reason": "forbidden: bypass 150-logic",
+      "ts": "2025-11-18T06:30:01.000Z"
+    },
+    {
+      "id": 1763449990003,
+      "subject": "seed and rerun",
+      "reason": "forbidden: bypass 150-logic",
+      "ts": "2025-11-18T06:30:02.000Z"
+    },
+    {
+      "id": 1763449990004,
+      "subject": "seed decision memory",
+      "reason": "forbidden: bypass 150-logic",
+      "ts": "2025-11-18T06:30:03.000Z"
+    },
+    {
+      "id": 1763449990005,
+      "subject": "boost the gate",
+      "reason": "forbidden: bypass 150-logic",
+      "ts": "2025-11-18T06:30:04.000Z"
+    },
+    {
+      "id": 1763449990006,
+      "subject": "bypass gate quietly",
+      "reason": "forbidden: bypass 150-logic",
+      "ts": "2025-11-18T06:30:05.000Z"
+    },
+    {
+      "id": 1763449135208,
+      "subject": "duplicate surface",
+      "reason": "SIL forbidden pattern",
+      "ts": "2025-11-18T06:58:54.409Z"
+    },
+    {
+      "id": 1763449134826,
+      "subject": "duplicate app",
+      "reason": "SIL forbidden pattern",
+      "ts": "2025-11-18T06:58:54.416Z"
+    },
+    {
+      "id": 1763449135110,
+      "subject": "duplicate page",
+      "reason": "SIL forbidden pattern",
+      "ts": "2025-11-18T06:58:54.416Z"
+    },
+    {
+      "id": 1763449134805,
+      "subject": "create new instead of reuse",
+      "reason": "SIL forbidden pattern",
+      "ts": "2025-11-18T06:58:54.416Z"
+    },
+    {
+      "id": 1763449134520,
+      "subject": "skip SIL",
+      "reason": "SIL forbidden pattern",
+      "ts": "2025-11-18T06:58:54.416Z"
+    },
+    {
+      "id": 1763449134687,
+      "subject": "override SIL",
+      "reason": "SIL forbidden pattern",
+      "ts": "2025-11-18T06:58:54.416Z"
+    },
+    {
+      "id": 1763449134905,
+      "subject": "ignore SIL",
+      "reason": "SIL forbidden pattern",
+      "ts": "2025-11-18T06:58:54.416Z"
+    }
+  ]
+}

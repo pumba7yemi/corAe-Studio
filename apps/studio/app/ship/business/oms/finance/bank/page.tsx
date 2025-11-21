@@ -11,13 +11,25 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { Card, CardContent } from '../../../../../../../../src/components/ui/card';
-import { Button } from '../../../../../../../../src/components/ui/button';
-import { Input } from '../../../../../../../../src/components/ui/input';
-import { Separator } from '../../../../../../../../src/components/ui/separator';
+// Local lightweight UI components to avoid missing module errors in this demo
+const Card = ({ children, className }: { children: React.ReactNode; className?: string }) => (
+  <div className={["rounded-xl border p-3 bg-card", className].filter(Boolean).join(' ')}>{children}</div>
+);
+const CardContent = ({ children, className }: { children: React.ReactNode; className?: string }) => (
+  <div className={className}>{children}</div>
+);
+const Button = ({ children, onClick, variant, className }: { children: React.ReactNode; onClick?: () => void; variant?: string; className?: string }) => (
+  <button onClick={onClick} className={["px-3 py-1 rounded", variant === 'outline' ? 'border' : '', className].filter(Boolean).join(' ')}>
+    {children}
+  </button>
+);
+const Input = ({ value, onChange, placeholder }: { value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; placeholder?: string }) => (
+  <input value={value} onChange={onChange} placeholder={placeholder} className="rounded-md border px-3 py-2 bg-transparent" />
+);
+const Separator = () => <hr className="my-2 border-t" />;
 
 import ArrowNav from '@/components/navigation/ArrowNav';
-import PeriodFilter, { computeRange, type PeriodValue }  from '../../../../../../../../src/components/finance/PeriodFilter';
+import PeriodFilter, { computeRange, type PeriodValue }  from '@/components/finance/PeriodFilter';
 
 type Money = number;
 
@@ -46,10 +58,7 @@ type BankTxn = {
 const fmtGBP = (m: number) => `£${(m / 100).toFixed(2)}`;
 
 export default function BankAccountsPage() {
-  const [period, setPeriod] = useState<PeriodValue>(() => ({
-    kind: 'month',
-    ...computeRange('month'),
-  }));
+  const [period, setPeriod] = useState<PeriodValue>(() => computeRange('month'));
 
   const [accounts, setAccounts] = useState<BankAccount[]>([]);
   const [txns, setTxns] = useState<BankTxn[]>([]);

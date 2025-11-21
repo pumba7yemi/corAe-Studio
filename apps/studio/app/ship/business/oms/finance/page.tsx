@@ -10,9 +10,9 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { Card, CardContent } from '../../../../../../../src/components/ui/card';
-import { Button } from '../../../../../../../src/components/ui/button';
-import { Separator } from '../../../../../../../src/components/ui/separator';
+import { Card, CardContent } from '@/ui/card';
+import { Button } from '@/ui/button';
+import { Separator } from '@/ui/separator';
 import ArrowNav from '@/components/navigation/ArrowNav';
 
 import PeriodFilter, {
@@ -32,10 +32,7 @@ export default function FinanceHubPage() {
   const router = useRouter();
 
   // Period (flat shape so consumers can read .from/.to)
-  const [period, setPeriod] = useState<PeriodValue>(() => ({
-    kind: 'month',
-    ...computeRange('month'),
-  }));
+  const [period, setPeriod] = useState<PeriodValue>(() => computeRange('month'));
 
   const [ledgers, setLedgers] = useState<LedgerSummary[]>([]);
 
@@ -81,28 +78,30 @@ export default function FinanceHubPage() {
       {/* Tiles */}
       <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {ledgers.map((l) => (
-          <Card
+          <div
             key={l.id}
             className="cursor-pointer transition hover:-translate-y-0.5 hover:shadow-lg"
             onClick={() => go(l)}
           >
-            <CardContent className="p-5 space-y-2">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold">{l.name}</h2>
-                <span
-                  className={`text-sm font-medium ${
-                    l.balance < 0 ? 'text-red-500' : 'text-emerald-400'
-                  }`}
-                >
-                  {l.balance < 0 ? '-' : '+'}£{Math.abs(l.balance).toLocaleString()}
-                </span>
-              </div>
-              <div className="text-sm text-slate-400">Entries: {l.count}</div>
-              <div className="text-xs text-slate-500">
-                Range: {period.from} → {period.to}
-              </div>
-            </CardContent>
-          </Card>
+            <Card>
+              <CardContent className="p-5 space-y-2">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg font-semibold">{l.name}</h2>
+                  <span
+                    className={`text-sm font-medium ${
+                      l.balance < 0 ? 'text-red-500' : 'text-emerald-400'
+                    }`}
+                  >
+                    {l.balance < 0 ? '-' : '+'}£{Math.abs(l.balance).toLocaleString()}
+                  </span>
+                </div>
+                <div className="text-sm text-slate-400">Entries: {l.count}</div>
+                <div className="text-xs text-slate-500">
+                  Range: {period.from} → {period.to}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         ))}
       </section>
 

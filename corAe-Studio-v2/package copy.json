@@ -1,0 +1,79 @@
+{
+  "name": "corae-studio",
+  "private": true,
+  "packageManager": "pnpm@10.15.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:lite": "cross-env NODE_OPTIONS=--max-old-space-size=2048 NEXT_TELEMETRY_DISABLED=1 pnpm --filter apps/studio dev",
+    "build:lite": "cross-env NODE_OPTIONS=--max-old-space-size=3072 NEXT_TELEMETRY_DISABLED=1 pnpm --filter apps/studio run build:lite",
+    "bootstrap": "pnpm install",
+    "build": "pnpm -r --filter ./packages/... build",
+    "audit:corae": "node scripts/audit-corae-structure.mjs",
+    "tidy:apply": "node scripts/tidy-apply.mjs",
+    "pulse:test": "vitest run packages/core-pulse/__tests__ --run",
+    "pulse:test:ci": "vitest run packages/core-pulse/__tests__ --run --reporter verbose",
+    "typecheck": "tsc -b --pretty",
+    "audit": "node scripts/audit-corae.mjs",
+    "tidy:plan": "node scripts/tidy-corae.mjs",
+    "build:skim": "tsx scripts/build-skim.mts",
+    "build:verify": "cross-env CAIA_150_STRICT=true tsx scripts/build-verify.mts",
+    "build:promote": "tsx scripts/build-promote.mts",
+    "precommit": "pnpm build:skim && pnpm build:verify",
+    "scan:yard": "tsx tools/shipyard/scan-and-plan.ts",
+  "dev": "pnpm --filter @corae/studio dev",
+    "smoke:ship": "node tools/ship/smoke-test.js http://127.0.0.1:3000",
+    "smoke:ship:node": "node tools/ship/run-smoke.mjs",
+    "ops:ban-ps1": "node tools/ops/check-no-ps1.js",
+    "clean": "rimraf apps/**/.next && rimraf packages/**/dist",
+    "check:types": "pnpm -w exec -- tsc -b --noEmit",
+    "check:build:studio": "pnpm --filter @corae/studio build",
+    "check:prisma": "pnpm --filter @corae/studio prisma:format && pnpm --filter @corae/studio prisma:generate",
+    "check:lint": "pnpm --filter @corae/studio lint || exit 0",
+    "caia:dev-gate": "node tools/caia-dev-gate.mjs",
+    "nightly:studio": "node ./tools/nightly-green-sweep.mjs",
+    "caia:preflight": "node tools/caia-preflight.mjs",
+    "caia:nightly": "node tools/nightly-green-sweep.mjs",
+    "ship:smoke": "pnpm caia:preflight && pnpm --filter @corae/studio build",
+    "ship:start-dev-and-smoke": "pnpm --filter @corae/studio dev & pnpm ship:smoke",
+    "dev:ship": "pnpm --filter @corae/studio dev",
+    "check": "pnpm -w exec tsc -b --noEmit && pnpm --filter @corae/studio build",
+    "build:guard": "node ./scripts/build-guardian.mts"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.16",
+    "@types/node": "^24.10.0",
+    "@types/react": "^18.3.24",
+    "@types/react-dom": "^18.3.1",
+    "autoprefixer": "^10.4.21",
+    "cross-env": "^10.1.0",
+    "postcss": "^8.5.6",
+    "rimraf": "^5.0.7",
+    "tailwindcss": "^4.1.16",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@corae/core-ascend": "workspace:*",
+    "@corae/core-pulse": "workspace:*",
+    "@prisma/client": "^6.18.0",
+    "prisma": "^6.18.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "vitest": "^1.0.0",
+    "next": "15.5.0"
+  },
+  "overrides": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  }
+  ,
+  "pnpm": {
+    "overrides": {
+      "@types/react": "18.3.24",
+      "@types/react-dom": "18.3.1"
+    }
+  }
+}

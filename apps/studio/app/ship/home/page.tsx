@@ -24,6 +24,7 @@ const WardrobeTileAny = WardrobeTile as any;
 const GlamAndGlowTileAny = GlamAndGlowTile as any;
 const WhatIWantTileAny = WhatIWantTile as any;
 import { HomeData } from "@corae/home";
+import { buildNav } from '../../../src/caia/nav-builder';
 
 export default function ShipHomeSection() {
   return (
@@ -43,18 +44,11 @@ export default function ShipHomeSection() {
         </div>
 
         <nav className="flex items-center gap-2 text-sm">
-          <a
-            href="/ship/business"
-            className="rounded-2xl border border-slate-700 px-3 py-1.5 hover:bg-slate-800/60"
-          >
-            Business
-          </a>
-          <a
-            href="/ship/work"
-            className="rounded-2xl border border-slate-700 px-3 py-1.5 hover:bg-slate-800/60"
-          >
-            Work
-          </a>
+          {buildNav().home.map((n: any) => (
+            <a key={n.href} href={n.href} className="rounded-2xl border border-slate-700 px-3 py-1.5 hover:bg-slate-800/60">
+              {n.label}
+            </a>
+          ))}
         </nav>
       </header>
 

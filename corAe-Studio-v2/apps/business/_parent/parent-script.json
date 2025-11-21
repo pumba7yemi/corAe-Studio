@@ -1,0 +1,8 @@
+[
+  {
+    "id": "parent-open-day",
+    "label": "Open systems and review daily plan",
+    "nonNegotiable": true,
+    "basePriority": 1
+  }
+]

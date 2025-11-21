@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "sphere": "work",
+  "checks": [
+    "greeted-today",
+    "tasks-reviewed"
+  ],
+  "created": "2025-11-18T12:18:44.552Z"
+}

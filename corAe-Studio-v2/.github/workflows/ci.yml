@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install
+        run: pnpm -w install
+
+      - name: Typecheck
+        run: pnpm -w exec tsc -b --noEmit
+
+      - name: Build
+        run: pnpm -w build

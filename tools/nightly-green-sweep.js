@@ -28,7 +28,7 @@ const shim = path.join(__dirname, '..', 'apps', 'studio', 'src', 'types', 'next-
 if(!fileExists(shim)){
   fs.mkdirSync(path.dirname(shim), { recursive: true });
   fs.writeFileSync(shim, `declare module 'next/navigation' {
- export * from 'next/dist/client/components/navigation';
+ export * from 'next/navigation';
  export interface Router { push(h:string):void;replace(h:string):void;back():void;refresh?():void; }
  export function useRouter():Router;
  export function usePathname():string|null;

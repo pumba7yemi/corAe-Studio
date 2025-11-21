@@ -1,0 +1,28 @@
+{
+  "domains": {
+    "home.want-engine": {
+      "synonyms": ["want", "i want", "iwant", "wishlist", "shopping list"],
+      "priority": 100,
+      "uiTarget": "life/home/want",
+      "onboardingBucket": "home",
+      "buildCategory": "feature-existing",
+      "heal": ["dedupe", "merge"]
+    },
+    "work.3x3dtd": {
+      "synonyms": ["todo", "3x3", "3 cubed", "3³dtd", "diary"],
+      "priority": 100,
+      "uiTarget": "life/work/tasks",
+      "onboardingBucket": "work",
+      "buildCategory": "task-engine",
+      "heal": ["merge"]
+    },
+    "business.obari": {
+      "synonyms": ["order", "booking", "obari", "deal"],
+      "priority": 120,
+      "uiTarget": "life/business/obari",
+      "onboardingBucket": "business",
+      "buildCategory": "obari",
+      "heal": ["protect"]
+    }
+  }
+}

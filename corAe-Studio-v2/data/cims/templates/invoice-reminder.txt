@@ -1,0 +1,8 @@
+Subject: Invoice {{INV_ID}} — status update
+Body:
+Hi {{NAME}},
+
+Quick update for invoice {{INV_ID}}: current status is {{STATUS}}.
+Amount due: {{AMOUNT}}. Due date: {{DUE_DATE}}.
+
+If you've already paid, please ignore this message.

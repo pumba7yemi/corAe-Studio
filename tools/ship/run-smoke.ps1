@@ -1,3 +1,5 @@
+"# DEPRECATED — replaced by Node runner tools/ship/run-smoke.mjs (use `pnpm ship:smoke`)
+" | Out-Null
 param(
   [string]$BaseUrl = "http://127.0.0.1:3000",
   [string]$AdminSecret = "change-me"

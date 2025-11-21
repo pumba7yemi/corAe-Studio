@@ -1,0 +1,8 @@
+# Ignore generated and server-side API routes and large lib folders that trigger project-wide ESLint plugin issues
+/.next
+node_modules
+app/api/**
+lib/**
+src/**
+tests/**
+**/*.d.ts

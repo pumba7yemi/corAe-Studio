@@ -10,10 +10,10 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 // ✅ Use the long relative path you said works right now
-import { Card, CardContent } from '../../../../../../../../src/components/ui/card';
-import { Button } from '../../../../../../../../src/components/ui/button';
-import { Input } from '../../../../../../../../src/components/ui/input';
-import { Separator } from '../../../../../../../../src/components/ui/separator';
+import { Card, CardContent } from '@/ui/card';
+import { Button } from '@/ui/button';
+import { Input } from '@/ui/input';
+import { Separator } from '@/ui/separator';
 import ArrowNav from '@/components/navigation/ArrowNav';
 
 // ⬇️ Your PeriodFilter (flat shape)
@@ -41,10 +41,7 @@ export default function SalesLedgerPage() {
   const [status, setStatus] = useState<'all' | SalesInvoice['status']>('all');
 
   // ✅ Flat default so period.from / period.to always exist
-  const [period, setPeriod] = useState<PeriodValue>(() => ({
-    kind: 'month',
-    ...computeRange('month'),
-  }));
+  const [period, setPeriod] = useState<PeriodValue>(() => computeRange('month'));
 
   // demo data
   useEffect(() => {

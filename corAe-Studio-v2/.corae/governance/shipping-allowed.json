@@ -1,0 +1,4 @@
+{
+  "//": "corAe Build Governance — Only allow shipping if set to true",
+  "allowShipping": false
+}

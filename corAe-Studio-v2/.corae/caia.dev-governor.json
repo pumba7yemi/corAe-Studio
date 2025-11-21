@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "rules": {
+    "requireModule": true,
+    "requirePathConfirmation": true,
+    "requireEndArchitectureCheck": true,
+    "requireWipCheck": true,
+    "requireFilelogicCheck": true
+  },
+  "messages": {
+    "modulePrompt": "Which corAe module does this belong to? (home, work, business, system, dev)",
+    "pathPrompt": "Confirm the EXACT folder path where this file should live.",
+    "architecturePrompt": "How does this fit the final architecture (CAIA → Story → Atlas → 3³DTD → FileLogic → OBARI)?",
+    "fileLogicPrompt": "Confirm this folder code+title matches FileLogic rules.",
+    "wipPrompt": "WIP=1 — what change is currently in flight?",
+    "confPrompt": "Are you sure you want Copilot to generate this now? (yes/no)"
+  }
+}

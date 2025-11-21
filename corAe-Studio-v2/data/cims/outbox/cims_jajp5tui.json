@@ -1,0 +1,23 @@
+{
+  "id": "cims_jajp5tui",
+  "template_id": "invoice-reminder",
+  "channel": "email",
+  "to": "vendor@example.com",
+  "subject": "Invoice INV-9982 — status update",
+  "body": "Finance update for INV-9982: queued for payment 09/10.\nPricelock ref: D-5541 | OBARI: /obari/ledger",
+  "created_at": "2025-09-05T17:55:42.040Z",
+  "tags": [
+    "finance",
+    "invoice"
+  ],
+  "policy": {
+    "risk_score": 40,
+    "requires_overseer": false
+  },
+  "status": "draft",
+  "evidence": {
+    "obari_link": "/obari/ledger",
+    "week_id": ""
+  },
+  "_integrity": "e64dcf61f78d0a7e9a1625cb7a9beca1bd45beb6de9d48a452ba94a4d2964400"
+}

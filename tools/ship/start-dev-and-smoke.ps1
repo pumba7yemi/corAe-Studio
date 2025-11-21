@@ -1,3 +1,4 @@
+# DEPRECATED — replaced by Node runner tools/ship/start-dev-and-smoke.mjs
 $ErrorActionPreference = "Stop"
 $env:SHIP_UPDATE_ADMIN_SECRET = "change-me"
 

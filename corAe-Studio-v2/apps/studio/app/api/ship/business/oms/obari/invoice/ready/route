@@ -1,0 +1,288 @@
+// apps/studio/app/api/ship/business/oms/obari/invoice/ready/route.ts
+// OBARI — Invoice Readiness Gates (pre-issuance validator)
+// Ensures all hard hurdles are cleared BEFORE invoice is issued.
+// Gates enforced:
+// 1) Baton chain integrity: BASE "=" → REPORT_ADJUSTED → FINAL (hash linkage)
+// 2) FINAL exists for the given deal (optionally filtered by bookingId)
+// 3) Numeric integrity: non-negative, finite; lines compute to totals (±0.01)
+// 4) Currency supported (finite whitelist; extend as needed)
+//
+// Notes:
+// - Filesystem-only. No Prisma, no aliases. No writes.
+// - This route is designed to be called immediately before /obari/invoice/issue.
+
+import { NextResponse } from "next/server";
+import { readdir, readFile, stat } from "node:fs/promises";
+import { resolve as pathResolve, join as pathJoin } from "node:path";
+
+type BaseSnap = {
+  dealId: string;
+  at: string;
+  stage: "BDO";
+  number: string;
+  currency: string;
+  payload: string;
+  hash: string;
+  version: number;
+};
+
+type AdjustedSnap = {
+  dealId: string;
+  bookingId?: string | null;
+  number: string;
+  baseHash: string;
+  hash: string;
+  variant: "REPORT_ADJUSTED";
+  at: string;
+  version: number;
+  payload: string;
+};
+
+type FinalSnap = {
+  dealId: string;
+  bookingId?: string | null;
+  number: string;
+  baseHash: string;
+  adjustedHash: string;
+  hash: string;
+  at: string;
+  stage: "REPORT";
+  variant: "FINAL";
+  currency: string;
+  version: number;
+  payload: string;
+};
+
+type PostBody = {
+  dealId: string;
+  bookingId?: string;
+};
+
+type GatePass = "PASS" | "FAIL";
+type GateReport = {
+  baton: GatePass;
+  finalExists: GatePass;
+  numeric: GatePass;
+  currency: GatePass;
+};
+
+const SUPPORTED_CURRENCIES = new Set(["AED", "USD", "EUR", "GBP", "ZAR"]);
+
+async function newest<T extends { at: string }>(arr: T[]): Promise<T | null> {
+  if (!arr.length) return null;
+  const sorted = [...arr].sort((a, b) => (a.at < b.at ? 1 : -1));
+  return sorted[0];
+}
+
+async function readJsonSafe<T>(file: string): Promise<T | null> {
+  try {
+    const raw = await readFile(file, "utf-8");
+    return JSON.parse(raw) as T;
+  } catch {
+    return null;
+  }
+}
+
+async function listJson(dir: string): Promise<string[]> {
+  try {
+    const items = await readdir(dir);
+    const files = await Promise.all(
+      items.map(async (n) => {
+        const p = pathJoin(dir, n);
+        try {
+          const s = await stat(p);
+          return s.isFile() && p.endsWith(".json") ? p : null;
+        } catch {
+          return null;
+        }
+      })
+    );
+    return files.filter((x): x is string => !!x);
+  } catch {
+    return [];
+  }
+}
+
+async function gatherBase(dealId: string): Promise<BaseSnap[]> {
+  const dir = pathResolve(process.cwd(), ".data", "equals");
+  const files = (await listJson(dir)).filter((f) => f.includes(`${dealId}-`));
+  const out: BaseSnap[] = [];
+  for (const f of files) {
+    const j = await readJsonSafe<BaseSnap>(f);
+    if (j && j.dealId === dealId && j.stage === "BDO" && typeof j.payload === "string") out.push(j);
+  }
+  return out;
+}
+
+async function gatherAdjusted(dealId: string): Promise<AdjustedSnap[]> {
+  const dir = pathResolve(process.cwd(), ".data", "equals-adjusted");
+  const files = (await listJson(dir)).filter((f) => f.includes(`${dealId}-`));
+  const out: AdjustedSnap[] = [];
+  for (const f of files) {
+    const j = await readJsonSafe<AdjustedSnap>(f);
+    if (j && j.dealId === dealId && j.variant === "REPORT_ADJUSTED" && typeof j.payload === "string") out.push(j);
+  }
+  return out;
+}
+
+async function gatherFinal(dealId: string): Promise<Array<{ snap: FinalSnap; file: string }>> {
+  const dir = pathResolve(process.cwd(), ".data", "equals-final");
+  const files = (await listJson(dir)).filter((f) => f.includes(`${dealId}-`));
+  const out: Array<{ snap: FinalSnap; file: string }> = [];
+  for (const f of files) {
+    const j = await readJsonSafe<FinalSnap>(f);
+    if (j && j.dealId === dealId && j.variant === "FINAL" && typeof j.payload === "string") {
+      out.push({ snap: j, file: f });
+    }
+  }
+  return out;
+}
+
+function toNum(x: unknown): number {
+  if (typeof x === "number") return x;
+  if (typeof x === "string") {
+    const n = Number(x);
+    return Number.isFinite(n) ? n : NaN;
+  }
+  return NaN;
+}
+
+function numericIntegrity(final: FinalSnap): boolean {
+  let p: any;
+  try {
+    p = JSON.parse(final.payload);
+  } catch {
+    return false;
+  }
+
+  const lines = Array.isArray(p?.lines) ? p.lines : [];
+  if (!lines.length) return false;
+
+  let sub = 0;
+  let tax = 0;
+
+  for (const l of lines) {
+    const qty = toNum(l?.qty);
+    const unit = toNum(l?.unitPrice);
+    const rate = toNum(l?.taxRate ?? 0);
+
+    if (![qty, unit, rate].every((n) => Number.isFinite(n) && n >= 0)) return false;
+
+    const lineSub = +(qty * unit).toFixed(2);
+    const lineTax = +(lineSub * rate).toFixed(2);
+
+    sub += lineSub;
+    tax += lineTax;
+  }
+
+  sub = +sub.toFixed(2);
+  tax = +tax.toFixed(2);
+  const tot = +(sub + tax).toFixed(2);
+
+  const pSub = toNum(p?.totals?.subtotal);
+  const pTax = toNum(p?.totals?.taxTotal);
+  const pTot = toNum(p?.totals?.total);
+
+  // If payload totals present, they must match computed within ±0.01
+  if ([pSub, pTax, pTot].every((n) => Number.isFinite(n) && n >= 0)) {
+    const near = (a: number, b: number) => Math.abs(a - b) <= 0.01;
+    return near(pSub, sub) && near(pTax, tax) && near(pTot, tot);
+  }
+
+  // Otherwise computed totals must be non-negative finite
+  return Number.isFinite(sub) && Number.isFinite(tax) && Number.isFinite(tot) && sub >= 0 && tax >= 0 && tot >= 0;
+}
+
+// POST /api/ship/business/oms/obari/invoice/ready
+export async function POST(req: Request) {
+  try {
+    const body = (await req.json()) as PostBody;
+    const dealId = body?.dealId?.trim();
+    const bookingId = body?.bookingId?.trim();
+
+    if (!dealId) {
+      return NextResponse.json({ ok: false, errors: ["dealId is required"] }, { status: 400 });
+    }
+
+    // Load snapshots
+    const [bases, adjusteds, finals] = await Promise.all([
+      gatherBase(dealId),
+      gatherAdjusted(dealId),
+      gatherFinal(dealId),
+    ]);
+
+    const base = await newest(bases);
+    const adjusted = await newest(adjusteds.filter((a) => !bookingId || a.bookingId === bookingId));
+    const finalEntry = await newest(finals.map((x) => x.snap).filter((f) => !bookingId || f.bookingId === bookingId));
+
+    const errors: string[] = [];
+    const gates: GateReport = { baton: "FAIL", finalExists: "FAIL", numeric: "FAIL", currency: "FAIL" };
+
+    // Gate: FINAL exists
+    if (finalEntry) {
+      gates.finalExists = "PASS";
+    } else {
+      errors.push("FINAL_MISSING: No FINAL '=' snapshot for this deal/booking.");
+    }
+
+    // Gate: Baton integrity
+    if (base && adjusted && finalEntry) {
+      const batonOk =
+        adjusted.baseHash === base.hash &&
+        finalEntry.adjustedHash === adjusted.hash;
+
+      if (batonOk) gates.baton = "PASS";
+      else errors.push("BATON_BROKEN: Hash linkage across BASE→ADJUSTED→FINAL is inconsistent.");
+    } else {
+      errors.push("BATON_INCOMPLETE: Required snapshots missing for integrity check.");
+    }
+
+    // Gate: Numeric integrity (lines & totals)
+    if (finalEntry && numericIntegrity(finalEntry)) {
+      gates.numeric = "PASS";
+    } else {
+      errors.push("NUMERIC_INVALID: Lines/totals are inconsistent or non-finite.");
+    }
+
+    // Gate: Currency support
+    const currency = finalEntry?.currency ?? ((): string | null => {
+      try {
+        const p = finalEntry ? JSON.parse(finalEntry.payload as any) : null;
+        return p?.currency ?? null;
+      } catch { return null; }
+    })();
+    if (currency && SUPPORTED_CURRENCIES.has(currency)) {
+      gates.currency = "PASS";
+    } else {
+      errors.push(`CURRENCY_UNSUPPORTED: "${currency ?? "N/A"}" not in supported set.`);
+    }
+
+    // Short-circuit result
+    if (errors.length) {
+      return NextResponse.json({ ok: false, errors, gates }, { status: 409 });
+    }
+
+    // Include pointer to FINAL for downstream issuance
+    const chosenFinal = finals
+      .filter(({ snap }) => snap.hash === finalEntry!.hash)
+      .sort((a, b) => (a.snap.at < b.snap.at ? 1 : -1))[0];
+
+    return NextResponse.json({
+      ok: true,
+      gates,
+      final: {
+        dealId: finalEntry!.dealId,
+        bookingId: finalEntry!.bookingId ?? null,
+        number: finalEntry!.number,
+        hash: finalEntry!.hash,
+        at: finalEntry!.at,
+        version: finalEntry!.version,
+        currency: finalEntry!.currency,
+        file: chosenFinal ? chosenFinal.file.replace(process.cwd(), ".") : null,
+      },
+    });
+  } catch (e: any) {
+    const msg = e instanceof Error ? e.message : "Unknown error";
+    return NextResponse.json({ ok: false, errors: [msg] }, { status: 400 });
+  }
+}

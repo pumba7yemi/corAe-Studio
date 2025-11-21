@@ -1,4 +1,5 @@
 # ──────────────────────────────────────────────
+# DEPRECATED — replaced by Node tools (use `pnpm dev:ship` or `tools/corAe-dev.mjs`).
 # corAe-dev.ps1 — Clean & Run corAe Ship (Windows PowerShell)
 # ──────────────────────────────────────────────
 

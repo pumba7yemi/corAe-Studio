@@ -1,0 +1,8 @@
+{
+  "//": "Example ship governance config",
+  "id": "demo-ship",
+  "name": "Demo Ship",
+  "profile": "STRICT",
+  "allowSensitiveCategories": false,
+  "allowedSensitiveCategories": []
+}

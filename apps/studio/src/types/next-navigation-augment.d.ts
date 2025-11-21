@@ -1,7 +1,7 @@
 // Minimal shim for Next 15 type gaps (safe, dev-only)
 
 declare module "next/navigation" {
-  export * from "next/dist/client/components/navigation";
+  export * from "next/navigation";
 
   export interface Router {
     push(href: string): void;

@@ -1,0 +1,11 @@
+{
+  "id": "w_eml_7xkicta",
+  "source": "email",
+  "kind": "invoice_followup",
+  "priority": 0.7,
+  "evidence": {
+    "email_id": "eml_7xkicta",
+    "subject": "Invoice INV-8601"
+  },
+  "action": "create_comm_draft"
+}

@@ -11,16 +11,16 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 // ✅ Long relative paths
-import { Card, CardContent } from '../../../../../../../../../src/components/ui/card';
-import { Button } from '../../../../../../../../../src/components/ui/button';
-import { Input } from '../../../../../../../../../src/components/ui/input';
-import { Separator } from '../../../../../../../../../src/components/ui/separator';
+import { Card, CardContent } from '@/ui/card';
+import { Button } from '@/ui/button';
+import { Input } from '@/ui/input';
+import { Separator } from '@/ui/separator';
 
 import ArrowNav from '@/components/navigation/ArrowNav';
 import PeriodFilter, {
   computeRange,
   type PeriodValue,
-} from '../../../../../../../../../src/components/finance/PeriodFilter';
+} from '@/components/finance/PeriodFilter';
 
 type TxKind = 'deposit' | 'withdrawal' | 'transfer-in' | 'transfer-out' | 'fee' | 'interest' | 'pos-settle';
 
@@ -45,10 +45,7 @@ export default function BankAccountPage() {
   const [txs, setTxs] = useState<BankTx[]>([]);
   const [q, setQ] = useState('');
 
-  const [period, setPeriod] = useState<PeriodValue>(() => ({
-    kind: 'month',
-    ...computeRange('month'),
-  }));
+  const [period, setPeriod] = useState<PeriodValue>(() => computeRange('month'));
 
   useEffect(() => {
     // In a real app, fetch by accId
@@ -156,7 +153,7 @@ export default function BankAccountPage() {
           {/* Controls */}
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div className="row">
-              <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search ref/payee…" />
+              <Input value={q} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQ(e.target.value)} placeholder="Search ref/payee…" />
             </div>
             <div className="row">
               <Button variant="outline" onClick={() => addTx('deposit')}>Deposit</Button>

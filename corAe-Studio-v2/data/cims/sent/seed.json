@@ -1,0 +1,49 @@
+[
+  {
+    "id": "draft-001",
+    "template": "pricelock_notice",
+    "risk_score": 35,
+    "tags": ["pricing"],
+    "channel": "email",
+    "variables": {
+      "customer": "ABC Trading LLC",
+      "order_id": "PO-9821"
+    },
+    "status": "pending"
+  },
+  {
+    "id": "draft-002",
+    "template": "invoice_reminder",
+    "risk_score": 72,
+    "tags": ["finance", "hr-sensitive"],
+    "channel": "whatsapp",
+    "variables": {
+      "id": "INV-5567",
+      "date": "2025-09-15"
+    },
+    "status": "awaiting_overseer"
+  },
+  {
+    "id": "draft-003",
+    "template": "po_ack",
+    "risk_score": 25,
+    "tags": ["ops"],
+    "channel": "note",
+    "variables": {
+      "po_number": "PO-7782"
+    },
+    "status": "pending"
+  },
+  {
+    "id": "draft-004",
+    "template": "invoice_reminder",
+    "risk_score": 88,
+    "tags": ["legal", "bank-details-change"],
+    "channel": "email",
+    "variables": {
+      "id": "INV-9023",
+      "date": "2025-09-20"
+    },
+    "status": "awaiting_overseer"
+  }
+]

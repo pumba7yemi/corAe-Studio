@@ -1,4 +1,5 @@
 <#
+  DEPRECATED — replaceable via Node scaffolding scripts; kept for reference.
   corAe Manual Scaffold (v0.2)
   Aligns manual numbering to FileLogic™ band 95.
   Creates folders and seed docs under /docs/corae-manual.
@@ -15,19 +16,21 @@ $studio = Join-Path $Root 'apps/studio/app/docs/corae-manual'
 $lib    = Join-Path $studio '_lib'
 
 # Create directories
-$paths = @(
-  $docs,
-  Join-Path $docs 'laws',
-  Join-Path $docs 'architecture',
-  Join-Path $docs 'business-os',
-  Join-Path $docs 'home-os',
-  Join-Path $docs 'comms',
-  Join-Path $docs 'academy',
-  Join-Path $docs 'trademarks-ip',
-  $studio,
-  $lib
-)
-$paths | ForEach-Object { if (!(Test-Path $_)) { New-Item -ItemType Directory -Path $_ | Out-Null } }
+$paths = @()
+$paths += $docs
+$paths += (Join-Path $docs 'laws')
+$paths += (Join-Path $docs 'architecture')
+$paths += (Join-Path $docs 'business-os')
+$paths += (Join-Path $docs 'home-os')
+$paths += (Join-Path $docs 'comms')
+$paths += (Join-Path $docs 'academy')
+$paths += (Join-Path $docs 'trademarks-ip')
+$paths += $studio
+$paths += $lib
+
+foreach ($p in $paths) {
+  if (!(Test-Path $p)) { New-Item -ItemType Directory -Path $p | Out-Null }
+}
 
 # ---- Seed documents (95 band) ----
 $seed = @{
