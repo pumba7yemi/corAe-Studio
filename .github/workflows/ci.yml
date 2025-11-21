@@ -1,29 +1,42 @@
 name: CI
-
 name: CI
 
 on:
   push:
     branches:
+      - main
       - master
   pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v2
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          version: 8
+          node-version: 20
+          cache: "pnpm"
 
-      - name: Install
-        run: pnpm -w install
+      - name: Enable pnpm (corepack)
+        run: corepack enable
+
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
 
       - name: Typecheck
         run: pnpm -w exec tsc -b --noEmit
 
-      - name: Build
-        run: pnpm -w build
-      - run: corepack prepare pnpm@latest --activate
+      - name: CAIA 150 Build Verify (Constitution + CEL gates)
+        env:
+          CAIA_150_STRICT: "true"
+          CAIA_GATE_MIN: "140"
+        run: pnpm -w run build:verify
